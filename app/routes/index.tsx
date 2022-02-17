@@ -5,9 +5,7 @@ const stampyQuery = (title: string) =>
   `https://stampy.ai/w/api.php?action=query&prop=revisions&rvprop=content&rvslots=*&titles=${title}&format=json&formatversion=2`
 
 export const loader: LoaderFunction = async () => {
-  const getInvolvedResponse = await fetch(stampyQuery('Get involved'), {
-    cache: 'force-cache',
-  })
+  const getInvolvedResponse = await fetch(stampyQuery('Get involved'))
   const getInvolvedJson = await getInvolvedResponse.json()
   const getInvolvedContent = getInvolvedJson.query.pages[0].revisions[0].slots.main.content
   return getInvolvedContent.replace(/<!--[\w\W]*?-->/g, '')
