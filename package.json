@@ -1,8 +1,7 @@
 {
-  "private": true,
-  "name": "remix-app-template",
+  "name": "stampy-ui",
   "description": "",
-  "license": "",
+  "license": "MIT",
   "dependencies": {
     "@remix-run/cloudflare-workers": "^1.2.1",
     "@remix-run/react": "^1.2.1",

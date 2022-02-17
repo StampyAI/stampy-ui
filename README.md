@@ -20,3 +20,5 @@ Once that's done, you should be able to deploy your app:
 ```sh
 npm run deploy
 ```
+
+Live demo: https://stampy-ui.aprillion.workers.dev

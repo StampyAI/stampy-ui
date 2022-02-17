@@ -1,4 +1,4 @@
-name = "remix-cloudflare-workers"
+name = "stampy-ui"
 type = "javascript"
 
 zone_id = ""
