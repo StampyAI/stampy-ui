@@ -1,14 +1,24 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+html,
+body {
   margin: 0;
   padding: 0;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  padding: 20px 2%;
-  display: flex;
-  justify-content: center;
+  padding: 0 2% 100px;
+}
+
+h1 {
+  text-align: center;
+}
+
+code {
+  white-space: pre-wrap;
 }
