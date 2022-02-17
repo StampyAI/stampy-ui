@@ -15,10 +15,14 @@ export default function App() {
   const content = useLoaderData()
 
   return (
-    <div>
+    <>
       <h1>Stampy UI Testing Grounds</h1>
       <p>Debug response from server-side API call:</p>
       <code>{content}</code>
-    </div>
+      <footer>
+        <span>© 2022 Peter Hozák</span>
+        <a href="https://github.com/Aprillion/stampy-ui">GitHub</a>
+      </footer>
+    </>
   )
 }
