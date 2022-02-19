@@ -1,12 +1,4 @@
-import {
-  Links,
-  LinksFunction,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from 'remix'
+import {Links, LinksFunction, LiveReload, Meta, Outlet, Scripts, ScrollRestoration} from 'remix'
 import type {MetaFunction} from 'remix'
 import styles from './root.css'
 
