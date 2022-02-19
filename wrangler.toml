@@ -8,6 +8,7 @@ workers_dev = true
 kv_namespaces = [ 
   { binding = "STAMPY_KV", id = "37c6b989d87f403ca8b430669a33f671" }
 ]
+compatibility_date = "2022-02-19"
 
 [site]
 bucket = "./public"
