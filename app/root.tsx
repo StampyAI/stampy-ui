@@ -1,8 +1,14 @@
 import {Links, LinksFunction, LiveReload, Meta, Outlet, Scripts, ScrollRestoration} from 'remix'
 import type {MetaFunction} from 'remix'
+import ogImage from './assets/stampy-ui-preview.png'
 import styles from './root.css'
 
-export const meta: MetaFunction = () => ({title: 'Stampy UI'})
+export const meta: MetaFunction = () => ({
+  title: 'Stampy UI',
+  description: 'Questions and answers about about AI Alignment',
+  'twitter:image': 'summary',
+  'og:image': ogImage,
+})
 export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
 
 export default function App() {
