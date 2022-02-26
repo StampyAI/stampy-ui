@@ -28,7 +28,7 @@ export default function App() {
         />
         <div>
           <h1>Hi, I'm Stampy!</h1>
-          <div>I can answer 105 questions about <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">artificial intelligence existential safety</a>the field trying to make sure that when we build <a href="https://en.wikipedia.org/wiki/Superintelligence">superintelligent</a> <a href="https://www.alignmentforum.org/tag/ai">artificial systems</a> they are <a href="https://intelligence.org/2016/12/28/ai-alignment-why-its-hard-and-where-to-start/">aligned</a> with <a href="https://www.lesswrong.com/tag/human-values">human values</a> so that they do things compatible with human existance and flourishing.</div>
+          <div>I can answer 116 questions about <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">artificial intelligence existential safety</a>—the field trying to make sure that when we build <a href="https://en.wikipedia.org/wiki/Superintelligence">superintelligent</a> <a href="https://www.alignmentforum.org/tag/ai">artificial systems</a> they are <a href="https://intelligence.org/2016/12/28/ai-alignment-why-its-hard-and-where-to-start/">aligned</a> with <a href="https://www.lesswrong.com/tag/human-values">human values</a> so that they do things compatible with our existence and flourishing.</div>
           <div>
             This is my testing playground, see also{' '}
             <a href="https://stampy.ai/read/Get_involved">stampy.ai</a>.
