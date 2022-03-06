@@ -5,18 +5,18 @@ import fetch from '~/fetchWithCache'
 
 const reQuestion = /{{[^|]+\|([^}]+)}}/g
 const reRedirect = /#REDIRECT \[\[([^\]]+)\]\]/
-const reAnswerTitle = /canonicalanswer=([^|}\n]+)/
-const reAnswerText = /answer=([^|}]+)/
-const reLinkInternal = /\[\[([^\]]+)\]\]/g
-const reLinkExternal = /\[(\S+)\s+([^\]]+)\]/g
 
-const parseWikiToHtml = (wiki: string) =>
-  wiki
-    .replace(reLinkInternal, '<a href="https://stampy.ai/read/$1">$1</a>')
-    .replace(reLinkExternal, '<a href="$1">$2</a>')
+const stampyParse = (page: string) =>
+  // TODO: try to use only &section=1 (if we add sections to some template)
+  `https://stampy.ai/w/api.php?action=parse&page=${page}&redirects&prop=text&format=json&formatversion=2`
 
 const stampyQuery = (title: string) =>
   `https://stampy.ai/w/api.php?action=query&prop=revisions&rvprop=content&rvslots=*&titles=${title}&format=json&formatversion=2`
+
+const getHtml = async (page: string): Promise<{title: string; pageid: number; text: string}> => {
+  const {parse} = await (await fetch(stampyParse(page))).json()
+  return parse
+}
 
 const getContent = async (title: string): Promise<string> => {
   const json = await (await fetch(stampyQuery(title))).json()
@@ -34,32 +34,26 @@ const getContent = async (title: string): Promise<string> => {
   return content
 }
 
+export const getIntro = async () => (await getHtml('UI intro')).text
+
+export const getQuestionDetail = (question: string) => getHtml(question)
+
 export const getInitialQuestions = async () => {
   const initialContent = await getContent('Initial questions')
-  const questionList =
+  const [firstQuestion, ...otherQuestions] =
     initialContent?.match(reQuestion)?.map((x) => x.replace(reQuestion, '$1')) ?? []
   const qaList: {
     question: string
-    questionContent: string
-    answerContent?: string
-    answerHtml?: string
-  }[] = []
-  // cannot use Promise.all due to `Error: Response closed due to connection limit` from cloudflare
-  // (which is not reproducible locally, so not sure how to fix other than by slowing down)
-  for (const question of questionList) {
-    const questionContent = await getContent(question)
-    const answerTitle = questionContent?.match(reAnswerTitle)?.[1]
-    const answerContent = answerTitle && (await getContent(answerTitle))
-    const answerText = answerContent?.match(reAnswerText)?.[1]
-    const answerHtml = answerText && parseWikiToHtml(answerText)
-
-    qaList.push({
-      question,
-      questionContent,
-      answerContent,
-      answerHtml,
-    })
-  }
+    title?: string
+    pageid?: number
+    text?: string
+  }[] = [
+    {
+      question: firstQuestion,
+      ...(await getQuestionDetail(firstQuestion)),
+    },
+    ...otherQuestions.map((question) => ({question})),
+  ]
 
   return qaList
 }

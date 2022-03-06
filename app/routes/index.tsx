@@ -1,18 +1,45 @@
 import {useState, useEffect} from 'react'
-import {useLoaderData} from 'remix'
-import type {LoaderFunction} from 'remix'
+import {LoaderFunction, useLoaderData} from 'remix'
 import AutoHeight from 'react-auto-height'
-import {getInitialQuestions} from '~/stampy'
+import {getIntro, getInitialQuestions} from '~/stampy'
 import logo1x from '~/assets/stampy-logo.png'
 import logo2x from '~/assets/stampy-logo-2x.png'
 import logo3x from '~/assets/stampy-logo-3x.png'
 
-type QuestionsType = Awaited<ReturnType<typeof getInitialQuestions>>
+type LoaderData = {
+  intro: Awaited<ReturnType<typeof getIntro>>
+  initialQuestions: Awaited<ReturnType<typeof getInitialQuestions>>
+}
 
-export const loader: LoaderFunction = getInitialQuestions
+export const loader: LoaderFunction = async () => ({
+  intro: await getIntro(),
+  initialQuestions: await getInitialQuestions(),
+})
 
 export default function App() {
-  const content = useLoaderData<QuestionsType>()
+  const {intro, initialQuestions} = useLoaderData<LoaderData>()
+  const [questions, setQuestions] = useState(initialQuestions)
+  useEffect(() => {
+    const load = async (question: string) => {
+      fetch(`/questions/${encodeURIComponent(question)}`)
+        .then((response) => response.json())
+        .then((json) => {
+          setQuestions((currentQuestions) =>
+            currentQuestions.map((q) =>
+              q.question === question
+                ? {
+                    question,
+                    ...json,
+                  }
+                : q
+            )
+          )
+        })
+    }
+    for (const {question, pageid} of initialQuestions) {
+      if (!pageid) setTimeout(() => load(question))
+    }
+  }, [])
 
   useRerenderOnResize() // to recalculate AutoHeight
 
@@ -28,15 +55,11 @@ export default function App() {
         />
         <div>
           <h1>Hi, I'm Stampy!</h1>
-          <div>I can answer 116 questions about <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">artificial intelligence existential safety</a>—the field trying to make sure that when we build <a href="https://en.wikipedia.org/wiki/Superintelligence">superintelligent</a> <a href="https://www.alignmentforum.org/tag/ai">artificial systems</a> they are <a href="https://intelligence.org/2016/12/28/ai-alignment-why-its-hard-and-where-to-start/">aligned</a> with <a href="https://www.lesswrong.com/tag/human-values">human values</a> so that they do things compatible with our existence and flourishing.</div>
-          <div>
-            This is my testing playground, see also{' '}
-            <a href="https://stampy.ai/read/Get_involved">stampy.ai</a>.
-          </div>
+          <div dangerouslySetInnerHTML={{__html: intro}} />
         </div>
       </header>
       <main>
-        {content.map((props, i) => (
+        {questions.map((props, i) => (
           <Question key={props.question} {...props} defaultExpanded={i === 0} />
         ))}
       </main>
@@ -50,24 +73,19 @@ export default function App() {
 
 function Question({
   question,
-  questionContent,
-  answerContent,
-  answerHtml = '¯\\_(ツ)_/¯',
+  title = question,
+  text = 'Loading...',
   defaultExpanded,
-}: QuestionsType[0] & {defaultExpanded?: boolean}) {
+}: LoaderData['initialQuestions'][0] & {defaultExpanded?: boolean}) {
   const [expanded, setExpanded] = useState(defaultExpanded)
 
   return (
     <article>
-      <h2
-        className={expanded ? 'expanded' : ''}
-        onClick={() => setExpanded(!expanded)}
-        title={`${questionContent}\n\n${answerContent}`}
-      >
-        {question}
+      <h2 className={expanded ? 'expanded' : ''} onClick={() => setExpanded(!expanded)}>
+        {title}
       </h2>
       <AutoHeight>
-        {expanded && <div className="answer" dangerouslySetInnerHTML={{__html: answerHtml}} />}
+        {expanded && <div className="answer" dangerouslySetInnerHTML={{__html: text}} />}
       </AutoHeight>
     </article>
   )

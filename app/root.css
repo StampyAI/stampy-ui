@@ -139,7 +139,11 @@ h2.expanded:hover::after {
 
 .answer {
   padding: 8px;
-  white-space: pre-wrap;
+}
+
+.answer > .mw-parser-output > *:not(.answer-card),
+.answer > .mw-parser-output > .answer-card > *:not(#canonicalanswer) {
+  display: none;
 }
 
 footer {
