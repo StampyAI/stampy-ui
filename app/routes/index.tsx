@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import {LoaderFunction, useLoaderData} from 'remix'
 import AutoHeight from 'react-auto-height'
 import {getIntro, getInitialQuestions} from '~/stampy'
+import logoSvg from '~/assets/stampy-logo.svg'
 import logo1x from '~/assets/stampy-logo.png'
 import logo2x from '~/assets/stampy-logo-2x.png'
 import logo3x from '~/assets/stampy-logo-3x.png'
@@ -46,7 +47,9 @@ export default function App() {
   return (
     <>
       <header>
+        <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
         <img
+          className="logo dark-logo"
           alt="logo"
           width="201"
           height="200"
@@ -54,7 +57,9 @@ export default function App() {
           srcSet={`${logo2x} 2x, ${logo3x} 3x`}
         />
         <div>
-          <h1>Hi, I'm Stampy!</h1>
+          <h1>
+            Hi, I'm <span className="highlight">Stampy!</span>
+          </h1>
           <div dangerouslySetInnerHTML={{__html: intro}} />
         </div>
       </header>

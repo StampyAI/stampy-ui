@@ -11,11 +11,14 @@
   --light: initial;
   --dark: ;
   --bgColor: var(--light, #fff) var(--dark, #333);
-  --bgQuestionColor: var(--light, #ddd) var(--dark, #444);
-  --textColor: var(--light, #222) var(--dark, #eee);
-  --titleColor: var(--light, #666) var(--dark, #bbb);
-  --linkColor: var(--light, blue) var(--dark, lightskyblue);
-  --linkVisitedColor: var(--light, purple) var(--dark, lightpink);
+  --bgColorQuestionTitle: var(--light, #bbdefb) var(--dark, #444);
+  --bgColorQuestionAnswer: var(--light, #eff) var(--dark, #333);
+  --colorText: var(--light, #222) var(--dark, #eee);
+  --colorTitle: var(--light, #666) var(--dark, #bbb);
+  --colorTitleHighlight: #d9816b;
+  --colorQuestionTitle: var(--light, #333) var(--dark, #ccc);
+  --colorLink: var(--light, blue) var(--dark, lightskyblue);
+  --colorLinkVisited: var(--light, darkviolet) var(--dark, lightcyan);
 }
 
 :root.dark-theme {
@@ -45,8 +48,8 @@ body {
   width: 100%;
   max-width: 1000px;
   margin: auto;
-  padding: 0 16px;
-  color: var(--textColor);
+  padding: 0 8px;
+  color: var(--colorText);
   background-color: var(--bgColor);
   display: flex;
   flex-direction: column;
@@ -55,12 +58,12 @@ body {
 }
 
 a {
-  color: var(--linkColor);
+  color: var(--colorLink);
   text-decoration: none;
 }
 
 a:visited {
-  color: var(--linkVisitedColor);
+  color: var(--colorLinkVisited);
 }
 
 a:hover {
@@ -71,11 +74,20 @@ header {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  padding-bottom: 48px;
 }
 
-header > img {
-  width: min(201px, 30vw);
+.logo {
+  width: clamp(100px, 30vw, 201px);
   height: auto;
+}
+.simplified-logo {
+  display: var(--light, initial) var(--dark, none);
+  padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
+}
+.dark-logo {
+  display: var(--light, none) var(--dark, initial);
+  margin-bottom: -16px;
 }
 
 header > div {
@@ -85,27 +97,38 @@ header > div {
 }
 
 h1 {
-  color: var(--titleColor);
-  font-size: clamp(2rem, 7vw, 3rem);
+  color: var(--colorTitle);
+  font-size: clamp(1.5rem, 7vw, 2.5rem);
   margin-left: -2px; /* visually align */
+}
+
+.highlight {
+  color: var(--colorTitleHighlight);
 }
 
 main {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+}
+
+article {
+  background-color: var(--bgColorQuestionAnswer);
+  border-radius: 2px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 h2 {
-  padding: 5px 8px 4px 8px;
-  background-color: var(--bgQuestionColor);
-  color: var(--titleColor);
-  font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+  padding: 8px 16px 7px;
+  background-color: var(--bgColorQuestionTitle);
+  color: var(--colorQuestionTitle);
+  font-size: clamp(1.1rem, 3vw, 1.25rem);
   line-height: 1.2;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 2px;
 }
 
 h2::after {
@@ -118,7 +141,7 @@ h2::after {
 }
 
 h2:hover::after {
-  transform: rotate(30deg);
+  transform: rotate(10deg);
 }
 
 h2.expanded::after {
@@ -127,7 +150,7 @@ h2.expanded::after {
 }
 
 h2.expanded:hover::after {
-  transform: rotate(100deg);
+  transform: rotate(80deg);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -138,12 +161,20 @@ h2.expanded:hover::after {
 }
 
 .answer {
-  padding: 8px;
+  padding: 0 16px;
 }
 
 .answer > .mw-parser-output > *:not(.answer-card),
 .answer > .mw-parser-output > .answer-card > *:not(#canonicalanswer) {
   display: none;
+}
+
+p {
+  margin: 16px 0;
+}
+
+ul {
+  margin: 16px;
 }
 
 footer {
