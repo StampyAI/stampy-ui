@@ -1,61 +1,48 @@
-import {useState, useEffect} from 'react'
-import {LoaderFunction, useLoaderData} from 'remix'
-import AutoHeight from 'react-auto-height'
-import {getIntro, getInitialQuestions} from '~/stampy'
+import {useState} from 'react'
+import type {LoaderFunction, ShouldReloadFunction} from 'remix'
+import {useLoaderData, Link} from 'remix'
+import type {Questions} from '~/utils/stampy'
+import {getIntro, getInitialQuestions} from '~/utils/stampy'
+import {useQuestionStateInUrl as useQuestionStateFromUrl, useRerenderOnResize} from '~/utils/hooks'
+import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
 import logo1x from '~/assets/stampy-logo.png'
 import logo2x from '~/assets/stampy-logo-2x.png'
 import logo3x from '~/assets/stampy-logo-3x.png'
 
 type LoaderData = {
-  intro: Awaited<ReturnType<typeof getIntro>>
-  initialQuestions: Awaited<ReturnType<typeof getInitialQuestions>>
+  intro: string
+  initialQuestions: Questions
 }
 
-export const loader: LoaderFunction = async () => ({
+export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => ({
   intro: await getIntro(),
   initialQuestions: await getInitialQuestions(),
 })
 
+export const unstable_shouldReload: ShouldReloadFunction = () => false
+
 export default function App() {
   const {intro, initialQuestions} = useLoaderData<LoaderData>()
-  const [questions, setQuestions] = useState(initialQuestions)
-  useEffect(() => {
-    const load = async (question: string) => {
-      fetch(`/questions/${encodeURIComponent(question)}`)
-        .then((response) => response.json())
-        .then((json) => {
-          setQuestions((currentQuestions) =>
-            currentQuestions.map((q) =>
-              q.question === question
-                ? {
-                    question,
-                    ...json,
-                  }
-                : q
-            )
-          )
-        })
-    }
-    for (const {question, pageid} of initialQuestions) {
-      if (!pageid) setTimeout(() => load(question))
-    }
-  }, [])
+  const questions = initialQuestions // TODO: load related questions when expanding
+  const {isExpanded, toggleQuestion} = useQuestionStateFromUrl(questions)
 
-  useRerenderOnResize() // to recalculate AutoHeight
+  useRerenderOnResize() // recalculate AutoHeight
 
   return (
     <>
       <header>
-        <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
-        <img
-          className="logo dark-logo"
-          alt="logo"
-          width="201"
-          height="200"
-          src={logo1x}
-          srcSet={`${logo2x} 2x, ${logo3x} 3x`}
-        />
+        <Link to="/" onClick={(e) => toggleQuestion(null, e)}>
+          <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
+          <img
+            className="logo dark-logo"
+            alt="logo"
+            width="201"
+            height="200"
+            src={logo1x}
+            srcSet={`${logo2x} 2x, ${logo3x} 3x`}
+          />
+        </Link>
         <div>
           <h1>
             Hi, I'm <span className="highlight">Stampy!</span>
@@ -64,8 +51,15 @@ export default function App() {
         </div>
       </header>
       <main>
-        {questions.map((props, i) => (
-          <Question key={props.question} {...props} defaultExpanded={i === 0} />
+        {questions.map(({pageid, title, text}) => (
+          <Question
+            key={pageid}
+            pageid={pageid}
+            title={title}
+            text={text}
+            expanded={isExpanded(pageid)}
+            onToggle={() => toggleQuestion(pageid)}
+          />
         ))}
       </main>
       <footer>
@@ -74,45 +68,4 @@ export default function App() {
       </footer>
     </>
   )
-}
-
-function Question({
-  question,
-  title = question,
-  text = 'Loading...',
-  defaultExpanded,
-}: LoaderData['initialQuestions'][0] & {defaultExpanded?: boolean}) {
-  const [expanded, setExpanded] = useState(defaultExpanded)
-
-  return (
-    <article>
-      <h2 className={expanded ? 'expanded' : ''} onClick={() => setExpanded(!expanded)}>
-        {title}
-      </h2>
-      <AutoHeight>
-        {expanded && <div className="answer" dangerouslySetInnerHTML={{__html: text}} />}
-      </AutoHeight>
-    </article>
-  )
-}
-
-function useRerenderOnResize() {
-  const [, set] = useState<{}>()
-
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
-    const forceRerender = (e: unknown) => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        set({})
-      }, 100)
-    }
-    addEventListener('orientationchange', forceRerender)
-    addEventListener('resize', forceRerender)
-
-    return () => {
-      removeEventListener('orientationchange', forceRerender)
-      removeEventListener('resize', forceRerender)
-    }
-  }, [])
 }

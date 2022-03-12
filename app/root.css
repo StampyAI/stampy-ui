@@ -21,7 +21,7 @@
   --colorLinkVisited: var(--light, darkviolet) var(--dark, lightcyan);
 }
 
-:root.dark-theme {
+:root.dark {
   --light: ;
   --dark: initial;
 }
@@ -32,7 +32,7 @@
     --dark: initial;
   }
 
-  :root.light-theme {
+  :root.light {
     --light: initial;
     --dark: ;
   }
@@ -162,11 +162,6 @@ h2.expanded:hover::after {
 
 .answer {
   padding: 0 16px;
-}
-
-.answer > .mw-parser-output > *:not(.answer-card),
-.answer > .mw-parser-output > .answer-card > *:not(#canonicalanswer) {
-  display: none;
 }
 
 p {

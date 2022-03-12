@@ -1,5 +1,5 @@
-import {Links, LinksFunction, LiveReload, Meta, Outlet, Scripts, ScrollRestoration} from 'remix'
-import type {MetaFunction} from 'remix'
+import {Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useSearchParams} from 'remix'
+import type {MetaFunction, LinksFunction} from 'remix'
 import ogImage from './assets/stampy-ui-preview.png'
 import styles from './root.css'
 
@@ -17,8 +17,11 @@ export const meta: MetaFunction = () => ({
 export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
 
 export default function App() {
+  const [searchParams] = useSearchParams()
+  const theme = searchParams.get('theme') ?? undefined
+
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
