@@ -71,11 +71,20 @@ export const getQuestionDetail = (question: string) => getHtml(question)
 
 export const getInitialQuestions = async () => {
   // return stale while revalidate
-  let cached = await STAMPY_KV.get('__getInitialQuestions')
+  let {value: cached, metadata} = await STAMPY_KV.getWithMetadata<{timestamp: string}>(
+    '__getInitialQuestions'
+  )
   let data: Questions
-  if (cached) {
+  if (
+    cached &&
+    metadata?.timestamp &&
+    new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60 * 10
+  ) {
     data = JSON.parse(cached)
-    getInitialQuestionsUpdateCache()
+    // TODO: find a way to revalidate cache lazily AFTER returning from loader (Cloudflare kills unawaited promises)
+    if (!data[0].text) {
+      data = await getInitialQuestionsUpdateCache()
+    }
   } else {
     data = await getInitialQuestionsUpdateCache()
   }
