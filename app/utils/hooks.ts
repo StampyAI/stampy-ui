@@ -6,11 +6,10 @@ import type {Questions} from './stampy'
 type QuestionState = '_' | '-'
 
 export function useQuestionStateInUrl(questions: Questions) {
-  // setSearchParams from useSearchParams() scrolls to top, duplicate in local state as a workaround
-  const [searchParams] = useSearchParams()
+  // setSearchParams from useSearchParams() scrolls to top, so using in local state as a workaround
+  const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
-  const questionStatesFromSearchParams = (): Map<number, QuestionState> => {
-    const state = searchParams.get('state')
+  const questionStatesFromString = (state: string | null): Map<number, QuestionState> => {
     if (state) {
       return new Map(
         Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [
@@ -22,11 +21,16 @@ export function useQuestionStateInUrl(questions: Questions) {
       return new Map(questions.map(({pageid}) => [pageid, '-']))
     }
   }
-  const [questionStates, setQuestionStates] = useState(questionStatesFromSearchParams)
+  const [questionStates, setQuestionStates] = useState(() =>
+    questionStatesFromString(remixSearchParams.get('state'))
+  )
 
   useEffect(() => {
-    setQuestionStates(questionStatesFromSearchParams())
-  }, [searchParams, transition.state])
+    if (transition.location) {
+      const state = new URLSearchParams(transition.location.search).get('state')
+      setQuestionStates(questionStatesFromString(state))
+    }
+  }, [transition.location])
 
   const isExpanded = (pageid: number) => questionStates.get(pageid) === '_'
 
@@ -42,8 +46,9 @@ export function useQuestionStateInUrl(questions: Questions) {
     const newState = Array.from(questionStates.entries())
       .map(([k, v]) => `${k}${v}`)
       .join('')
-    searchParams.set('state', newState)
-    history.pushState(newState, '', '?' + searchParams.toString())
+    const newSearchParams = new URLSearchParams(remixSearchParams)
+    newSearchParams.set('state', newState)
+    history.pushState(newState, '', '?' + newSearchParams.toString())
     document.title = `Stampy UI - ${newState}`
     setQuestionStates(new Map(questionStates))
   }
