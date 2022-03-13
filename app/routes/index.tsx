@@ -45,7 +45,7 @@ export default function App() {
         </Link>
         <div>
           <h1>
-            Hi, I'm <span className="highlight">Stampy!</span>
+            Hi, I'm <span className="highlight">Stampy!</span> (in test environment)
           </h1>
           <div dangerouslySetInnerHTML={{__html: intro}} />
         </div>

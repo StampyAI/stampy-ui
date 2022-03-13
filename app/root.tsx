@@ -3,7 +3,7 @@ import type {MetaFunction, LinksFunction} from 'remix'
 import ogImage from './assets/stampy-ui-preview.png'
 import styles from './root.css'
 
-const title = 'Stampy UI'
+const title = 'Stampy'
 const description = 'Questions and answers about about AI Alignment'
 export const meta: MetaFunction = () => ({
   title,

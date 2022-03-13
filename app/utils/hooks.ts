@@ -38,7 +38,7 @@ export function useQuestionStateInUrl(questions: Questions) {
     if (!pageid) {
       event?.preventDefault()
       history.pushState('', '', '/')
-      document.title = `Stampy UI`
+      document.title = `Stampy in Test`
       setQuestionStates(new Map(questions.map(({pageid}) => [pageid, '-'])))
       return
     }
@@ -49,7 +49,7 @@ export function useQuestionStateInUrl(questions: Questions) {
     const newSearchParams = new URLSearchParams(remixSearchParams)
     newSearchParams.set('state', newState)
     history.pushState(newState, '', '?' + newSearchParams.toString())
-    document.title = `Stampy UI - ${newState}`
+    document.title = `Stampy in Test - ${newState}`
     setQuestionStates(new Map(questionStates))
   }
 
