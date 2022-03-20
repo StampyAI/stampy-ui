@@ -1,7 +1,6 @@
-import {useState} from 'react'
 import type {LoaderFunction, ShouldReloadFunction} from 'remix'
 import {useLoaderData, Link} from 'remix'
-import type {Questions} from '~/utils/stampy'
+import type {Question as QuestionType} from '~/utils/stampy'
 import {getIntro, getInitialQuestions} from '~/utils/stampy'
 import {useQuestionStateInUrl as useQuestionStateFromUrl, useRerenderOnResize} from '~/utils/hooks'
 import Question from '~/components/question'
@@ -12,27 +11,29 @@ import logo3x from '~/assets/stampy-logo-3x.png'
 
 type LoaderData = {
   intro: string
-  initialQuestions: Questions
+  initialQuestions: QuestionType[]
 }
 
-export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => ({
-  intro: await getIntro(),
-  initialQuestions: await getInitialQuestions(),
-})
+export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
+  return {
+    intro: await getIntro(),
+    initialQuestions: await getInitialQuestions(request),
+  }
+}
 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
   const {intro, initialQuestions} = useLoaderData<LoaderData>()
-  const questions = initialQuestions // TODO: load related questions when expanding
-  const {isExpanded, toggleQuestion} = useQuestionStateFromUrl(questions)
+  const {questions, reset, toggleQuestion, onLazyLoadQuestion} =
+    useQuestionStateFromUrl(initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
   return (
     <>
       <header>
-        <Link to="/" onClick={(e) => toggleQuestion(null, e)}>
+        <Link to="/" onClick={(e) => reset(e)}>
           <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
           <img
             className="logo dark-logo"
@@ -51,14 +52,12 @@ export default function App() {
         </div>
       </header>
       <main>
-        {questions.map(({pageid, title, text}) => (
+        {questions.map((questionProps) => (
           <Question
-            key={pageid}
-            pageid={pageid}
-            title={title}
-            text={text}
-            expanded={isExpanded(pageid)}
-            onToggle={() => toggleQuestion(pageid)}
+            key={questionProps.pageid}
+            {...questionProps}
+            onLazyLoadQuestion={onLazyLoadQuestion}
+            onToggle={() => toggleQuestion(questionProps)}
           />
         ))}
       </main>

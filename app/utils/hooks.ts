@@ -1,60 +1,89 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from 'remix'
-import type {Questions} from './stampy'
+import type {Question, QuestionState} from './stampy'
 
-type QuestionState = '_' | '-'
+const getStateEntries = (state: string): [number, QuestionState][] =>
+  Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [
+    Number(groups[1]),
+    groups[2] as QuestionState,
+  ])
 
-export function useQuestionStateInUrl(questions: Questions) {
-  // setSearchParams from useSearchParams() scrolls to top, so using in local state as a workaround
+export function useQuestionStateInUrl(initialQuestions: Question[]) {
+  // setSearchParams from useSearchParams() disables css transitions, so using history.pushState as a workaround
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
-  const questionStatesFromString = (state: string | null): Map<number, QuestionState> => {
-    if (state) {
-      return new Map(
-        Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [
-          Number(groups[1]),
-          groups[2] as QuestionState,
-        ])
-      )
-    } else {
-      return new Map(questions.map(({pageid}) => [pageid, '-']))
-    }
-  }
-  const [questionStates, setQuestionStates] = useState(() =>
-    questionStatesFromString(remixSearchParams.get('state'))
+
+  const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
+  const [questionMap, setQuestionMap] = useState(
+    () => new Map(initialQuestions.map((q) => [q.pageid, q]))
   )
 
   useEffect(() => {
     if (transition.location) {
       const state = new URLSearchParams(transition.location.search).get('state')
-      setQuestionStates(questionStatesFromString(state))
+      setStateString(state)
     }
   }, [transition.location])
 
-  const isExpanded = (pageid: number) => questionStates.get(pageid) === '_'
+  useEffect(() => {
+    document.title = stateString ? `Stampy in Test - ${stateString}` : `Stampy in Test`
+  }, [stateString])
 
-  const toggleQuestion = (pageid: number | null, event?: MouseEvent) => {
-    if (!pageid) {
-      event?.preventDefault()
-      history.pushState('', '', '/')
-      document.title = `Stampy in Test`
-      setQuestionStates(new Map(questions.map(({pageid}) => [pageid, '-'])))
-      return
-    }
-    questionStates.set(pageid, questionStates.get(pageid) === '_' ? '-' : '_')
-    const newState = Array.from(questionStates.entries())
-      .map(([k, v]) => `${k}${v}`)
+  const initialCollapsedState = useMemo(
+    () => initialQuestions.map(({pageid}) => `${pageid}-`).join(''),
+    []
+  )
+  const questions: Question[] = useMemo(() => {
+    return getStateEntries(stateString ?? initialCollapsedState).map(([pageid, questionState]) => ({
+      pageid,
+      title: '...',
+      text: null,
+      relatedQuestions: [],
+      ...questionMap.get(pageid),
+      questionState,
+    }))
+  }, [stateString, questionMap])
+
+  const reset = (event: MouseEvent) => {
+    event.preventDefault()
+    history.pushState('', '', '/')
+    setStateString(null)
+  }
+
+  const toggleQuestion = (questionProps: Question) => {
+    const {pageid, relatedQuestions} = questionProps
+    const newRelatedQuestions = relatedQuestions.filter(
+      (q) => !stateString?.includes(q.pageid.toString())
+    )
+    const newState = getStateEntries(stateString ?? initialCollapsedState)
+      .map(([k, v]) => {
+        if (k === pageid) {
+          const newValue = v === '_' ? '-' : '_'
+          const related = newRelatedQuestions.map((r) => `${r.pageid}r`).join('')
+          return `${k}${newValue}${related}`
+        }
+        return `${k}${v}`
+      })
       .join('')
     const newSearchParams = new URLSearchParams(remixSearchParams)
     newSearchParams.set('state', newState)
     history.pushState(newState, '', '?' + newSearchParams.toString())
-    document.title = `Stampy in Test - ${newState}`
-    setQuestionStates(new Map(questionStates))
+    setStateString(newState)
   }
 
-  return {isExpanded, toggleQuestion}
+  const onLazyLoadQuestion = (question: Question) => {
+    setQuestionMap((currentMap) => {
+      const newMap = new Map(currentMap)
+      newMap.set(question.pageid, question)
+      return newMap
+    })
+  }
+
+  return {questions, reset, toggleQuestion, onLazyLoadQuestion}
 }
+
+// ---
 
 export function useRerenderOnResize(): void {
   const [, set] = useState<{}>()

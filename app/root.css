@@ -116,6 +116,18 @@ article {
   background-color: var(--bgColorQuestionAnswer);
   border-radius: 2px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  transition: transform 300ms;
+}
+
+article.related {
+  transform: translateX(16px);
+  animation: fromLeft 300ms ease-out;
+}
+
+@keyframes fromLeft {
+  from {
+    transform: translateX(100vw);
+  }
 }
 
 h2 {
@@ -144,12 +156,12 @@ h2:hover::after {
   transform: rotate(10deg);
 }
 
-h2.expanded::after {
+.expanded h2::after {
   margin-top: 4px;
   transform: rotate(90deg);
 }
 
-h2.expanded:hover::after {
+.expanded h2:hover::after {
   transform: rotate(80deg);
 }
 
@@ -164,12 +176,20 @@ h2.expanded:hover::after {
   padding: 0 16px;
 }
 
-p {
+.answer p,
+.answer .card-longdesc {
   margin: 16px 0;
 }
 
-ul {
+.answer ul,
+.answer ol {
   margin: 16px;
+}
+
+.answer .card-shortdesc,
+.answer .card-show-longdesc,
+.answer .card-hide-longdesc {
+  display: none;
 }
 
 footer {
