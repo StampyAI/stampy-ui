@@ -1,4 +1,4 @@
-import {Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useSearchParams} from 'remix'
+import {Links, LiveReload, Meta, Outlet, Scripts, useSearchParams} from 'remix'
 import type {MetaFunction, LinksFunction} from 'remix'
 import ogImage from './assets/stampy-ui-preview.png'
 import styles from './root.css'
@@ -30,7 +30,7 @@ export default function App() {
       </head>
       <body>
         <Outlet />
-        <ScrollRestoration />
+        {/* <ScrollRestoration /> wasn't doing anything useful */}
         <Scripts />
         <LiveReload />
       </body>
