@@ -78,7 +78,7 @@ export const getInitialQuestions = async () => {
   if (
     cached &&
     metadata?.timestamp &&
-    new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60 * 10
+    new Date().getTime() - new Date(metadata.timestamp).getTime() < 1000 * 60 * 10
   ) {
     data = JSON.parse(cached)
     // TODO: find a way to revalidate cache lazily AFTER returning from loader (Cloudflare kills unawaited promises)
