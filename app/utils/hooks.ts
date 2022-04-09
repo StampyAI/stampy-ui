@@ -10,7 +10,6 @@ const getStateEntries = (state: string): [number, QuestionState][] =>
   ])
 
 export function useQuestionStateInUrl(initialQuestions: Question[]) {
-  // setSearchParams from useSearchParams() disables css transitions, so using history.pushState as a workaround
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
 
@@ -47,7 +46,7 @@ export function useQuestionStateInUrl(initialQuestions: Question[]) {
 
   const reset = (event: MouseEvent) => {
     event.preventDefault()
-    history.pushState('', '', '/')
+    history.replaceState('', '', '/')
     setStateString(null)
   }
 
@@ -68,7 +67,7 @@ export function useQuestionStateInUrl(initialQuestions: Question[]) {
       .join('')
     const newSearchParams = new URLSearchParams(remixSearchParams)
     newSearchParams.set('state', newState)
-    history.pushState(newState, '', '?' + newSearchParams.toString())
+    history.replaceState(newState, '', '?' + newSearchParams.toString())
     setStateString(newState)
   }
 
