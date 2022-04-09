@@ -1,23 +1,31 @@
-import {useEffect} from 'react'
+import {useRef, useEffect} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
+import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 
 export default function Question({
-  pageid,
-  title,
-  text,
-  questionState,
+  questionProps,
   onLazyLoadQuestion,
   onToggle,
-}: Question & {
+}: {
+  questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
-  onToggle: () => void
+  onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
 }) {
+  const {pageid, title, text, questionState} = questionProps
+  const refreshOnToggleAfterLoading = useRef(false)
+
   useEffect(() => {
     if (!text) {
       fetch(`/questions/${pageid}`)
         .then((response) => response.json())
-        .then(onLazyLoadQuestion)
+        .then((newQuestionProps: Question) => {
+          onLazyLoadQuestion(newQuestionProps)
+          if (refreshOnToggleAfterLoading.current) {
+            onToggle(newQuestionProps)
+            refreshOnToggleAfterLoading.current = false
+          }
+        })
     }
   }, [pageid, text])
 
@@ -25,9 +33,16 @@ export default function Question({
   const isRelated = questionState === 'r'
   const cls = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
 
+  const handleToggle = () => {
+    onToggle(questionProps)
+    if (!text) {
+      refreshOnToggleAfterLoading.current = true
+    }
+  }
+
   return (
     <article className={cls}>
-      <h2 onClick={onToggle}>
+      <h2 onClick={handleToggle}>
         <button className="transparent-button">{title}</button>
       </h2>
       <AutoHeight>

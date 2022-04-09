@@ -56,9 +56,9 @@ export default function App() {
         {questions.map((questionProps) => (
           <Question
             key={questionProps.pageid}
-            {...questionProps}
+            questionProps={questionProps}
             onLazyLoadQuestion={onLazyLoadQuestion}
-            onToggle={() => toggleQuestion(questionProps)}
+            onToggle={toggleQuestion}
           />
         ))}
       </main>
