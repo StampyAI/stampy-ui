@@ -165,6 +165,16 @@ h2:hover::after {
   transform: rotate(80deg);
 }
 
+.transparent-button {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  padding: 0;
+  cursor: inherit;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .react-auto-height {
     overflow: hidden;

@@ -27,7 +27,9 @@ export default function Question({
 
   return (
     <article className={cls}>
-      <h2 onClick={onToggle}>{title}</h2>
+      <h2 onClick={onToggle}>
+        <button className="transparent-button">{title}</button>
+      </h2>
       <AutoHeight>
         {isExpanded && (
           <div className="answer" dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}} />
