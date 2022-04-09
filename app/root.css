@@ -130,7 +130,7 @@ article.related {
   }
 }
 
-h2 {
+article > h2 {
   padding: 8px 16px 7px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
@@ -143,7 +143,7 @@ h2 {
   border-radius: 2px;
 }
 
-h2::after {
+article > h2::after {
   content: '›';
   margin-top: -8px;
   font-size: 2em;
@@ -152,7 +152,7 @@ h2::after {
   transition: transform 300ms, margin 300ms;
 }
 
-h2:hover::after {
+article > h2:hover::after {
   transform: rotate(10deg);
 }
 
