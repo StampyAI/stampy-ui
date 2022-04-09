@@ -1,5 +1,5 @@
 import {LoaderFunction} from 'remix'
-import {getQuestionDetail} from '~/utils/stampy'
+import {getQuestionDetail} from '~/stampy'
 
 export const loader: LoaderFunction = async ({params}) => {
   const {question} = params

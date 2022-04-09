@@ -1,8 +1,9 @@
 import type {LoaderFunction, ShouldReloadFunction} from 'remix'
 import {useLoaderData, Link} from 'remix'
-import type {Question as QuestionType} from '~/utils/stampy'
-import {getIntro, getInitialQuestions} from '~/utils/stampy'
-import {useQuestionStateInUrl as useQuestionStateFromUrl, useRerenderOnResize} from '~/utils/hooks'
+import type {Question as QuestionType} from '~/stampy'
+import {getIntro, getInitialQuestions} from '~/stampy'
+import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
+import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
 import logo1x from '~/assets/stampy-logo.png'
@@ -26,7 +27,7 @@ export const unstable_shouldReload: ShouldReloadFunction = () => false
 export default function App() {
   const {intro, initialQuestions} = useLoaderData<LoaderData>()
   const {questions, reset, toggleQuestion, onLazyLoadQuestion} =
-    useQuestionStateFromUrl(initialQuestions)
+    useQuestionStateInUrl(initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 

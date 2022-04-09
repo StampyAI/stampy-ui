@@ -1,7 +1,7 @@
 import {useState, useEffect, useMemo} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from 'remix'
-import type {Question, QuestionState} from './stampy'
+import type {Question, QuestionState} from '../stampy'
 
 const getStateEntries = (state: string): [number, QuestionState][] =>
   Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [
@@ -9,7 +9,7 @@ const getStateEntries = (state: string): [number, QuestionState][] =>
     groups[2] as QuestionState,
   ])
 
-export function useQuestionStateInUrl(initialQuestions: Question[]) {
+export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
 
@@ -52,10 +52,11 @@ export function useQuestionStateInUrl(initialQuestions: Question[]) {
 
   const toggleQuestion = (questionProps: Question) => {
     const {pageid, relatedQuestions} = questionProps
+    const currentState = stateString ?? initialCollapsedState
     const newRelatedQuestions = relatedQuestions.filter(
-      (q) => !stateString?.includes(q.pageid.toString())
+      (q) => !currentState.includes(q.pageid.toString())
     )
-    const newState = getStateEntries(stateString ?? initialCollapsedState)
+    const newState = getStateEntries(currentState)
       .map(([k, v]) => {
         if (k === pageid) {
           const newValue = v === '_' ? '-' : '_'
@@ -80,27 +81,4 @@ export function useQuestionStateInUrl(initialQuestions: Question[]) {
   }
 
   return {questions, reset, toggleQuestion, onLazyLoadQuestion}
-}
-
-// ---
-
-export function useRerenderOnResize(): void {
-  const [, set] = useState<{}>()
-
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
-    const forceRerender = (e: unknown) => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        set({})
-      }, 100)
-    }
-    addEventListener('orientationchange', forceRerender)
-    addEventListener('resize', forceRerender)
-
-    return () => {
-      removeEventListener('orientationchange', forceRerender)
-      removeEventListener('resize', forceRerender)
-    }
-  }, [])
 }

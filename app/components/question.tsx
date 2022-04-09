@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question} from '~/utils/stampy'
+import type {Question} from '~/stampy'
 
 export default function Question({
   pageid,
