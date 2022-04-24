@@ -75,23 +75,16 @@ header {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  padding-bottom: 48px;
+  padding: 24px 0 48px;
 }
 
 .logo {
   width: clamp(100px, 30vw, 201px);
   height: auto;
-}
-.simplified-logo {
-  display: var(--light, initial) var(--dark, none);
   padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
 }
-.dark-logo {
-  display: var(--light, none) var(--dark, initial);
-  margin-bottom: -16px;
-}
 
-header > div {
+.intro {
   flex: 1;
   min-width: 230px;
   margin: min(23px, 3.5vw) 0 10px;
@@ -100,11 +93,77 @@ header > div {
 h1 {
   color: var(--colorTitle);
   font-size: clamp(1.5rem, 7vw, 2.5rem);
-  margin-left: -2px; /* visually align */
+  margin: 4px 0 0 -2px; /* visually align */
+  line-height: 1;
 }
 
 .highlight {
   color: var(--colorTitleHighlight);
+}
+
+.icon-links {
+  align-self: flex-end;
+  padding: 0 0 10px 30px;
+  flex: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.6rem;
+}
+
+@media (min-width: 352px) and (max-width: 550px) {
+  header {
+    min-height: 350px;
+  }
+
+  .icon-links {
+    position: absolute;
+    margin: 25vw 0 0 calc(14vw - 50px);
+    padding: 16px;
+    align-self: flex-start;
+  }
+}
+
+.icon-links > *,
+.icon-links > a:visited {
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon-links > button:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.icon-links img {
+  width: 24px;
+  height: 24px;
+  filter: var(--light, none) var(--dark, invert(1));
+}
+
+.share::after {
+  content: 'Copied to clipboard';
+  text-transform: none;
+  background: var(--bgColorQuestionTitle);
+  padding: 4px 6px;
+  border-radius: 2px;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-7em, 2em);
+  transition: opacity 2s, transform 0s 2s;
+}
+
+.share.copied::after {
+  opacity: 1;
+  transform: translate(-7em, 0);
+  transition: opacity 100ms, transform 100ms;
 }
 
 main {

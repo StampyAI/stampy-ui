@@ -1,14 +1,17 @@
+import {useState} from 'react'
 import type {LoaderFunction, ShouldReloadFunction} from 'remix'
 import {useLoaderData, Link} from 'remix'
+import copy from 'copy-to-clipboard'
+
 import type {Question as QuestionType} from '~/stampy'
 import {getIntro, getInitialQuestions} from '~/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
-import logo1x from '~/assets/stampy-logo.png'
-import logo2x from '~/assets/stampy-logo-2x.png'
-import logo3x from '~/assets/stampy-logo-3x.png'
+import iconShare from '~/assets/icons/share-nodes.svg'
+import iconCode from '~/assets/icons/code.svg'
+import iconUsers from '~/assets/icons/users.svg'
 
 type LoaderData = {
   intro: string
@@ -31,25 +34,43 @@ export default function App() {
 
   useRerenderOnResize() // recalculate AutoHeight
 
+  const [copied, setCopied] = useState(false)
+  const shareLink = () => {
+    copy(location.href)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1000)
+  }
+
   return (
     <>
       <header>
         <Link to="/" onClick={(e) => reset(e)}>
           <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
-          <img
-            className="logo dark-logo"
-            alt="logo"
-            width="201"
-            height="200"
-            src={logo1x}
-            srcSet={`${logo2x} 2x, ${logo3x} 3x`}
-          />
         </Link>
-        <div>
+        <div className="intro">
           <h1>
-            Hi, I'm <span className="highlight">Stampy!</span> (in test environment)
+            Hi, I'm <span className="highlight">Stampy!</span>
+            <br />
+            (in test environment)
           </h1>
           <div dangerouslySetInnerHTML={{__html: intro}} />
+        </div>
+        <div className="icon-links">
+          <button
+            className={`transparent-button share ${copied ? 'copied' : ''}`}
+            onClick={shareLink}
+          >
+            <img alt="" src={iconShare} />
+            Share link
+          </button>
+          <a href="https://github.com/Aprillion/stampy-ui">
+            <img alt="" src={iconCode} />
+            Code
+          </a>
+          <a href="https://stampy.ai/wiki/Get_involved">
+            <img alt="" src={iconUsers} />
+            Get involved
+          </a>
         </div>
       </header>
       <main>
@@ -67,7 +88,7 @@ export default function App() {
         <a href="https://stampy.ai/wiki/Meta:About">About</a>
         <a href="https://github.com/Aprillion/stampy-ui">Code</a>
         <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
-        <a href="https://discord.gg/cEzKz8QCpa">Discord</a>
+        <a href="https://stampy.ai/wiki/Discord_invite">Discord</a>
         <a href="https://stampy.ai/wiki/Meta:Copyrights">Copyrights</a>
       </footer>
     </>
