@@ -9,14 +9,27 @@ const getStateEntries = (state: string): [number, QuestionState][] =>
     groups[2] as QuestionState,
   ])
 
+function updateQuestionMap(question: Question, map: Map<Question['pageid'], Question>): void {
+  map.set(question.pageid, question)
+  for (const {pageid, title} of question.relatedQuestions) {
+    if (map.has(pageid)) continue
+
+    map.set(pageid, {title, pageid, text: null, relatedQuestions: []})
+  }
+}
+
 export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
 
   const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
-  const [questionMap, setQuestionMap] = useState(
-    () => new Map(initialQuestions.map((q) => [q.pageid, q]))
-  )
+  const [questionMap, setQuestionMap] = useState(() => {
+    const initialMap = new Map()
+    for (const question of initialQuestions) {
+      updateQuestionMap(question, initialMap)
+    }
+    return initialMap
+  })
 
   useEffect(() => {
     if (transition.location) {
@@ -75,7 +88,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   const onLazyLoadQuestion = (question: Question) => {
     setQuestionMap((currentMap) => {
       const newMap = new Map(currentMap)
-      newMap.set(question.pageid, question)
+      updateQuestionMap(question, newMap)
       return newMap
     })
   }
