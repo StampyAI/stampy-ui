@@ -85,7 +85,7 @@ export default function App() {
       </main>
       <footer>
         <a href="https://stampy.ai/wiki/Meta:Contact">Contact</a>
-        <a href="https://stampy.ai/wiki/Meta:About">About</a>
+        <a href="https://stampy.ai/wiki/Stampy">About</a>
         <a href="https://github.com/Aprillion/stampy-ui">Code</a>
         <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
         <a href="https://stampy.ai/wiki/Discord_invite">Discord</a>
