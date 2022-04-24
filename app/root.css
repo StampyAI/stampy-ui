@@ -19,6 +19,7 @@
   --colorQuestionTitle: var(--light, #333) var(--dark, #ccc);
   --colorLink: var(--light, blue) var(--dark, lightskyblue);
   --colorLinkVisited: var(--light, darkviolet) var(--dark, lightcyan);
+  --colorButtonText: #8aacc8;
 }
 
 :root.dark {
@@ -157,12 +158,11 @@ article > h2:hover::after {
 }
 
 .expanded h2::after {
-  margin-top: 4px;
-  transform: rotate(90deg);
+  transform: rotate(90deg) translateX(40%);
 }
 
 .expanded h2:hover::after {
-  transform: rotate(80deg);
+  transform: rotate(80deg) translateX(40%);
 }
 
 .transparent-button {
@@ -205,10 +205,23 @@ article > h2:hover::after {
 }
 
 footer {
+  --space: 16px;
   align-self: center;
   margin-top: auto;
-  padding: 16px;
+  padding: 100px var(--space) var(--space);
   display: flex;
-  justify-content: space-around;
-  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space);
+  line-height: 1;
+}
+
+footer a,
+footer a:visited {
+  color: var(--colorButtonText);
+}
+
+footer > *:not(:last-child) {
+  border-right: 1px solid #999;
+  padding-right: var(--space);
 }

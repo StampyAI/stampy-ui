@@ -63,8 +63,12 @@ export default function App() {
         ))}
       </main>
       <footer>
-        <span>© 2022 Peter Hozák</span>
-        <a href="https://github.com/Aprillion/stampy-ui">GitHub</a>
+        <a href="https://stampy.ai/wiki/Meta:Contact">Contact</a>
+        <a href="https://stampy.ai/wiki/Meta:About">About</a>
+        <a href="https://github.com/Aprillion/stampy-ui">Code</a>
+        <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
+        <a href="https://discord.gg/cEzKz8QCpa">Discord</a>
+        <a href="https://stampy.ai/wiki/Meta:Copyrights">Copyrights</a>
       </footer>
     </>
   )
