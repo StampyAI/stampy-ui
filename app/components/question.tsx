@@ -46,9 +46,10 @@ export default function Question({
         <button className="transparent-button">{title}</button>
       </h2>
       <AutoHeight>
-        {isExpanded && (
-          <div className="answer" dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}} />
-        )}
+        <div
+          className="answer"
+          dangerouslySetInnerHTML={{__html: isExpanded ? text || '<p>Loading...</p>' : ''}}
+        />
       </AutoHeight>
     </article>
   )

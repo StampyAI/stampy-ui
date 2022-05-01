@@ -13,6 +13,7 @@
   --bgColor: var(--light, #fff) var(--dark, #333);
   --bgColorQuestionTitle: var(--light, #bbdefb) var(--dark, #444);
   --bgColorQuestionAnswer: var(--light, #eff) var(--dark, #333);
+  --bgColorCopied: #e4d4b6;
   --colorText: var(--light, #222) var(--dark, #eee);
   --colorTitle: var(--light, #666) var(--dark, #bbb);
   --colorTitleHighlight: #d9816b;
@@ -20,6 +21,7 @@
   --colorLink: var(--light, blue) var(--dark, lightskyblue);
   --colorLinkVisited: var(--light, darkviolet) var(--dark, lightcyan);
   --colorButtonText: #8aacc8;
+  --paddingSides: clamp(8px, 2vw, 16px);
 }
 
 :root.dark {
@@ -49,7 +51,7 @@ body {
   width: 100%;
   max-width: 1000px;
   margin: auto;
-  padding: 0 8px;
+  padding: 0 var(--paddingSides);
   color: var(--colorText);
   background-color: var(--bgColor);
   display: flex;
@@ -73,7 +75,6 @@ a:hover {
 
 header {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
   padding: 24px 0 48px;
 }
@@ -86,7 +87,6 @@ header {
 
 .intro {
   flex: 1;
-  min-width: 230px;
   margin: min(23px, 3.5vw) 0 10px;
 }
 
@@ -112,9 +112,9 @@ h1 {
   font-size: 0.6rem;
 }
 
-@media (min-width: 352px) and (max-width: 550px) {
-  header {
-    min-height: 350px;
+@media (max-width: 550px) {
+  .intro {
+    min-height: 250px;
   }
 
   .icon-links {
@@ -150,20 +150,30 @@ h1 {
 .share::after {
   content: 'Copied to clipboard';
   text-transform: none;
-  background: var(--bgColorQuestionTitle);
+  background: var(--bgColorCopied);
+  color: black;
   padding: 4px 6px;
   border-radius: 2px;
   position: absolute;
   pointer-events: none;
   opacity: 0;
-  transform: translate(-7em, 2em);
-  transition: opacity 2s, transform 0s 2s;
+  transform: translate(0, 2em);
 }
 
 .share.copied::after {
   opacity: 1;
-  transform: translate(-7em, 0);
-  transition: opacity 100ms, transform 100ms;
+  transform: translate(0, 0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .share::after {
+    transition: opacity 2s, transform 0s 2s;
+    will-change: opacity, transform;
+  }
+
+  .share.copied::after {
+    transition: opacity 100ms, transform 100ms;
+  }
 }
 
 main {
@@ -176,22 +186,18 @@ article {
   background-color: var(--bgColorQuestionAnswer);
   border-radius: 2px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  transition: transform 300ms;
-}
-
-article.related {
-  transform: translateX(16px);
-  animation: fromLeft 300ms ease-out;
+  transition: margin 400ms;
 }
 
 @keyframes fromLeft {
   from {
     transform: translateX(100vw);
+    max-height: 0;
   }
 }
 
 article > h2 {
-  padding: 8px 16px 7px;
+  padding: 8px var(--paddingSides) 7px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
   font-size: clamp(1.1rem, 3vw, 1.25rem);
@@ -203,13 +209,18 @@ article > h2 {
   border-radius: 2px;
 }
 
+article > h2 > .transparent-button {
+  padding-right: var(--paddingSides);
+  transition: padding 400ms;
+}
+
 article > h2::after {
   content: '›';
   margin-top: -8px;
   font-size: 2em;
   line-height: 0;
   font-weight: normal;
-  transition: transform 300ms, margin 300ms;
+  transition: transform 400ms;
 }
 
 article > h2:hover::after {
@@ -239,28 +250,42 @@ article > h2:hover::after {
 @media (prefers-reduced-motion: no-preference) {
   .react-auto-height {
     overflow: hidden;
-    transition: height 300ms;
+    transition: height 400ms;
   }
 }
 
 .answer {
-  padding: 0 16px;
+  padding: 0 var(--paddingSides);
+  transition: padding 400ms;
 }
 
 .answer p,
 .answer .card-longdesc {
-  margin: 16px 0;
+  margin: var(--paddingSides) 0;
 }
 
 .answer ul,
 .answer ol {
-  margin: 16px;
+  margin: var(--paddingSides);
 }
 
 .answer .card-shortdesc,
 .answer .card-show-longdesc,
 .answer .card-hide-longdesc {
   display: none;
+}
+
+article.related {
+  margin-left: var(--paddingSides);
+  max-height: 999px;
+  animation: fromLeft 400ms ease-out;
+  will-change: margin-left;
+}
+
+article.related > h2 > .transparent-button,
+article.related .answer {
+  padding-right: 0;
+  will-change: padding-right;
 }
 
 footer {
