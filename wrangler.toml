@@ -1,9 +1,7 @@
 name = "stampy-ui"
-type = "javascript"
+main = "build/index.js"
 
-zone_id = ""
 account_id = "f0374a5183ab1561eb2439f397ba7de9"
-route = ""
 workers_dev = true
 kv_namespaces = [ 
   { binding = "STAMPY_KV", id = "37c6b989d87f403ca8b430669a33f671" }
@@ -13,10 +11,6 @@ compatibility_flags = ["url_standard"]
 
 [site]
 bucket = "./public"
-entry-point = "."
 
 [build]
 command = ""
-
-[build.upload]
-format="service-worker"
