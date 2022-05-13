@@ -18,8 +18,8 @@
   --colorTitle: var(--light, #666) var(--dark, #bbb);
   --colorTitleHighlight: #d9816b;
   --colorQuestionTitle: var(--light, #333) var(--dark, #ccc);
-  --colorLink: var(--light, blue) var(--dark, lightskyblue);
-  --colorLinkVisited: var(--light, darkviolet) var(--dark, lightcyan);
+  --colorLink: #68f;
+  --colorLinkVisited: #8ac;
   --colorButtonText: #8aacc8;
   --paddingSides: clamp(8px, 2vw, 16px);
 }
@@ -88,17 +88,23 @@ header {
 .intro {
   flex: 1;
   margin: min(23px, 3.5vw) 0 10px;
+  font-size: 1.1rem;
 }
 
 h1 {
   color: var(--colorTitle);
   font-size: clamp(1.5rem, 7vw, 2.5rem);
-  margin: 4px 0 0 -2px; /* visually align */
+  margin: 4px 0 16px -2px; /* visually align */
   line-height: 1;
 }
 
 .highlight {
   color: var(--colorTitleHighlight);
+}
+
+header a {
+  color: var(--colorLinkVisited);
+  font-weight: bold;
 }
 
 .icon-links {
