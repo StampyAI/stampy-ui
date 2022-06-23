@@ -1,6 +1,7 @@
 import {useState} from 'react'
-import type {LoaderFunction, ShouldReloadFunction} from 'remix'
-import {useLoaderData, Link} from 'remix'
+import type {LoaderFunction} from '@remix-run/cloudflare'
+import type { ShouldReloadFunction } from "@remix-run/react";
+import {useLoaderData, Link} from '@remix-run/react'
 import copy from 'copy-to-clipboard'
 
 import type {Question as QuestionType} from '~/stampy'
@@ -50,8 +51,6 @@ export default function App() {
         <div className="intro">
           <h1>
             Hi, I'm <span className="highlight">Stampy!</span>
-            <br />
-            (in test environment)
           </h1>
           <div dangerouslySetInnerHTML={{__html: intro}} />
         </div>

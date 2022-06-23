@@ -1,10 +1,10 @@
 name = "stampy-ui"
 main = "build/index.js"
 
-account_id = "f0374a5183ab1561eb2439f397ba7de9"
+account_id = "575347fa33f93bd3239094fce1e84a5d"
 workers_dev = true
 kv_namespaces = [ 
-  { binding = "STAMPY_KV", id = "37c6b989d87f403ca8b430669a33f671" }
+  { binding = "STAMPY_KV", id = "c78881ec51094bd79b941a8786b12228" }
 ]
 compatibility_date = "2022-02-19"
 compatibility_flags = ["url_standard"]

@@ -1,7 +1,7 @@
 import {useState, useEffect, useMemo} from 'react'
 import type {MouseEvent} from 'react'
-import {useSearchParams, useTransition} from 'remix'
-import type {Question, QuestionState} from '../stampy'
+import {useSearchParams, useTransition} from '@remix-run/react'
+import type {Question, QuestionState} from '~/stampy'
 
 const getStateEntries = (state: string): [number, QuestionState][] =>
   Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [

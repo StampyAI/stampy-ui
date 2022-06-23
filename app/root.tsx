@@ -1,7 +1,7 @@
-import {Links, LiveReload, Meta, Outlet, Scripts, useSearchParams} from 'remix'
-import type {MetaFunction, LinksFunction} from 'remix'
-import ogImage from './assets/stampy-ui-preview.png'
-import styles from './root.css'
+import {Links, LiveReload, Meta, Outlet, Scripts, useSearchParams} from '@remix-run/react'
+import type {MetaFunction, LinksFunction} from '@remix-run/cloudflare'
+import ogImage from '~/assets/stampy-ui-preview.png'
+import styles from '~/root.css'
 
 const title = 'Stampy'
 const description = 'Questions and answers about about AI Alignment'
