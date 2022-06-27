@@ -92,8 +92,6 @@ export default function App() {
         <a href="https://stampy.ai/wiki/Discord_invite">Discord</a>
         <a href="https://stampy.ai/wiki/Meta:Copyrights">Copyrights</a>
       </footer>
-      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" type="text/javascript"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder" type="text/javascript"></script>
     </>
   )
 }

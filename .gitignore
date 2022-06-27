@@ -10,4 +10,5 @@ node_modules
 /.DS_store
 /app/.DS_store
 /app/components/.DS_store
+/app/assets/.DS_store
 /public/.DS_store
