@@ -6,3 +6,5 @@ node_modules
 /public/build
 /.mf
 /.idea
+
+.DS_store

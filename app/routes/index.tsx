@@ -1,6 +1,7 @@
 import {useState} from 'react'
-import type {LoaderFunction, ShouldReloadFunction} from 'remix'
-import {useLoaderData, Link} from 'remix'
+import type {LoaderFunction} from '@remix-run/cloudflare'
+import type {ShouldReloadFunction} from '@remix-run/react'
+import {useLoaderData, Link} from '@remix-run/react'
 import copy from 'copy-to-clipboard'
 
 import type {Question as QuestionType} from '~/stampy'
