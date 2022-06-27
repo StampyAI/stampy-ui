@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import type { ShouldReloadFunction } from "@remix-run/react";
+import type {ShouldReloadFunction} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
 import copy from 'copy-to-clipboard'
 

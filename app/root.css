@@ -325,7 +325,9 @@ footer > *:not(:last-child) {
   border-bottom: 1px solid #ddd;
 }
 
-#searchbar:focus {outline: 3px solid #ddd;}
+#searchbar:focus {
+  outline: 3px solid #ddd;
+}
 
 .dropdown {
   position: relative;
@@ -348,6 +350,10 @@ footer > *:not(:last-child) {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
 
-.show {display: block;}
+.show {
+  display: block;
+}
