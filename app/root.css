@@ -327,6 +327,7 @@ footer > *:not(:last-child) {
 
 #searchbar:focus {
   outline: 3px solid #ddd;
+  border: none;
 }
 
 .dropdown {
@@ -335,6 +336,7 @@ footer > *:not(:last-child) {
 }
 
 .dropdown-content {
+  color: black;
   background-color: #f6f6f6;
   width: 100%;
   overflow: auto;
@@ -343,7 +345,7 @@ footer > *:not(:last-child) {
 }
 
 .dropdown-content a {
-  color: black;
+  color: currentColor;
   padding: 12px 16px;
   text-decoration: none;
   display: block;

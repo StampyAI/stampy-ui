@@ -10,6 +10,19 @@ export type Question = {
   relatedQuestions: {title: string; pageid: number}[]
   questionState?: QuestionState
 }
+type QueryResults = {
+  query: {
+    results: {
+      [key in string]: {
+        printouts: {
+          [key in string]: {
+            fulltext: string
+          }[]
+        }
+      }
+    }
+  }
+}
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
 function typedBoolean<T>(value: T): value is Truthy<T> {
@@ -32,6 +45,9 @@ const stampyQueryAll = (idsOrTitles: string[] | number[]) => {
 
 const stampyQueryContent = (title: string) =>
   `https://stampy.ai/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=content&rvslots=*&titles=${title}`
+
+const stampyAsk = (query: string) =>
+  `https://stampy.ai/w/api.php?action=ask&format=json&formatversion=2&query=${query}`
 
 const getAnswer = (html: string): string => {
   const root = parse(html)
@@ -155,4 +171,16 @@ async function getInitialQuestionsUpdateCache() {
   })
 
   return data
+}
+
+export async function getAskPrintouts(queryString: `[[${string}]]|?${string}`): Promise<string[]> {
+  const {query} = (await (await fetch(stampyAsk(queryString))).json()) as QueryResults
+  const {results = {}} = query
+  const {printouts = {}} = Object.values(results)[0] ?? {}
+  const printoutsList = Object.values(printouts)[0] ?? []
+  return printoutsList.map(({fulltext}) => fulltext)
+}
+
+export async function getAllCanonicalQuestions(): Promise<string[]> {
+  return getAskPrintouts('[[Canonically answered questions]]|?CanonicalQuestions')
 }

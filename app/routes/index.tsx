@@ -8,6 +8,7 @@ import type {Question as QuestionType} from '~/stampy'
 import {getIntro, getInitialQuestions} from '~/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
+import Search from '~/components/search'
 import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
 import iconShare from '~/assets/icons/share-nodes.svg'
@@ -75,6 +76,7 @@ export default function App() {
         </div>
       </header>
       <main>
+        <Search />
         {questions.map((questionProps) => (
           <Question
             key={questionProps.pageid}

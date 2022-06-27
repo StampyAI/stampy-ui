@@ -1,4 +1,4 @@
-import {LoaderFunction} from '@remix-run/cloudflare'
+import type {LoaderFunction} from '@remix-run/cloudflare'
 import {getQuestionDetail} from '~/stampy'
 
 export const loader: LoaderFunction = async ({params}) => {
