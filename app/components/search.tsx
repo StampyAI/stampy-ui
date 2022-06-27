@@ -1,12 +1,8 @@
-import {useState, useRef, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 //import {initSearch, runSearch} from '~/stampy'
 //cannot import tensorflow multiple times registers backend/runtime
 //import * as tf from '@tensorflow/tfjs'
 //import * as use from '@tensorflow-models/universal-sentence-encoder';
-
-var langModel: UniversalSentenceEncoder
-var allQuestions: string[]
-var allEncodings: tf.Tensor2D
 
 export type SearchProps = {
   langModel: UniversalSentenceEncoder
@@ -20,27 +16,24 @@ export type SearchResult = {
 }
 
 export default function Search() {  
-  const [searchResults, setsearchResults] = useState([])
+  const [searchProps, setSearchProps] = useState({})
+  const [searchResults, setSearchResults] = useState([])
   const [showResults, setShowResults] = useState(false)
 
   useEffect(() => {
     initSearch().then(props => {
-      langModel = props.model
-      allQuestions = props.allQuestions
-      allEncodings = props.allEncodings
-
-      console.log('after initSearch()')
-      console.log('model',langModel)
-      console.log('allEncodings',allQuestions.slice(0,5))
-      console.log('allQuestions',allEncodings)
+      //console.log('after initSearch')
+      setSearchProps(props)
     })
+    .catch (err => console.log("ERR:", err.message))
   }, []);
 
   const handleChange = (e) => {
-    console.log('handleChange', e.target.value);
-    runSearch(e.target.value, langModel, allQuestions, allEncodings).then(results => {
-      setsearchResults(results)
+    //console.log('handleChange', e.target.value);
+    runSearch(e.target.value, searchProps).then(results => {
+      setSearchResults(results)
     })
+    .catch (err => console.log("ERR:", err.message))
   }
 
   return (
@@ -70,22 +63,22 @@ export default function Search() {
  * TODO: error checking?
  */
  export const initSearch = async () => {
-  console.log('initSearch')
+  //console.log('initSearch')
 
   // load universal sentence encoder model
-  const model = await use.load();
-  console.log('use.model loaded',typeof model)
+  const langModel = await use.load();
+  //console.log('use.model loaded')
 
   const cachedEncodings = '/assets/stampy-questions-encodings.json'
   const data = await (await fetch(cachedEncodings)).json()
-  console.log('data', data)
+  //console.log('data', data)
 
   const allQuestions: string[] = data['questions']
   const allEncodings: tf.Tensor2D = tf.tensor2d(data['encodings'])
   //const allEncodings = tf.tensor2d(data['encodings'])
 
-  // enableSearch(true)
-  return { model, allQuestions, allEncodings }
+  const returnObj: SearchProps = { langModel, allQuestions, allEncodings }
+  return returnObj
 }
 
 /**
@@ -96,47 +89,46 @@ export default function Search() {
  * @returns list of matching question titles & scores {title:string, score:number}[]
  * TODO: error checking?
  */
- export const runSearch = async (searchQuery: string, model: UniversalSentenceEncoder, allQuestions: string[], allEncodings: tf.Tensor2D, numResults=5) =>  {
+ export const runSearch = async (searchQuery: string, props: SearchProps, numResults=5) =>  {
   // can't search until all encodings for questions exist
-  if (!allEncodings) return;
+  if (!props.allEncodings) return;
  
-  console.log('runSearch', searchQuery)
-  console.log('{model,allEncodings}',{model,allEncodings})
+  //console.log('runSearch', searchQuery)
+  //console.log('props', props)
   //stampyAnimation.goToAndPlay(1, true);
  
   const question = searchQuery.toLowerCase().trim().replace(/\s+/g,' ')
-  console.log('embed: ' + question)
+  //console.log('embed: ' + question)
 
   // encodings is 2D tensor of 512-dims embeddings for each sentence
-  let questionEncoding = await model.embed(question)
-  console.log('questionEncoding',questionEncoding)
+  let questionEncoding = await props.langModel.embed(question)
+  //console.log('questionEncoding',questionEncoding)
 
   let searchResults: SearchResult[] = []
   // tensorflow requires explicit memory management to avoid memory leaks
   tf.tidy(() => {
     // numerator of cosine similar is dot prod since vectors normalized
-    let scores = tf.matMul(questionEncoding, allEncodings, false, true).dataSync()
-    console.log('scores',scores)
+    let scores = tf.matMul(questionEncoding, props.allEncodings, false, true).dataSync()
+    //console.log('scores',scores)
 
     // wrapper with scores and index to track better, ideally would like to use tf.nn.top_k
-    let scoresList = []
+    // TODO: find a more efficient way to search for best
+    let scoresList: [number,number][] = []
     for (let i=0; i<scores.length; i++)
-      scoresList.push([i,scores[i]])
-    const topScores = scoresList.sort((a,b) => {return b[1]-a[1]})
-    
-    // let topScores = scores.map((score, i) => {[i, score]}).sort((a,b) => {return b[1]-a[1]})
-    console.log('topScores',topScores)
+      scoresList[i] = [i,scores[i]]
+    //let scoresList: [number,number][] = scores.map((score: number, index: number) => { return [score,index] }
+    const topScores: [number,number][] = scoresList.sort((a: [number,number], b: [number,number]) => { return b[1] - a[1] })
+    //console.log('topScores',topScores)
 
-    // print top k results
+    // print top specified number of results by score
     for (let i = 0; i < numResults; i++)
     {
-      //let resultString = "(" + topScores[i][1].toFixed(2) + ") " + searchProps.allQuestions[topScores[i][0]]
-      console.log(topScores[i][1].toFixed(2), allQuestions[topScores[i][0]])
-      searchResults.push({'title': allQuestions[topScores[i][0]], 'score': topScores[i][1].toFixed(2)})
+      //console.log(topScores[i][1].toFixed(2), props.allQuestions[topScores[i][0]])
+      searchResults.push({'title': props.allQuestions[topScores[i][0]], 'score': topScores[i][1].toFixed(2)})
     }
   });
   questionEncoding.dispose()
-  console.log('searchResults',searchResults)
+  //console.log('searchResults',searchResults)
 
   return searchResults
 }
