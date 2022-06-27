@@ -29,4 +29,4 @@ Once that's done, you should be able to deploy your app:
 npm run deploy
 ```
 
-Live demo: https://stampy-ui.ccstan99.workers.dev
+Live demo: [https://stampy-ui.ccstan99.workers.dev](https://stampy-ui.ccstan99.workers.dev)
