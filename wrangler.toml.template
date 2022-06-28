@@ -1,10 +1,10 @@
 name = "stampy-ui"
 main = "build/index.js"
 
-account_id = "f0374a5183ab1561eb2439f397ba7de9"
+account_id = "<copy your Account ID from dash.cloudflare.com right hand side>"
 workers_dev = true
 kv_namespaces = [
-  { binding = "STAMPY_KV", id = "37c6b989d87f403ca8b430669a33f671" }
+  { binding = "STAMPY_KV", id = "<copy id from the namespace created in dash.cloudflare.com > Workers > KV" }
 ]
 compatibility_date = "2022-02-19"
 compatibility_flags = ["url_standard"]
