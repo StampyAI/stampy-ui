@@ -1,8 +1,11 @@
 import {useState, useEffect, ChangeEventHandler} from 'react'
+// cannot import tensorflow multiple times registers backend/runtime
+//import * as tf from '@tensorflow/tfjs'
+//import * as use from '@tensorflow-models/universal-sentence-encoder'
 
 type Question = {
   title: string
-  normalized: string
+  normalized?: string
 }
 
 type SearchResult = Question & {
@@ -11,7 +14,7 @@ type SearchResult = Question & {
 
 type SearchProps = {
   isReady: boolean
-  questions: Question[]
+  questions: Question[] | string[]
   encodings?: any
   langModel?: any
 }
@@ -32,43 +35,98 @@ export default function Search() {
   }, [])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
-    setSearchResults(await runBaselineSearch(event.currentTarget.value, searchProps))
+    setSearchResults(await runSemanticSearch(event.currentTarget.value, searchProps))
+    //setSearchResults(await runBaselineSearch(event.currentTarget.value, searchProps))
   }
 
   return (
-    <div>
-      <input
-        type="search"
-        id="searchbar"
-        name="searchbar"
-        placeholder="What is your question?"
-        onChange={handleChange}
-        onFocus={() => setShowResults(true)}
-        onBlur={() => setShowResults(false)}
-      />
-      {showResults && (
-        <div id="searchResults" className="dropdown-content">
-          {searchResults.map((result: SearchResult) => (
-            <a key={result.title}>
-              ({result.score}) {result.title}
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" type="text/javascript"></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"
+        type="text/javascript"
+      ></script>
+      <div>
+        <input
+          type="search"
+          id="searchbar"
+          name="searchbar"
+          placeholder="What is your question?"
+          onChange={handleChange}
+          onFocus={() => setShowResults(true)}
+          onBlur={() => setShowResults(false)}
+        />
+        {showResults && (
+          <div id="searchResults" className="dropdown-content">
+            {searchResults.map((result: SearchResult) => (
+              <a key={result.title}>
+                ({result.score}) {result.title}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
 const initSearch = async (): Promise<SearchProps> => {
-  const questionsRaw = (await (await fetch('/questions/allCanonical')).json()) as string[]
-  const questions = questionsRaw.map((title) => ({
-    title,
-    normalized: normalize(title),
-  }))
+  // load universal sentence encoder model
+  const langModel = await use.load()
+  console.debug('use.model loaded')
+
+  const data = await (await fetch('/assets/stampy-questions-encodings.json')).json()
+  const questions: string[] = data['questions']
+  const encodings: tf.Tensor2D = tf.tensor2d(data['encodings'])
+  console.debug('question', questions.slice(0, 5))
+  console.debug('encodings', encodings.slice(0, 5))
+
   return {
     isReady: true,
     questions,
+    encodings,
+    langModel,
   }
+}
+
+/**
+ * Embed question, search for closest stampy question match among embedded list
+ */
+const runSemanticSearch = async (
+  searchQueryRaw: string,
+  {isReady, questions, encodings, langModel}: SearchProps,
+  numResults = 5
+): Promise<SearchResult[]> => {
+  if (!isReady || !searchQueryRaw) {
+    return []
+  }
+  const question = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
+  console.debug('embed: ' + question)
+
+  // encodings is 2D tensor of 512-dims embeddings for each sentence
+  const encoding: tf.Tensor2D = await langModel.embed(question)
+  console.debug('encoding', encoding)
+
+  // numerator of cosine similar is dot prod since vectors normalized
+  const scores = tf.matMul(encoding, encodings, false, true).dataSync()
+  console.debug('scores', scores.slice(0, 5))
+
+  /* TODO: figure out why this doesn't work?
+  const questionsScored: SearchResult[] = scores.map((score, index) => ({
+    title: questions[index],
+    score: score.toFixed(2)
+  }))
+  */
+  let questionsScored: SearchResult[] = []
+  for (let i = 0; i < scores.length; i++)
+    questionsScored[i] = {title: questions[i], score: scores[i].toFixed(2)}
+  questionsScored.sort(byScore)
+
+  // tensorflow requires explicit memory management to avoid memory leaks
+  encoding.dispose()
+  console.debug('questionsScored', questionsScored.slice(0, numResults))
+
+  return questionsScored.slice(0, numResults)
 }
 
 /** Baseline full-text search matching the query with each question as strings, weighting down:
@@ -140,3 +198,25 @@ const normalize = (question: string) =>
 
 /** sort function for the highest score on top */
 const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
+
+/**
+ * Create sentence embeddings for all canonical questions (with answers) from stampy wiki
+ */
+const encodeQuestions = async (langModel: UniversalSentenceEncoder) => {
+  console.log('encodeQuestions')
+
+  const questions = (await (await fetch('/questions/allCanonical')).json()) as string[]
+  const questionsLower = questions.map((title) => title.toLowerCase())
+
+  // encoding all questions in 1 shot without batching
+  // if run out of memory, encode sentences in mini_batches
+  const encodings = await langModel.embed(questionsLower)
+  encodings.print(true /* verbose */)
+
+  return {
+    isReady: true,
+    questions,
+    encodings,
+    langModel,
+  }
+}
