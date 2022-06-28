@@ -52,7 +52,7 @@ export default function Search() {
         name="searchbar"
         placeholder="What is your question?"
         onChange={(e) => {
-          previousAbort.abort()
+          previousAbort.signal.aborted = true
           handleChange(e.currentTarget.value)
         }}
         onFocus={() => setShowResults(true)}
@@ -102,13 +102,14 @@ const initSearch = async () => {
 /**
  * Embed question, search for closest stampy question match among embedded list
  */
-let previousAbort = new AbortController()
+// homemade AbortController, because cloudflare workers don't support the real one
+let previousAbort = {signal: {aborted: false}}
 const runSemanticSearch = async (
   searchQueryRaw: string,
   searchProps: SearchProps,
   numResults = 5
 ): Promise<SearchResult[] | null> => {
-  const currentAbort = new AbortController()
+  const currentAbort = {signal: {aborted: false}}
   previousAbort = currentAbort // global reference of the new mutable object
 
   const {isReady, questions, encodings, langModelPromise} = searchProps

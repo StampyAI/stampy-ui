@@ -3,7 +3,7 @@ main = "build/index.js"
 
 account_id = "f0374a5183ab1561eb2439f397ba7de9"
 workers_dev = true
-kv_namespaces = [ 
+kv_namespaces = [
   { binding = "STAMPY_KV", id = "37c6b989d87f403ca8b430669a33f671" }
 ]
 compatibility_date = "2022-02-19"
