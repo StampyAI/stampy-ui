@@ -1,11 +1,11 @@
 import {useState, useEffect, ChangeEventHandler} from 'react'
-// cannot import tensorflow multiple times registers backend/runtime
-//import * as tf from '@tensorflow/tfjs'
-//import * as use from '@tensorflow-models/universal-sentence-encoder'
+import {tensor2d, matMul, Tensor2D} from '@tensorflow/tfjs'
+import {load, UniversalSentenceEncoder} from '@tensorflow-models/universal-sentence-encoder'
+import debounce from 'lodash/debounce'
 
 type Question = {
   title: string
-  normalized?: string
+  normalized: string
 }
 
 type SearchResult = Question & {
@@ -14,70 +14,81 @@ type SearchResult = Question & {
 
 type SearchProps = {
   isReady: boolean
-  questions: Question[] | string[]
-  encodings?: any
-  langModel?: any
+  questions: Question[]
+  encodings: Tensor2D | []
+  langModelPromise: Promise<UniversalSentenceEncoder>
 }
 
 export default function Search() {
   const [searchProps, setSearchProps] = useState<SearchProps>({
     questions: [],
     isReady: false,
+    encodings: [],
+    langModelPromise: load(), // load universal sentence encoder model
   })
+  const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
 
   useEffect(() => {
     initSearch().then((props) => {
       console.debug(props)
-      setSearchProps(props)
+      setSearchProps((current) => ({...current, ...props}))
     })
   }, [])
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
-    setSearchResults(await runSemanticSearch(event.currentTarget.value, searchProps))
-    //setSearchResults(await runBaselineSearch(event.currentTarget.value, searchProps))
-  }
+  const handleChange = debounce((value: string) => {
+    console.debug('searching for:', value)
+    runBaselineSearch(value, searchProps).then(setBaselineSearchResults)
+
+    runSemanticSearch(value, searchProps).then((r) => r && setSearchResults(r))
+  }, 300)
 
   return (
-    <>
-      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs" type="text/javascript"></script>
-      <script
-        src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"
-        type="text/javascript"
-      ></script>
-      <div>
-        <input
-          type="search"
-          id="searchbar"
-          name="searchbar"
-          placeholder="What is your question?"
-          onChange={handleChange}
-          onFocus={() => setShowResults(true)}
-          onBlur={() => setShowResults(false)}
-        />
-        {showResults && (
-          <div id="searchResults" className="dropdown-content">
+    <div>
+      <input
+        type="search"
+        id="searchbar"
+        name="searchbar"
+        placeholder="What is your question?"
+        onChange={(e) => {
+          previousAbort.abort()
+          handleChange(e.currentTarget.value)
+        }}
+        onFocus={() => setShowResults(true)}
+        onBlur={() => setShowResults(false)}
+      />
+      {showResults && (
+        <div className="dropdown">
+          <div>
+            Tensorflow debugging:
             {searchResults.map((result: SearchResult) => (
               <a key={result.title}>
-                ({result.score}) {result.title}
+                ({result.score.toFixed(2)}) {result.title}
               </a>
             ))}
           </div>
-        )}
-      </div>
-    </>
+          <div>
+            Baseline text search:
+            {baselineSearchResults.map((result: SearchResult) => (
+              <a key={result.title}>
+                ({result.score.toFixed(2)}) {result.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
-const initSearch = async (): Promise<SearchProps> => {
-  // load universal sentence encoder model
-  const langModel = await use.load()
-  console.debug('use.model loaded')
-
-  const data = await (await fetch('/assets/stampy-questions-encodings.json')).json()
-  const questions: string[] = data['questions']
-  const encodings: tf.Tensor2D = tf.tensor2d(data['encodings'])
+const initSearch = async () => {
+  const data = (await (await fetch('/assets/stampy-questions-encodings.json')).json()) as {
+    questions: string[]
+    encodings: number[]
+  }
+  const questions = data.questions.map((q) => ({title: q, normalized: normalize(q)}))
+  const encodings = tensor2d(data.encodings)
   console.debug('question', questions.slice(0, 5))
   console.debug('encodings', encodings.slice(0, 5))
 
@@ -85,41 +96,55 @@ const initSearch = async (): Promise<SearchProps> => {
     isReady: true,
     questions,
     encodings,
-    langModel,
   }
 }
 
 /**
  * Embed question, search for closest stampy question match among embedded list
  */
+let previousAbort = new AbortController()
 const runSemanticSearch = async (
   searchQueryRaw: string,
-  {isReady, questions, encodings, langModel}: SearchProps,
+  searchProps: SearchProps,
   numResults = 5
-): Promise<SearchResult[]> => {
+): Promise<SearchResult[] | null> => {
+  const currentAbort = new AbortController()
+  previousAbort = currentAbort // global reference of the new mutable object
+
+  const {isReady, questions, encodings, langModelPromise} = searchProps
   if (!isReady || !searchQueryRaw) {
     return []
   }
-  const question = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
-  console.debug('embed: ' + question)
+
+  const searchQuery = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
+  console.debug('embed: ' + searchQuery)
 
   // encodings is 2D tensor of 512-dims embeddings for each sentence
-  const encoding: tf.Tensor2D = await langModel.embed(question)
+  const langModel = await langModelPromise
+  if (currentAbort.signal.aborted) {
+    console.debug('aborted after langModel:', searchQuery)
+    return null
+  }
+
+  const encoding: Tensor2D = await langModel.embed(searchQuery)
+  if (currentAbort.signal.aborted) {
+    console.debug('aborted after encoding:', searchQuery)
+    return null
+  }
   console.debug('encoding', encoding)
 
   // numerator of cosine similar is dot prod since vectors normalized
-  const scores = tf.matMul(encoding, encodings, false, true).dataSync()
+  const scores = await matMul(encoding, encodings, false, true).data()
+  if (currentAbort.signal.aborted) {
+    console.debug('aborted after scores:', searchQuery)
+    return null
+  }
   console.debug('scores', scores.slice(0, 5))
 
-  /* TODO: figure out why this doesn't work?
-  const questionsScored: SearchResult[] = scores.map((score, index) => ({
-    title: questions[index],
-    score: score.toFixed(2)
+  const questionsScored: SearchResult[] = questions.map((question, index) => ({
+    ...question,
+    score: scores[index],
   }))
-  */
-  let questionsScored: SearchResult[] = []
-  for (let i = 0; i < scores.length; i++)
-    questionsScored[i] = {title: questions[i], score: scores[i].toFixed(2)}
   questionsScored.sort(byScore)
 
   // tensorflow requires explicit memory management to avoid memory leaks
@@ -138,10 +163,10 @@ const runSemanticSearch = async (
  */
 const runBaselineSearch = async (
   searchQueryRaw: string,
-  {isReady, questions, encodings, langModel}: SearchProps,
-  numResults = 10
+  {questions}: SearchProps,
+  numResults = 5
 ): Promise<SearchResult[]> => {
-  if (!isReady || !searchQueryRaw) {
+  if (!searchQueryRaw) {
     return []
   }
 
@@ -175,7 +200,7 @@ const runBaselineSearch = async (
       prevPosition = currPosition
     }
 
-    return Math.round((score / totalWeight) * 100)
+    return score / totalWeight
   }
 
   const questionsScored: SearchResult[] = questions.map(({title, normalized}) => ({
@@ -188,7 +213,9 @@ const runBaselineSearch = async (
   return questionsScored.slice(0, numResults).filter(({score}) => score > 0)
 }
 
-/** ignore unimportant details for similarity comparison */
+/**
+ * Ignore unimportant details for similarity comparison
+ */
 const normalize = (question: string) =>
   question
     .toLowerCase()
@@ -196,7 +223,9 @@ const normalize = (question: string) =>
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
-/** sort function for the highest score on top */
+/**
+ * Sort function for the highest score on top
+ */
 const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
 
 /**
