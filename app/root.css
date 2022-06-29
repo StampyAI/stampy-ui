@@ -350,3 +350,7 @@ footer > *:not(:last-child) {
 .dropdown a:hover {
   background-color: #ddd;
 }
+
+.empty {
+  color: gray;
+}

@@ -1,58 +1,52 @@
-import {useState, useEffect, ChangeEventHandler} from 'react'
+import {useState, useEffect, useRef, ChangeEventHandler} from 'react'
+import Question from '~/components/question'
 
 type Question = {
   title: string
-  normalized?: string
+  normalized: string
 }
 
 type SearchResult = Question & {
   score: number
 }
 
-var tfWorker: Worker
-
 export default function Search() {
-  const [isReady, setReady] = useState<boolean>(false)
+  const [questions, setQuestions] = useState<Question[]>([])
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
+  const tfWorkerRef = useRef<Worker>()
 
-  const handleWorker = (event) => {
-    // read and print out the incoming data
-    const {data} = event
+  useEffect(() => {
+    fetch('/questions/allCanonical')
+      .then((r) => r.json())
+      .then((data: string[]) =>
+        setQuestions(data.map((title) => ({title, normalized: normalize(title)})))
+      )
 
-    // 1st time should be init search
-    // TODO: doesn't seem to be setting isReady correctly
-    if (data.isReady) {
-      console.log('setReady to', data.isReady)
-      setReady(data.isReady)
-    }
-    // else results from run search
-    if (data.searchResults) {
-      console.log('setSearchResults to', data.searchResults)
-      setSearchResults(data.searchResults)
-    }
-  }
-
-  const initWorker = () => {
-    // create worker thread
-    if (window.Worker) {
-      if (typeof tfWorker == 'undefined') {
-        tfWorker = new Worker('/tfWorker.js')
+    const handleWorker = (event: MessageEvent) => {
+      const {data} = event
+      if (data.searchResults) {
+        setSearchResults(data.searchResults)
       }
-
-      // any other messages is likely from runSearch
-      tfWorker.addEventListener('message', handleWorker)
-    } else {
-      console.log('Sorry! No Web Worker support.')
     }
-  }
-
-  useEffect(() => initWorker(), [])
+    const initWorker = () => {
+      if (self.Worker && !tfWorkerRef.current) {
+        tfWorkerRef.current = new Worker('/tfWorker.js')
+        tfWorkerRef.current.addEventListener('message', handleWorker)
+      } else {
+        console.log('Sorry! No Web Worker support.')
+      }
+    }
+    initWorker()
+  }, [])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
-    console.log('try posting to tfWorker...')
-    tfWorker.postMessage(event.currentTarget.value)
+    const {value} = event.currentTarget
+    runBaselineSearch(value, questions).then(setBaselineSearchResults)
+
+    console.log('posting to tfWorker...')
+    tfWorkerRef.current?.postMessage(value)
   }
 
   return (
@@ -70,19 +64,27 @@ export default function Search() {
         <div className="dropdown">
           <div>
             Tensorflow debugging:
-            {searchResults.map((result: SearchResult) => (
-              <a key={result.title}>
-                ({result.score}) {result.title}
-              </a>
-            ))}
+            {searchResults.length > 0 ? (
+              searchResults.map((result: SearchResult) => (
+                <a key={result.title}>
+                  ({result.score.toFixed(2)}) {result.title}
+                </a>
+              ))
+            ) : (
+              <div className="empty">(no results)</div>
+            )}
           </div>
           <div>
             Baseline text search:
-            {baselineSearchResults.map((result: SearchResult) => (
-              <a key={result.title}>
-                ({result.score.toFixed(2)}) {result.title}
-              </a>
-            ))}
+            {baselineSearchResults.length > 0 ? (
+              baselineSearchResults.map((result: SearchResult) => (
+                <a key={result.title}>
+                  ({result.score.toFixed(2)}) {result.title}
+                </a>
+              ))
+            ) : (
+              <div className="empty">(no results)</div>
+            )}
           </div>
         </div>
       )}
@@ -99,7 +101,7 @@ export default function Search() {
  */
 export const runBaselineSearch = async (
   searchQueryRaw: string,
-  {questions}: SearchProps,
+  questions: Question[],
   numResults = 5
 ): Promise<SearchResult[]> => {
   if (!searchQueryRaw) {

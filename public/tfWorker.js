@@ -1,15 +1,13 @@
-// to import tfjs into worker from a cdn
 importScripts('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs')
 importScripts('https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder')
 
-// optimization removes model validation, NaN checks, and other correctness checks
-// in favor of performance
+// optimization removes model validation, NaN checks, and other correctness checks in favor of performance
 tf.enableProdMode()
 
-var isReady = false
-var langModel = undefined
-var questions = []
-var encodings = undefined
+let isReady = false
+let langModel = undefined
+let questions = []
+let encodings = undefined
 
 // initialize search properties
 use.load().then(function (model) {
@@ -21,20 +19,20 @@ use.load().then(function (model) {
       encodings = tf.tensor2d(data.encodings)
       // successfully loaded model & downloaded encodings
       isReady = true
-      self.postMessage({isReady})
     })
 })
 
 // listening for semantic search
 self.onmessage = (e) => {
-  searchResults = runSemanticSearch(e.data)
+  runSemanticSearch(e.data)
 }
 
 const runSemanticSearch = (searchQueryRaw) => {
   numResults = 5
 
   if (!isReady || !searchQueryRaw) {
-    return []
+    self.postMessage({searchResults: []})
+    return
   }
 
   const searchQuery = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
@@ -50,12 +48,12 @@ const runSemanticSearch = (searchQueryRaw) => {
 
     const questionsScored = questions.map((title, index) => ({
       title,
-      score: scores[index].toFixed(2),
+      score: scores[index],
     }))
     questionsScored.sort(byScore)
-    searchResults = questionsScored.slice(0, numResults)
+    const searchResults = questionsScored.slice(0, numResults)
 
-    self.postMessage({isReady, searchResults})
+    self.postMessage({searchResults})
   })
 }
 
