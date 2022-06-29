@@ -134,14 +134,13 @@ export const getInitialQuestions = async (request: Request) => {
 
   let data: Question[]
   if (cached && metadata?.timestamp) {
-    // return stale and revalidate in background
     data = JSON.parse(cached)
     if (
       !data[0].text ||
-      new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60
+      new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60 * 10 // 10 minutes
     ) {
-      url.searchParams.set('reloadInitial', 'true')
-      fetch(url.toString()) // no await to run in background
+      // TODO: figure out how to return stale data and revalidate in the background (CF worker is killed after return => trigger new worker)
+      data = await getInitialQuestionsUpdateCache()
     }
   } else {
     data = await getInitialQuestionsUpdateCache()
