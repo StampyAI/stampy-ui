@@ -57,16 +57,18 @@ const getAnswer = (html: string): string => {
 const normalizeWikiLinks = (html: string): string =>
   html.replace(/href="\/wiki/g, 'href="https://stampy.ai/read')
 
-const getRelatedQuestions = (html: string): string[] => {
+const getRelatedQuestions = (html: string): {title: string; pageid: number}[] => {
   if (!html.includes('Related_questionsedit')) return []
   const root = parse(html)
-  const links =
-    root
-      .querySelector('#Related_questionsedit')
-      ?.parentNode.nextElementSibling.querySelectorAll('li')
-      .map((li) => li.querySelector('a:not(.new)')?.innerText) // ignore red links with class new
-      .filter(typedBoolean) ?? []
-  return links
+  const links = root
+    .querySelector('#Related_questionsedit')
+    ?.parentNode.nextElementSibling.querySelectorAll('li')
+    .map((li) => ({
+      title: li.querySelector('a:not(.new)')?.innerText ?? '', // ignore red links with class new
+      pageid: Number(li.querySelector('div[style*="display: none"]')?.innerText),
+    }))
+
+  return links ?? []
 }
 
 const getHtml = async (page: string) => {
@@ -88,7 +90,7 @@ const getHtml = async (page: string) => {
         text: normalizeWikiLinks(
           text.match(/canonicalanswer|answer-card/) ? getAnswer(text) : text
         ),
-        relatedQuestions: await getMetadata(getRelatedQuestions(text)),
+        relatedQuestions: getRelatedQuestions(text),
       }
       await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
     } catch (e: any) {
