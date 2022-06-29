@@ -7,7 +7,7 @@ export type Question = {
   title: string
   pageid: number
   text: string | null
-  relatedQuestions: {title: string; pageid: number}[]
+  relatedQuestions: {title: string; pageid?: number}[]
   questionState?: QuestionState
 }
 type QueryResults = {
@@ -57,16 +57,18 @@ const getAnswer = (html: string): string => {
 const normalizeWikiLinks = (html: string): string =>
   html.replace(/href="\/wiki/g, 'href="https://stampy.ai/read')
 
-const getRelatedQuestions = (html: string): string[] => {
+const getRelatedQuestions = (html: string): {title: string; pageid: number}[] => {
   if (!html.includes('Related_questionsedit')) return []
   const root = parse(html)
-  const links =
-    root
-      .querySelector('#Related_questionsedit')
-      ?.parentNode.nextElementSibling.querySelectorAll('li')
-      .map((li) => li.querySelector('a:not(.new)')?.innerText) // ignore red links with class new
-      .filter(typedBoolean) ?? []
-  return links
+  const links = root
+    .querySelector('#Related_questionsedit')
+    ?.parentNode.nextElementSibling.querySelectorAll('li')
+    .map((li) => ({
+      title: li.querySelector('a:not(.new)')?.innerText ?? '', // ignore red links with class new
+      pageid: Number(li.querySelector('div[style*="display: none"]')?.innerText),
+    }))
+
+  return links ?? []
 }
 
 const getHtml = async (page: string) => {
@@ -75,16 +77,26 @@ const getHtml = async (page: string) => {
   if (cached) {
     data = JSON.parse(cached)
   } else {
-    const {
-      parse: {title, pageid, text},
-    } = await (await fetch(stampyParse(page))).json()
-    data = {
-      title,
-      pageid,
-      text: normalizeWikiLinks(text.match(/canonicalanswer|answer-card/) ? getAnswer(text) : text),
-      relatedQuestions: await getMetadata(getRelatedQuestions(text)),
+    const url = stampyParse(page)
+    let json
+    try {
+      json = await (await fetch(url)).json()
+      const {
+        parse: {title, pageid, text},
+      } = json
+      data = {
+        title,
+        pageid,
+        text: normalizeWikiLinks(
+          text.match(/canonicalanswer|answer-card/) ? getAnswer(text) : text
+        ),
+        relatedQuestions: getRelatedQuestions(text),
+      }
+      await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
+    } catch (e: any) {
+      e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+      throw e
     }
-    await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
   }
 
   return data
@@ -124,14 +136,13 @@ export const getInitialQuestions = async (request: Request) => {
 
   let data: Question[]
   if (cached && metadata?.timestamp) {
-    // return stale and revalidate in background
     data = JSON.parse(cached)
     if (
       !data[0].text ||
-      new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60
+      new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60 * 10 // 10 minutes
     ) {
-      url.searchParams.set('reloadInitial', 'true')
-      fetch(url.toString()) // no await to run in background
+      // TODO: figure out how to return stale data and revalidate in the background (CF worker is killed after return => trigger new worker)
+      data = await getInitialQuestionsUpdateCache()
     }
   } else {
     data = await getInitialQuestionsUpdateCache()

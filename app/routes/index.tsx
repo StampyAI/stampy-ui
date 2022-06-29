@@ -31,7 +31,7 @@ export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
   const {intro, initialQuestions} = useLoaderData<LoaderData>()
-  const {questions, reset, toggleQuestion, onLazyLoadQuestion} =
+  const {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle} =
     useQuestionStateInUrl(initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -65,7 +65,7 @@ export default function App() {
             <img alt="" src={iconShare} />
             Share link
           </button>
-          <a href="https://github.com/Aprillion/stampy-ui">
+          <a href="https://github.com/StampyAI/stampy-ui">
             <img alt="" src={iconCode} />
             Code
           </a>
@@ -76,7 +76,7 @@ export default function App() {
         </div>
       </header>
       <main>
-        <Search />
+        <Search onSelect={selectQuestionByTitle} />
         {questions.map((questionProps) => (
           <Question
             key={questionProps.pageid}
@@ -89,7 +89,7 @@ export default function App() {
       <footer>
         <a href="https://stampy.ai/wiki/Meta:Contact">Contact</a>
         <a href="https://stampy.ai/wiki/Stampy">About</a>
-        <a href="https://github.com/Aprillion/stampy-ui">Code</a>
+        <a href="https://github.com/StampyAI/stampy-ui">Code</a>
         <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
         <a href="https://stampy.ai/wiki/Discord_invite">Discord</a>
         <a href="https://stampy.ai/wiki/Meta:Copyrights">Copyrights</a>

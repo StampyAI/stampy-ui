@@ -1,5 +1,9 @@
-import {useState, useEffect, useRef, ChangeEventHandler} from 'react'
+import {useState, useEffect, useRef, MouseEvent} from 'react'
 import Question from '~/components/question'
+
+type Props = {
+  onSelect: (title: string) => void
+}
 
 type Question = {
   title: string
@@ -10,19 +14,26 @@ type SearchResult = Question & {
   score: number
 }
 
-export default function Search() {
+export default function Search({onSelect}: Props) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetch('/questions/allCanonical')
       .then((r) => r.json())
-      .then((data: string[]) =>
-        setQuestions(data.map((title) => ({title, normalized: normalize(title)})))
-      )
+      .then((data: string[]) => {
+        const newQuestions = data.map((title) => ({title, normalized: normalize(title)}))
+        setQuestions(newQuestions)
+
+        const value = inputRef.current?.value
+        if (value) {
+          setTimeout(() => handleChange(value, newQuestions), 1000)
+        }
+      })
 
     const handleWorker = (event: MessageEvent) => {
       const {data} = event
@@ -41,12 +52,32 @@ export default function Search() {
     initWorker()
   }, [])
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
-    const {value} = event.currentTarget
-    runBaselineSearch(value, questions).then(setBaselineSearchResults)
+  const handleChange = (value: string, currentQuestions: Question[]) => {
+    runBaselineSearch(value, currentQuestions).then(setBaselineSearchResults)
 
-    console.log('posting to tfWorker...')
+    console.log('posting to tfWorker:', value)
     tfWorkerRef.current?.postMessage(value)
+  }
+
+  const renderResultItem = ({title, score}: SearchResult) => {
+    const handleSelect = (e: MouseEvent) => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey) {
+        // don't setShowResults(false) from input onBlur, allowing multiselect
+        e.preventDefault()
+      }
+      onSelect(title)
+    }
+
+    return (
+      <button
+        className="transparent-button"
+        key={title}
+        onMouseDown={handleSelect}
+        // onKeyDown={handleSelect} TODO: figure out accessibility of not blurring on keyboard navigation
+      >
+        ({score.toFixed(2)}) {title}
+      </button>
+    )
   }
 
   return (
@@ -55,39 +86,30 @@ export default function Search() {
         type="search"
         id="searchbar"
         name="searchbar"
+        ref={inputRef}
         placeholder="What is your question?"
-        onChange={handleChange}
+        onChange={(e) => handleChange(e.currentTarget.value, questions)}
         onFocus={() => setShowResults(true)}
-        onBlur={() => setShowResults(false)}
+        onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
-      {showResults && (
-        <div className="dropdown">
-          <div>
-            Tensorflow debugging:
-            {searchResults.length > 0 ? (
-              searchResults.map((result: SearchResult) => (
-                <a key={result.title}>
-                  ({result.score.toFixed(2)}) {result.title}
-                </a>
-              ))
-            ) : (
-              <div className="empty">(no results)</div>
-            )}
-          </div>
-          <div>
-            Baseline text search:
-            {baselineSearchResults.length > 0 ? (
-              baselineSearchResults.map((result: SearchResult) => (
-                <a key={result.title}>
-                  ({result.score.toFixed(2)}) {result.title}
-                </a>
-              ))
-            ) : (
-              <div className="empty">(no results)</div>
-            )}
-          </div>
+      <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
+        <div>
+          Tensorflow debugging:
+          {searchResults.length > 0 ? (
+            searchResults.map(renderResultItem)
+          ) : (
+            <div className="empty">(no results)</div>
+          )}
         </div>
-      )}
+        <div>
+          Baseline text search:
+          {baselineSearchResults.length > 0 ? (
+            baselineSearchResults.map(renderResultItem)
+          ) : (
+            <div className="empty">(no results)</div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

@@ -3,6 +3,8 @@ import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import type {Question, QuestionState} from '~/stampy'
 
+export const tmpPageId = 999999
+
 const getStateEntries = (state: string): [number, QuestionState][] =>
   Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [
     Number(groups[1]),
@@ -12,7 +14,7 @@ const getStateEntries = (state: string): [number, QuestionState][] =>
 function updateQuestionMap(question: Question, map: Map<Question['pageid'], Question>): void {
   map.set(question.pageid, question)
   for (const {pageid, title} of question.relatedQuestions) {
-    if (map.has(pageid)) continue
+    if (!pageid || map.has(pageid)) continue
 
     map.set(pageid, {title, pageid, text: null, relatedQuestions: []})
   }
@@ -24,7 +26,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
 
   const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
   const [questionMap, setQuestionMap] = useState(() => {
-    const initialMap = new Map()
+    const initialMap: Map<Question['pageid'], Question> = new Map()
     for (const question of initialQuestions) {
       updateQuestionMap(question, initialMap)
     }
@@ -63,17 +65,21 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     setStateString(null)
   }
 
-  const toggleQuestion = (questionProps: Question) => {
+  const toggleQuestion = (questionProps: Question, options?: {moveToTop?: boolean}) => {
     const {pageid, relatedQuestions} = questionProps
-    const currentState = stateString ?? initialCollapsedState
+    let currentState = stateString ?? initialCollapsedState
+    if (options?.moveToTop) {
+      const removePageRe = new RegExp(`${pageid}.|${tmpPageId}.`, 'g')
+      currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
+    }
     const newRelatedQuestions = relatedQuestions.filter(
-      (q) => !currentState.includes(q.pageid.toString())
+      (q) => q.pageid && !currentState.includes(q.pageid.toString())
     )
-    const newState = getStateEntries(currentState)
+    let newState = getStateEntries(currentState)
       .map(([k, v]) => {
         if (k === pageid) {
-          const newValue = v === '_' ? '-' : '_'
-          const related = newRelatedQuestions.map((r) => `${r.pageid}r`).join('')
+          const newValue: QuestionState = v === '_' ? '-' : '_'
+          const related = newRelatedQuestions.map((r) => (r.pageid ? `${r.pageid}r` : '')).join('')
           return `${k}${newValue}${related}`
         }
         return `${k}${v}`
@@ -93,5 +99,26 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     })
   }
 
-  return {questions, reset, toggleQuestion, onLazyLoadQuestion}
+  const selectQuestionByTitle = (title: string) => {
+    // if the question is already loaded, move it to top
+    for (const q of questionMap.values()) {
+      if (title === q.title) {
+        toggleQuestion(q, {moveToTop: true})
+        return
+      }
+    }
+    // else load new question
+    const tmpQuestion = {pageid: tmpPageId, title, text: null, relatedQuestions: []}
+    onLazyLoadQuestion(tmpQuestion)
+    toggleQuestion(tmpQuestion, {moveToTop: true})
+
+    fetch(`/questions/${encodeURIComponent(title)}`)
+      .then((response) => response.json())
+      .then((newQuestion: Question) => {
+        onLazyLoadQuestion(newQuestion)
+        toggleQuestion(newQuestion, {moveToTop: true})
+      })
+  }
+
+  return {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle}
 }
