@@ -340,14 +340,20 @@ footer > *:not(:last-child) {
   grid-template-columns: 50% 50%;
 }
 
-.dropdown a {
+.dropdown.hidden {
+  display: none;
+}
+
+.dropdown button {
+  cursor: pointer;
   color: currentColor;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+  width: 100%;
 }
 
-.dropdown a:hover {
+.dropdown button:hover {
   background-color: #ddd;
 }
 

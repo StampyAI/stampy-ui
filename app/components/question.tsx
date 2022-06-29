@@ -2,6 +2,7 @@ import {useRef, useEffect} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
+import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 
 export default function Question({
   questionProps,
@@ -16,7 +17,7 @@ export default function Question({
   const refreshOnToggleAfterLoading = useRef(false)
 
   useEffect(() => {
-    if (!text) {
+    if (pageid !== tmpPageId && !text) {
       fetch(`/questions/${pageid}`)
         .then((response) => response.json())
         .then((newQuestionProps: Question) => {

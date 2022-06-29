@@ -7,7 +7,7 @@ export type Question = {
   title: string
   pageid: number
   text: string | null
-  relatedQuestions: {title: string; pageid: number}[]
+  relatedQuestions: {title: string; pageid?: number}[]
   questionState?: QuestionState
 }
 type QueryResults = {
@@ -75,16 +75,26 @@ const getHtml = async (page: string) => {
   if (cached) {
     data = JSON.parse(cached)
   } else {
-    const {
-      parse: {title, pageid, text},
-    } = await (await fetch(stampyParse(page))).json()
-    data = {
-      title,
-      pageid,
-      text: normalizeWikiLinks(text.match(/canonicalanswer|answer-card/) ? getAnswer(text) : text),
-      relatedQuestions: await getMetadata(getRelatedQuestions(text)),
+    const url = stampyParse(page)
+    let json
+    try {
+      json = await (await fetch(url)).json()
+      const {
+        parse: {title, pageid, text},
+      } = json
+      data = {
+        title,
+        pageid,
+        text: normalizeWikiLinks(
+          text.match(/canonicalanswer|answer-card/) ? getAnswer(text) : text
+        ),
+        relatedQuestions: await getMetadata(getRelatedQuestions(text)),
+      }
+      await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
+    } catch (e: any) {
+      e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+      throw e
     }
-    await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
   }
 
   return data

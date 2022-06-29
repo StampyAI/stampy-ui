@@ -27,11 +27,19 @@ self.onmessage = (e) => {
   runSemanticSearch(e.data)
 }
 
-const runSemanticSearch = (searchQueryRaw) => {
+const maxAttempts = 10
+const runSemanticSearch = (searchQueryRaw, attempt = 1) => {
   numResults = 5
 
-  if (!isReady || !searchQueryRaw) {
+  if (!searchQueryRaw || attempt >= maxAttempts) {
     self.postMessage({searchResults: []})
+    return
+  }
+
+  if (!isReady) {
+    setTimeout(() => {
+      runSemanticSearch(searchQueryRaw, attempt + 1)
+    }, 1000)
     return
   }
 
