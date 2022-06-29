@@ -1,48 +1,59 @@
 import {useState, useEffect, ChangeEventHandler} from 'react'
-import {tensor2d, matMul, Tensor2D} from '@tensorflow/tfjs'
-import {load, UniversalSentenceEncoder} from '@tensorflow-models/universal-sentence-encoder'
-import debounce from 'lodash/debounce'
 
 type Question = {
   title: string
-  normalized: string
+  normalized?: string
 }
 
 type SearchResult = Question & {
   score: number
 }
 
-type SearchProps = {
-  isReady: boolean
-  questions: Question[]
-  encodings: Tensor2D | []
-  langModelPromise: Promise<UniversalSentenceEncoder>
-}
+var tfWorker: Worker
 
 export default function Search() {
-  const [searchProps, setSearchProps] = useState<SearchProps>({
-    questions: [],
-    isReady: false,
-    encodings: [],
-    langModelPromise: load(), // load universal sentence encoder model
-  })
+  const [isReady, setReady] = useState<boolean>(false)
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
 
-  useEffect(() => {
-    initSearch().then((props) => {
-      console.debug(props)
-      setSearchProps((current) => ({...current, ...props}))
-    })
-  }, [])
+  const handleWorker = (event) => {
+    // read and print out the incoming data
+    const {data} = event
 
-  const handleChange = debounce((value: string) => {
-    console.debug('searching for:', value)
-    runBaselineSearch(value, searchProps).then(setBaselineSearchResults)
+    // 1st time should be init search
+    // TODO: doesn't seem to be setting isReady correctly
+    if (data.isReady) {
+      console.log('setReady to', data.isReady)
+      setReady(data.isReady)
+    }
+    // else results from run search
+    if (data.searchResults) {
+      console.log('setSearchResults to', data.searchResults)
+      setSearchResults(data.searchResults)
+    }
+  }
 
-    runSemanticSearch(value, searchProps).then((r) => r && setSearchResults(r))
-  }, 300)
+  const initWorker = () => {
+    // create worker thread
+    if (window.Worker) {
+      if (typeof tfWorker == 'undefined') {
+        tfWorker = new Worker('/tfWorker.js')
+      }
+
+      // any other messages is likely from runSearch
+      tfWorker.addEventListener('message', handleWorker)
+    } else {
+      console.log('Sorry! No Web Worker support.')
+    }
+  }
+
+  useEffect(() => initWorker(), [])
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
+    console.log('try posting to tfWorker...')
+    tfWorker.postMessage(event.currentTarget.value)
+  }
 
   return (
     <div>
@@ -51,10 +62,7 @@ export default function Search() {
         id="searchbar"
         name="searchbar"
         placeholder="What is your question?"
-        onChange={(e) => {
-          previousAbort.signal.aborted = true
-          handleChange(e.currentTarget.value)
-        }}
+        onChange={handleChange}
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)}
       />
@@ -64,7 +72,7 @@ export default function Search() {
             Tensorflow debugging:
             {searchResults.map((result: SearchResult) => (
               <a key={result.title}>
-                ({result.score.toFixed(2)}) {result.title}
+                ({result.score}) {result.title}
               </a>
             ))}
           </div>
@@ -82,79 +90,6 @@ export default function Search() {
   )
 }
 
-const initSearch = async () => {
-  const data = (await (await fetch('/assets/stampy-questions-encodings.json')).json()) as {
-    questions: string[]
-    encodings: number[]
-  }
-  const questions = data.questions.map((q) => ({title: q, normalized: normalize(q)}))
-  const encodings = tensor2d(data.encodings)
-  console.debug('question', questions.slice(0, 5))
-  console.debug('encodings', encodings.slice(0, 5))
-
-  return {
-    isReady: true,
-    questions,
-    encodings,
-  }
-}
-
-/**
- * Embed question, search for closest stampy question match among embedded list
- */
-// homemade AbortController, because cloudflare workers don't support the real one
-let previousAbort = {signal: {aborted: false}}
-const runSemanticSearch = async (
-  searchQueryRaw: string,
-  searchProps: SearchProps,
-  numResults = 5
-): Promise<SearchResult[] | null> => {
-  const currentAbort = {signal: {aborted: false}}
-  previousAbort = currentAbort // global reference of the new mutable object
-
-  const {isReady, questions, encodings, langModelPromise} = searchProps
-  if (!isReady || !searchQueryRaw) {
-    return []
-  }
-
-  const searchQuery = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
-  console.debug('embed: ' + searchQuery)
-
-  // encodings is 2D tensor of 512-dims embeddings for each sentence
-  const langModel = await langModelPromise
-  if (currentAbort.signal.aborted) {
-    console.debug('aborted after langModel:', searchQuery)
-    return null
-  }
-
-  const encoding: Tensor2D = await langModel.embed(searchQuery)
-  if (currentAbort.signal.aborted) {
-    console.debug('aborted after encoding:', searchQuery)
-    return null
-  }
-  console.debug('encoding', encoding)
-
-  // numerator of cosine similar is dot prod since vectors normalized
-  const scores = await matMul(encoding, encodings, false, true).data()
-  if (currentAbort.signal.aborted) {
-    console.debug('aborted after scores:', searchQuery)
-    return null
-  }
-  console.debug('scores', scores.slice(0, 5))
-
-  const questionsScored: SearchResult[] = questions.map((question, index) => ({
-    ...question,
-    score: scores[index],
-  }))
-  questionsScored.sort(byScore)
-
-  // tensorflow requires explicit memory management to avoid memory leaks
-  encoding.dispose()
-  console.debug('questionsScored', questionsScored.slice(0, numResults))
-
-  return questionsScored.slice(0, numResults)
-}
-
 /** Baseline full-text search matching the query with each question as strings, weighting down:
  *  short words,
  *  wh* questions,
@@ -162,7 +97,7 @@ const runSemanticSearch = async (
  *  partial (prefix) match without full match
  *  normalized to ignore a/an/the, punctuation, and case
  */
-const runBaselineSearch = async (
+export const runBaselineSearch = async (
   searchQueryRaw: string,
   {questions}: SearchProps,
   numResults = 5
@@ -228,25 +163,3 @@ const normalize = (question: string) =>
  * Sort function for the highest score on top
  */
 const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
-
-/**
- * Create sentence embeddings for all canonical questions (with answers) from stampy wiki
- */
-const encodeQuestions = async (langModel: UniversalSentenceEncoder) => {
-  console.log('encodeQuestions')
-
-  const questions = (await (await fetch('/questions/allCanonical')).json()) as string[]
-  const questionsLower = questions.map((title) => title.toLowerCase())
-
-  // encoding all questions in 1 shot without batching
-  // if run out of memory, encode sentences in mini_batches
-  const encodings = await langModel.embed(questionsLower)
-  encodings.print(true /* verbose */)
-
-  return {
-    isReady: true,
-    questions,
-    encodings,
-    langModel,
-  }
-}
