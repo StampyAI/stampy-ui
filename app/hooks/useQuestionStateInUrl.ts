@@ -41,7 +41,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   }, [transition.location])
 
   useEffect(() => {
-    document.title = stateString ? `Stampy in Test - ${stateString}` : `Stampy in Test`
+    document.title = stateString ? `Stampy in Test - ${stateString}` : `Stampy (alpha)`
   }, [stateString])
 
   const initialCollapsedState = useMemo(
