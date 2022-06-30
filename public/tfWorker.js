@@ -60,8 +60,9 @@ const runSemanticSearch = (searchQueryRaw, attempt = 1) => {
     }))
     questionsScored.sort(byScore)
     const searchResults = questionsScored.slice(0, numResults)
+    const numQs = questions.length
 
-    self.postMessage({searchResults})
+    self.postMessage({searchResults, numQs})
   })
 }
 
