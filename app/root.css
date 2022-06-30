@@ -275,6 +275,11 @@ article > h2:hover::after {
   margin: var(--paddingSides);
 }
 
+.answer blockquote {
+  padding-left: 16px;
+  font-style: italic;
+}
+
 .answer .card-shortdesc,
 .answer .card-show-longdesc,
 .answer .card-hide-longdesc {
