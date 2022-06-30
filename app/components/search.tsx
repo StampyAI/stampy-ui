@@ -37,6 +37,7 @@ export default function Search({onSelect}: Props) {
 
     const handleWorker = (event: MessageEvent) => {
       const {data} = event
+      console.debug('onmessage from tfWorker:', data)
       if (data.searchResults) {
         setSearchResults(data.searchResults)
       }
@@ -55,7 +56,7 @@ export default function Search({onSelect}: Props) {
   const handleChange = (value: string, currentQuestions: Question[]) => {
     runBaselineSearch(value, currentQuestions).then(setBaselineSearchResults)
 
-    console.log('posting to tfWorker:', value)
+    console.debug('postMessag to tfWorker:', value)
     tfWorkerRef.current?.postMessage(value)
   }
 

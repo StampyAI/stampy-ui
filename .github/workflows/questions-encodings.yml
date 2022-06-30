@@ -1,0 +1,25 @@
+name: Generate Qs & Encodings
+on: [workflow_dispatch]
+env:
+  filepath: public/assets
+  filename: stampy-questions-encodings.json
+jobs:
+  Generate-Questions-Encodings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone stampy-ui repository code
+        uses: actions/checkout@v3
+      - name: Generate StampyAI Wiki's questions and encodings
+        run: |
+          npm install node-fetch @tensorflow/tfjs-node @tensorflow-models/universal-sentence-encoder
+          node questions-encodings.mjs
+          mv *.json ${{ env.filepath }}
+      - name: Commit files
+        run: |
+          git config --local user.name ${{ github.actor }}
+          git stage ${{ env.filepath }}/${{ env.filename }}
+          git commit -m "Generate updated ${{ env.filename }}"
+      - name: Push updated files on GitHub
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
