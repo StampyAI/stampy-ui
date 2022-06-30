@@ -7,6 +7,7 @@ export type Question = {
   title: string
   pageid: number
   text: string | null
+  answerEditLink: string | null
   relatedQuestions: {title: string; pageid?: number}[]
   questionState?: QuestionState
 }
@@ -30,6 +31,7 @@ function typedBoolean<T>(value: T): value is Truthy<T> {
 }
 
 const reQuestion = /{{[^|]+\|([^}]+)}}/g
+const answerEditLinkBase = 'https://stampy.ai/w/index.php?action=formedit&title='
 
 const stampyParse = (page: string) => {
   const prop = page.match(/^\d+$/) ? 'pageid' : 'page'
@@ -49,9 +51,16 @@ const stampyQueryContent = (title: string) =>
 const stampyAsk = (query: string) =>
   `https://stampy.ai/w/api.php?action=ask&format=json&formatversion=2&query=${query}`
 
-const getAnswer = (html: string): string => {
+const getAnswer = (html: string): {answerText: string; answerEditLink: string | undefined} => {
   const root = parse(html)
-  return root.querySelector('#canonicalanswer')?.toString() ?? '<p>¯\\_(ツ)_/¯</p>'
+  const answerEl = root.getElementById('canonicalanswer')
+  return {
+    answerText: answerEl?.toString() ?? '<p>¯\\_(ツ)_/¯</p>',
+    answerEditLink: answerEl?.previousElementSibling
+      .querySelector('a')
+      ?.getAttribute('href')
+      ?.replace('/wiki/', answerEditLinkBase),
+  }
 }
 
 const normalizeWikiLinks = (html: string): string =>
@@ -84,12 +93,14 @@ const getHtml = async (page: string) => {
       const {
         parse: {title, pageid, text},
       } = json
+      const {answerText = text, answerEditLink = null} = text.match(/canonicalanswer/)
+        ? getAnswer(text)
+        : {}
       data = {
         title,
         pageid,
-        text: normalizeWikiLinks(
-          text.match(/canonicalanswer|answer-card/) ? getAnswer(text) : text
-        ),
+        text: normalizeWikiLinks(answerText),
+        answerEditLink,
         relatedQuestions: getRelatedQuestions(text),
       }
       await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
@@ -162,17 +173,20 @@ async function getInitialQuestionsUpdateCache() {
     const pageid = pageidByTitle[title]
     const cached = await STAMPY_KV.get(pageid.toString())
     let text: Question['text'] = null
+    let answerEditLink: Question['answerEditLink'] = null
     let relatedQuestions: Question['relatedQuestions'] = []
     if (cached) {
       const cachedObj = JSON.parse(cached)
       title = cachedObj.title
       text = cachedObj.text
+      answerEditLink = cachedObj.answerEditLink
       relatedQuestions = cachedObj.relatedQuestions
     }
     data.push({
       title,
       pageid,
       text,
+      answerEditLink,
       relatedQuestions,
     })
   }

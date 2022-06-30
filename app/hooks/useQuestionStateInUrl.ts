@@ -16,7 +16,7 @@ function updateQuestionMap(question: Question, map: Map<Question['pageid'], Ques
   for (const {pageid, title} of question.relatedQuestions) {
     if (!pageid || map.has(pageid)) continue
 
-    map.set(pageid, {title, pageid, text: null, relatedQuestions: []})
+    map.set(pageid, {title, pageid, text: null, answerEditLink: null, relatedQuestions: []})
   }
 }
 
@@ -53,6 +53,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       pageid,
       title: '...',
       text: null,
+      answerEditLink: null,
       relatedQuestions: [],
       ...questionMap.get(pageid),
       questionState,
@@ -108,7 +109,13 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       }
     }
     // else load new question
-    const tmpQuestion = {pageid: tmpPageId, title, text: null, relatedQuestions: []}
+    const tmpQuestion = {
+      pageid: tmpPageId,
+      title,
+      text: null,
+      answerEditLink: null,
+      relatedQuestions: [],
+    }
     onLazyLoadQuestion(tmpQuestion)
     toggleQuestion(tmpQuestion, {moveToTop: true})
 

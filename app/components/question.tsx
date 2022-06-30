@@ -3,6 +3,7 @@ import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
+import iconPen from '~/assets/icons/pen.svg'
 
 export default function Question({
   questionProps,
@@ -13,7 +14,7 @@ export default function Question({
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
 }) {
-  const {pageid, title, text, questionState} = questionProps
+  const {pageid, title, text, answerEditLink, questionState} = questionProps
   const refreshOnToggleAfterLoading = useRef(false)
 
   useEffect(() => {
@@ -47,10 +48,21 @@ export default function Question({
         <button className="transparent-button">{title}</button>
       </h2>
       <AutoHeight>
-        <div
-          className="answer"
-          dangerouslySetInnerHTML={{__html: isExpanded ? text || '<p>Loading...</p>' : ''}}
-        />
+        <div className="answer">
+          {isExpanded && (
+            <>
+              <div dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}} />
+              <div className="actions">
+                {answerEditLink && (
+                  // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
+                  <a href={answerEditLink} target="_blank" title="edit this answer on the wiki">
+                    <img alt="" src={iconPen} />
+                  </a>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </AutoHeight>
     </article>
   )

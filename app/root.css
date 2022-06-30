@@ -281,6 +281,18 @@ article > h2:hover::after {
   display: none;
 }
 
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px;
+  gap: 16px;
+}
+
+.actions img {
+  width: 24px;
+  height: 24px;
+}
+
 article.related {
   margin-left: var(--paddingSides);
   max-height: 999px;
