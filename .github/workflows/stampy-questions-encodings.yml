@@ -1,0 +1,25 @@
+name: Stampy Encodings Test
+on: [workflow_dispatch]
+env:
+  filepath: public/assets/
+jobs:
+  Generate-Questions-Encodings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo '💡 The ${{ github.repository }} repository has been cloned to the runner.''
+      - name: Generating Stampy Wiki's questions and encodings
+        run:  |
+          npm install node-fetch @tensorflow/tfjs-node @tensorflow-models/universal-sentence-encoder
+          node questions-encodings.js
+          mv *.json ${{ env.filepath }}
+      - name: Commit files
+        run: |
+          git config --local user.name ${{ github.actor }}
+          git commit -m "Update stampy-questions-encodings.json"      
+      - name: Push updated files on GitHub
+        uses: ad-m/github-push-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
