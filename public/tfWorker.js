@@ -45,7 +45,6 @@ const runSemanticSearch = (searchQueryRaw, attempt = 1) => {
 
   const searchQuery = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
 
-  let encoding = []
   // encodings is 2D tensor of 512-dims embeddings for each sentence
   langModel.embed(searchQuery).then((encoding) => {
     // numerator of cosine similar is dot prod since vectors normalized
