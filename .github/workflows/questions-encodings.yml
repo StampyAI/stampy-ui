@@ -22,5 +22,4 @@ jobs:
       - name: Push updated files on GitHub
         uses: ad-m/github-push-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
