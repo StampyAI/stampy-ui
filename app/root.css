@@ -191,7 +191,7 @@ main {
 article {
   background-color: var(--bgColorQuestionAnswer);
   border-radius: 2px;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
   transition: margin 400ms;
 }
 
@@ -275,10 +275,27 @@ article > h2:hover::after {
   margin: var(--paddingSides);
 }
 
+.answer blockquote {
+  padding-left: 16px;
+  font-style: italic;
+}
+
 .answer .card-shortdesc,
 .answer .card-show-longdesc,
 .answer .card-hide-longdesc {
   display: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px;
+  gap: 16px;
+}
+
+.actions img {
+  width: 24px;
+  height: 24px;
 }
 
 article.related {

@@ -41,4 +41,4 @@ $ npm run dev
 $ npm run deploy
 ```
 
-Live demo: https://stampy-ui.aprillion.workers.dev
+Live demo: https://ui.stampy.ai
