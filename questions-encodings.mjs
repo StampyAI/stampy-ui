@@ -30,7 +30,7 @@ const numQs = questions.length
 if (prevNumQs == numQs) {
   console.log(`Number of canonically answered questions has not changed. No new encodings needed.`)
   // print or return something to let calling script know nothing changed, not to commit?
-  process.exit(0)
+  process.exit(1)
 }
 
 const model = await use.load()
