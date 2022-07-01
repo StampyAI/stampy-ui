@@ -60,16 +60,19 @@ body {
   line-height: 1.4;
 }
 
-a {
+a,
+.link {
   color: var(--colorLink);
   text-decoration: none;
+  cursor: pointer;
 }
 
 a:visited {
   color: var(--colorLinkVisited);
 }
 
-a:hover {
+a:hover,
+.link {
   text-decoration: underline;
 }
 
@@ -147,7 +150,8 @@ header a {
   cursor: pointer;
 }
 
-.icon-links img {
+.icon-links img,
+.actions img {
   width: 24px;
   height: 24px;
   filter: var(--light, none) var(--dark, invert(1));
@@ -266,7 +270,9 @@ article > h2:hover::after {
 }
 
 .answer p,
-.answer .card-longdesc {
+.answer .card-shortdesc,
+.answer .card-longdesc,
+.answer .card-hide-longdesc {
   margin: var(--paddingSides) 0;
 }
 
@@ -280,9 +286,10 @@ article > h2:hover::after {
   font-style: italic;
 }
 
-.answer .card-shortdesc,
-.answer .card-show-longdesc,
-.answer .card-hide-longdesc {
+.answer.long .card-shortdesc,
+.answer.long .card-show-longdesc,
+.answer.short .card-longdesc,
+.answer.short .card-hide-longdesc {
   display: none;
 }
 
@@ -291,11 +298,6 @@ article > h2:hover::after {
   justify-content: flex-end;
   margin: 16px;
   gap: 16px;
-}
-
-.actions img {
-  width: 24px;
-  height: 24px;
 }
 
 article.related {
@@ -353,8 +355,6 @@ footer > *:not(:last-child) {
   overflow: auto;
   border: 1px solid #ddd;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 50% 50%;
 }
 
 .dropdown.hidden {
