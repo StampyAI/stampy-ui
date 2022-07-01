@@ -11,6 +11,7 @@ import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
 import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
+
 import iconShare from '~/assets/icons/share-nodes.svg'
 import iconCode from '~/assets/icons/code.svg'
 import iconUsers from '~/assets/icons/users.svg'
@@ -51,7 +52,7 @@ export default function App() {
         </Link>
         <div className="intro">
           <h1>
-            Hi, I'm <span className="highlight">Stampy!</span> (alpha version)
+            Hi, I'm <span className="highlight">Stampy!</span>
           </h1>
           <div dangerouslySetInnerHTML={{__html: intro}} />
         </div>
@@ -90,7 +91,8 @@ export default function App() {
         <a href="https://github.com/StampyAI/stampy-ui">Code</a>
         <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
         <a href="https://stampy.ai/wiki/Discord_invite">Discord</a>
-        <a href="https://stampy.ai/wiki/Meta:Copyrights">Copyrights</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdT--8lx5F2pAZoRPPkDusA7vUTvKTVnNiAb9U5cqnohDhzHA/viewform">Feedback</a>
+        <a href="https://stampy.ai/wiki/Meta:Copyrights">@ 2022 stampy.ai</a>
       </footer>
     </>
   )

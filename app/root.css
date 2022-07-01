@@ -10,7 +10,6 @@
   /* https://css-tricks.com/a-dry-approach-to-color-themes-in-css/ */
   --light: initial;
   --dark: ;
-  --bgColor: var(--light, #fff) var(--dark, #333);
   --bgColorQuestionTitle: var(--light, #bbdefb) var(--dark, #444);
   --bgColorQuestionAnswer: var(--light, #eff) var(--dark, #333);
   --bgColorCopied: #e4d4b6;
@@ -22,6 +21,11 @@
   --colorLinkVisited: #8ac;
   --colorButtonText: #8aacc8;
   --paddingSides: clamp(8px, 2vw, 16px);
+  background-image: url('/assets/coded-banner.svg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top center;
+  background-size: 800px;
 }
 
 :root.dark {
@@ -119,6 +123,7 @@ header a {
   align-items: center;
   gap: 16px;
   font-size: 0.6rem;
+  transition: opacity 1s;
 }
 
 @media (max-width: 550px) {
