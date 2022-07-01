@@ -36,24 +36,28 @@ export default function Question({
 
   const [showLongDescription, setShowLongDescription] = useState(false)
   const answerRef = useRef<HTMLDivElement>(null)
+  const isExpandedAfterLoading = isExpanded && refreshOnToggleAfterLoading.current === false
   useEffect(() => {
-    const el = answerRef.current
-    const showEl = el?.querySelector('.card-show-longdesc')
-    const hideEl = el?.querySelector('.card-hide-longdesc')
-    if (showEl) {
-      let showLong = () => setShowLongDescription(true)
-      let hideLong = () => setShowLongDescription(false)
-      if (isExpanded) {
+    if (isExpandedAfterLoading) {
+      const el = answerRef.current
+      const showEl = el?.querySelector('.card-show-longdesc')
+      const hideEl = el?.querySelector('.card-hide-longdesc')
+
+      if (showEl) {
+        let showLong = () => setShowLongDescription(true)
+        let hideLong = () => setShowLongDescription(false)
+
         // TODO: #13 change to accessible button/link instead of <div>
         showEl.addEventListener('click', showLong)
         hideEl?.addEventListener('click', hideLong)
-      }
-      return () => {
-        showEl.removeEventListener('click', showLong)
-        hideEl?.removeEventListener('click', hideLong)
+
+        return () => {
+          showEl.removeEventListener('click', showLong)
+          hideEl?.removeEventListener('click', hideLong)
+        }
       }
     }
-  }, [isExpanded])
+  }, [isExpandedAfterLoading])
 
   const handleToggle = () => {
     onToggle(questionProps)
