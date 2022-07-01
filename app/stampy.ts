@@ -152,7 +152,7 @@ export const getInitialQuestions = async (request: Request) => {
       !data[0].text ||
       new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60 * 10 // 10 minutes
     ) {
-      // TODO: figure out how to return stale data and revalidate in the background (CF worker is killed after return => trigger new worker)
+      // TODO: #29 figure out how to return stale data and revalidate in the background (CF worker is killed after return => trigger new worker)
       data = await getInitialQuestionsUpdateCache()
     }
   } else {
