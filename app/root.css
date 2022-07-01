@@ -147,7 +147,8 @@ header a {
   cursor: pointer;
 }
 
-.icon-links img {
+.icon-links img,
+.actions img {
   width: 24px;
   height: 24px;
   filter: var(--light, none) var(--dark, invert(1));
@@ -291,11 +292,6 @@ article > h2:hover::after {
   justify-content: flex-end;
   margin: 16px;
   gap: 16px;
-}
-
-.actions img {
-  width: 24px;
-  height: 24px;
 }
 
 article.related {
