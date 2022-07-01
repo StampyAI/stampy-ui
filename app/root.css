@@ -349,8 +349,6 @@ footer > *:not(:last-child) {
   overflow: auto;
   border: 1px solid #ddd;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 50% 50%;
 }
 
 .dropdown.hidden {

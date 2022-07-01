@@ -60,26 +60,9 @@ export default function Search({onSelect}: Props) {
     tfWorkerRef.current?.postMessage(value)
   }
 
-  const renderResultItem = ({title, score}: SearchResult) => {
-    const handleSelect = (e: MouseEvent) => {
-      if (e.ctrlKey || e.metaKey || e.shiftKey) {
-        // don't setShowResults(false) from input onBlur, allowing multiselect
-        e.preventDefault()
-      }
-      onSelect(title)
-    }
-
-    return (
-      <button
-        className="transparent-button"
-        key={title}
-        onMouseDown={handleSelect}
-        // onKeyDown={handleSelect} TODO: figure out accessibility of not blurring on keyboard navigation
-      >
-        ({score.toFixed(2)}) {title}
-      </button>
-    )
-  }
+  // TODO: #32 only show plaintext results before TF is loaded, to avoid flickering
+  const results = searchResults.length > 0 ? searchResults : baselineSearchResults
+  const model = searchResults.length > 0 ? 'tensorflow' : 'plaintext'
 
   return (
     <div>
@@ -94,24 +77,43 @@ export default function Search({onSelect}: Props) {
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
       <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
-        <div>
-          Tensorflow debugging:
-          {searchResults.length > 0 ? (
-            searchResults.map(renderResultItem)
-          ) : (
-            <div className="empty">(no results)</div>
-          )}
-        </div>
-        <div>
-          Baseline text search:
-          {baselineSearchResults.length > 0 ? (
-            baselineSearchResults.map(renderResultItem)
-          ) : (
-            <div className="empty">(no results)</div>
-          )}
-        </div>
+        {results.length > 0
+          ? results.map(({title, score}) => <ResultItem {...{title, score, model, onSelect}} />)
+          : inputRef.current?.value && <div className="empty">(no results)</div>}
       </div>
     </div>
+  )
+}
+
+const ResultItem = ({
+  title,
+  score,
+  model,
+  onSelect,
+}: {
+  title: string
+  score: number
+  model: string
+  onSelect: (t: string) => void
+}) => {
+  const handleSelect = (e: MouseEvent) => {
+    if (e.ctrlKey || e.metaKey || e.shiftKey) {
+      // don't setShowResults(false) from input onBlur, allowing multiselect
+      e.preventDefault()
+    }
+    onSelect(title)
+  }
+
+  return (
+    <button
+      className="transparent-button"
+      key={title}
+      title={`Score: ${score.toFixed(2)}, engine: ${model}`}
+      onMouseDown={handleSelect}
+      // onKeyDown={handleSelect} TODO: #13 figure out accessibility of not blurring on keyboard navigation
+    >
+      {title}
+    </button>
   )
 }
 
