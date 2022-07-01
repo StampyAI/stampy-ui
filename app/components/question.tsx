@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react'
+import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
@@ -16,7 +16,6 @@ export default function Question({
 }) {
   const {pageid, title, text, answerEditLink, questionState} = questionProps
   const refreshOnToggleAfterLoading = useRef(false)
-
   useEffect(() => {
     if (pageid !== tmpPageId && !text) {
       fetch(`/questions/${pageid}`)
@@ -35,6 +34,27 @@ export default function Question({
   const isRelated = questionState === 'r'
   const cls = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
 
+  const [showLongDescription, setShowLongDescription] = useState(false)
+  const answerRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = answerRef.current
+    const showEl = el?.querySelector('.card-show-longdesc')
+    const hideEl = el?.querySelector('.card-hide-longdesc')
+    if (showEl) {
+      let showLong = () => setShowLongDescription(true)
+      let hideLong = () => setShowLongDescription(false)
+      if (isExpanded) {
+        // TODO: #13 change to accessible button/link instead of <div>
+        showEl.addEventListener('click', showLong)
+        hideEl?.addEventListener('click', hideLong)
+      }
+      return () => {
+        showEl.removeEventListener('click', showLong)
+        hideEl?.removeEventListener('click', hideLong)
+      }
+    }
+  }, [isExpanded])
+
   const handleToggle = () => {
     onToggle(questionProps)
     if (!text) {
@@ -48,10 +68,13 @@ export default function Question({
         <button className="transparent-button">{title}</button>
       </h2>
       <AutoHeight>
-        <div className="answer">
+        <div className={`answer ${showLongDescription ? 'long' : 'short'}`}>
           {isExpanded && (
             <>
-              <div dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}} />
+              <div
+                dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}}
+                ref={answerRef}
+              />
               <div className="actions">
                 {answerEditLink && (
                   // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup

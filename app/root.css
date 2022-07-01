@@ -60,16 +60,19 @@ body {
   line-height: 1.4;
 }
 
-a {
+a,
+.link {
   color: var(--colorLink);
   text-decoration: none;
+  cursor: pointer;
 }
 
 a:visited {
   color: var(--colorLinkVisited);
 }
 
-a:hover {
+a:hover,
+.link {
   text-decoration: underline;
 }
 
@@ -267,7 +270,9 @@ article > h2:hover::after {
 }
 
 .answer p,
-.answer .card-longdesc {
+.answer .card-shortdesc,
+.answer .card-longdesc,
+.answer .card-hide-longdesc {
   margin: var(--paddingSides) 0;
 }
 
@@ -281,9 +286,10 @@ article > h2:hover::after {
   font-style: italic;
 }
 
-.answer .card-shortdesc,
-.answer .card-show-longdesc,
-.answer .card-hide-longdesc {
+.answer.long .card-shortdesc,
+.answer.long .card-show-longdesc,
+.answer.short .card-longdesc,
+.answer.short .card-hide-longdesc {
   display: none;
 }
 
