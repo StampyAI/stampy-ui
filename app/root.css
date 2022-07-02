@@ -10,18 +10,22 @@
   /* https://css-tricks.com/a-dry-approach-to-color-themes-in-css/ */
   --light: initial;
   --dark: ;
-  --bgColor: var(--light, #fff) var(--dark, #333);
-  --bgColorQuestionTitle: var(--light, #bbdefb) var(--dark, #444);
+  --bgColorQuestionTitle: var(--light, #bdf) var(--dark, #444);
   --bgColorQuestionAnswer: var(--light, #eff) var(--dark, #333);
-  --bgColorCopied: #e4d4b6;
+  --bgColorCopied: #fed;
   --colorText: var(--light, #222) var(--dark, #eee);
   --colorTitle: var(--light, #666) var(--dark, #bbb);
-  --colorTitleHighlight: #d9816b;
+  --colorTitleHighlight: #d86;
   --colorQuestionTitle: var(--light, #333) var(--dark, #ccc);
-  --colorLink: #68f;
+  --colorLink: #79f;
   --colorLinkVisited: #8ac;
-  --colorButtonText: #8aacc8;
+  --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
+  background-image: url('/assets/coded-banner.svg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top center;
+  background-size: 800px;
 }
 
 :root.dark {
@@ -97,20 +101,29 @@ header {
 h1 {
   color: var(--colorTitle);
   font-size: clamp(1.5rem, 7vw, 2.5rem);
+  font-weight: 600;
   margin: 4px 0 16px -2px; /* visually align */
   line-height: 1;
 }
 
+h3 {
+  color: var(--colorTitle);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
 .highlight {
+  font-family: 'Courier New', Courier, monospace;
   color: var(--colorTitleHighlight);
 }
 
-header a {
-  color: var(--colorLinkVisited);
-  font-weight: bold;
+h3 a,
+h3 a:visited {
+  color: var(--colorButtonText);
 }
 
-.icon-links {
+.icon-link-group {
   align-self: flex-end;
   padding: 0 0 10px 30px;
   flex: 0;
@@ -119,6 +132,7 @@ header a {
   align-items: center;
   gap: 16px;
   font-size: 0.6rem;
+  transition: opacity 1s;
 }
 
 @media (max-width: 550px) {
@@ -126,7 +140,7 @@ header a {
     min-height: 250px;
   }
 
-  .icon-links {
+  .icon-link-group {
     position: absolute;
     margin: 25vw 0 0 calc(14vw - 50px);
     padding: 16px;
@@ -134,8 +148,8 @@ header a {
   }
 }
 
-.icon-links > *,
-.icon-links > a:visited {
+.icon-link-group > *,
+.icon-link-group > a:visited {
   text-transform: uppercase;
   white-space: nowrap;
   color: inherit;
@@ -145,16 +159,33 @@ header a {
   gap: 4px;
 }
 
-.icon-links > button:hover {
+.icon-link-group > button:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.icon-links img,
+.icon-link-group svg,
 .actions img {
-  width: 24px;
-  height: 24px;
-  filter: var(--light, none) var(--dark, invert(1));
+  width: 32px;
+  height: 32px;
+  filter: var(--light, invert(0)) var(--dark, invert(1));
+}
+.icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
+  fill: none !important;
+}
+.icon-link-group .icon-link:not(:hover) svg path[style*='stroke'] {
+  stroke: #333 !important;
+  stroke-width: 10 !important;
+}
+
+.icon-link {
+  transition: all 1s ease;
+}
+
+.icon-link:active {
+  filter: drop-shadow(
+    0 4px 8px var(--light, rgba(0, 0, 0, 0.1)) var(--dark, rgba(255, 255, 255, 0.2))
+  );
 }
 
 .share::after {
@@ -172,7 +203,7 @@ header a {
 
 .share.copied::after {
   opacity: 1;
-  transform: translate(0, 0);
+  transform: translate(0, 3em);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -195,7 +226,7 @@ main {
 article {
   background-color: var(--bgColorQuestionAnswer);
   border-radius: 2px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: margin 400ms;
 }
 
@@ -207,10 +238,11 @@ article {
 }
 
 article > h2 {
-  padding: 8px var(--paddingSides) 7px;
+  padding: 9px var(--paddingSides) 7px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
   font-size: clamp(1.1rem, 3vw, 1.25rem);
+  font-weight: 400;
   line-height: 1.2;
   cursor: pointer;
   display: flex;
@@ -340,13 +372,15 @@ footer > *:not(:last-child) {
   width: 100%;
   font-size: 16px;
   padding: 10px;
-  border: none;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
 }
 
 #searchbar:focus {
-  outline: 3px solid #ddd;
+  outline: 1px solid #bbb;
   border: none;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
 }
 
 .dropdown {

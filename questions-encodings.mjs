@@ -14,7 +14,7 @@ let prevNumQs = 0
 if (fs.existsSync(filename)) {
   const p = JSON.parse(fs.readFileSync(filename, 'utf8'))
   prevNumQs = p.numQs
-  console.log(`${prevNumQs} questions from in previous generated encodings.`)  
+  console.log(`${prevNumQs} questions from in previous generated encodings.`)
 }
 
 const url =
@@ -27,11 +27,14 @@ const questions = response.map(({fulltext}) => fulltext)
 const questionsNormalized = questions.map((question) => question.toLowerCase())
 const numQs = questions.length
 
+/*
+// may not be safe risks if an existing question is reworded or the numQs added == removed.
 if (prevNumQs == numQs) {
   console.log(`Number of canonically answered questions has not changed. No new encodings needed.`)
   // print or return something to let calling script know nothing changed, not to commit?
   process.exit(1)
 }
+*/
 
 const model = await use.load()
 console.log(`Tensorflow's universal sentence encoder model loaded.`)

@@ -71,7 +71,7 @@ export default function Search({onSelect}: Props) {
         id="searchbar"
         name="searchbar"
         ref={inputRef}
-        placeholder="What is your question?"
+        placeholder="Below are some questions to start. What other questions do you have?"
         onChange={(e) => handleChange(e.currentTarget.value, questions)}
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
