@@ -52,25 +52,30 @@ export default function App() {
         </Link>
         <div className="intro">
           <h1>
-            Hi, I'm <span className="highlight">Stampy!</span>
+            Welcome to <span className="highlight">stampy.ai</span>!
           </h1>
-          <div dangerouslySetInnerHTML={{__html: intro}} />
+          <h3>
+            I can answer your questions about <br />
+            <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
+              artificial general intelligence safety
+            </a>
+          </h3>
         </div>
-        <div className="icon-links">
+        <div className="icon-link-group">
           <button
-            className={`transparent-button share ${copied ? 'copied' : ''}`}
+            className={`icon-link transparent-button share ${copied ? 'copied' : ''}`}
             onClick={shareLink}
           >
-            <img alt="" src={iconShare} />
+            <img alt="" src={iconShare} className="icon-link" />
             Share link
           </button>
-          <a href="https://github.com/StampyAI/stampy-ui">
-            <img alt="" src={iconCode} />
-            Code
+          <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
+            <img alt="" src={iconUsers} className="icon-link" />
+            Get Involved
           </a>
-          <a href="https://stampy.ai/wiki/Get_involved">
-            <img alt="" src={iconUsers} />
-            Get involved
+          <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
+            <img alt="" src={iconCode} className="icon-link" />
+            Help Code
           </a>
         </div>
       </header>
@@ -86,12 +91,13 @@ export default function App() {
         ))}
       </main>
       <footer>
-        <a href="https://stampy.ai/wiki/Meta:Contact">Contact</a>
         <a href="https://stampy.ai/wiki/Stampy">About</a>
-        <a href="https://github.com/StampyAI/stampy-ui">Code</a>
         <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
-        <a href="https://stampy.ai/wiki/Discord_invite">Discord</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdT--8lx5F2pAZoRPPkDusA7vUTvKTVnNiAb9U5cqnohDhzHA/viewform">Feedback</a>
+        <a href="https://github.com/StampyAI/stampy-ui">Help Code</a>
+        <a href="https://stampy.ai/wiki/Discord_invite">Join Discord</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdT--8lx5F2pAZoRPPkDusA7vUTvKTVnNiAb9U5cqnohDhzHA/viewform">
+          Feedback
+        </a>
         <a href="https://stampy.ai/wiki/Meta:Copyrights">@ 2022 stampy.ai</a>
       </footer>
     </>

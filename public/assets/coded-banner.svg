@@ -3,7 +3,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 700 230" style="enable-background:new 0 0 700 230;" xml:space="preserve">
 <style type="text/css">
-	.st0{opacity:0.2;}
+	.st0{opacity:0.15;}
 	.st1{fill:#88CFC1;}
 	.st2{fill:#8E9CCE;}
 	.st3{fill:#ED7251;}
@@ -146,11 +146,11 @@
 	<polygon class="st7" points="579.4,57.9 589.4,67.9 589.4,47.9 569.4,47.9 569.4,67.9 	"/>
 	<polygon class="st8" points="603.4,67.9 613.4,47.9 593.4,47.9 	"/>
 	<path class="st9" d="M651.4,47.9h-10v20h10c5.5,0,10-4.5,10-10S656.9,47.9,651.4,47.9z"/>
-	<rect x="579.3" y="0" class="st3" width="10" height="20"/>
+	<rect x="579.3" class="st3" width="10" height="20"/>
 	<path class="st10" d="M555.4,0.3h-10v20h10c5.5,0,10-4.5,10-10S560.9,0.3,555.4,0.3z"/>
 	<polygon class="st11" points="541.4,20.3 541.4,0.3 521.4,0.3 	"/>
 	<polygon class="st12" points="507.4,9.9 517.4,19.9 517.4,-0.1 497.4,-0.1 497.4,19.9 	"/>
-	<rect x="473.3" y="0" class="st17" width="20" height="20"/>
+	<rect x="473.3" class="st17" width="20" height="20"/>
 	<polygon class="st2" points="469.4,20.3 469.4,0.3 449.4,0.3 	"/>
 	<polygon class="st14" points="603.4,20.3 613.4,20.3 613.4,0.3 593.4,0.3 593.4,10.3 603.4,10.3 	"/>
 	<polygon class="st15" points="627.4,47.9 617.4,47.9 617.4,67.9 637.4,67.9 637.4,57.9 627.4,57.9 	"/>
