@@ -182,7 +182,8 @@ export const runBaselineSearch = async (
 const normalize = (question: string) =>
   question
     .toLowerCase()
-    .replace(/[^\w ]|\b(?:an?|the?)\b|(?<=\w{2})s\b/g, '')
+    .replace(/[^\w ]|\b(?:an?|the?)\b/g, '')
+    .replace(/(\w{2})s\b/g, '$1') // cannot use lookbehind (?<=...) because not supported on Safari
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
