@@ -15,6 +15,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^2.2.2",
     "@remix-run/dev": "^1.6.1",
+    "@svgr/cli": "^6.2.1",
     "@types/react": "^17.0.45",
     "@types/react-dom": "^17.0.16",
     "cross-env": "^7.0.3",
@@ -31,11 +32,12 @@
   "sideEffects": false,
   "scripts": {
     "postinstall": "remix setup cloudflare-workers",
+    "generate-icons": "npx @svgr/cli --out-dir app/components/icons-generated -- app/assets/icons",
     "lint": "prettier --write --ignore-path .gitignore .",
-    "build": "rimraf public/build && cross-env NODE_ENV=production remix build",
+    "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:miniflare": "cross-env NODE_ENV=development miniflare ./build/index.js --watch",
-    "start": "cross-env NODE_ENV=development remix build && run-p dev:*",
+    "start": "npm run generate-icons && cross-env NODE_ENV=development remix build && run-p dev:*",
     "dev": "npm start",
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "deploy": "npm run build && wrangler publish"

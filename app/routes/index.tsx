@@ -12,9 +12,7 @@ import Search from '~/components/search'
 import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
 
-import iconShare from '~/assets/icons/share-nodes.svg'
-import iconCode from '~/assets/icons/code.svg'
-import iconUsers from '~/assets/icons/users.svg'
+import {ShareNodes, Users, Code} from '~/components/icons-generated'
 
 type LoaderData = {
   intro: string
@@ -22,9 +20,18 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
+  let intro =
+    'I can usually answer questions about AI alignment, but experiencing some backend problems right now ¯\\_(ツ)_/¯'
+  let initialQuestions: QuestionType[] = []
+  try {
+    intro = await getIntro()
+    initialQuestions = await getInitialQuestions(request)
+  } catch (e) {
+    console.error(e)
+  }
   return {
-    intro: await getIntro(),
-    initialQuestions: await getInitialQuestions(request),
+    intro,
+    initialQuestions,
   }
 }
 
@@ -66,15 +73,15 @@ export default function App() {
             className={`icon-link transparent-button share ${copied ? 'copied' : ''}`}
             onClick={shareLink}
           >
-            <img alt="" src={iconShare} className="icon-link" />
+            <ShareNodes className="icon-link" />
             Share link
           </button>
           <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
-            <img alt="" src={iconUsers} className="icon-link" />
+            <Users className="icon-link" />
             Get Involved
           </a>
           <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
-            <img alt="" src={iconCode} className="icon-link" />
+            <Code className="icon-link" />
             Help Code
           </a>
         </div>

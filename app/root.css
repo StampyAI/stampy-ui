@@ -164,19 +164,22 @@ h3 a:visited {
   cursor: pointer;
 }
 
-.icon-link-group img,
+.icon-link-group svg,
 .actions img {
   width: 32px;
   height: 32px;
-  filter: var(--light, invert(0.3)) var(--dark, invert(1));
+  filter: var(--light, invert(0)) var(--dark, invert(1));
+}
+.icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
+  fill: none !important;
+}
+.icon-link-group .icon-link:not(:hover) svg path[style*='stroke'] {
+  stroke: #333 !important;
+  stroke-width: 10 !important;
 }
 
 .icon-link {
   transition: all 1s ease;
-}
-
-.icon-link:hover {
-  filter: invert(0);
 }
 
 .icon-link:active {

@@ -7,7 +7,8 @@
 
 - [Install Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [Create Cloudflare account](https://dash.cloudflare.com/sign-up)
-- [Install Wrangler CLI](https://developers.cloudflare.com/workers/cli-wrangler/install-update) and [authenticate the CLI](https://developers.cloudflare.com/workers/cli-wrangler/authentication)
+- [Install Wrangler CLI](https://developers.cloudflare.com/workers/cli-wrangler/install-update)
+  and [authenticate the CLI](https://developers.cloudflare.com/workers/cli-wrangler/authentication)
 
 2. Clone the [Repo](https://github.com/StampyAI/stampy-ui)
 
@@ -26,6 +27,9 @@
 
 - Change directory to where you downloaded the stampy-ui github repository: `cd stampy-ui`
 - Run `npm i` to install all the dependencies required to run the current version of stampy-ui.
+
+5. Either of the following commands generates React component icons from source svg files. If you update svg files
+   during development, you can also re-run `npm run generate-icons` manually to see changes.
 
 Once that's done, you should be able to test and deploy your app!
 
