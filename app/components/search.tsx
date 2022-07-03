@@ -78,9 +78,7 @@ export default function Search({onSelect}: Props) {
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
       <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
-        {results.length > 0
-          ? results.map(({title, score}) => <ResultItem {...{title, score, model, onSelect}} />)
-          : inputRef.current?.value}
+        {results.map(({title, score}) => <ResultItem {...{title, score, model, onSelect}} />)}
       </div>
     </div>
   )
