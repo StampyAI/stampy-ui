@@ -61,7 +61,7 @@ body {
   display: flex;
   flex-direction: column;
   font-family: 'Open Sans', Arial, sans-serif;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 a,
@@ -87,7 +87,7 @@ header {
 }
 
 .logo {
-  width: clamp(100px, 30vw, 201px);
+  width: clamp(130px, 20vw, 200px);
   height: auto;
   padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
 }
@@ -95,32 +95,33 @@ header {
 .intro {
   flex: 1;
   margin: min(23px, 3.5vw) 0 10px;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  color: var(--colorTitle);
+}
+
+.logo-intro-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row; 
+}
+
+.intro a,
+.intro a:visited {
+  color: var(--colorButtonText);
 }
 
 h1 {
   color: var(--colorTitle);
-  font-size: clamp(1.5rem, 7vw, 2.5rem);
+  margin: 4px 0 10px -2px; /* visually align */
+  font-size: clamp(1rem, 4.5vw, 3rem);
   font-weight: 600;
-  margin: 4px 0 16px -2px; /* visually align */
   line-height: 1;
-}
-
-h3 {
-  color: var(--colorTitle);
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1.5;
 }
 
 .highlight {
   font-family: 'Courier New', Courier, monospace;
   color: var(--colorTitleHighlight);
-}
-
-h3 a,
-h3 a:visited {
-  color: var(--colorButtonText);
 }
 
 .icon-link-group {
@@ -133,19 +134,6 @@ h3 a:visited {
   gap: 16px;
   font-size: 0.6rem;
   transition: opacity 1s;
-}
-
-@media (max-width: 550px) {
-  .intro {
-    min-height: 250px;
-  }
-
-  .icon-link-group {
-    position: absolute;
-    margin: 25vw 0 0 calc(14vw - 50px);
-    padding: 16px;
-    align-self: flex-start;
-  }
 }
 
 .icon-link-group > *,
@@ -164,22 +152,25 @@ h3 a:visited {
   cursor: pointer;
 }
 
-.icon-link-group svg,
-.actions img {
+.icon-link-group svg {
   width: 32px;
   height: 32px;
   filter: var(--light, invert(0)) var(--dark, invert(1));
 }
+
+.actions img {
+  width: 24px;
+  height: 24px;
+  filter: var(--light, invert(0)) var(--dark, invert(1));
+}
+
 .icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
   fill: none !important;
 }
+
 .icon-link-group .icon-link:not(:hover) svg path[style*='stroke'] {
   stroke: #333 !important;
   stroke-width: 10 !important;
-}
-
-.icon-link {
-  transition: all 1s ease;
 }
 
 .icon-link:active {
@@ -198,12 +189,12 @@ h3 a:visited {
   position: absolute;
   pointer-events: none;
   opacity: 0;
-  transform: translate(0, 2em);
+  transform: translate(0, -3.2em);
 }
 
 .share.copied::after {
   opacity: 1;
-  transform: translate(0, 3em);
+  transform: translate(0, 3.2em);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -213,7 +204,7 @@ h3 a:visited {
   }
 
   .share.copied::after {
-    transition: opacity 100ms, transform 100ms;
+    transition: opacity 200ms, transform 200ms;
   }
 }
 
@@ -238,10 +229,10 @@ article {
 }
 
 article > h2 {
-  padding: 9px var(--paddingSides) 7px;
+  padding: 9px var(--paddingSides) 10px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 400;
   line-height: 1.2;
   cursor: pointer;
@@ -257,16 +248,14 @@ article > h2 > .transparent-button {
 }
 
 article > h2::after {
-  content: '›';
-  margin-top: -8px;
-  font-size: 2em;
-  line-height: 0;
-  font-weight: normal;
+  content: url('/assets/chevron-right.svg');
+  width: 12px;
+  height: 12px;
   transition: transform 400ms;
 }
 
 article > h2:hover::after {
-  transform: rotate(10deg);
+  transform: rotate(20deg);
 }
 
 .expanded h2::after {
@@ -274,7 +263,7 @@ article > h2:hover::after {
 }
 
 .expanded h2:hover::after {
-  transform: rotate(80deg) translateX(40%);
+  transform: rotate(60deg) translateX(40%);
 }
 
 .transparent-button {
@@ -346,7 +335,7 @@ article.related .answer {
 }
 
 footer {
-  --space: 16px;
+  --space: 12px;
   align-self: center;
   margin-top: auto;
   padding: 100px var(--space) var(--space);
@@ -354,6 +343,7 @@ footer {
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space);
+  font-size: 0.8rem;
   line-height: 1;
 }
 
@@ -367,17 +357,17 @@ footer > *:not(:last-child) {
   padding-right: var(--space);
 }
 
-#searchbar {
+.searchbar {
   box-sizing: border-box;
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
 }
 
-#searchbar:focus {
+.searchbar:focus {
   outline: 1px solid #bbb;
   border: none;
   box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
@@ -410,4 +400,32 @@ footer > *:not(:last-child) {
 
 .empty {
   color: gray;
+}
+
+@media (max-width: 740px) {
+  header {
+    flex-direction: column;
+    padding: 12px 0 12px;
+  }
+
+  .logo-intro-group {
+    width: 100%;
+  }
+
+  .icon-link-group {
+    width: 100%;
+    padding: 16px;
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  footer {
+    font-size: 0.75rem;
+  }
+
+  footer > *:not(:last-child) {
+    border-right: 0px;
+    padding-right: 0px;
+  }
 }

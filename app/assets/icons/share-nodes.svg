@@ -3,16 +3,14 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FC80FF;}
+	.st0{fill:#FF00FF;}
 	.st1{fill:#00FFFF;}
-	.st2{fill:#707BFC;}
+	.st2{fill:#8080FF;}
 	.st3{fill:#333333;}
 </style>
-<g id="Layer_2_1_">
-	<circle class="st0" cx="369" cy="112" r="80"/>
-	<circle class="st1" cx="368" cy="400" r="80"/>
-	<circle class="st2" cx="79.1" cy="256" r="80"/>
-</g>
+<circle class="st0" cx="369" cy="112" r="80"/>
+<circle class="st1" cx="368" cy="400" r="80"/>
+<circle class="st2" cx="79.1" cy="256" r="80"/>
 <g id="Layer_1_1_">
 	<path class="st3" d="M448,112c0,44.2-35.8,80-80,80c-25.9,0-48.9-12.3-63.5-31.3l-147.4,73.7c1,6.9,2,14.1,2,21.6s-1,14.7-2,21.6
 		l147.4,73.7c14.6-19,37.6-31.3,63.5-31.3c44.2,0,80,35.8,80,80s-35.8,80-80,80s-80-35.8-80-80c0-12.6,2.9-24.5,8.1-35.9

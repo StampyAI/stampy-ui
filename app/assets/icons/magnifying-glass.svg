@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M509.7 498.3l-149.2-149.2C394.8 312.1 415.1 262.6 415.1 208c0-114.9-93.13-208-208-208S-.0002 93.13-.0002 208S93.12 416 207.1 416c54.55 0 104.1-21.17 141.2-55.54l149.2 149.2C499.9 511.2 501.9 512 503.1 512s4.094-.7813 5.656-2.344C512.8 506.5 512.8 501.5 509.7 498.3zM207.1 400c-105.9 0-192-86.13-192-192s86.13-192 192-192s192 86.13 192 192S313.9 400 207.1 400z"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#E0FFFF;}
+	.st1{fill:#333333;}
+</style>
+<g id="Layer_2_1_">
+	<circle class="st0" cx="206.5" cy="207.5" r="202.5"/>
+</g>
+<g id="Layer_1_1_">
+	<path class="st1" d="M509.7,498.3L360.5,349.1c34.3-37,54.6-86.5,54.6-141.1c0-114.9-93.1-208-208-208S0,93.1,0,208
+		s93.1,208,207.1,208c54.5,0,104.1-21.2,141.2-55.5l149.2,149.2c2.4,1.5,4.4,2.3,5.6,2.3s4.1-0.8,5.7-2.3
+		C512.8,506.5,512.8,501.5,509.7,498.3z M207.1,400c-105.9,0-192-86.1-192-192s86.1-192,192-192s192,86.1,192,192
+		S313.9,400,207.1,400z"/>
+</g>
+</svg>
