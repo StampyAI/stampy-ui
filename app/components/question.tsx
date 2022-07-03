@@ -3,15 +3,15 @@ import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
-import iconThumbsUp from '~/assets/icons/thumbs-up.svg'
-import iconPen from '~/assets/icons/pen.svg'
-import iconCommentQuestion from '~/assets/icons/comment-question.svg'
-import iconFlag from '~/assets/icons/flag.svg'
-import iconEyeSlash from '~/assets/icons/eye-slash.svg'
-import iconLink from '~/assets/icons/link.svg'
-import iconEllipsis from '~/assets/icons/ellipsis.svg'
-//import {ShareNodes, Users, Code} from '~/components/icons-generated'
-
+import {
+  ThumbsUp,
+  Pen,
+  CommentQuestion,
+  Flag,
+  EyeSlash,
+  Link,
+  Ellipsis,
+} from '~/components/icons-generated'
 
 export default function Question({
   questionProps,
@@ -88,18 +88,18 @@ export default function Question({
                 ref={answerRef}
               />
               <div className="actions">
-                    <img alt="" src={iconThumbsUp} />
+                <ThumbsUp />
                 {answerEditLink && (
                   // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
                   <a href={answerEditLink} target="_blank" title="edit this answer on the wiki">
-                    <img alt="" src={iconPen} />
+                    <Pen className="icon-link" />
                   </a>
                 )}
-                    <img alt="" src={iconCommentQuestion} />
-                    <img alt="" src={iconFlag} />
-                    <img alt="" src={iconEyeSlash} />
-                    <img alt="" src={iconLink} />
-                    <img alt="" src={iconEllipsis} />
+                <CommentQuestion className="icon-link" />
+                <Flag className="icon-link" />
+                <EyeSlash className="icon-link" />
+                <Link className="icon-link" />
+                <Ellipsis className="icon-link" />
               </div>
             </>
           )}

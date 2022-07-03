@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef, MouseEvent} from 'react'
 import Question from '~/components/question'
+import iconMagnifyingGlass from '~/assets/icons/magnifying-glass.svg'
 
 type Props = {
   onSelect: (title: string) => void
@@ -67,9 +68,9 @@ export default function Search({onSelect}: Props) {
   return (
     <div>
       <input
-        type='search'
-        className='searchbar'
-        name='searchbar'
+        type="search"
+        className="searchbar"
+        name="searchbar"
         ref={inputRef}
         placeholder="Some starting questions below. Type your questions here..."
         onChange={(e) => handleChange(e.currentTarget.value, questions)}
@@ -79,7 +80,7 @@ export default function Search({onSelect}: Props) {
       <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
         {results.length > 0
           ? results.map(({title, score}) => <ResultItem {...{title, score, model, onSelect}} />)
-          : inputRef.current?.value && <div className="empty">(no results)</div>}
+          : inputRef.current?.value}
       </div>
     </div>
   )
@@ -106,7 +107,7 @@ const ResultItem = ({
 
   return (
     <button
-      className="transparent-button"
+      className="transparent-button result-item"
       key={title}
       title={`Score: ${score.toFixed(2)}, engine: ${model}`}
       onMouseDown={handleSelect}

@@ -54,18 +54,21 @@ export default function App() {
   return (
     <>
       <header>
-        <div className='logo-intro-group'>
+        <div className="logo-intro-group">
           <Link to="/" onClick={(e) => reset(e)}>
-            <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
+            <img
+              className="logo simplified-logo"
+              alt="logo"
+              width="150"
+              height="129"
+              src={logoSvg}
+            />
           </Link>
           <div className="intro">
             <h1>
               Welcome to <span className="highlight">stampy.ai</span>!
             </h1>
-              I can answer your questions about <br />
-              <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
-                artificial general intelligence safety
-              </a>
+            <div dangerouslySetInnerHTML={{__html: intro}} />
           </div>
         </div>
         <div className="icon-link-group">

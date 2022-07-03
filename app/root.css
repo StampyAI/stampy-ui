@@ -103,7 +103,7 @@ header {
 .logo-intro-group {
   width: 100%;
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
 }
 
 .intro a,
@@ -114,7 +114,7 @@ header {
 h1 {
   color: var(--colorTitle);
   margin: 4px 0 10px -2px; /* visually align */
-  font-size: clamp(1rem, 4.5vw, 3rem);
+  font-size: clamp(1rem, 4.5vw, 2.5rem);
   font-weight: 600;
   line-height: 1;
 }
@@ -155,22 +155,21 @@ h1 {
 .icon-link-group svg {
   width: 32px;
   height: 32px;
-  filter: var(--light, invert(0)) var(--dark, invert(1));
 }
 
-.actions img {
+.actions svg {
   width: 24px;
   height: 24px;
-  filter: var(--light, invert(0)) var(--dark, invert(1));
 }
 
+.actions svg:not(:hover) *:not(path[style*='fill:#333']),
 .icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
   fill: none !important;
 }
 
-.icon-link-group .icon-link:not(:hover) svg path[style*='stroke'] {
-  stroke: #333 !important;
-  stroke-width: 10 !important;
+.actions svg:not(:hover),
+.icon-link-group .icon-link:not(:hover) svg {
+  filter: var(--light, invert(0)) var(--dark, invert(1));
 }
 
 .icon-link:active {
@@ -251,6 +250,7 @@ article > h2::after {
   content: url('/assets/chevron-right.svg');
   width: 12px;
   height: 12px;
+  filter: var(--light, invert(0)) var(--dark, invert(1));
   transition: transform 400ms;
 }
 
@@ -373,6 +373,10 @@ footer > *:not(:last-child) {
   box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
 }
 
+.result-item {
+  line-height: 1;
+}
+
 .dropdown {
   color: black;
   background-color: #f6f6f6;
@@ -396,10 +400,6 @@ footer > *:not(:last-child) {
 
 .dropdown button:hover {
   background-color: #ddd;
-}
-
-.empty {
-  color: gray;
 }
 
 @media (max-width: 740px) {
