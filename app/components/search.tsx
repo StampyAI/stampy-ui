@@ -21,7 +21,6 @@ export default function Search({onSelect}: Props) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
-  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetch('/questions/allCanonical')
@@ -30,10 +29,6 @@ export default function Search({onSelect}: Props) {
         const newQuestions = data.map((title) => ({title, normalized: normalize(title)}))
         setQuestions(newQuestions)
 
-        const value = inputRef.current?.value
-        if (value) {
-          setTimeout(() => handleChange(value, newQuestions), 1000)
-        }
       })
 
     const handleWorker = (event: MessageEvent) => {
@@ -71,7 +66,6 @@ export default function Search({onSelect}: Props) {
         type="search"
         className="searchbar"
         name="searchbar"
-        ref={inputRef}
         placeholder="Search for more questions here..."
         onChange={(e) => handleChange(e.currentTarget.value, questions)}
         onFocus={() => setShowResults(true)}
