@@ -57,7 +57,7 @@ export default function Search({onSelect}: Props) {
   const handleChange = (value: string, currentQuestions: Question[]) => {
     runBaselineSearch(value, currentQuestions).then(setBaselineSearchResults)
 
-    console.debug('postMessag to tfWorker:', value)
+    console.debug('postMessage to tfWorker:', value)
     tfWorkerRef.current?.postMessage(value)
   }
 
@@ -72,13 +72,15 @@ export default function Search({onSelect}: Props) {
         className="searchbar"
         name="searchbar"
         ref={inputRef}
-        placeholder="Some starting questions below. Type your questions here..."
+        placeholder="Search for more questions here..."
         onChange={(e) => handleChange(e.currentTarget.value, questions)}
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
       <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
-        {results.map(({title, score}) => <ResultItem {...{title, score, model, onSelect}} />)}
+        {results.map(({title, score}) => (
+          <ResultItem {...{title, score, model, onSelect}} />
+        ))}
       </div>
     </div>
   )

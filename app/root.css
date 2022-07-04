@@ -84,20 +84,18 @@ header {
   display: flex;
   align-items: flex-start;
   padding: 24px 0 48px;
+  color: var(--colorTitle);
 }
 
 .logo {
-  width: clamp(130px, 20vw, 200px);
-  height: auto;
+  height: clamp(100px, 20vw, 150px);
+  width: auto;
   padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
 }
 
 .intro {
-  flex: 1;
   margin: min(23px, 3.5vw) 0 10px;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  font-weight: 400;
-  color: var(--colorTitle);
+  font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 .logo-intro-group {
@@ -155,21 +153,21 @@ h1 {
 .icon-link-group svg {
   width: 32px;
   height: 32px;
+  filter: var(--light, invert(0)) var(--dark, invert(1));
 }
 
 .actions svg {
   width: 24px;
   height: 24px;
+  filter: var(--light, invert(0.2)) var(--dark, invert(1));
 }
 
-.actions svg:not(:hover) *:not(path[style*='fill:#333']),
 .icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
   fill: none !important;
 }
 
-.actions svg:not(:hover),
-.icon-link-group .icon-link:not(:hover) svg {
-  filter: var(--light, invert(0)) var(--dark, invert(1));
+.actions svg:hover {
+  filter: invert(0);
 }
 
 .icon-link:active {
@@ -218,13 +216,6 @@ article {
   border-radius: 2px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: margin 400ms;
-}
-
-@keyframes fromLeft {
-  from {
-    transform: translateX(100vw);
-    max-height: 0;
-  }
 }
 
 article > h2 {
@@ -321,11 +312,20 @@ article > h2:hover::after {
   gap: 16px;
 }
 
+@keyframes fromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30vw);
+    max-height: 0;
+  }
+}
+
 article.related {
-  margin-left: var(--paddingSides);
+  margin-left: 32px;
   max-height: 999px;
-  animation: fromLeft 400ms ease-out;
+  animation: fromLeft 2s ease-out;
   will-change: margin-left;
+  opacity: 1;
 }
 
 article.related > h2 > .transparent-button,
@@ -408,6 +408,10 @@ footer > *:not(:last-child) {
     padding: 12px 0 12px;
   }
 
+  .intro {
+    line-height: 1.2;
+  }
+
   .logo-intro-group {
     width: 100%;
   }
@@ -418,6 +422,11 @@ footer > *:not(:last-child) {
     align-self: flex-start;
     flex-direction: row;
     justify-content: center;
+  }
+
+  .icon-link-group svg {
+    width: 24px;
+    height: 24px;
   }
 
   footer {
