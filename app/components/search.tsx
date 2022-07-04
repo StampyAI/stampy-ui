@@ -103,7 +103,7 @@ const ResultItem = ({
     <button
       className="transparent-button result-item"
       key={title}
-      title={`Score: ${score.toFixed(2)}, engine: ${model}`}
+      title={`score: ${score.toFixed(2)}, engine: ${model}`}
       onMouseDown={handleSelect}
       // onKeyDown={handleSelect} TODO: #13 figure out accessibility of not blurring on keyboard navigation
     >

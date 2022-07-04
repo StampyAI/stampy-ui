@@ -177,7 +177,7 @@ h1 {
 }
 
 .share::after {
-  content: 'Copied to clipboard';
+  content: 'copied to clipboard';
   text-transform: none;
   background: var(--bgColorCopied);
   color: black;

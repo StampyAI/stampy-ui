@@ -82,7 +82,7 @@ export default function Question({
               <div className="actions">
                 {answerEditLink && (
                   // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
-                  <a href={answerEditLink} target="_blank" title="edit this answer on the wiki">
+                  <a href={answerEditLink} target="_blank" title="edit answer">
                     <Pen className="icon-link" />
                   </a>
                 )}
