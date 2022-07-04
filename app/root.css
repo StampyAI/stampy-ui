@@ -238,10 +238,11 @@ article > h2 > .transparent-button {
 }
 
 article > h2::after {
-  content: url('/assets/chevron-right.svg');
-  width: 12px;
-  height: 12px;
-  filter: var(--light, invert(0)) var(--dark, invert(1));
+  content: '›';
+  margin-top: -8px;
+  font-size: 2em;
+  line-height: 0;
+  font-weight: normal;
   transition: transform 400ms;
 }
 
