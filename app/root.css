@@ -7,47 +7,32 @@
 }
 
 :root {
-  /* https://css-tricks.com/a-dry-approach-to-color-themes-in-css/ */
-  --light: initial;
-  --dark: ;
-  --bgColorQuestionTitle: var(--light, #bdf) var(--dark, #444);
-  --bgColorQuestionAnswer: var(--light, #eff) var(--dark, #333);
+  /* light theme: */
+  --bgColorQuestionTitle: #bdf;
+  --bgColorQuestionAnswer: #eff;
   --bgColorCopied: #fed;
-  --colorText: var(--light, #222) var(--dark, #eee);
-  --colorTitle: var(--light, #666) var(--dark, #bbb);
+  --colorText: #222;
+  --colorTitle: #666;
   --colorTitleHighlight: #d86;
-  --colorQuestionTitle: var(--light, #333) var(--dark, #ccc);
+  --colorQuestionTitle: #333;
+
+  /* same in both themes: */
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
   --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
-  background-image: url('/assets/coded-banner.svg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: top center;
-  background-size: 800px;
-}
 
-:root.dark {
-  --light: ;
-  --dark: initial;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --light: ;
-    --dark: initial;
-  }
-
-  :root.light {
-    --light: initial;
-    --dark: ;
-  }
+  /* dark theme at the end of file to overwrite all previous rules */
 }
 
 html {
   height: 100%;
   overflow-y: scroll;
+  background-image: url('/assets/coded-banner.svg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top center;
+  background-size: 800px;
 }
 
 body {
@@ -57,7 +42,6 @@ body {
   margin: auto;
   padding: 0 var(--paddingSides);
   color: var(--colorText);
-  background-color: var(--bgColor);
   display: flex;
   flex-direction: column;
   font-family: 'Open Sans', Arial, sans-serif;
@@ -153,13 +137,11 @@ h1 {
 .icon-link-group svg {
   width: 32px;
   height: 32px;
-  filter: var(--light, invert(0)) var(--dark, invert(1));
 }
 
 .actions svg {
   width: 24px;
   height: 24px;
-  filter: var(--light, invert(0.2)) var(--dark, invert(1));
 }
 
 .icon-link svg * {
@@ -170,14 +152,8 @@ h1 {
   fill: transparent !important;
 }
 
-.icon-link:hover svg {
-  filter: invert(0);
-}
-
 .icon-link:active {
-  filter: drop-shadow(
-    0 4px 8px var(--light, rgba(0, 0, 0, 0.1)) var(--dark, rgba(255, 255, 255, 0.2))
-  );
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .share::after {
@@ -246,7 +222,6 @@ article > h2::after {
   width: 12px;
   height: 12px;
   flex: none;
-  filter: var(--light, invert(0)) var(--dark, invert(1));
   transition: transform 400ms;
 }
 
@@ -369,13 +344,13 @@ footer > *:not(:last-child) {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .searchbar:focus {
   outline: 1px solid #bbb;
   border: none;
-  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
 .result-item {
@@ -439,7 +414,31 @@ footer > *:not(:last-child) {
   }
 
   footer > *:not(:last-child) {
-    border-right: 0px;
-    padding-right: 0px;
+    border-right: 0;
+    padding-right: 0;
   }
 }
+
+/* dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bgColorQuestionTitle: #444;
+    --bgColorQuestionAnswer: #333;
+    --bgColorCopied: #fed;
+    --colorText: #eee;
+    --colorTitle: #bbb;
+    --colorTitleHighlight: #d86;
+    --colorQuestionTitle: #ccc;
+  }
+
+  .icon-link svg path[style*='fill:#333'],
+  .icon-link svg path[style*='fill: rgb(51, 51, 51)'],
+  article > h2::after {
+    filter: invert(1);
+  }
+
+  .icon-link:active {
+    filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.2));
+  }
+}
+/* do not add more rules below, add them above dark theme */
