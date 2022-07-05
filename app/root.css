@@ -162,11 +162,11 @@ h1 {
   filter: var(--light, invert(0.2)) var(--dark, invert(1));
 }
 
-.icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
+.icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
   fill: none !important;
 }
 
-.actions svg:hover {
+.icon-link:hover svg {
   filter: invert(0);
 }
 

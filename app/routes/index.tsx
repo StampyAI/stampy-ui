@@ -73,15 +73,15 @@ export default function App() {
             className={`icon-link transparent-button share ${copied ? 'copied' : ''}`}
             onClick={shareLink}
           >
-            <ShareNodes className="icon-link" />
+            <ShareNodes />
             Share link
           </button>
           <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
-            <Users className="icon-link" />
+            <Users />
             Get Involved
           </a>
           <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
-            <Code className="icon-link" />
+            <Code />
             Help Code
           </a>
         </div>
