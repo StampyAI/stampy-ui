@@ -13,7 +13,7 @@ const SvgUsers = (props) => (
     xmlSpace="preserve"
     {...props}
   >
-    <style>{'.users_svg__st0{fill:#eeed5b}.users_svg__st1{fill:#e8a535}'}</style>
+    <style>{'.users_svg__st0{fill:#ff0}.users_svg__st1{fill:orange}'}</style>
     <path
       className="users_svg__st0"
       d="M465 274c0-7.8-.6-15.5-1.8-23 3.2-.3 6.5-.5 9.8-.5h68.9c54.2 0 98.1 41.2 98.1 92 0 10.2-8.8 18.4-19.6 18.4H437.3c17.9-24.2 28.2-54.3 27.7-86.9zM176 274c0-7.8.6-15.5 1.8-23-3.2-.3-6.5-.5-9.8-.5H99.1c-54.2 0-98.1 41.2-98.1 92C1 352.8 9.8 361 20.6 361h183.1c-17.9-24.3-28.2-54.4-27.7-87z"

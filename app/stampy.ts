@@ -25,11 +25,6 @@ type QueryResults = {
   }
 }
 
-type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
-function typedBoolean<T>(value: T): value is Truthy<T> {
-  return !!value
-}
-
 const reQuestion = /{{[^|]+\|([^}]+)}}/g
 const answerEditLinkBase = 'https://stampy.ai/w/index.php?action=formedit&title='
 
@@ -132,8 +127,6 @@ const getContent = async (title: string): Promise<string> => {
   }
   return content
 }
-
-export const getIntro = async () => (await getHtml('UI intro')).text
 
 export const getQuestionDetail = (question: string) => getHtml(question)
 

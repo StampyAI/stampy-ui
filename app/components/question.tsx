@@ -3,7 +3,7 @@ import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
-import iconPen from '~/assets/icons/pen.svg'
+import {Pen} from '~/components/icons-generated'
 
 export default function Question({
   questionProps,
@@ -36,7 +36,7 @@ export default function Question({
 
   const [showLongDescription, setShowLongDescription] = useState(false)
   const answerRef = useRef<HTMLDivElement>(null)
-  const isExpandedAfterLoading = isExpanded && refreshOnToggleAfterLoading.current === false
+  const isExpandedAfterLoading = isExpanded && !refreshOnToggleAfterLoading.current
   useEffect(() => {
     if (isExpandedAfterLoading) {
       const el = answerRef.current
@@ -82,8 +82,13 @@ export default function Question({
               <div className="actions">
                 {answerEditLink && (
                   // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
-                  <a href={answerEditLink} target="_blank" title="edit this answer on the wiki">
-                    <img alt="" src={iconPen} />
+                  <a
+                    className="icon-link"
+                    href={answerEditLink}
+                    target="_blank"
+                    title="edit answer"
+                  >
+                    <Pen />
                   </a>
                 )}
               </div>

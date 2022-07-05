@@ -5,7 +5,7 @@ import {useLoaderData, Link} from '@remix-run/react'
 import copy from 'copy-to-clipboard'
 
 import type {Question as QuestionType} from '~/stampy'
-import {getIntro, getInitialQuestions} from '~/stampy'
+import {getInitialQuestions} from '~/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
@@ -15,22 +15,17 @@ import logoSvg from '~/assets/stampy-logo.svg'
 import {ShareNodes, Users, Code} from '~/components/icons-generated'
 
 type LoaderData = {
-  intro: string
   initialQuestions: QuestionType[]
 }
 
 export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
-  let intro =
-    'I can usually answer questions about AI alignment, but experiencing some backend problems right now ¯\\_(ツ)_/¯'
   let initialQuestions: QuestionType[] = []
   try {
-    intro = await getIntro()
     initialQuestions = await getInitialQuestions(request)
   } catch (e) {
     console.error(e)
   }
   return {
-    intro,
     initialQuestions,
   }
 }
@@ -38,7 +33,7 @@ export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
-  const {intro, initialQuestions} = useLoaderData<LoaderData>()
+  const {initialQuestions} = useLoaderData<LoaderData>()
   const {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle} =
     useQuestionStateInUrl(initialQuestions)
 
@@ -54,34 +49,34 @@ export default function App() {
   return (
     <>
       <header>
-        <Link to="/" onClick={(e) => reset(e)}>
-          <img className="logo simplified-logo" alt="logo" width="150" height="129" src={logoSvg} />
-        </Link>
-        <div className="intro">
-          <h1>
-            Welcome to <span className="highlight">stampy.ai</span>!
-          </h1>
-          <h3>
-            I can answer your questions about <br />
+        <div className="logo-intro-group">
+          <Link to="/" onClick={(e) => reset(e)}>
+            <img className="logo simplified-logo" alt="logo" src={logoSvg} />
+          </Link>
+          <div className="intro">
+            <h1>
+              Welcome to <span className="highlight">stampy.ai</span>!
+            </h1>
+            I can answer questions about{' '}
             <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
               artificial general intelligence safety
             </a>
-          </h3>
+          </div>
         </div>
         <div className="icon-link-group">
           <button
             className={`icon-link transparent-button share ${copied ? 'copied' : ''}`}
             onClick={shareLink}
           >
-            <ShareNodes className="icon-link" />
+            <ShareNodes />
             Share link
           </button>
           <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
-            <Users className="icon-link" />
+            <Users />
             Get Involved
           </a>
           <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
-            <Code className="icon-link" />
+            <Code />
             Help Code
           </a>
         </div>

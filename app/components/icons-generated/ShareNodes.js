@@ -15,7 +15,7 @@ const SvgShareNodes = (props) => (
       cy={112}
       r={80}
       style={{
-        fill: '#fc80ff',
+        fill: '#f0f',
       }}
     />
     <circle
@@ -31,7 +31,7 @@ const SvgShareNodes = (props) => (
       cy={256}
       r={80}
       style={{
-        fill: '#707bfc',
+        fill: '#8080ff',
       }}
     />
     <path

@@ -20,7 +20,6 @@ export default function Search({onSelect}: Props) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
-  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     fetch('/questions/allCanonical')
@@ -28,11 +27,6 @@ export default function Search({onSelect}: Props) {
       .then((data: string[]) => {
         const newQuestions = data.map((title) => ({title, normalized: normalize(title)}))
         setQuestions(newQuestions)
-
-        const value = inputRef.current?.value
-        if (value) {
-          setTimeout(() => handleChange(value, newQuestions), 1000)
-        }
       })
 
     const handleWorker = (event: MessageEvent) => {
@@ -56,7 +50,7 @@ export default function Search({onSelect}: Props) {
   const handleChange = (value: string, currentQuestions: Question[]) => {
     runBaselineSearch(value, currentQuestions).then(setBaselineSearchResults)
 
-    console.debug('postMessag to tfWorker:', value)
+    console.debug('postMessage to tfWorker:', value)
     tfWorkerRef.current?.postMessage(value)
   }
 
@@ -68,18 +62,17 @@ export default function Search({onSelect}: Props) {
     <div>
       <input
         type="search"
-        id="searchbar"
+        className="searchbar"
         name="searchbar"
-        ref={inputRef}
-        placeholder="Below are some questions to start. What other questions do you have?"
+        placeholder="Search for more questions here..."
         onChange={(e) => handleChange(e.currentTarget.value, questions)}
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
       <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
-        {results.length > 0
-          ? results.map(({title, score}) => <ResultItem {...{title, score, model, onSelect}} />)
-          : inputRef.current?.value && <div className="empty">(no results)</div>}
+        {results.map(({title, score}) => (
+          <ResultItem {...{title, score, model, onSelect}} />
+        ))}
       </div>
     </div>
   )
@@ -106,9 +99,9 @@ const ResultItem = ({
 
   return (
     <button
-      className="transparent-button"
+      className="transparent-button result-item"
       key={title}
-      title={`Score: ${score.toFixed(2)}, engine: ${model}`}
+      title={`score: ${score.toFixed(2)}, engine: ${model}`}
       onMouseDown={handleSelect}
       // onKeyDown={handleSelect} TODO: #13 figure out accessibility of not blurring on keyboard navigation
     >

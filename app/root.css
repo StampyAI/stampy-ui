@@ -7,47 +7,32 @@
 }
 
 :root {
-  /* https://css-tricks.com/a-dry-approach-to-color-themes-in-css/ */
-  --light: initial;
-  --dark: ;
-  --bgColorQuestionTitle: var(--light, #bdf) var(--dark, #444);
-  --bgColorQuestionAnswer: var(--light, #eff) var(--dark, #333);
+  /* light theme: */
+  --bgColorQuestionTitle: #bdf;
+  --bgColorQuestionAnswer: #eff;
   --bgColorCopied: #fed;
-  --colorText: var(--light, #222) var(--dark, #eee);
-  --colorTitle: var(--light, #666) var(--dark, #bbb);
+  --colorText: #222;
+  --colorTitle: #666;
   --colorTitleHighlight: #d86;
-  --colorQuestionTitle: var(--light, #333) var(--dark, #ccc);
+  --colorQuestionTitle: #333;
+
+  /* same in both themes: */
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
   --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
-  background-image: url('/assets/coded-banner.svg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: top center;
-  background-size: 800px;
-}
 
-:root.dark {
-  --light: ;
-  --dark: initial;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --light: ;
-    --dark: initial;
-  }
-
-  :root.light {
-    --light: initial;
-    --dark: ;
-  }
+  /* dark theme at the end of file to overwrite all previous rules */
 }
 
 html {
   height: 100%;
   overflow-y: scroll;
+  background-image: url('/assets/coded-banner.svg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top center;
+  background-size: 800px;
 }
 
 body {
@@ -57,11 +42,10 @@ body {
   margin: auto;
   padding: 0 var(--paddingSides);
   color: var(--colorText);
-  background-color: var(--bgColor);
   display: flex;
   flex-direction: column;
   font-family: 'Open Sans', Arial, sans-serif;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 a,
@@ -84,43 +68,42 @@ header {
   display: flex;
   align-items: flex-start;
   padding: 24px 0 48px;
+  color: var(--colorTitle);
 }
 
 .logo {
-  width: clamp(100px, 30vw, 201px);
-  height: auto;
+  height: clamp(100px, 20vw, 150px);
+  width: auto;
   padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
 }
 
 .intro {
-  flex: 1;
   margin: min(23px, 3.5vw) 0 10px;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.logo-intro-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.intro a,
+.intro a:visited {
+  color: var(--colorButtonText);
 }
 
 h1 {
   color: var(--colorTitle);
-  font-size: clamp(1.5rem, 7vw, 2.5rem);
+  margin: 4px 0 10px -2px; /* visually align */
+  font-size: clamp(1rem, 4.5vw, 2.5rem);
   font-weight: 600;
-  margin: 4px 0 16px -2px; /* visually align */
   line-height: 1;
-}
-
-h3 {
-  color: var(--colorTitle);
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1.5;
 }
 
 .highlight {
   font-family: 'Courier New', Courier, monospace;
   color: var(--colorTitleHighlight);
-}
-
-h3 a,
-h3 a:visited {
-  color: var(--colorButtonText);
 }
 
 .icon-link-group {
@@ -133,19 +116,6 @@ h3 a:visited {
   gap: 16px;
   font-size: 0.6rem;
   transition: opacity 1s;
-}
-
-@media (max-width: 550px) {
-  .intro {
-    min-height: 250px;
-  }
-
-  .icon-link-group {
-    position: absolute;
-    margin: 25vw 0 0 calc(14vw - 50px);
-    padding: 16px;
-    align-self: flex-start;
-  }
 }
 
 .icon-link-group > *,
@@ -164,32 +134,30 @@ h3 a:visited {
   cursor: pointer;
 }
 
-.icon-link-group svg,
-.actions img {
+.icon-link-group svg {
   width: 32px;
   height: 32px;
-  filter: var(--light, invert(0)) var(--dark, invert(1));
-}
-.icon-link-group .icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
-  fill: none !important;
-}
-.icon-link-group .icon-link:not(:hover) svg path[style*='stroke'] {
-  stroke: #333 !important;
-  stroke-width: 10 !important;
 }
 
-.icon-link {
-  transition: all 1s ease;
+.actions svg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-link svg * {
+  transition: fill 300ms;
+}
+
+.icon-link:not(:hover) svg *:not(path[style*='fill:#333'], path[style*='fill: rgb(51, 51, 51)']) {
+  fill: transparent !important;
 }
 
 .icon-link:active {
-  filter: drop-shadow(
-    0 4px 8px var(--light, rgba(0, 0, 0, 0.1)) var(--dark, rgba(255, 255, 255, 0.2))
-  );
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .share::after {
-  content: 'Copied to clipboard';
+  content: 'copied to clipboard';
   text-transform: none;
   background: var(--bgColorCopied);
   color: black;
@@ -198,12 +166,12 @@ h3 a:visited {
   position: absolute;
   pointer-events: none;
   opacity: 0;
-  transform: translate(0, 2em);
+  transform: translate(0, -3.2em);
 }
 
 .share.copied::after {
   opacity: 1;
-  transform: translate(0, 3em);
+  transform: translate(0, 3.2em);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -213,7 +181,7 @@ h3 a:visited {
   }
 
   .share.copied::after {
-    transition: opacity 100ms, transform 100ms;
+    transition: opacity 200ms, transform 200ms;
   }
 }
 
@@ -230,18 +198,11 @@ article {
   transition: margin 400ms;
 }
 
-@keyframes fromLeft {
-  from {
-    transform: translateX(100vw);
-    max-height: 0;
-  }
-}
-
 article > h2 {
-  padding: 9px var(--paddingSides) 7px;
+  padding: 9px var(--paddingSides) 10px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 400;
   line-height: 1.2;
   cursor: pointer;
@@ -257,16 +218,15 @@ article > h2 > .transparent-button {
 }
 
 article > h2::after {
-  content: '›';
-  margin-top: -8px;
-  font-size: 2em;
-  line-height: 0;
-  font-weight: normal;
+  content: url('/assets/chevron-right.svg');
+  width: 12px;
+  height: 12px;
+  flex: none;
   transition: transform 400ms;
 }
 
 article > h2:hover::after {
-  transform: rotate(10deg);
+  transform: rotate(20deg);
 }
 
 .expanded h2::after {
@@ -274,7 +234,7 @@ article > h2:hover::after {
 }
 
 .expanded h2:hover::after {
-  transform: rotate(80deg) translateX(40%);
+  transform: rotate(60deg) translateX(40%);
 }
 
 .transparent-button {
@@ -332,11 +292,20 @@ article > h2:hover::after {
   gap: 16px;
 }
 
+@keyframes fromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30vw);
+    max-height: 0;
+  }
+}
+
 article.related {
-  margin-left: var(--paddingSides);
+  margin-left: 32px;
   max-height: 999px;
-  animation: fromLeft 400ms ease-out;
+  animation: fromLeft 2s ease-out;
   will-change: margin-left;
+  opacity: 1;
 }
 
 article.related > h2 > .transparent-button,
@@ -346,7 +315,7 @@ article.related .answer {
 }
 
 footer {
-  --space: 16px;
+  --space: 12px;
   align-self: center;
   margin-top: auto;
   padding: 100px var(--space) var(--space);
@@ -354,6 +323,7 @@ footer {
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space);
+  font-size: 0.8rem;
   line-height: 1;
 }
 
@@ -367,20 +337,24 @@ footer > *:not(:last-child) {
   padding-right: var(--space);
 }
 
-#searchbar {
+.searchbar {
   box-sizing: border-box;
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
-#searchbar:focus {
+.searchbar:focus {
   outline: 1px solid #bbb;
   border: none;
-  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.result-item {
+  line-height: 1;
 }
 
 .dropdown {
@@ -408,6 +382,63 @@ footer > *:not(:last-child) {
   background-color: #ddd;
 }
 
-.empty {
-  color: gray;
+@media (max-width: 740px) {
+  header {
+    flex-direction: column;
+    padding: 12px 0 12px;
+  }
+
+  .intro {
+    line-height: 1.2;
+  }
+
+  .logo-intro-group {
+    width: 100%;
+  }
+
+  .icon-link-group {
+    width: 100%;
+    padding: 16px;
+    align-self: flex-start;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .icon-link-group svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  footer {
+    font-size: 0.75rem;
+  }
+
+  footer > *:not(:last-child) {
+    border-right: 0;
+    padding-right: 0;
+  }
 }
+
+/* dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bgColorQuestionTitle: #444;
+    --bgColorQuestionAnswer: #333;
+    --bgColorCopied: #fed;
+    --colorText: #eee;
+    --colorTitle: #bbb;
+    --colorTitleHighlight: #d86;
+    --colorQuestionTitle: #ccc;
+  }
+
+  .icon-link svg path[style*='fill:#333'],
+  .icon-link svg path[style*='fill: rgb(51, 51, 51)'],
+  article > h2::after {
+    filter: invert(1);
+  }
+
+  .icon-link:active {
+    filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.2));
+  }
+}
+/* do not add more rules below, add them above dark theme */
