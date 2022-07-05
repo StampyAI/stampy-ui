@@ -5,7 +5,7 @@ export default function useRerenderOnResize(): void {
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
-    const forceRerender = (e: unknown) => {
+    const forceRerender = () => {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
         set({})

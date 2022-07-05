@@ -5,7 +5,7 @@ import {useLoaderData, Link} from '@remix-run/react'
 import copy from 'copy-to-clipboard'
 
 import type {Question as QuestionType} from '~/stampy'
-import {getIntro, getInitialQuestions} from '~/stampy'
+import {getInitialQuestions} from '~/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
@@ -15,22 +15,17 @@ import logoSvg from '~/assets/stampy-logo.svg'
 import {ShareNodes, Users, Code} from '~/components/icons-generated'
 
 type LoaderData = {
-  intro: string
   initialQuestions: QuestionType[]
 }
 
 export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
-  let intro =
-    'I can usually answer questions about AI alignment, but experiencing some backend problems right now ¯\\_(ツ)_/¯'
   let initialQuestions: QuestionType[] = []
   try {
-    intro = await getIntro()
     initialQuestions = await getInitialQuestions(request)
   } catch (e) {
     console.error(e)
   }
   return {
-    intro,
     initialQuestions,
   }
 }
@@ -38,7 +33,7 @@ export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
-  const {intro, initialQuestions} = useLoaderData<LoaderData>()
+  const {initialQuestions} = useLoaderData<LoaderData>()
   const {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle} =
     useQuestionStateInUrl(initialQuestions)
 

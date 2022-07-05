@@ -1,6 +1,5 @@
 import {useState, useEffect, useRef, MouseEvent} from 'react'
 import Question from '~/components/question'
-import iconMagnifyingGlass from '~/assets/icons/magnifying-glass.svg'
 
 type Props = {
   onSelect: (title: string) => void
@@ -28,7 +27,6 @@ export default function Search({onSelect}: Props) {
       .then((data: string[]) => {
         const newQuestions = data.map((title) => ({title, normalized: normalize(title)}))
         setQuestions(newQuestions)
-
       })
 
     const handleWorker = (event: MessageEvent) => {

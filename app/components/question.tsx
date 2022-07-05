@@ -36,7 +36,7 @@ export default function Question({
 
   const [showLongDescription, setShowLongDescription] = useState(false)
   const answerRef = useRef<HTMLDivElement>(null)
-  const isExpandedAfterLoading = isExpanded && refreshOnToggleAfterLoading.current === false
+  const isExpandedAfterLoading = isExpanded && !refreshOnToggleAfterLoading.current
   useEffect(() => {
     if (isExpandedAfterLoading) {
       const el = answerRef.current
