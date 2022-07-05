@@ -1,6 +1,7 @@
 // server side script called by GitHub Actions to periodically generate encodings stampy.ai wiki questions
 
 // npm install process node-fetch @tensorflow/tfjs-node @tensorflow-models/universal-sentence-encoder
+import * as tf from '@tensorflow/tfjs-node'
 import * as use from '@tensorflow-models/universal-sentence-encoder'
 import fetch from 'node-fetch'
 import * as fs from 'fs'
