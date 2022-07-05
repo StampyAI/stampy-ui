@@ -162,8 +162,12 @@ h1 {
   filter: var(--light, invert(0.2)) var(--dark, invert(1));
 }
 
-.icon-link:not(:hover) svg *:not(path[style*='fill:#333']) {
-  fill: none !important;
+.icon-link svg * {
+  transition: fill 300ms;
+}
+
+.icon-link:not(:hover) svg *:not(path[style*='fill:#333'], path[style*='fill: rgb(51, 51, 51)']) {
+  fill: transparent !important;
 }
 
 .icon-link:hover svg {
