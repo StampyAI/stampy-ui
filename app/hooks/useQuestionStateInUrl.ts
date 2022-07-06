@@ -95,6 +95,9 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   const onLazyLoadQuestion = (question: Question) => {
     setQuestionMap((currentMap) => {
       const newMap = new Map(currentMap)
+      if (question.pageid !== tmpPageId && question.title === newMap.get(tmpPageId)?.title) {
+        newMap.delete(tmpPageId)
+      }
       updateQuestionMap(question, newMap)
       return newMap
     })
@@ -104,7 +107,9 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     // if the question is already loaded, move it to top
     for (const q of questionMap.values()) {
       if (title === q.title) {
-        toggleQuestion(q, {moveToTop: true})
+        if (q.pageid !== tmpPageId) {
+          toggleQuestion(q, {moveToTop: true})
+        }
         return
       }
     }
