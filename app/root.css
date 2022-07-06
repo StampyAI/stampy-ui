@@ -353,10 +353,6 @@ footer > *:not(:last-child) {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
-.result-item {
-  line-height: 1;
-}
-
 .dropdown {
   color: black;
   background-color: #f6f6f6;
@@ -369,7 +365,8 @@ footer > *:not(:last-child) {
   display: none;
 }
 
-.dropdown button {
+.result-item {
+  line-height: 1;
   cursor: pointer;
   color: currentColor;
   padding: 12px 16px;
@@ -378,8 +375,14 @@ footer > *:not(:last-child) {
   width: 100%;
 }
 
-.dropdown button:hover {
+.result-item:hover {
   background-color: #ddd;
+}
+
+.result-item.already-open {
+  color: gray;
+  cursor: default;
+  background-color: transparent;
 }
 
 @media (max-width: 740px) {
