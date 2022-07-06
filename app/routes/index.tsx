@@ -46,6 +46,10 @@ export default function App() {
     setTimeout(() => setCopied(false), 1000)
   }
 
+  const openQuestionTitles = questions
+    .filter(({questionState}) => questionState === '_')
+    .map(({title}) => title)
+
   return (
     <>
       <header>
@@ -82,7 +86,7 @@ export default function App() {
         </div>
       </header>
       <main>
-        <Search onSelect={selectQuestionByTitle} />
+        <Search openQuestionTitles={openQuestionTitles} onSelect={selectQuestionByTitle} />
         {questions.map((questionProps) => (
           <Question
             key={questionProps.pageid}

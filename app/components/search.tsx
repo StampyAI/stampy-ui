@@ -2,6 +2,7 @@ import {useState, useEffect, useRef, MouseEvent} from 'react'
 import Question from '~/components/question'
 
 type Props = {
+  openQuestionTitles: string[]
   onSelect: (title: string) => void
 }
 
@@ -14,7 +15,7 @@ type SearchResult = Question & {
   score: number
 }
 
-export default function Search({onSelect}: Props) {
+export default function Search({openQuestionTitles, onSelect}: Props) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
@@ -70,9 +71,18 @@ export default function Search({onSelect}: Props) {
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
       <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
-        {results.map(({title, score}) => (
-          <ResultItem {...{title, score, model, onSelect}} />
-        ))}
+        {showResults &&
+          results.map(({title, score}) => (
+            <ResultItem
+              {...{
+                title,
+                score,
+                model,
+                onSelect,
+                isAlreadyOpen: openQuestionTitles.includes(title),
+              }}
+            />
+          ))}
       </div>
     </div>
   )
@@ -83,11 +93,13 @@ const ResultItem = ({
   score,
   model,
   onSelect,
+  isAlreadyOpen,
 }: {
   title: string
   score: number
   model: string
   onSelect: (t: string) => void
+  isAlreadyOpen: boolean
 }) => {
   const handleSelect = (e: MouseEvent) => {
     if (e.ctrlKey || e.metaKey || e.shiftKey) {
@@ -96,12 +108,15 @@ const ResultItem = ({
     }
     onSelect(title)
   }
+  const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
+    isAlreadyOpen ? '(already open)' : ''
+  }`
 
   return (
     <button
-      className="transparent-button result-item"
+      className={`transparent-button result-item ${isAlreadyOpen ? 'already-open' : ''}`}
       key={title}
-      title={`score: ${score.toFixed(2)}, engine: ${model}`}
+      title={tooltip}
       onMouseDown={handleSelect}
       // onKeyDown={handleSelect} TODO: #13 figure out accessibility of not blurring on keyboard navigation
     >
