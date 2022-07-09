@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo} from 'react'
+import {useState, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import type {Question, QuestionState} from '~/stampy'
@@ -33,6 +33,21 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     return initialMap
   })
 
+  const [canonicallyAnsweredQuestion, setCanonicallyAnsweredQuestions] = useState<string[]>([])
+  const canonicalQuestionTitleSet = useMemo(
+    () => new Set(canonicallyAnsweredQuestion),
+    [canonicallyAnsweredQuestion]
+  )
+
+  useEffect(() => {
+    // not needed for initial screen => lazy load on client
+    fetch('/questions/allCanonicallyAnswered')
+      .then((r) => r.json())
+      .then((data: string[]) => {
+        setCanonicallyAnsweredQuestions(data)
+      })
+  }, [])
+
   useEffect(() => {
     if (transition.location) {
       const state = new URLSearchParams(transition.location.search).get('state')
@@ -46,7 +61,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
 
   const initialCollapsedState = useMemo(
     () => initialQuestions.map(({pageid}) => `${pageid}-`).join(''),
-    []
+    [initialQuestions]
   )
   const questions: Question[] = useMemo(() => {
     return getStateEntries(stateString ?? initialCollapsedState).map(([pageid, questionState]) => ({
@@ -58,7 +73,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       ...questionMap.get(pageid),
       questionState,
     }))
-  }, [stateString, questionMap])
+  }, [stateString, initialCollapsedState, questionMap])
 
   const reset = (event: MouseEvent) => {
     event.preventDefault()
@@ -66,33 +81,44 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     setStateString(null)
   }
 
-  const toggleQuestion = (questionProps: Question, options?: {moveToTop?: boolean}) => {
-    const {pageid, relatedQuestions} = questionProps
-    let currentState = stateString ?? initialCollapsedState
-    if (options?.moveToTop) {
-      const removePageRe = new RegExp(`${pageid}.|${tmpPageId}.`, 'g')
-      currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
-    }
-    const newRelatedQuestions = relatedQuestions.filter(
-      (q) => q.pageid && !currentState.includes(q.pageid.toString())
-    )
-    let newState = getStateEntries(currentState)
-      .map(([k, v]) => {
-        if (k === pageid) {
-          const newValue: QuestionState = v === '_' ? '-' : '_'
-          const related = newRelatedQuestions.map((r) => (r.pageid ? `${r.pageid}r` : '')).join('')
-          return `${k}${newValue}${related}`
-        }
-        return `${k}${v}`
-      })
-      .join('')
-    const newSearchParams = new URLSearchParams(remixSearchParams)
-    newSearchParams.set('state', newState)
-    history.replaceState(newState, '', '?' + newSearchParams.toString())
-    setStateString(newState)
-  }
+  const toggleQuestion = useCallback(
+    (questionProps: Question, options?: {moveToTop?: boolean}) => {
+      const {pageid, relatedQuestions} = questionProps
+      let currentState = stateString ?? initialCollapsedState
+      if (options?.moveToTop) {
+        const removePageRe = new RegExp(`${pageid}.|${tmpPageId}.`, 'g')
+        currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
+      }
 
-  const onLazyLoadQuestion = (question: Question) => {
+      const newRelatedQuestions = relatedQuestions.filter((q) => {
+        const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
+        // hide already displayed questions, detect duplicates by title (pageid can be different due to redirects)
+        // TODO: #25 relocate already displayed to slide in as a new related one
+        const isAlreadyDisplayed = questions.some(({title}) => title === q.title)
+        return hasCanonicalAnswer && !isAlreadyDisplayed
+      })
+
+      const newState = getStateEntries(currentState)
+        .map(([k, v]) => {
+          if (k === pageid) {
+            const newValue: QuestionState = v === '_' ? '-' : '_'
+            const related = newRelatedQuestions
+              .map((r) => (r.pageid ? `${r.pageid}r` : ''))
+              .join('')
+            return `${k}${newValue}${related}`
+          }
+          return `${k}${v}`
+        })
+        .join('')
+      const newSearchParams = new URLSearchParams(remixSearchParams)
+      newSearchParams.set('state', newState)
+      history.replaceState(newState, '', '?' + newSearchParams.toString())
+      setStateString(newState)
+    },
+    [canonicalQuestionTitleSet, initialCollapsedState, questions, remixSearchParams, stateString]
+  )
+
+  const onLazyLoadQuestion = useCallback((question: Question) => {
     setQuestionMap((currentMap) => {
       const newMap = new Map(currentMap)
       if (question.pageid !== tmpPageId && question.title === newMap.get(tmpPageId)?.title) {
@@ -101,36 +127,46 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       updateQuestionMap(question, newMap)
       return newMap
     })
-  }
+  }, [])
 
-  const selectQuestionByTitle = (title: string) => {
-    // if the question is already loaded, move it to top
-    for (const q of questionMap.values()) {
-      if (title === q.title) {
-        if (q.pageid !== tmpPageId) {
-          toggleQuestion(q, {moveToTop: true})
+  const selectQuestionByTitle = useCallback(
+    (title: string) => {
+      // if the question is already loaded, move it to top
+      for (const q of questionMap.values()) {
+        if (title === q.title) {
+          if (q.pageid !== tmpPageId) {
+            toggleQuestion(q, {moveToTop: true})
+          }
+          return
         }
-        return
       }
-    }
-    // else load new question
-    const tmpQuestion = {
-      pageid: tmpPageId,
-      title,
-      text: null,
-      answerEditLink: null,
-      relatedQuestions: [],
-    }
-    onLazyLoadQuestion(tmpQuestion)
-    toggleQuestion(tmpQuestion, {moveToTop: true})
+      // else load new question
+      const tmpQuestion = {
+        pageid: tmpPageId,
+        title,
+        text: null,
+        answerEditLink: null,
+        relatedQuestions: [],
+      }
+      onLazyLoadQuestion(tmpQuestion)
+      toggleQuestion(tmpQuestion, {moveToTop: true})
 
-    fetch(`/questions/${encodeURIComponent(title)}`)
-      .then((response) => response.json())
-      .then((newQuestion: Question) => {
-        onLazyLoadQuestion(newQuestion)
-        toggleQuestion(newQuestion, {moveToTop: true})
-      })
+      fetch(`/questions/${encodeURIComponent(title)}`)
+        .then((response) => response.json())
+        .then((newQuestion: Question) => {
+          onLazyLoadQuestion(newQuestion)
+          toggleQuestion(newQuestion, {moveToTop: true})
+        })
+    },
+    [onLazyLoadQuestion, questionMap, toggleQuestion]
+  )
+
+  return {
+    questions,
+    canonicallyAnsweredQuestion,
+    reset,
+    toggleQuestion,
+    onLazyLoadQuestion,
+    selectQuestionByTitle,
   }
-
-  return {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle}
 }

@@ -28,7 +28,7 @@ export default function Question({
           }
         })
     }
-  }, [pageid, text])
+  }, [pageid, text, onLazyLoadQuestion, onToggle])
 
   const isExpanded = questionState === '_'
   const isRelated = questionState === 'r'
@@ -44,8 +44,8 @@ export default function Question({
       const hideEl = el?.querySelector('.card-hide-longdesc')
 
       if (showEl) {
-        let showLong = () => setShowLongDescription(true)
-        let hideLong = () => setShowLongDescription(false)
+        const showLong = () => setShowLongDescription(true)
+        const hideLong = () => setShowLongDescription(false)
 
         // TODO: #13 change to accessible button/link instead of <div>
         showEl.addEventListener('click', showLong)
@@ -86,6 +86,7 @@ export default function Question({
                     className="icon-link"
                     href={answerEditLink}
                     target="_blank"
+                    rel="noreferrer"
                     title="edit answer"
                   >
                     <Pen />

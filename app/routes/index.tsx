@@ -34,8 +34,14 @@ export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
   const {initialQuestions} = useLoaderData<LoaderData>()
-  const {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle} =
-    useQuestionStateInUrl(initialQuestions)
+  const {
+    questions,
+    canonicallyAnsweredQuestion,
+    reset,
+    toggleQuestion,
+    onLazyLoadQuestion,
+    selectQuestionByTitle,
+  } = useQuestionStateInUrl(initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
@@ -86,7 +92,11 @@ export default function App() {
         </div>
       </header>
       <main>
-        <Search openQuestionTitles={openQuestionTitles} onSelect={selectQuestionByTitle} />
+        <Search
+          canonicalQuestionTitles={canonicallyAnsweredQuestion}
+          openQuestionTitles={openQuestionTitles}
+          onSelect={selectQuestionByTitle}
+        />
         {questions.map((questionProps) => (
           <Question
             key={questionProps.pageid}

@@ -1,6 +1,6 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {getAllCanonicalQuestions} from '~/stampy'
+import {getAllCanonicallyAnsweredQuestions} from '~/stampy'
 
 export const loader: LoaderFunction = async () => {
-  return await getAllCanonicalQuestions()
+  return await getAllCanonicallyAnsweredQuestions()
 }
