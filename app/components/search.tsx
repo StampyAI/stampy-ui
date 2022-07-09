@@ -1,7 +1,8 @@
-import {useState, useEffect, useRef, MouseEvent} from 'react'
+import {useState, useEffect, useRef, MouseEvent, useMemo} from 'react'
 import Question from '~/components/question'
 
 type Props = {
+  canonicalQuestionTitles: string[]
   openQuestionTitles: string[]
   onSelect: (title: string) => void
 }
@@ -15,21 +16,18 @@ type SearchResult = Question & {
   score: number
 }
 
-export default function Search({openQuestionTitles, onSelect}: Props) {
-  const [questions, setQuestions] = useState<Question[]>([])
+export default function Search({canonicalQuestionTitles, openQuestionTitles, onSelect}: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
 
-  useEffect(() => {
-    fetch('/questions/allCanonical')
-      .then((r) => r.json())
-      .then((data: string[]) => {
-        const newQuestions = data.map((title) => ({title, normalized: normalize(title)}))
-        setQuestions(newQuestions)
-      })
+  const canonicalQuestionsNormalized = useMemo(
+    () => canonicalQuestionTitles.map((title) => ({title, normalized: normalize(title)})),
+    [canonicalQuestionTitles]
+  )
 
+  useEffect(() => {
     const handleWorker = (event: MessageEvent) => {
       const {data} = event
       console.debug('onmessage from tfWorker:', data)
@@ -48,8 +46,8 @@ export default function Search({openQuestionTitles, onSelect}: Props) {
     initWorker()
   }, [])
 
-  const handleChange = (value: string, currentQuestions: Question[]) => {
-    runBaselineSearch(value, currentQuestions).then(setBaselineSearchResults)
+  const handleChange = (value: string) => {
+    runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
 
     console.debug('postMessage to tfWorker:', value)
     tfWorkerRef.current?.postMessage(value)
@@ -66,7 +64,7 @@ export default function Search({openQuestionTitles, onSelect}: Props) {
         className="searchbar"
         name="searchbar"
         placeholder="Search for more questions here..."
-        onChange={(e) => handleChange(e.currentTarget.value, questions)}
+        onChange={(e) => handleChange(e.currentTarget.value)}
         onFocus={() => setShowResults(true)}
         onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
       />
@@ -80,6 +78,7 @@ export default function Search({openQuestionTitles, onSelect}: Props) {
                 model,
                 onSelect,
                 isAlreadyOpen: openQuestionTitles.includes(title),
+                key: title,
               }}
             />
           ))}

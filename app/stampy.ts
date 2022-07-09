@@ -199,6 +199,6 @@ export async function getAskPrintouts(queryString: `[[${string}]]|?${string}`): 
   return printoutsList.map(({fulltext}) => fulltext)
 }
 
-export async function getAllCanonicalQuestions(): Promise<string[]> {
+export async function getAllCanonicallyAnsweredQuestions(): Promise<string[]> {
   return getAskPrintouts('[[Canonically answered questions]]|?CanonicalQuestions')
 }

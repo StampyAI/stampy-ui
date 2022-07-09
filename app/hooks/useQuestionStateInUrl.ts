@@ -33,6 +33,21 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     return initialMap
   })
 
+  const [canonicallyAnsweredQuestion, setCanonicallyAnsweredQuestions] = useState<string[]>([])
+  const canonicalQuestionTitleSet = useMemo(
+    () => new Set(canonicallyAnsweredQuestion),
+    [canonicallyAnsweredQuestion]
+  )
+
+  useEffect(() => {
+    // not needed for initial screen => lazy load on client
+    fetch('/questions/allCanonicallyAnswered')
+      .then((r) => r.json())
+      .then((data: string[]) => {
+        setCanonicallyAnsweredQuestions(data)
+      })
+  }, [])
+
   useEffect(() => {
     if (transition.location) {
       const state = new URLSearchParams(transition.location.search).get('state')
@@ -58,7 +73,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       ...questionMap.get(pageid),
       questionState,
     }))
-  }, [stateString, questionMap])
+  }, [stateString, initialCollapsedState, questionMap])
 
   const reset = (event: MouseEvent) => {
     event.preventDefault()
@@ -73,9 +88,15 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       const removePageRe = new RegExp(`${pageid}.|${tmpPageId}.`, 'g')
       currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
     }
-    const newRelatedQuestions = relatedQuestions.filter(
-      (q) => q.pageid && !currentState.includes(q.pageid.toString())
-    )
+
+    const newRelatedQuestions = relatedQuestions.filter((q) => {
+      const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
+      // hide already displayed questions, detect duplicates by title (pageid can be different due to redirects)
+      // TODO: #25 relocate already displayed to slide in as a new related one
+      const isAlreadyDisplayed = questions.some(({title}) => title === q.title)
+      return hasCanonicalAnswer && !isAlreadyDisplayed
+    })
+
     let newState = getStateEntries(currentState)
       .map(([k, v]) => {
         if (k === pageid) {
@@ -132,5 +153,12 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       })
   }
 
-  return {questions, reset, toggleQuestion, onLazyLoadQuestion, selectQuestionByTitle}
+  return {
+    questions,
+    canonicallyAnsweredQuestion,
+    reset,
+    toggleQuestion,
+    onLazyLoadQuestion,
+    selectQuestionByTitle,
+  }
 }
