@@ -37,7 +37,7 @@
 }
 @keyframes slideFromRight {
   from {
-    transform: translateX(30vw);
+    transform: translateX(10vw);
   }
 }
 
