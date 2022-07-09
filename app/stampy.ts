@@ -133,7 +133,7 @@ export const getQuestionDetail = (question: string) => getHtml(question)
 export const getInitialQuestions = async (request: Request) => {
   const url = new URL(request.url)
   const reloadInitial = url.searchParams.get('reloadInitial')
-  let {value: cached, metadata} =
+  const {value: cached, metadata} =
     reloadInitial != null
       ? {value: null, metadata: null}
       : await STAMPY_KV.getWithMetadata<{timestamp: string}>('__getInitialQuestions')

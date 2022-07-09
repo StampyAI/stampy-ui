@@ -72,13 +72,13 @@ export default function Search({canonicalQuestionTitles, openQuestionTitles, onS
         {showResults &&
           results.map(({title, score}) => (
             <ResultItem
+              key={title}
               {...{
                 title,
                 score,
                 model,
                 onSelect,
                 isAlreadyOpen: openQuestionTitles.includes(title),
-                key: title,
               }}
             />
           ))}
