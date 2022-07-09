@@ -25,6 +25,22 @@
   /* dark theme at the end of file to overwrite all previous rules */
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes grow {
+  from {
+    max-height: 0;
+  }
+}
+@keyframes slideFromRight {
+  from {
+    transform: translateX(30vw);
+  }
+}
+
 html {
   height: 100%;
   overflow-y: scroll;
@@ -195,7 +211,6 @@ article {
   background-color: var(--bgColorQuestionAnswer);
   border-radius: 2px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: margin 400ms;
 }
 
 article > h2 {
@@ -214,7 +229,6 @@ article > h2 {
 
 article > h2 > .transparent-button {
   padding-right: var(--paddingSides);
-  transition: padding 400ms;
 }
 
 article > h2::after {
@@ -222,7 +236,6 @@ article > h2::after {
   width: 12px;
   height: 12px;
   flex: none;
-  transition: transform 400ms;
 }
 
 article > h2:hover::after {
@@ -249,16 +262,8 @@ article > h2:hover::after {
   user-select: inherit;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .react-auto-height {
-    overflow: hidden;
-    transition: height 400ms;
-  }
-}
-
 .answer {
   padding: 0 var(--paddingSides);
-  transition: padding 400ms;
 }
 
 .answer p,
@@ -292,26 +297,55 @@ article > h2:hover::after {
   gap: 16px;
 }
 
-@keyframes fromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(30vw);
-    max-height: 0;
-  }
+article.related {
+  /* do NOT change here, change global --paddingSides if needed,
+   * must be synchronized to avoid changing width on transition,
+   * because changing width reflows text, which looks janky on opening the related question */
+  margin-left: calc(2 * var(--paddingSides));
+  max-height: 999px;
+  will-change: margin-left;
+
+  /* keep even for reduced motion */
+  animation: fadeIn 400ms ease-out;
+  animation-fill-mode: both;
 }
 
-article.related {
-  margin-left: 32px;
-  max-height: 999px;
-  animation: fromLeft 2s ease-out;
-  will-change: margin-left;
-  opacity: 1;
+@media (prefers-reduced-motion: no-preference) {
+  .react-auto-height {
+    overflow: hidden;
+    transition: height 400ms;
+    will-change: height;
+  }
+
+  .answer {
+    transition: margin 400ms;
+  }
+
+  article {
+    transition: margin 400ms;
+  }
+
+  article > h2 > .transparent-button {
+    transition: padding 400ms;
+  }
+
+  article > h2::after {
+    transition: transform 400ms;
+  }
+
+  article.related {
+    /* prettier-ignore */
+    animation: grow 400ms cubic-bezier(1, 0, 1, 0),
+               fadeIn 400ms 400ms ease-out,
+               slideFromRight 400ms 400ms ease-out;
+    animation-fill-mode: both;
+  }
 }
 
 article.related > h2 > .transparent-button,
 article.related .answer {
-  padding-right: 0;
-  will-change: padding-right;
+  margin-right: calc(-2 * var(--paddingSides));
+  will-change: margin-right;
 }
 
 footer {
