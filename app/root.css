@@ -52,6 +52,9 @@ html {
 }
 
 body {
+  /* overflow to avoid horizontal scrollbar when sliding related questions,
+   * which was shifting vertical scroll on mobile */
+  overflow-x: hidden;
   height: 100%;
   width: 100%;
   max-width: 1000px;
