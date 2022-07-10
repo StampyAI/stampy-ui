@@ -14,13 +14,21 @@ jobs:
         run: |
           npm install process node-fetch @tensorflow/tfjs-node @tensorflow-models/universal-sentence-encoder
           node questions-encodings.mjs
-      - if: ${{ success() }}
+          OUTPUT=$(git diff --name-only | tail -1)
+          echo "::set-output name=gitdiff::$OUTPUT"
+      - id: check
+        name: Check for changes
+        run: |
+          echo "git diff --name-only | tail -1 >>> ${{ steps.generate.outputs.gitdiff }}"
+          echo "encodings changed = ${{ contains( steps.generate.outputs.gitdiff, env.filename ) }}"
+          echo "::set-output name=changed::${{ contains( steps.generate.outputs.gitdiff, env.filename ) }}"
+      - if: steps.check.outputs.changed == 'true'
         name: Commit files
         run: |
           git config --local user.name ${{ github.actor }}
           git stage ${{ env.filepath }}/${{ env.filename }}
           git commit -m "Generate updated ${{ env.filename }}"
-      - if: ${{ success() }}
+      - if: steps.check.outputs.changed == 'true'
         name: Push updated files on GitHub
         uses: ad-m/github-push-action@master
         with:

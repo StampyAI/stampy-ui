@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const SvgThumbsUp = (props) => (
+const SvgLike = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
@@ -31,4 +31,4 @@ const SvgThumbsUp = (props) => (
   </svg>
 )
 
-export default SvgThumbsUp
+export default SvgLike
