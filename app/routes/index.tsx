@@ -12,7 +12,7 @@ import Search from '~/components/search'
 import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
 
-import {ShareNodes, Users, Code} from '~/components/icons-generated'
+import {Share, Users, Code} from '~/components/icons-generated'
 
 type LoaderData = {
   initialQuestions: QuestionType[]
@@ -78,7 +78,7 @@ export default function App() {
             className={`icon-link transparent-button share ${copied ? 'copied' : ''}`}
             onClick={shareLink}
           >
-            <ShareNodes />
+            <Share />
             Share link
           </button>
           <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">

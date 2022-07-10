@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const SvgEyeSlash = (props) => (
+const SvgHide = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
@@ -33,4 +33,4 @@ const SvgEyeSlash = (props) => (
   </svg>
 )
 
-export default SvgEyeSlash
+export default SvgHide

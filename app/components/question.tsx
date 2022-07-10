@@ -3,7 +3,7 @@ import AutoHeight from 'react-auto-height'
 import type {Question} from '~/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
-import {Pen} from '~/components/icons-generated'
+import {Edit} from '~/components/icons-generated'
 
 export default function Question({
   questionProps,
@@ -89,7 +89,7 @@ export default function Question({
                     rel="noreferrer"
                     title="edit answer"
                   >
-                    <Pen />
+                    <Edit />
                   </a>
                 )}
               </div>

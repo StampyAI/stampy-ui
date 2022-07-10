@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const SvgShareNodes = (props) => (
+const SvgShare = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 448 512"
@@ -43,4 +43,4 @@ const SvgShareNodes = (props) => (
   </svg>
 )
 
-export default SvgShareNodes
+export default SvgShare
