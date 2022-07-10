@@ -52,9 +52,6 @@ html {
 }
 
 body {
-  /* overflow to avoid horizontal scrollbar when sliding related questions,
-   * which was shifting vertical scroll on mobile */
-  overflow-x: hidden;
   height: 100%;
   width: 100%;
   max-width: 1000px;
@@ -423,6 +420,11 @@ footer > *:not(:last-child) {
 }
 
 @media (max-width: 740px) {
+  body {
+    /* overflow to avoid horizontal scrollbar when sliding related questions,
+     * which was shifting vertical scroll on mobile */
+    overflow-x: hidden;
+  }
   header {
     flex-direction: column;
     padding: 12px 0 12px;
