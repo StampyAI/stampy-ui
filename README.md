@@ -21,7 +21,7 @@
 - From the left menu `Workers` : `KV`, create a KV (key-value store) namespace `STAMPY_KV`
 - Note the new created `STAMPY_KV` Namespace ID
 - Copy `wrangler.toml.template` to `wrangler.toml`
-- Replace the values for your `<Cloudflare Account ID>` and `<STAMPY_KV Namespace ID>` in `wrangler.toml`
+- Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
 4. Create stampy-ui Remix environment
 
