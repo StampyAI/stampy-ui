@@ -3,6 +3,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "* 0 * * *"
+  pull_request:
+    types:
+      - closed
 env:
   filepath: public/assets
   filename: stampy-questions-encodings.json
@@ -38,8 +41,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Restore stampy-ui repository code
+        if: github.event.pull_request.merged == 'true' || steps.check.outputs.changed == 'true'
         uses: actions/checkout@v3
       - name: Deploy to Cloudflare
+        if: github.event.pull_request.merged == 'true' || steps.check.outputs.changed == 'true'
         run: |
           cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
           npm install
