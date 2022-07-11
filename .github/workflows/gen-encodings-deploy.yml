@@ -1,35 +1,46 @@
-name: Generate Qs & Encodings
-on: [workflow_dispatch]
+name: Generate Encodings & Deploy
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "* 0 * * *"
 env:
   filepath: public/assets
   filename: stampy-questions-encodings.json
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 jobs:
-  Generate-Questions-Encodings:
+  gen-encodings-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Clone stampy-ui repository code
         uses: actions/checkout@v3
-      - id: generate
-        name: Generate stampy.ai wiki's questions and encodings
+      - name: Generate questions & encodings
+        id: generate
         run: |
-          npm install process node-fetch @tensorflow/tfjs-node @tensorflow-models/universal-sentence-encoder
+          npm install node-fetch @tensorflow/tfjs-node @tensorflow-models/universal-sentence-encoder
           node questions-encodings.mjs
           OUTPUT=$(git diff --name-only | tail -1)
           echo "::set-output name=gitdiff::$OUTPUT"
-      - id: check
-        name: Check for changes
+      - name: Check for changes
+        id: check
         run: |
           echo "git diff --name-only | tail -1 >>> ${{ steps.generate.outputs.gitdiff }}"
           echo "encodings changed = ${{ contains( steps.generate.outputs.gitdiff, env.filename ) }}"
           echo "::set-output name=changed::${{ contains( steps.generate.outputs.gitdiff, env.filename ) }}"
-      - if: steps.check.outputs.changed == 'true'
-        name: Commit files
+      - name: Commit files
+        if: steps.check.outputs.changed == 'true'
         run: |
           git config --local user.name ${{ github.actor }}
           git stage ${{ env.filepath }}/${{ env.filename }}
           git commit -m "Generate updated ${{ env.filename }}"
-      - if: steps.check.outputs.changed == 'true'
-        name: Push updated files on GitHub
+      - name: Push updated files on GitHub
+        if: steps.check.outputs.changed == 'true'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Restore stampy-ui repository code
+        uses: actions/checkout@v3
+      - name: Deploy to Cloudflare
+        run: |
+          cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
+          npm install
+          npm run deploy
