@@ -1,11 +1,6 @@
 name: Generate Encodings & Deploy
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "* 0 * * *"
-  pull_request:
-    types:
-      - closed
 env:
   filepath: public/assets
   filename: stampy-questions-encodings.json
