@@ -1,5 +1,5 @@
 name: Generate Encodings & Deploy
-on: 
+on:
   workflow_dispatch:
   schedule:
     - cron: "* 0 * * *"
@@ -40,6 +40,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
       - name: Restore stampy-ui repository code
         if: github.event.pull_request.merged == 'true' || steps.check.outputs.changed == 'true'
         uses: actions/checkout@v3
