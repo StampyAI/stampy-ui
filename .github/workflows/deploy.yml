@@ -1,0 +1,19 @@
+name: Deploy to Cloudflare Worker
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone stampy-ui repository code
+        uses: actions/checkout@v3
+      - name: Deploy to Cloudflare
+        run: |
+          cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
+          npm install
+          npm run deploy
