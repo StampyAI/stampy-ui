@@ -1,7 +1,8 @@
-# Stampy UI Testing Grounds
+![Stampy!](https://github.com/StampyAI/StampyAIAssets/blob/main/profile/stampy-profile-228.png?raw=true)
 
-- Testing future versions of UI for [stampy.ai](https://stampy.ai/read/Get_involved)
-- Using [Remix](https://remix.run/docs) and [Cloudflare Workers](https://developers.cloudflare.com/workers)
+Stampy UI is an interface for [stampy.ai](https://stampy.ai/read/Get_involved), a database of questions and answers about AGI safety, built with [Remix](https://remix.run/docs) and [Cloudflare Workers](https://developers.cloudflare.com/workers). Contributions are welcome, and the code is released under the MIT License.
+
+# Stampy UI
 
 1. Setup Requirements
 
