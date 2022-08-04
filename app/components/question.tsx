@@ -90,6 +90,7 @@ export default function Question({
                     title="edit answer"
                   >
                     <Edit />
+                    Edit
                   </a>
                 )}
               </div>
