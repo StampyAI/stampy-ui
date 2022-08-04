@@ -75,9 +75,11 @@ a:visited {
   color: var(--colorLinkVisited);
 }
 
+button:hover.icon-link,
 a:hover,
 .link {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 header {
@@ -130,12 +132,13 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  font-size: 0.6rem;
   transition: opacity 1s;
 }
 
-.icon-link-group > *,
-.icon-link-group > a:visited {
+.icon-link,
+button.icon-link,
+a:visited.icon-link {
+  font-size: 0.6rem;
   text-transform: uppercase;
   white-space: nowrap;
   color: inherit;
@@ -143,11 +146,6 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-}
-
-.icon-link-group > button:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .icon-link-group svg {
