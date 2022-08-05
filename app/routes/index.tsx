@@ -4,8 +4,8 @@ import type {ShouldReloadFunction} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
 import copy from 'copy-to-clipboard'
 
-import type {Question as QuestionType} from '~/stampy'
-import {getInitialQuestions} from '~/stampy'
+import type {Question as QuestionType} from '~/server-utils/stampy'
+import {loadInitialQuestions} from '~/server-utils/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
@@ -18,10 +18,10 @@ type LoaderData = {
   initialQuestions: QuestionType[]
 }
 
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
+export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
   let initialQuestions: QuestionType[] = []
   try {
-    initialQuestions = await getInitialQuestions()
+    initialQuestions = await loadInitialQuestions(request)
   } catch (e) {
     console.error(e)
   }

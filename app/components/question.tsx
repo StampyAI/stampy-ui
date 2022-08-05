@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question} from '~/stampy'
+import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 import {Edit} from '~/components/icons-generated'

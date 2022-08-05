@@ -1,4 +1,5 @@
 import {parse} from 'node-html-parser'
+import {withCache} from '~/server-utils/kv-cache'
 
 export type QuestionState = '_' | '-' | 'r'
 export type Question = {
@@ -72,9 +73,9 @@ const getRelatedQuestions = (html: string): {title: string; pageid: number}[] =>
   return links ?? []
 }
 
-const getHtml = async (page: string) => {
+export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
   let data: Question & {text: string}
-  const url = stampyParse(page)
+  const url = stampyParse(question)
   let json
   try {
     json = await (await fetch(url)).json()
@@ -97,7 +98,7 @@ const getHtml = async (page: string) => {
   }
 
   return data
-}
+})
 
 const getMetadata = async (
   idsOrTitles: string[] | number[]
@@ -117,9 +118,7 @@ const getContent = async (title: string): Promise<string> => {
   return content
 }
 
-export const getQuestionDetail = (question: string) => getHtml(question)
-
-export const getInitialQuestions = async () => {
+export const loadInitialQuestions = withCache('initialQuestions', async () => {
   const initialContent = await getContent('Initial questions')
   const questions = initialContent?.match(reQuestion)?.map((x) => x.replace(reQuestion, '$1')) ?? []
   const pageidByTitle = Object.fromEntries(
@@ -139,9 +138,9 @@ export const getInitialQuestions = async () => {
   }
 
   return data
-}
+})
 
-export async function getAskPrintouts(queryString: `[[${string}]]|?${string}`): Promise<string[]> {
+const getAskPrintouts = async (queryString: `[[${string}]]|?${string}`): Promise<string[]> => {
   const {query} = (await (await fetch(stampyAsk(queryString))).json()) as QueryResults
   const {results = {}} = query
   const {printouts = {}} = Object.values(results)[0] ?? {}
@@ -149,6 +148,8 @@ export async function getAskPrintouts(queryString: `[[${string}]]|?${string}`): 
   return printoutsList.map(({fulltext}) => fulltext)
 }
 
-export async function getAllCanonicallyAnsweredQuestions(): Promise<string[]> {
-  return getAskPrintouts('[[Canonically answered questions]]|?CanonicalQuestions')
-}
+export const loadAllCanonicallyAnsweredQuestions = withCache(
+  'canonicallyAnsweredQuestions',
+  async (): Promise<string[]> =>
+    getAskPrintouts('[[Canonically answered questions]]|?CanonicalQuestions')
+)

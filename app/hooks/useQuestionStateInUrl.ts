@@ -1,7 +1,7 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import type {Question, QuestionState} from '~/stampy'
+import type {Question, QuestionState} from '~/server-utils/stampy'
 
 export const tmpPageId = 999999
 
