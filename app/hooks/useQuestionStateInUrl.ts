@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo, useCallback} from 'react'
+import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import type {Question, QuestionState} from '~/stampy'
@@ -33,18 +33,14 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
     return initialMap
   })
 
-  const [canonicallyAnsweredQuestion, setCanonicallyAnsweredQuestions] = useState<string[]>([])
-  const canonicalQuestionTitleSet = useMemo(
-    () => new Set(canonicallyAnsweredQuestion),
-    [canonicallyAnsweredQuestion]
-  )
+  const canonicallyAnsweredQuestionsRef = useRef<string[]>([])
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
     fetch('/questions/allCanonicallyAnswered')
       .then((r) => r.json())
       .then((data: string[]) => {
-        setCanonicallyAnsweredQuestions(data)
+        canonicallyAnsweredQuestionsRef.current = data
       })
   }, [])
 
@@ -91,6 +87,14 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
         currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
       }
 
+      const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
+      if (canonicallyAnsweredQuestions.length === 0 && relatedQuestions.length > 0) {
+        // if canonicallyAnsweredQuestions (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
+        setTimeout(() => toggleQuestion(questionProps, options), 500)
+        return
+      }
+      const canonicalQuestionTitleSet = new Set(canonicallyAnsweredQuestions)
+
       const newRelatedQuestions = relatedQuestions.filter((q) => {
         const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
         // hide already displayed questions, detect duplicates by title (pageid can be different due to redirects)
@@ -116,7 +120,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
       history.replaceState(newState, '', '?' + newSearchParams.toString())
       setStateString(newState)
     },
-    [canonicalQuestionTitleSet, initialCollapsedState, questions, remixSearchParams, stateString]
+    [initialCollapsedState, questions, remixSearchParams, stateString]
   )
 
   const onLazyLoadQuestion = useCallback((question: Question) => {
@@ -164,7 +168,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
 
   return {
     questions,
-    canonicallyAnsweredQuestion,
+    canonicallyAnsweredQuestionsRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,

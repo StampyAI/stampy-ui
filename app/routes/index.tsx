@@ -36,7 +36,7 @@ export default function App() {
   const {initialQuestions} = useLoaderData<LoaderData>()
   const {
     questions,
-    canonicallyAnsweredQuestion,
+    canonicallyAnsweredQuestionsRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
@@ -93,7 +93,7 @@ export default function App() {
       </header>
       <main>
         <Search
-          canonicalQuestionTitles={canonicallyAnsweredQuestion}
+          canonicallyAnsweredQuestionsRef={canonicallyAnsweredQuestionsRef}
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestionByTitle}
         />
