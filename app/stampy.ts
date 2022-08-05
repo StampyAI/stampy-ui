@@ -1,5 +1,3 @@
-// PoC version to load dynamic content, not trying to solve all edge cases
-// TODO: use API from Python server that will handle MediaWiki APIs and semantic search queries
 import {parse} from 'node-html-parser'
 
 export type QuestionState = '_' | '-' | 'r'
@@ -30,7 +28,6 @@ const answerEditLinkBase = 'https://stampy.ai/w/index.php?action=formedit&title=
 
 const stampyParse = (page: string) => {
   const prop = page.match(/^\d+$/) ? 'pageid' : 'page'
-  // TODO: try to use only &section=1 (if we add sections to some template)
   return `https://stampy.ai/w/api.php?action=parse&prop=text&format=json&formatversion=2&redirects&${prop}=${page}`
 }
 
@@ -76,33 +73,27 @@ const getRelatedQuestions = (html: string): {title: string; pageid: number}[] =>
 }
 
 const getHtml = async (page: string) => {
-  const cached = (await STAMPY_KV.get(page)) as string
   let data: Question & {text: string}
-  if (cached) {
-    data = JSON.parse(cached)
-  } else {
-    const url = stampyParse(page)
-    let json
-    try {
-      json = await (await fetch(url)).json()
-      const {
-        parse: {title, pageid, text},
-      } = json
-      const {answerText = text, answerEditLink = null} = text.match(/canonicalanswer/)
-        ? getAnswer(text)
-        : {}
-      data = {
-        title,
-        pageid,
-        text: normalizeWikiLinks(answerText),
-        answerEditLink,
-        relatedQuestions: getRelatedQuestions(text),
-      }
-      await STAMPY_KV.put(page, JSON.stringify(data), {expirationTtl: 600 /* 10 minutes */})
-    } catch (e: any) {
-      e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
-      throw e
+  const url = stampyParse(page)
+  let json
+  try {
+    json = await (await fetch(url)).json()
+    const {
+      parse: {title, pageid, text},
+    } = json
+    const {answerText = text, answerEditLink = null} = text.match(/canonicalanswer/)
+      ? getAnswer(text)
+      : {}
+    data = {
+      title,
+      pageid,
+      text: normalizeWikiLinks(answerText),
+      answerEditLink,
+      relatedQuestions: getRelatedQuestions(text),
     }
+  } catch (e: any) {
+    e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    throw e
   }
 
   return data
@@ -117,44 +108,18 @@ const getMetadata = async (
 }
 
 const getContent = async (title: string): Promise<string> => {
-  const data = await (await fetch(stampyQueryContent(title))).json()
-  let content = data.query.pages?.[0].revisions?.[0].slots.main.content?.replace(
+  const {query} = await (await fetch(stampyQueryContent(title))).json()
+  const content = query.pages?.[0].revisions?.[0].slots.main.content?.replace(
     /<!--[\w\W]*?-->/g,
     ''
   )
-  if (!content) {
-    content = JSON.stringify(data)
-  }
+
   return content
 }
 
 export const getQuestionDetail = (question: string) => getHtml(question)
 
-export const getInitialQuestions = async (request: Request) => {
-  const url = new URL(request.url)
-  const reloadInitial = url.searchParams.get('reloadInitial')
-  const {value: cached, metadata} =
-    reloadInitial != null
-      ? {value: null, metadata: null}
-      : await STAMPY_KV.getWithMetadata<{timestamp: string}>('__getInitialQuestions')
-
-  let data: Question[]
-  if (cached && metadata?.timestamp) {
-    data = JSON.parse(cached)
-    if (
-      !data[0].text ||
-      new Date().getTime() - new Date(metadata.timestamp).getTime() > 1000 * 60 * 10 // 10 minutes
-    ) {
-      // TODO: #29 figure out how to return stale data and revalidate in the background (CF worker is killed after return => trigger new worker)
-      data = await getInitialQuestionsUpdateCache()
-    }
-  } else {
-    data = await getInitialQuestionsUpdateCache()
-  }
-  return data
-}
-
-async function getInitialQuestionsUpdateCache() {
+export const getInitialQuestions = async () => {
   const initialContent = await getContent('Initial questions')
   const questions = initialContent?.match(reQuestion)?.map((x) => x.replace(reQuestion, '$1')) ?? []
   const pageidByTitle = Object.fromEntries(
@@ -162,31 +127,16 @@ async function getInitialQuestionsUpdateCache() {
   )
 
   const data: Question[] = []
-  for (let title of questions) {
+  for (const title of questions) {
     const pageid = pageidByTitle[title]
-    const cached = await STAMPY_KV.get(pageid.toString())
-    let text: Question['text'] = null
-    let answerEditLink: Question['answerEditLink'] = null
-    let relatedQuestions: Question['relatedQuestions'] = []
-    if (cached) {
-      const cachedObj = JSON.parse(cached)
-      title = cachedObj.title
-      text = cachedObj.text
-      answerEditLink = cachedObj.answerEditLink
-      relatedQuestions = cachedObj.relatedQuestions
-    }
     data.push({
       title,
       pageid,
-      text,
-      answerEditLink,
-      relatedQuestions,
+      text: null,
+      answerEditLink: null,
+      relatedQuestions: [],
     })
   }
-
-  await STAMPY_KV.put('__getInitialQuestions', JSON.stringify(data), {
-    metadata: {timestamp: new Date()},
-  })
 
   return data
 }

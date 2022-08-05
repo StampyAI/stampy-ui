@@ -18,10 +18,10 @@ type LoaderData = {
   initialQuestions: QuestionType[]
 }
 
-export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
+export const loader: LoaderFunction = async (): Promise<LoaderData> => {
   let initialQuestions: QuestionType[] = []
   try {
-    initialQuestions = await getInitialQuestions(request)
+    initialQuestions = await getInitialQuestions()
   } catch (e) {
     console.error(e)
   }
