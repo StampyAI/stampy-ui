@@ -1,8 +1,8 @@
-import {useState, useEffect, useRef, MouseEvent, useMemo} from 'react'
+import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
 import Question from '~/components/question'
 
 type Props = {
-  canonicalQuestionTitles: string[]
+  canonicallyAnsweredQuestionsRef: MutableRefObject<string[]>
   openQuestionTitles: string[]
   onSelect: (title: string) => void
 }
@@ -16,15 +16,24 @@ type SearchResult = Question & {
   score: number
 }
 
-export default function Search({canonicalQuestionTitles, openQuestionTitles, onSelect}: Props) {
+export default function Search({
+  canonicallyAnsweredQuestionsRef,
+  openQuestionTitles,
+  onSelect,
+}: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
 
+  const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
   const canonicalQuestionsNormalized = useMemo(
-    () => canonicalQuestionTitles.map((title) => ({title, normalized: normalize(title)})),
-    [canonicalQuestionTitles]
+    () =>
+      canonicallyAnsweredQuestions.map((title) => ({
+        title,
+        normalized: normalize(title),
+      })),
+    [canonicallyAnsweredQuestions]
   )
 
   useEffect(() => {

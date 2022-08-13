@@ -1,6 +1,6 @@
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question} from '~/stampy'
+import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 import {Edit} from '~/components/icons-generated'
@@ -15,9 +15,11 @@ export default function Question({
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
 }) {
   const {pageid, title, text, answerEditLink, questionState} = questionProps
+  const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
-    if (pageid !== tmpPageId && !text) {
+    if (pageid !== tmpPageId && !text && !isLoading.current) {
+      isLoading.current = true
       fetch(`/questions/${pageid}`)
         .then((response) => response.json())
         .then((newQuestionProps: Question) => {
