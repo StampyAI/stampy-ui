@@ -1,4 +1,5 @@
 import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
+import debounce from 'lodash/debounce'
 import Question from '~/components/question'
 
 type Props = {
@@ -59,7 +60,7 @@ export default function Search({
     initWorker()
   }, [])
 
-  const handleChange = (value: string) => {
+  const handleChange = debounce((value: string) => {
     if (!tfFinishedLoadingRef.current) {
       console.debug('plaintext search:', value)
       runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
@@ -69,7 +70,7 @@ export default function Search({
       console.debug('postMessage to tfWorker:', value)
       tfWorkerRef.current.postMessage(value)
     }
-  }
+  }, 400)
 
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
