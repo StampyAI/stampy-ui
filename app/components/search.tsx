@@ -16,15 +16,18 @@ type SearchResult = Question & {
   score: number
 }
 
+const empty: [] = []
+
 export default function Search({
   canonicallyAnsweredQuestionsRef,
   openQuestionTitles,
   onSelect,
 }: Props) {
-  const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>([])
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
+  const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
+  const tfFinishedLoadingRef = useRef(false)
 
   const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
   const canonicalQuestionsNormalized = useMemo(
@@ -41,6 +44,7 @@ export default function Search({
       const {data} = event
       console.debug('onmessage from tfWorker:', data)
       if (data.searchResults) {
+        tfFinishedLoadingRef.current = true
         setSearchResults(data.searchResults)
       }
     }
@@ -56,15 +60,19 @@ export default function Search({
   }, [])
 
   const handleChange = (value: string) => {
-    runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
+    if (!tfFinishedLoadingRef.current) {
+      console.debug('plaintext search:', value)
+      runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
+    }
 
-    console.debug('postMessage to tfWorker:', value)
-    tfWorkerRef.current?.postMessage(value)
+    if (tfWorkerRef.current) {
+      console.debug('postMessage to tfWorker:', value)
+      tfWorkerRef.current.postMessage(value)
+    }
   }
 
-  // TODO: #32 only show plaintext results before TF is loaded, to avoid flickering
-  const results = searchResults.length > 0 ? searchResults : baselineSearchResults
-  const model = searchResults.length > 0 ? 'tensorflow' : 'plaintext'
+  const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
+  const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
   return (
     <div>
