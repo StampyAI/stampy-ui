@@ -6,9 +6,9 @@ import type {Question, QuestionState} from '~/server-utils/stampy'
 export const tmpPageId = 999999
 
 const getStateEntries = (state: string): [number, QuestionState][] =>
-  Array.from(state.matchAll(/(\d+)(\D+)/g) ?? []).map((groups) => [
+  Array.from(state.matchAll(/(\d+)(\D*)/g) ?? []).map((groups) => [
     Number(groups[1]),
-    groups[2] as QuestionState,
+    (groups[2] || '_') as QuestionState,
   ])
 
 function updateQuestionMap(question: Question, map: Map<Question['pageid'], Question>): void {

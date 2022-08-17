@@ -234,6 +234,7 @@ article > h2::after {
   width: 12px;
   height: 12px;
   flex: none;
+  transform: translateY(-3px);
 }
 
 article > h2:hover::after {
@@ -241,11 +242,11 @@ article > h2:hover::after {
 }
 
 .expanded h2::after {
-  transform: rotate(90deg) translateX(40%);
+  transform: translateY(3px) rotate(90deg);
 }
 
 .expanded h2:hover::after {
-  transform: rotate(60deg) translateX(40%);
+  transform: translateY(3px) rotate(60deg);
 }
 
 .transparent-button {
