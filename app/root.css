@@ -149,15 +149,14 @@ a:visited.icon-link {
   gap: 4px;
 }
 
+svg {
+  width: 24px;
+  height: 24px;
+}
+
 .icon-link-group svg {
   width: 32px;
   height: 32px;
-}
-
-.searchbar svg,
-.actions svg {
-  width: 24px;
-  height: 24px;
 }
 
 svg * {
@@ -230,6 +229,16 @@ article > h2 {
 
 article > h2 > .transparent-button {
   padding-right: var(--paddingSides);
+  display: flex;
+  gap: 8px;
+}
+
+article > h2 > .transparent-button svg {
+  transition: opacity 100ms;
+}
+
+article > h2:not(:hover) > .transparent-button svg {
+  opacity: 0;
 }
 
 article > h2::after {
@@ -240,15 +249,15 @@ article > h2::after {
   transform: translateY(-3px);
 }
 
-article > h2:hover::after {
+article:not(.link-hovered) > h2:hover::after {
   transform: rotate(20deg);
 }
 
-.expanded h2::after {
+article.expanded h2::after {
   transform: translateY(3px) rotate(90deg);
 }
 
-.expanded h2:hover::after {
+article.expanded:not(.link-hovered) h2:hover::after {
   transform: translateY(3px) rotate(60deg);
 }
 

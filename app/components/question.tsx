@@ -1,9 +1,10 @@
 import {useRef, useEffect, useState} from 'react'
+import {Link} from 'remix'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
-import {Edit} from '~/components/icons-generated'
+import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 
 export default function Question({
   questionProps,
@@ -34,7 +35,11 @@ export default function Question({
 
   const isExpanded = questionState === '_'
   const isRelated = questionState === 'r'
-  const cls = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
+  const clsExpanded = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
+
+  const [isLinkHovered, setLinkHovered] = useState(false)
+  const clsLinkHovered = isLinkHovered ? 'link-hovered' : ''
+  const cls = `${clsExpanded} ${clsLinkHovered}`
 
   const [showLongDescription, setShowLongDescription] = useState(false)
   const answerRef = useRef<HTMLDivElement>(null)
@@ -70,8 +75,20 @@ export default function Question({
 
   return (
     <article className={cls}>
-      <h2 onClick={handleToggle}>
-        <button className="transparent-button">{title}</button>
+      <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'}>
+        <button className="transparent-button">
+          {title}
+          <Link
+            to={`?state=${pageid}_`}
+            className="icon-link"
+            title="Link to question"
+            onMouseEnter={() => setLinkHovered(true)}
+            onMouseLeave={() => setLinkHovered(false)}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <LinkIcon />
+          </Link>
+        </button>
       </h2>
       <AutoHeight>
         <div className={`answer ${showLongDescription ? 'long' : 'short'}`}>
