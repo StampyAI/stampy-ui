@@ -272,6 +272,22 @@ article > h2:hover::after {
   margin: var(--paddingSides) 0;
 }
 
+.answer table {
+  border-collapse: collapse;
+}
+
+.answer table th {
+  text-align: left;
+}
+
+.answer table tr:hover {
+  background-image: linear-gradient(to top, var(--bgColorQuestionTitle), transparent 2px);
+}
+
+.answer table p {
+  margin: 0;
+}
+
 .answer ul,
 .answer ol {
   margin: var(--paddingSides);
