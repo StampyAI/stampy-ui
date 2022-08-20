@@ -1,6 +1,8 @@
 import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
 import debounce from 'lodash/debounce'
 import Question from '~/components/question'
+import {MagnifyingGlass} from '~/components/icons-generated'
+import AutoHeight from 'react-auto-height'
 
 type Props = {
   canonicallyAnsweredQuestionsRef: MutableRefObject<string[]>
@@ -77,30 +79,34 @@ export default function Search({
 
   return (
     <div>
-      <input
-        type="search"
-        className="searchbar"
-        name="searchbar"
-        placeholder="Search for more questions here..."
-        onChange={(e) => handleChange(e.currentTarget.value)}
-        onFocus={() => setShowResults(true)}
-        onBlur={() => setShowResults(false)} // TODO: figure out accessibility of not blurring on keyboard navigation
-      />
-      <div className={`dropdown ${showResults ? '' : 'hidden'}`}>
-        {showResults &&
-          results.map(({title, score}) => (
-            <ResultItem
-              key={title}
-              {...{
-                title,
-                score,
-                model,
-                onSelect,
-                isAlreadyOpen: openQuestionTitles.includes(title),
-              }}
-            />
-          ))}
-      </div>
+      <label className="searchbar">
+        <input
+          type="search"
+          name="searchbar"
+          placeholder="Search for more questions here..."
+          onChange={(e) => handleChange(e.currentTarget.value)}
+          onFocus={() => setShowResults(true)}
+          onBlur={() => setShowResults(false)} // TODO: figure out accessibility - do not blur on keyboard navigation into the result list
+        />
+        <MagnifyingGlass />
+      </label>
+      <AutoHeight>
+        <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
+          {showResults &&
+            results.map(({title, score}) => (
+              <ResultItem
+                key={title}
+                {...{
+                  title,
+                  score,
+                  model,
+                  onSelect,
+                  isAlreadyOpen: openQuestionTitles.includes(title),
+                }}
+              />
+            ))}
+        </div>
+      </AutoHeight>
     </div>
   )
 }
