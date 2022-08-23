@@ -16,6 +16,8 @@
   --colorTitleHighlight: #d86;
   --colorQuestionTitle: #333;
   --borderColor: #ddd;
+  --bgColorTableHeader: #c0d3e4;
+  --bgColorTableRows: #e8f7fe;
 
   /* same in both themes: */
   --colorLink: #79f;
@@ -290,11 +292,22 @@ article.expanded:not(.link-hovered) h2:hover::after {
 
 .answer table th {
   text-align: left;
+  padding: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  background-color: var(--bgColorTableHeader);
+  border: 1px solid var(--bgColorQuestionTitle);
 }
 
-.answer table tr:hover {
-  background-image: linear-gradient(to top, var(--bgColorQuestionTitle), transparent 2px);
+.answer table td {
+  padding: 4px;
+  vertical-align: top;
+  border: 1px solid var(--bgColorQuestionTitle);
 }
+
+tr:nth-child(even){background-color: var(--bgColorTableRows);}
 
 .answer table p {
   margin: 0;
@@ -508,6 +521,8 @@ a:focus-visible,
     --colorTitleHighlight: #d86;
     --colorQuestionTitle: #ccc;
     --borderColor: #444;
+    --bgColorTableHeader: #444;
+    --bgColorTableRows: #373737;
   }
 
   svg path[style*='fill:#333'],
