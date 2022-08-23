@@ -15,6 +15,7 @@
   --colorTitle: #666;
   --colorTitleHighlight: #d86;
   --colorQuestionTitle: #333;
+  --borderColor: #ddd;
 
   /* same in both themes: */
   --colorLink: #79f;
@@ -77,7 +78,7 @@ a:visited {
 
 button:hover.icon-link,
 a:hover,
-.link {
+.link:hover {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -148,21 +149,22 @@ a:visited.icon-link {
   gap: 4px;
 }
 
+svg {
+  width: 24px;
+  height: 24px;
+}
+
 .icon-link-group svg {
   width: 32px;
   height: 32px;
 }
 
-.actions svg {
-  width: 24px;
-  height: 24px;
-}
-
-.icon-link svg * {
+svg * {
   transition: fill 300ms;
 }
 
-.icon-link:not(:hover) svg *:not(path[style*='fill:#333'], path[style*='fill: rgb(51, 51, 51)']) {
+.icon-link:not(:hover) svg *:not(path[style*='fill:#333'], path[style*='fill: rgb(51, 51, 51)']),
+.searchbar input:not(:hover, :focus) + svg circle {
   fill: transparent !important;
 }
 
@@ -227,6 +229,16 @@ article > h2 {
 
 article > h2 > .transparent-button {
   padding-right: var(--paddingSides);
+  display: flex;
+  gap: 8px;
+}
+
+article > h2 > .transparent-button svg {
+  transition: opacity 100ms;
+}
+
+article > h2:not(:hover) > .transparent-button svg {
+  opacity: 0;
 }
 
 article > h2::after {
@@ -237,15 +249,15 @@ article > h2::after {
   transform: translateY(-3px);
 }
 
-article > h2:hover::after {
+article:not(.link-hovered) > h2:hover::after {
   transform: rotate(20deg);
 }
 
-.expanded h2::after {
+article.expanded h2::after {
   transform: translateY(3px) rotate(90deg);
 }
 
-.expanded h2:hover::after {
+article.expanded:not(.link-hovered) h2:hover::after {
   transform: translateY(3px) rotate(60deg);
 }
 
@@ -270,6 +282,22 @@ article > h2:hover::after {
 .answer .card-longdesc,
 .answer .card-hide-longdesc {
   margin: var(--paddingSides) 0;
+}
+
+.answer table {
+  border-collapse: collapse;
+}
+
+.answer table th {
+  text-align: left;
+}
+
+.answer table tr:hover {
+  background-image: linear-gradient(to top, var(--bgColorQuestionTitle), transparent 2px);
+}
+
+.answer table p {
+  margin: 0;
 }
 
 .answer ul,
@@ -371,26 +399,32 @@ footer > *:not(:last-child) {
 }
 
 .searchbar {
-  box-sizing: border-box;
-  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  position: relative;
+}
+
+.searchbar input {
+  flex: 1;
   font-size: 1rem;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: none;
+  outline: 1px solid var(--borderColor);
   border-radius: 4px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
-.searchbar:focus {
-  outline: 1px solid #bbb;
-  border: none;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+.searchbar svg {
+  position: absolute;
+  right: 11px; /* visually aligned to the chevron */
 }
 
 .dropdown {
   color: black;
   background-color: #f6f6f6;
   overflow: auto;
-  border: 1px solid #ddd;
+  border: 1px solid var(--borderColor);
   z-index: 1;
 }
 
@@ -416,6 +450,14 @@ footer > *:not(:last-child) {
   color: gray;
   cursor: default;
   background-color: transparent;
+}
+
+input:focus-visible,
+button:focus-visible,
+a:focus-visible,
+.link:focus-visible {
+  outline: 2px solid #bbb;
+  border-radius: 2px;
 }
 
 @media (max-width: 740px) {
@@ -445,11 +487,6 @@ footer > *:not(:last-child) {
     justify-content: center;
   }
 
-  .icon-link-group svg {
-    width: 24px;
-    height: 24px;
-  }
-
   footer {
     font-size: 0.75rem;
   }
@@ -470,10 +507,11 @@ footer > *:not(:last-child) {
     --colorTitle: #bbb;
     --colorTitleHighlight: #d86;
     --colorQuestionTitle: #ccc;
+    --borderColor: #444;
   }
 
-  .icon-link svg path[style*='fill:#333'],
-  .icon-link svg path[style*='fill: rgb(51, 51, 51)'],
+  svg path[style*='fill:#333'],
+  svg path[style*='fill: rgb(51, 51, 51)'],
   article > h2::after {
     filter: invert(1);
   }
