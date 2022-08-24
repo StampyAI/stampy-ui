@@ -16,10 +16,12 @@
   --colorTitleHighlight: #d86;
   --colorQuestionTitle: #333;
   --borderColor: #ddd;
-
-  /* same in both themes: */
+  --bgColorHighlight: #c0d3e4;
+  --bgColorTableRows: #e8f7fe;
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
+
+  /* same in both themes: */
   --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
 
@@ -290,11 +292,22 @@ article.expanded:not(.link-hovered) h2:hover::after {
 
 .answer table th {
   text-align: left;
+  padding: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  background-color: var(--bgColorHighlight);
+  border: 1px solid var(--bgColorQuestionTitle);
 }
 
-.answer table tr:hover {
-  background-image: linear-gradient(to top, var(--bgColorQuestionTitle), transparent 2px);
+.answer table td {
+  padding: 4px;
+  vertical-align: top;
+  border: 1px solid var(--bgColorQuestionTitle);
 }
+
+tr:nth-child(even){background-color: var(--bgColorTableRows);}
 
 .answer table p {
   margin: 0;
@@ -421,8 +434,8 @@ footer > *:not(:last-child) {
 }
 
 .dropdown {
-  color: black;
-  background-color: #f6f6f6;
+  color: var(--colorText);
+  background-color: var(--bgColorQuestionAnswer);
   overflow: auto;
   border: 1px solid var(--borderColor);
   z-index: 1;
@@ -443,11 +456,11 @@ footer > *:not(:last-child) {
 }
 
 .result-item:hover {
-  background-color: #ddd;
+  background-color: var(--bgColorHighlight);
 }
 
 .result-item.already-open {
-  color: gray;
+  color: var(--colorLinkVisited);
   cursor: default;
   background-color: transparent;
 }
@@ -500,16 +513,20 @@ a:focus-visible,
 /* dark theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bgColorQuestionTitle: #444;
-    --bgColorQuestionAnswer: #333;
+    --bgColorQuestionTitle: #30386e;
+    --bgColorQuestionAnswer: #171f29;
     --bgColorCopied: #fed;
-    --colorText: #eee;
-    --colorTitle: #bbb;
+    --colorText: #f7fff9;
+    --colorTitle: #f7fff9;
     --colorTitleHighlight: #d86;
     --colorQuestionTitle: #ccc;
     --borderColor: #444;
+    --bgColorHighlight: #354652;
+    --bgColorTableRows: #1d2436;
+    --colorLink: #89e3ff;
+    --colorLinkVisited: #79f;
   }
-
+ 
   svg path[style*='fill:#333'],
   svg path[style*='fill: rgb(51, 51, 51)'],
   article > h2::after {
