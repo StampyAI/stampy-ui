@@ -5,6 +5,7 @@ import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
+import CopyLink from './copyLink'
 
 export default function Question({
   questionProps,
@@ -78,16 +79,14 @@ export default function Question({
       <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'}>
         <button className="transparent-button">
           {title}
-          <Link
+          <CopyLink
             to={`?state=${pageid}_`}
-            className="icon-link"
             title="Link to question"
             onMouseEnter={() => setLinkHovered(true)}
             onMouseLeave={() => setLinkHovered(false)}
-            onClick={(e) => e.stopPropagation()}
           >
             <LinkIcon />
-          </Link>
+          </CopyLink>
         </button>
       </h2>
       <AutoHeight>

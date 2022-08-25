@@ -175,7 +175,7 @@ svg * {
 }
 
 .share::after {
-  content: 'copied to clipboard';
+  content: 'Link copied to clipboard';
   text-transform: none;
   background: var(--bgColorCopied);
   color: black;
