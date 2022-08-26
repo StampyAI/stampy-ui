@@ -1,8 +1,6 @@
-import {useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import type {ShouldReloadFunction} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
-import copy from 'copy-to-clipboard'
 
 import type {Question as QuestionType} from '~/server-utils/stampy'
 import {loadInitialQuestions} from '~/server-utils/stampy'
@@ -13,6 +11,7 @@ import Question from '~/components/question'
 import logoSvg from '~/assets/stampy-logo.svg'
 
 import {Share, Users, Code} from '~/components/icons-generated'
+import CopyLink from '~/components/copyLink'
 
 type LoaderData = {
   initialQuestions: QuestionType[]
@@ -45,13 +44,6 @@ export default function App() {
 
   useRerenderOnResize() // recalculate AutoHeight
 
-  const [copied, setCopied] = useState(false)
-  const shareLink = () => {
-    copy(location.href)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1000)
-  }
-
   const openQuestionTitles = questions
     .filter(({questionState}) => questionState === '_')
     .map(({title}) => title)
@@ -74,13 +66,10 @@ export default function App() {
           </div>
         </div>
         <div className="icon-link-group">
-          <button
-            className={`icon-link transparent-button share ${copied ? 'copied' : ''}`}
-            onClick={shareLink}
-          >
+          <CopyLink>
             <Share />
             Share link
-          </button>
+          </CopyLink>
           <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
             <Users />
             Get Involved
