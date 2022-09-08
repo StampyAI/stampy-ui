@@ -47,11 +47,6 @@
 html {
   height: 100%;
   overflow-y: scroll;
-  background-image: url('/assets/coded-banner.svg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: top center;
-  background-size: 800px;
 }
 
 body {
@@ -90,6 +85,11 @@ header {
   align-items: flex-start;
   padding: 24px 0 48px;
   color: var(--colorTitle);
+  background-image: url('/assets/coded-banner.svg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top center;
+  background-size: 800px;
 }
 
 .logo {

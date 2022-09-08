@@ -54,8 +54,8 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
 
   useEffect(() => {
     const suffix = stateString ? ` - ${stateString}` : ''
-    document.title = `Stampy (alpha)${suffix}`
-  }, [stateString])
+    document.title = noLogo ? 'AI Safety FAQ' : `Stampy (alpha)${suffix}`
+  }, [stateString, noLogo])
 
   const initialCollapsedState = useMemo(
     () => initialQuestions.map(({pageid}) => `${pageid}-`).join(''),

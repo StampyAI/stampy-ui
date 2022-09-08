@@ -51,7 +51,7 @@ export default function App() {
 
   return (
     <>
-      <header>
+      <header style={noLogo ? {backgroundImage: 'none'} : {}}>
         {noLogo ? (
           <div className="logo-intro-group">
             <div className="intro">
