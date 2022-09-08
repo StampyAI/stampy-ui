@@ -79,7 +79,7 @@ export default function App() {
             </div>
           </div>
         )}
-        <div className="icon-link-group">
+        <div className="icon-link-group" style={noLogo ? {flexDirection: 'row'} : {}}>
           <CopyLink>
             <Share />
             Share link
