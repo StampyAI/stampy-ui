@@ -34,6 +34,7 @@ export const unstable_shouldReload: ShouldReloadFunction = () => false
 export default function App() {
   const {initialQuestions} = useLoaderData<LoaderData>()
   const {
+    noLogo,
     questions,
     canonicallyAnsweredQuestionsRef,
     reset,
@@ -51,20 +52,33 @@ export default function App() {
   return (
     <>
       <header>
-        <div className="logo-intro-group">
-          <Link to="/" onClick={(e) => reset(e)}>
-            <img className="logo simplified-logo" alt="logo" src={logoSvg} />
-          </Link>
-          <div className="intro">
-            <h1>
-              Welcome to <span className="highlight">stampy.ai</span>!
-            </h1>
-            I can answer questions about{' '}
-            <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
-              artificial general intelligence safety
-            </a>
+        {noLogo ? (
+          <div className="logo-intro-group">
+            <div className="intro">
+              Answering questions about
+              <h1>
+                <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
+                  AI Safety
+                </a>
+              </h1>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="logo-intro-group">
+            <Link to="/" onClick={(e) => reset(e)}>
+              <img className="logo simplified-logo" alt="logo" src={logoSvg} />
+            </Link>
+            <div className="intro">
+              <h1>
+                Welcome to <span className="highlight">stampy.ai</span>!
+              </h1>
+              I can answer questions about{' '}
+              <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
+                artificial general intelligence safety
+              </a>
+            </div>
+          </div>
+        )}
         <div className="icon-link-group">
           <CopyLink>
             <Share />
