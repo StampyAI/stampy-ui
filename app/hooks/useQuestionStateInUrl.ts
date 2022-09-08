@@ -23,6 +23,7 @@ function updateQuestionMap(question: Question, map: Map<Question['pageid'], Ques
 export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
+  const noLogo = remixSearchParams.get('noLogo') ? true : false;
 
   const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
   const [questionMap, setQuestionMap] = useState(() => {
@@ -167,6 +168,7 @@ export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   )
 
   return {
+    noLogo,
     questions,
     canonicallyAnsweredQuestionsRef,
     reset,

@@ -84,6 +84,7 @@ export default function Search({
           type="search"
           name="searchbar"
           placeholder="Search for more questions here..."
+          autoComplete="off"
           onChange={(e) => handleChange(e.currentTarget.value)}
           onFocus={() => setShowResults(true)}
           onBlur={() => setShowResults(false)} // TODO: figure out accessibility - do not blur on keyboard navigation into the result list

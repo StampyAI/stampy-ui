@@ -429,6 +429,7 @@ footer > *:not(:last-child) {
   border-radius: 4px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
+
 .searchbar input::-webkit-search-cancel-button {
   margin-right: 35px;
 }
@@ -465,7 +466,7 @@ footer > *:not(:last-child) {
 }
 
 .result-item.already-open {
-  color: var(--colorLinkVisited);
+  color: #999;
   cursor: default;
   background-color: transparent;
 }
