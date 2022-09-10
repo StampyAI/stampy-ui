@@ -14,10 +14,16 @@ import {Share, Users, Code} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 
 type LoaderData = {
+  noLogo: boolean
   initialQuestions: QuestionType[]
 }
 
 export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
+  const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
+  const isLogoForcedOff = request.url.match(/noLogo/)
+  const isLogoForcedOn = request.url.match(/withLogo/)
+  const noLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
+
   let initialQuestions: QuestionType[] = []
   try {
     initialQuestions = await loadInitialQuestions(request)
@@ -25,6 +31,7 @@ export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => 
     console.error(e)
   }
   return {
+    noLogo,
     initialQuestions,
   }
 }
@@ -32,16 +39,15 @@ export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
-  const {initialQuestions} = useLoaderData<LoaderData>()
+  const {noLogo, initialQuestions} = useLoaderData<LoaderData>()
   const {
-    noLogo,
     questions,
     canonicallyAnsweredQuestionsRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestionByTitle,
-  } = useQuestionStateInUrl(initialQuestions)
+  } = useQuestionStateInUrl(noLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
@@ -51,7 +57,7 @@ export default function App() {
 
   return (
     <>
-      <header style={noLogo ? {backgroundImage: 'none'} : {}}>
+      <header className={noLogo ? 'no-logo' : 'with-logo'}>
         {noLogo ? (
           <div className="logo-intro-group">
             <div className="intro">
@@ -79,7 +85,7 @@ export default function App() {
             </div>
           </div>
         )}
-        <div className="icon-link-group" style={noLogo ? {flexDirection: 'row'} : {}}>
+        <div className="icon-link-group">
           <CopyLink>
             <Share />
             Share link
