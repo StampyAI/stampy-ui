@@ -34,7 +34,7 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT_GEN_EMBEDDINGS }}
           force: true
       - name: Restore stampy-ui repository code
         if: github.event.pull_request.merged == 'true' || steps.check.outputs.changed == 'true'
