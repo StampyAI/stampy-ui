@@ -27,10 +27,7 @@ Stampy UI is an interface for [stampy.ai](https://stampy.ai/read/Get_involved), 
 4. Create stampy-ui Remix environment
 
 - Change directory to where you downloaded the stampy-ui github repository: `cd stampy-ui`
-- Run `npm i` to install all the dependencies required to run the current version of stampy-ui.
-
-5. Either of the following commands generates React component icons from source svg files. If you update svg files
-   during development, you can also re-run `npm run generate-icons` manually to see changes.
+- Run `npm install` to install all the dependencies required to run the current version of stampy-ui.
 
 Once that's done, you should be able to test and deploy your app!
 
