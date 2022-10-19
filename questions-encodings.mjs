@@ -7,6 +7,22 @@ import * as use from '@tensorflow-models/universal-sentence-encoder'
 import fetch from 'node-fetch'
 import * as fs from 'fs'
 
+// purge wiki cache to ensure getting latest update of questions
+// https://www.mediawiki.org/wiki/API:Purge
+// POST version of https://stampy.ai/w/api.php?action=purge&titles=Canonically_answered_questions%7CCanonical_answers%7CCanonical_questions
+const urlPurge = 'https://stampy.ai/w/api.php'
+const params = {
+  action: 'purge',
+  titles: 'Canonically_answered_questions|Canonical_answers|Canonical_questions',
+  format: 'json',
+}
+const options = {
+  method: 'POST',
+  body: JSON.stringify(params),
+  headers: {'Content-Type': 'application/json'},
+}
+await fetch(urlPurge, options)
+
 const filepath = 'public/assets/'
 const filename = filepath + 'stampy-questions-encodings.json'
 
@@ -17,9 +33,9 @@ if (fs.existsSync(filename)) {
   console.log(`${prevNumQs} questions from in previous generated encodings.`)
 }
 
-const url =
+const urlQuery =
   'https://stampy.ai/w/api.php?action=ask&query=[[Canonically%20answered%20questions]]|format%3Dplainlist|%3FCanonicalQuestions&format=json'
-const r = await (await fetch(url)).json()
+const r = await (await fetch(urlQuery)).json()
 const response = r.query.results['Canonically answered questions'].printouts.CanonicalQuestions
 console.log(`${response.length} questions fetched from the stampy.ai wiki.`)
 
