@@ -40,3 +40,8 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
     return data
   }) as any
 }
+
+export async function loadCache() {
+  const all = await STAMPY_KV.list()
+  return all
+}
