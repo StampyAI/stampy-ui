@@ -1,45 +1,47 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import type {ShouldReloadFunction} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
-
-import type {Question as QuestionType} from '~/server-utils/stampy'
 import {loadInitialQuestions} from '~/server-utils/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
-import Question from '~/components/question'
+import {Question} from '~/routes/questions/$question'
 import logoSvg from '~/assets/stampy-logo.svg'
-
 import {Share, Users, Code} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
+import {useEffect} from 'react'
+import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
-type LoaderData = {
-  noLogo: boolean
-  initialQuestions: QuestionType[]
-}
-
-export const loader: LoaderFunction = async ({request}): Promise<LoaderData> => {
+export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
   const isLogoForcedOff = request.url.match(/noLogo/)
   const isLogoForcedOn = request.url.match(/withLogo/)
   const noLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
 
-  let initialQuestions: QuestionType[] = []
+  let initialQuestionsData
   try {
-    initialQuestions = await loadInitialQuestions(request)
+    initialQuestionsData = await loadInitialQuestions(request)
   } catch (e) {
     console.error(e)
   }
   return {
     noLogo,
-    initialQuestions,
+    initialQuestionsData,
   }
 }
 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
-  const {noLogo, initialQuestions} = useLoaderData<LoaderData>()
+  const {noLogo, initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
+  const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
+
+  useEffect(() => {
+    if (timestamp) {
+      reloadInBackgroundIfNeeded('', timestamp)
+    }
+  }, [timestamp])
+
   const {
     questions,
     canonicallyAnsweredQuestionsRef,

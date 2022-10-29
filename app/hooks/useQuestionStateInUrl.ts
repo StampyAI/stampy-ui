@@ -1,7 +1,9 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
-import {useSearchParams, useTransition, useHref, useResolvedPath} from '@remix-run/react'
+import {useSearchParams, useTransition} from '@remix-run/react'
 import type {Question, QuestionState} from '~/server-utils/stampy'
+import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
+import {fetchQuestion} from '~/routes/questions/$question'
 
 export const tmpPageId = 999999
 
@@ -23,7 +25,6 @@ function updateQuestionMap(question: Question, map: Map<Question['pageid'], Ques
 export default function useQuestionStateInUrl(noLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
-  console.log({href: useHref(''), path: useResolvedPath('')})
 
   const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
   const [questionMap, setQuestionMap] = useState(() => {
@@ -38,11 +39,9 @@ export default function useQuestionStateInUrl(noLogo: boolean, initialQuestions:
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
-    fetch('/questions/allCanonicallyAnswered')
-      .then((r) => r.json())
-      .then((data: string[]) => {
-        canonicallyAnsweredQuestionsRef.current = data
-      })
+    fetchAllCanonicallyAnsweredQuestions().then((data) => {
+      canonicallyAnsweredQuestionsRef.current = data
+    })
   }, [])
 
   useEffect(() => {
@@ -157,12 +156,10 @@ export default function useQuestionStateInUrl(noLogo: boolean, initialQuestions:
       onLazyLoadQuestion(tmpQuestion)
       toggleQuestion(tmpQuestion, {moveToTop: true})
 
-      fetch(`/questions/${encodeURIComponent(title)}`)
-        .then((response) => response.json())
-        .then((newQuestion: Question) => {
-          onLazyLoadQuestion(newQuestion)
-          toggleQuestion(newQuestion, {moveToTop: true})
-        })
+      fetchQuestion(encodeURIComponent(title)).then((newQuestion) => {
+        onLazyLoadQuestion(newQuestion)
+        toggleQuestion(newQuestion, {moveToTop: true})
+      })
     },
     [onLazyLoadQuestion, questionMap, toggleQuestion]
   )

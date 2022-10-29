@@ -40,8 +40,8 @@
   "scripts": {
     "postinstall": "remix setup cloudflare-workers",
     "generate-icons": "npx @svgr/cli --out-dir app/components/icons-generated -- app/assets/icons",
-    "eslint": "eslint --fix --ignore-pattern .gitignore '**/*.ts*'",
-    "prettier": "prettier --write --ignore-path .gitignore '**/*.{ts*,js,css,md}'",
+    "eslint": "eslint --fix --ignore-pattern .gitignore **/*.ts*",
+    "prettier": "prettier --write --ignore-path .gitignore **/*.{ts*,js,css,md}",
     "lint": "npm run prettier && npm run eslint",
     "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
