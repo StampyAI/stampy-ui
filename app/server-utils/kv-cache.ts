@@ -17,7 +17,8 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
       const cached = await STAMPY_KV.get(key)
 
       if (cached) {
-        const dataWithTimestamp = JSON.parse(cached)
+        const data = JSON.parse(cached)
+        const dataWithTimestamp = 'timestamp' in data ? data : {data, timestamp: '1970'}
 
         return dataWithTimestamp
       }
