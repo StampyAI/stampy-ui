@@ -17,3 +17,8 @@ jobs:
           cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
           npm install
           npm run deploy
+      - name: Clean cache (delete all items in KV store)
+        uses: fjogeleit/http-request-action@v1
+        with:
+          method: POST
+          url: 'https://ui.stampy.ai/questions/cache'

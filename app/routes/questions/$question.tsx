@@ -1,13 +1,34 @@
+import type {LoaderFunction} from '@remix-run/cloudflare'
+import {loadQuestionDetail} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
-import {Link} from 'remix'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
-import CopyLink from './copyLink'
+import CopyLink from '~/components/copyLink'
+import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
-export default function Question({
+export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
+  const {question} = params
+  if (!question) {
+    throw Error('missing question title')
+  }
+
+  return await loadQuestionDetail(request, question)
+}
+
+export function fetchQuestion(pageid: number | string) {
+  const url = `/questions/${pageid}`
+  return fetch(url).then(async (response) => {
+    const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
+    reloadInBackgroundIfNeeded(url, timestamp)
+
+    return data
+  })
+}
+
+export function Question({
   questionProps,
   onLazyLoadQuestion,
   onToggle,
@@ -22,15 +43,13 @@ export default function Question({
   useEffect(() => {
     if (pageid !== tmpPageId && !text && !isLoading.current) {
       isLoading.current = true
-      fetch(`/questions/${pageid}`)
-        .then((response) => response.json())
-        .then((newQuestionProps: Question) => {
-          onLazyLoadQuestion(newQuestionProps)
-          if (refreshOnToggleAfterLoading.current) {
-            onToggle(newQuestionProps)
-            refreshOnToggleAfterLoading.current = false
-          }
-        })
+      fetchQuestion(pageid).then((newQuestionProps) => {
+        onLazyLoadQuestion(newQuestionProps)
+        if (refreshOnToggleAfterLoading.current) {
+          onToggle(newQuestionProps)
+          refreshOnToggleAfterLoading.current = false
+        }
+      })
     }
   }, [pageid, text, onLazyLoadQuestion, onToggle])
 
