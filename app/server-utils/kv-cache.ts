@@ -56,3 +56,12 @@ export async function loadCache() {
 
   return all
 }
+
+export async function cleanCache() {
+  const {keys} = await STAMPY_KV.list()
+  for (const {name} of keys) {
+    await STAMPY_KV.delete(name)
+  }
+
+  return null
+}
