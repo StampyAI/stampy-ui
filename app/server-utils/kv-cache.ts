@@ -47,6 +47,7 @@ export async function loadCache() {
   for (const {name, metadata = {timestamp: undefined}} of keys) {
     let {timestamp} = metadata
     let data = JSON.parse((await STAMPY_KV.get(name)) as string)
+    if (!data) continue // KV list can be outdated few seconds after cleaning cache
     if ('timestamp' in data) {
       timestamp = data.timestamp
       data = data.data
