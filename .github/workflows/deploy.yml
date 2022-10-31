@@ -17,6 +17,8 @@ jobs:
           cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
           npm install
           npm run deploy
+      - name: 'Debug: list files in build directory'
+        run: ls -R build public/build
       - name: Clean cache (delete all items in KV store)
         uses: fjogeleit/http-request-action@v1
         with:
