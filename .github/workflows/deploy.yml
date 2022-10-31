@@ -15,7 +15,7 @@ jobs:
       - name: Deploy to Cloudflare
         run: |
           cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
-          npm install
+          npm ci
           npm run deploy
       - name: 'Debug: list files in build directory'
         run: ls -R build public/build
