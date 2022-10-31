@@ -42,17 +42,12 @@ export async function reloadInBackgroundIfNeeded(url: string, timestamp: string)
 }
 
 export async function loadCache() {
-  const {keys}: any = await STAMPY_KV.list()
+  const {keys} = await STAMPY_KV.list()
   const all = []
-  for (const {name, metadata = {timestamp: undefined}} of keys) {
-    let {timestamp} = metadata
-    let data = JSON.parse((await STAMPY_KV.get(name)) as string)
-    if (!data) continue // KV list can be outdated few seconds after cleaning cache
-    if ('timestamp' in data) {
-      timestamp = data.timestamp
-      data = data.data
-    }
-    all.push({name, timestamp, data})
+  for (const {name, metadata} of keys) {
+    const value = await STAMPY_KV.get(name)
+    if (!value) continue // KV list can be outdated few seconds after cleaning cache
+    all.push({name, metadata, value})
   }
 
   return all
