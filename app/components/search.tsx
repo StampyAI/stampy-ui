@@ -27,6 +27,7 @@ export default function Search({
   onSelect,
 }: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
+  const [searchInput, setSearchInput] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
@@ -63,6 +64,7 @@ export default function Search({
   }, [])
 
   const handleChange = debounce((value: string) => {
+    setSearchInput(value)
     if (!tfFinishedLoadingRef.current) {
       console.debug('plaintext search:', value)
       runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
@@ -106,6 +108,17 @@ export default function Search({
                 }}
               />
             ))}
+          <a
+            href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInput}`}
+            target='_blank' rel="noreferrer"
+            className={`transparent-button result-item`}
+            style={{display: 'flex', alignItems: 'center', textDecoration: 'none'}}
+            key='none-of-the-above'
+            title='Request a new question'
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            <span style={{fontSize: '1.5em', paddingRight: '0.2em'}}>+</span> None of these: Request an answer to my exact question above
+          </a>
         </div>
       </AutoHeight>
     </div>
