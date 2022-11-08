@@ -44,3 +44,14 @@ $ npm run deploy
 ```
 
 Live demo: https://ui.stampy.ai
+
+## Add new domain
+* log in to [Cloudflare Dashboard](https://dash.cloudflare.com/) owned by @plexish
+* use `Add a site` button on homepage, choose the Free plan
+   * in the DNS section for this site > `Add record` for 2 new CNAME records:
+   * `CNAME   @   stampy-ui.stampy.workers.dev`
+   * `CNAME   *   stampy-ui.stampy.workers.dev`
+* go to Workers > stampy-ui > [Triggers](https://dash.cloudflare.com/841738ad455064a5846675cc41124c85/workers/services/view/stampy-ui/production/triggers)
+   * in Routes section > `Add route` with the new domain (e.g. `example.com/*` and select the zone to the just-added site)
+* [update your domain registrar](https://developers.cloudflare.com/fundamentals/get-started/setup/add-site/#update-your-registrar) to enable CF
+* check the site after a few minutes (CF claims "up to 24 hours", it's usually faster ... but don't share the link too widely on the first day)
