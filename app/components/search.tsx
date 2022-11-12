@@ -95,29 +95,30 @@ export default function Search({
       </label>
       <AutoHeight>
         <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
-          {showResults &&
-            results.map(({title, score}) => (
-              <ResultItem
-                key={title}
-                {...{
-                  title,
-                  score,
-                  model,
-                  onSelect,
-                  isAlreadyOpen: openQuestionTitles.includes(title),
-                }}
-              />
-            ))}
+          <div>
+            {showResults &&
+              results.map(({title, score}) => (
+                <ResultItem
+                  key={title}
+                  {...{
+                    title,
+                    score,
+                    model,
+                    onSelect,
+                    isAlreadyOpen: openQuestionTitles.includes(title),
+                  }}
+                />
+              ))}
+          </div>
           <a
             href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInput}`}
-            target='_blank' rel="noreferrer"
-            className={`transparent-button result-item`}
-            style={{display: 'flex', alignItems: 'center', textDecoration: 'none'}}
-            key='none-of-the-above'
-            title='Request a new question'
-            onMouseDown={(e) => e.preventDefault()}
+            target="_blank"
+            rel="noreferrer"
+            className="result-item none-of-the-above"
+            title="Request a new question"
+            onMouseDown={(e) => e.preventDefault()} // prevent onBlur handler before click on the link happens
           >
-            <span style={{fontSize: '1.5em', paddingRight: '0.2em'}}>+</span> None of these: Request an answer to my exact question above
+            ＋ None of these: Request an answer to my exact question above
           </a>
         </div>
       </AutoHeight>
