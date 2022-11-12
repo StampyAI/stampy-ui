@@ -445,7 +445,7 @@ footer > *:not(:last-child) {
   right: 11px; /* visually aligned to the chevron */
 }
 
-.dropdown {
+.dropdown div {
   color: var(--colorText);
   background-color: var(--bgColorQuestionAnswer);
   overflow: auto;
@@ -475,6 +475,13 @@ footer > *:not(:last-child) {
   color: #999;
   cursor: default;
   background-color: transparent;
+}
+
+.result-item.none-of-the-above,
+.result-item.none-of-the-above:visited {
+  text-decoration: none;
+  color: inherit;
+  font-style: italic;
 }
 
 input:focus-visible,

@@ -27,6 +27,7 @@ export default function Search({
   onSelect,
 }: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
+  const [searchInput, setSearchInput] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
   const tfWorkerRef = useRef<Worker>()
@@ -63,6 +64,7 @@ export default function Search({
   }, [])
 
   const handleChange = debounce((value: string) => {
+    setSearchInput(value)
     if (!tfFinishedLoadingRef.current) {
       console.debug('plaintext search:', value)
       runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
@@ -93,19 +95,31 @@ export default function Search({
       </label>
       <AutoHeight>
         <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
-          {showResults &&
-            results.map(({title, score}) => (
-              <ResultItem
-                key={title}
-                {...{
-                  title,
-                  score,
-                  model,
-                  onSelect,
-                  isAlreadyOpen: openQuestionTitles.includes(title),
-                }}
-              />
-            ))}
+          <div>
+            {showResults &&
+              results.map(({title, score}) => (
+                <ResultItem
+                  key={title}
+                  {...{
+                    title,
+                    score,
+                    model,
+                    onSelect,
+                    isAlreadyOpen: openQuestionTitles.includes(title),
+                  }}
+                />
+              ))}
+          </div>
+          <a
+            href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInput}`}
+            target="_blank"
+            rel="noreferrer"
+            className="result-item none-of-the-above"
+            title="Request a new question"
+            onMouseDown={(e) => e.preventDefault()} // prevent onBlur handler before click on the link happens
+          >
+            ＋ None of these: Request an answer to my exact question above
+          </a>
         </div>
       </AutoHeight>
     </div>
