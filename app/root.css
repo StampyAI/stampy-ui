@@ -87,7 +87,7 @@ header {
   color: var(--colorTitle);
 }
 
-header.with-logo {
+header.fun-logo {
   background-image: url('/assets/coded-banner.svg');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -95,10 +95,16 @@ header.with-logo {
   background-size: 800px;
 }
 
-.logo {
+.fun-logo .logo {
   height: clamp(100px, 20vw, 150px);
   width: auto;
   padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
+}
+
+.min-logo .logo {
+  height: clamp(50px, 15vw, 100px);
+  width: auto;
+  padding: clamp(1rem, 5vw, 2rem) 12px 0 0;
 }
 
 .intro {
@@ -140,8 +146,12 @@ h1 {
   transition: opacity 1s;
 }
 
-.with-logo .icon-link-group {
+.fun-logo .icon-link-group {
   flex-direction: column;
+}
+
+.min-logo .icon-link-group {
+  flex-direction: row;
 }
 
 .icon-link,
