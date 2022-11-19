@@ -521,7 +521,8 @@ a:focus-visible,
     width: 100%;
   }
 
-  .icon-link-group {
+  .fun-logo .icon-link-group,
+  .min-logo .icon-link-group {
     width: 100%;
     padding: 16px;
     align-self: flex-start;
