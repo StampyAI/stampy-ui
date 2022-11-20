@@ -1,5 +1,5 @@
 import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
-import type {MetaFunction, LinksFunction} from '@remix-run/cloudflare'
+import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import styles from '~/root.css'
 
 import {useLoaderData} from '@remix-run/react'
@@ -63,7 +63,7 @@ export default function App() {
         )}
       </head>
       <body>
-        <Outlet />
+        <Outlet context={minLogo} />
         {/* <ScrollRestoration /> wasn't doing anything useful */}
         <Scripts />
         <LiveReload />

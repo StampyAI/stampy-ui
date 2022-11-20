@@ -22,7 +22,7 @@ function updateQuestionMap(question: Question, map: Map<Question['pageid'], Ques
   }
 }
 
-export default function useQuestionStateInUrl(noLogo: boolean, initialQuestions: Question[]) {
+export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
 
@@ -53,8 +53,8 @@ export default function useQuestionStateInUrl(noLogo: boolean, initialQuestions:
 
   useEffect(() => {
     const suffix = stateString ? ` - ${stateString}` : ''
-    document.title = noLogo ? 'AI Safety FAQ' : `Stampy (alpha)${suffix}`
-  }, [stateString, noLogo])
+    document.title = minLogo ? 'AI Safety FAQ' : `Stampy (alpha)${suffix}`
+  }, [stateString, minLogo])
 
   const initialCollapsedState = useMemo(
     () => initialQuestions.map(({pageid}) => `${pageid}-`).join(''),
@@ -165,7 +165,6 @@ export default function useQuestionStateInUrl(noLogo: boolean, initialQuestions:
   )
 
   return {
-    noLogo,
     questions,
     canonicallyAnsweredQuestionsRef,
     reset,

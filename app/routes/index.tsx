@@ -1,5 +1,5 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import type {ShouldReloadFunction} from '@remix-run/react'
+import {ShouldReloadFunction, useOutletContext} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions} from '~/server-utils/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
@@ -14,11 +14,6 @@ import {useEffect} from 'react'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
-  const isLogoForcedOff = request.url.match(/minLogo/)
-  const isLogoForcedOn = request.url.match(/funLogo/)
-  const minLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
-
   let initialQuestionsData
   try {
     initialQuestionsData = await loadInitialQuestions(request)
@@ -26,7 +21,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     console.error(e)
   }
   return {
-    minLogo,
     initialQuestionsData,
   }
 }
@@ -34,7 +28,8 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
-  const {minLogo, initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
+  const minLogo = useOutletContext<boolean>()
+  const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 
   useEffect(() => {
