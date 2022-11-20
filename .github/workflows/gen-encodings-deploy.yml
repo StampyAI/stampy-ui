@@ -33,6 +33,8 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         run: |
           git config --local user.name ${{ github.actor }}
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ hello@stampy.ai }}
           git stage ${{ env.filepath }}/${{ env.filename }}
           git commit -m "Generate updated ${{ env.filename }}"
       - name: Push updated files on GitHub
