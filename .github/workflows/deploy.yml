@@ -19,8 +19,3 @@ jobs:
           npm run deploy
       - name: 'Debug: list files in build directory'
         run: ls -R build public/build
-      - name: Clean cache (delete all items in KV store)
-        uses: fjogeleit/http-request-action@v1
-        with:
-          method: POST
-          url: 'https://ui.stampy.ai/questions/cache'
