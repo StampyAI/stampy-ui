@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 150 129" style="enable-background:new 0 0 150 129;" xml:space="preserve">
+<style type="text/css">
+	.st0{display:none;}
+	.st1{display:inline;fill:#333333;}
+	.st2{display:inline;fill:#FFFFFF;}
+	.st3{fill:#8F9DD1;}
+	.st4{fill:none;}
+	.st5{fill:#C99071;}
+	.st6{fill:#D9816B;}
+	.st7{fill:#D1896E;}
+	.st8{fill:#BED5EC;}
+	.st9{fill:#E4D4B6;}
+	.st10{fill:#DFAB91;}
+	.st11{fill:#D1D5D1;}
+	.st12{display:inline;fill:#DFAB91;}
+	.st13{display:inline;fill:#D1D5D1;}
+	.st14{display:inline;fill:#D1896E;}
+	.st15{display:inline;fill:#D9816B;}
+	.st16{display:inline;fill:#E4D4B6;}
+	.st17{display:inline;fill:#C99071;}
+	.st18{display:inline;fill:#BED5EC;}
+	.st19{display:inline;fill:#8F9DD1;}
+</style>
+<g id="dark" class="st0">
+	<rect y="-10.5" class="st1" width="150" height="150"/>
+</g>
+<g id="light" class="st0">
+	<rect y="-10.5" class="st2" width="150" height="150"/>
+</g>
+<g id="Layer_1">
+	<g id="Layer_1_1_">
+		<polygon class="st3" points="88.9,76.6 61.1,76.6 75,52.5 		"/>
+		<circle class="st4" cx="47.9" cy="37" r="5.7"/>
+		<circle class="st4" cx="100.1" cy="37" r="5.7"/>
+		<polygon class="st5" points="120.9,0 28.9,0 28.9,18.4 120.9,18.4 120.9,110.6 139.3,110.6 139.3,18.4 139.3,0 		"/>
+		<polygon class="st6" points="29.1,110.5 29.1,46 10.7,46 10.7,110.5 10.7,128.9 29.1,128.9 120.9,128.9 120.9,110.5 		"/>
+		<rect x="120.9" y="110.5" class="st7" width="18.4" height="18.4"/>
+		<circle class="st4" cx="100.1" cy="37" r="5.7"/>
+		<circle class="st4" cx="47.9" cy="37" r="5.7"/>
+		<polygon class="st8" points="57.1,82.9 57.1,54.8 38.7,54.8 38.7,82.9 38.7,101.3 57.1,101.3 93.2,101.3 93.2,82.9 		"/>
+		<path class="st9" d="M111.7,46.1V27.6l0,0H93.2H29.1V46h64.1v36.9h18.4L111.7,46.1L111.7,46.1z M47.9,42.8c-3.1,0-5.7-2.5-5.7-5.7
+			s2.6-5.7,5.7-5.7c3.1,0,5.7,2.5,5.7,5.7S51.1,42.8,47.9,42.8z M100.1,42.8c-3.1,0-5.7-2.5-5.7-5.7s2.6-5.7,5.7-5.7
+			s5.7,2.5,5.7,5.7S103.3,42.8,100.1,42.8z"/>
+		<rect x="10.7" y="27.6" class="st10" width="18.4" height="18.4"/>
+		<polygon class="st11" points="93.2,101.3 111.6,101.3 111.6,82.8 93.2,82.8 		"/>
+	</g>
+	<g id="Layer_2_1_" class="st0">
+		<rect x="10" y="30" class="st12" width="20" height="20"/>
+		<rect x="90" y="80" class="st13" width="20" height="20"/>
+		<rect x="120" y="110" class="st14" width="20" height="20"/>
+		<rect x="10" y="50" class="st15" width="20" height="80"/>
+		<rect x="90" y="50" class="st16" width="20" height="30"/>
+		<rect x="120" class="st17" width="20" height="110"/>
+		<rect x="30" y="110" class="st15" width="90" height="20"/>
+		<rect x="30" class="st17" width="90" height="20"/>
+		<rect x="30" y="30" class="st16" width="80" height="20"/>
+		<rect x="40" y="60" class="st18" width="20" height="20"/>
+		<rect x="40" y="80" class="st18" width="50" height="20"/>
+		<polygon class="st19" points="85,75.3 65,75.3 75,55.3 		"/>
+		<circle class="st2" cx="50" cy="40" r="5"/>
+		<circle class="st2" cx="98.6" cy="40" r="5"/>
+	</g>
+</g>
+</svg>

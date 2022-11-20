@@ -1,22 +1,38 @@
 import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
-import type {MetaFunction, LinksFunction} from '@remix-run/cloudflare'
-import ogImage from '~/assets/stampy-ui-preview.png'
+import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import styles from '~/root.css'
 
+import {useLoaderData} from '@remix-run/react'
+
 const title = 'Stampy'
-const description = 'Questions and answers about about AI Alignment'
+const description = 'AI Safety FAQ'
+const ogImage = 'https://github.com/StampyAI/StampyAIAssets/blob/main/banner/stampy-ui-preview.png'
+const twitterCreator = '@stampyai'
 export const meta: MetaFunction = () => ({
   title,
   description,
   'og:title': title,
   'og:description': description,
-  'og:image': `https://stampy-ui.aprillion.workers.dev${ogImage}`,
-  'twitter:image': 'summary_large_image',
-  'twitter:creator': '@aprillion0042',
+  'og:image': ogImage,
+  'twitter:image': ogImage,
+  'twitter:creator': twitterCreator,
 })
 export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
 
+export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
+  const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
+  const isLogoForcedOff = request.url.match(/minLogo/)
+  const isLogoForcedOn = request.url.match(/funLogo/)
+  const minLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
+
+  return {
+    minLogo,
+  }
+}
+
 export default function App() {
+  const {minLogo} = useLoaderData<ReturnType<typeof loader>>()
+
   return (
     <html lang="en">
       <head>
@@ -40,9 +56,14 @@ export default function App() {
             `,
           }}
         />
+        {minLogo ? (
+          <link id="favicon" rel="icon" href="/favicon-min.ico" />
+        ) : (
+          <link id="favicon" rel="icon" href="/favicon.ico" />
+        )}
       </head>
       <body>
-        <Outlet />
+        <Outlet context={minLogo} />
         {/* <ScrollRestoration /> wasn't doing anything useful */}
         <Scripts />
         <LiveReload />

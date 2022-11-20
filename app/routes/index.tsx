@@ -1,23 +1,19 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import type {ShouldReloadFunction} from '@remix-run/react'
+import {ShouldReloadFunction, useOutletContext} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions} from '~/server-utils/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
 import {Question} from '~/routes/questions/$question'
-import logoSvg from '~/assets/stampy-logo.svg'
+import logoFunSvg from '~/assets/stampy-logo.svg'
+import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 import {useEffect} from 'react'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
-  const isLogoForcedOff = request.url.match(/noLogo/)
-  const isLogoForcedOn = request.url.match(/withLogo/)
-  const noLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
-
   let initialQuestionsData
   try {
     initialQuestionsData = await loadInitialQuestions(request)
@@ -25,7 +21,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     console.error(e)
   }
   return {
-    noLogo,
     initialQuestionsData,
   }
 }
@@ -33,7 +28,8 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
-  const {noLogo, initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
+  const minLogo = useOutletContext<boolean>()
+  const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 
   useEffect(() => {
@@ -49,7 +45,7 @@ export default function App() {
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestionByTitle,
-  } = useQuestionStateInUrl(noLogo, initialQuestions)
+  } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
@@ -59,9 +55,12 @@ export default function App() {
 
   return (
     <>
-      <header className={noLogo ? 'no-logo' : 'with-logo'}>
-        {noLogo ? (
+      <header className={minLogo ? 'min-logo' : 'fun-logo'}>
+        {minLogo ? (
           <div className="logo-intro-group">
+            <Link to="/" onClick={(e) => reset(e)}>
+              <img className="logo" alt="logo" src={logoMinSvg} />
+            </Link>
             <div className="intro">
               Answering questions about
               <h1>
@@ -74,7 +73,7 @@ export default function App() {
         ) : (
           <div className="logo-intro-group">
             <Link to="/" onClick={(e) => reset(e)}>
-              <img className="logo simplified-logo" alt="logo" src={logoSvg} />
+              <img className="logo" alt="logo" src={logoFunSvg} />
             </Link>
             <div className="intro">
               <h1>
