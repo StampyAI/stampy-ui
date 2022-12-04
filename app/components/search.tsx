@@ -109,17 +109,22 @@ export default function Search({
                   }}
                 />
               ))}
+              <a
+                href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInput}`}
+                target="_blank"
+                rel="noreferrer"
+                className="result-item none-of-the-above row m-spread x-center"
+                title="Request a new question"
+                onMouseDown={(e) => e.preventDefault()} // prevent onBlur handler before click on the link happens
+              >
+                <span className="label">
+                  None of these: Request an answer to my exact question above
+                </span>
+                <span className="circled icon">
+                  +
+                </span>
+              </a>
           </div>
-          <a
-            href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInput}`}
-            target="_blank"
-            rel="noreferrer"
-            className="result-item none-of-the-above"
-            title="Request a new question"
-            onMouseDown={(e) => e.preventDefault()} // prevent onBlur handler before click on the link happens
-          >
-            ＋ None of these: Request an answer to my exact question above
-          </a>
         </div>
       </AutoHeight>
     </div>

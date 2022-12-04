@@ -455,11 +455,12 @@ footer > *:not(:last-child) {
   right: 11px; /* visually aligned to the chevron */
 }
 
+.dropdown {
+  margin: 0 3px;
+  padding-bottom: 3px;
+}
+
 .dropdown div {
-  color: var(--colorText);
-  background-color: var(--bgColorQuestionAnswer);
-  overflow: auto;
-  border: 1px solid var(--borderColor);
   z-index: 1;
 }
 
@@ -468,30 +469,44 @@ footer > *:not(:last-child) {
 }
 
 .result-item {
-  line-height: 1;
+  box-shadow: 1px 1px 2px #0000004f;
+  border-radius: 3px;
+  color: var(--colorText);
   cursor: pointer;
-  color: currentColor;
-  padding: 12px 16px;
-  text-decoration: none;
   display: block;
+  height: 3em;
+  line-height: 1;
+  margin-top: 7px;
+  padding: 0 16px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(.19,1,.22,1);
   width: 100%;
 }
 
+.result-item:not(:hover) {
+  background-color: var(--bgColorQuestionAnswer);
+}
+
 .result-item:hover {
-  background-color: var(--bgColorHighlight);
+  background-color: var(--bgColorQuestionTitle);
 }
 
 .result-item.already-open {
   color: #999;
   cursor: default;
-  background-color: transparent;
 }
 
-.result-item.none-of-the-above,
-.result-item.none-of-the-above:visited {
+.result-item.none-of-the-above {
   text-decoration: none;
-  color: inherit;
+  color: grey;
+}
+
+.result-item.none-of-the-above .label {
   font-style: italic;
+}
+
+.result-item.none-of-the-above .icon {
+  font-size: 1.5em;
 }
 
 input:focus-visible,
@@ -538,6 +553,15 @@ a:focus-visible,
     border-right: 0;
     padding-right: 0;
   }
+}
+
+.circled {
+  border: 1px solid grey;
+  border-radius: 0.5em;
+  line-height: 1em;
+  width: 1em;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* dark theme */
