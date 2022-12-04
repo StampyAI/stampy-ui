@@ -1,0 +1,68 @@
+.row,
+.column {
+	display: flex;
+}
+
+.row {
+	flex-direction: row;
+}
+
+:is(.row, .column).wrap {
+	flex-wrap: wrap;
+}
+
+:is(.row, .column):not(.wrap) {
+	flex-wrap: nowrap;
+}
+
+:is(.row, .column):not(.m-center, .m-around, .m-spread, .m-fill),
+.row:not(.left, .right, .m-center),
+.column:not(.top, .bottom, .m-center) {
+	justify-content: space-evenly;
+}
+
+:is(.row, .column):not(.x-center, .x-around, .x-spread),
+.row:not(.top, .bottom, .x-center),
+.column:not(.left, .right, .x-center) {
+	align-items: stretch;
+}
+
+:is(.row, .column).m-center {
+	justify-content: center;
+}
+
+:is(.row, .column).m-around {
+	justify-content: space-around;
+}
+
+:is(.row, .column).m-spread {
+	justify-content: space-between;
+}
+
+:is(.row, .column).x-center {
+	align-items: center;
+}
+
+.row.left,
+.column.top {
+	justify-content: flex-start;
+}
+
+.row.right,
+.column.bottom {
+	justify-content: flex-end;
+}
+
+.column {
+	flex-direction: column;
+}
+
+.row.top,
+.column.left {
+	align-items: flex-start;
+}
+
+.row.bottom,
+.column.right {
+	align-items: flex-end;
+}

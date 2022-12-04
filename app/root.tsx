@@ -1,6 +1,7 @@
 import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
-import styles from '~/root.css'
+import styles from '~/stylesheets/root.css'
+import layout from '~/stylesheets/layout.css'
 
 import {useLoaderData} from '@remix-run/react'
 
@@ -17,7 +18,10 @@ export const meta: MetaFunction = () => ({
   'twitter:image': ogImage,
   'twitter:creator': twitterCreator,
 })
-export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
+export const links: LinksFunction = () => [
+  {rel: 'stylesheet', href: styles},
+  {rel: 'stylesheet', href: layout},
+]
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
