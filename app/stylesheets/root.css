@@ -479,7 +479,7 @@ footer > *:not(:last-child) {
   margin-top: 7px;
   padding: 0 16px;
   text-decoration: none;
-  transition: all 0.4s cubic-bezier(.19,1,.22,1);
+  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
   width: 100%;
 }
 
