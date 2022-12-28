@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgCode = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -30,5 +29,4 @@ const SvgCode = (props) => (
     />
   </svg>
 )
-
 export default SvgCode

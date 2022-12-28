@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgUsers = (props) => (
   <svg
     id="users_svg__Layer_1"
@@ -33,5 +32,4 @@ const SvgUsers = (props) => (
     />
   </svg>
 )
-
 export default SvgUsers
