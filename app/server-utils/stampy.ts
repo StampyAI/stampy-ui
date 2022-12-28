@@ -28,8 +28,11 @@ export const loadQuestionDetail = withCache(
       const question = decodeURIComponent(filename ?? '¯\\_(ツ)_/¯')
       const html = await response.text()
       const root = parse(html)
-      const body = root.querySelector('body')
-      const answer = body?.innerHTML
+      const style = (root.querySelector('style')?.outerHTML ?? '')
+        .replace(/(?<=\})\w+\{[^}]+\}/g, '')
+        .replace(/\b(?:color|background|font-family|font-size).+?;/g, '')
+      const body = root.querySelector('body')?.innerHTML ?? ''
+      const answer = `<div>${style}${body}</div>`
 
       data = {
         gdocId,
