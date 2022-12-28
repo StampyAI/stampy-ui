@@ -42,6 +42,17 @@ export default function App() {
         <meta name="color-scheme" content="light dark" />
         <Meta />
         <Links />
+        {minLogo ? (
+          <link id="favicon" rel="icon" href="/favicon-min.ico" />
+        ) : (
+          <link id="favicon" rel="icon" href="/favicon.ico" />
+        )}
+      </head>
+      <body>
+        <Outlet context={minLogo} />
+        {/* <ScrollRestoration /> wasn't doing anything useful */}
+        <Scripts />
+        <LiveReload />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -56,17 +67,6 @@ export default function App() {
             `,
           }}
         />
-        {minLogo ? (
-          <link id="favicon" rel="icon" href="/favicon-min.ico" />
-        ) : (
-          <link id="favicon" rel="icon" href="/favicon.ico" />
-        )}
-      </head>
-      <body>
-        <Outlet context={minLogo} />
-        {/* <ScrollRestoration /> wasn't doing anything useful */}
-        <Scripts />
-        <LiveReload />
       </body>
     </html>
   )

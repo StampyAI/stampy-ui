@@ -10,16 +10,16 @@ import CopyLink from '~/components/copyLink'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
-  const {question} = params
-  if (!question) {
-    throw Error('missing question title')
+  const {question: gdocId} = params
+  if (!gdocId) {
+    throw Error('missing google doc id')
   }
 
-  return await loadQuestionDetail(request, question)
+  return await loadQuestionDetail(request, gdocId)
 }
 
-export function fetchQuestion(pageid: number | string) {
-  const url = `/questions/${pageid}`
+export function fetchQuestion(gdocId: string) {
+  const url = `/questions/${gdocId}`
   return fetch(url).then(async (response) => {
     const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
     reloadInBackgroundIfNeeded(url, timestamp)
@@ -37,13 +37,13 @@ export function Question({
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
 }) {
-  const {pageid, title, text, answerEditLink, questionState} = questionProps
+  const {shortId, gdocId, question, answer, editLink, questionState} = questionProps
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
-    if (pageid !== tmpPageId && !text && !isLoading.current) {
+    if (shortId !== tmpPageId && !answer && !isLoading.current) {
       isLoading.current = true
-      fetchQuestion(pageid).then((newQuestionProps) => {
+      fetchQuestion(gdocId).then((newQuestionProps) => {
         onLazyLoadQuestion(newQuestionProps)
         if (refreshOnToggleAfterLoading.current) {
           onToggle(newQuestionProps)
@@ -51,7 +51,7 @@ export function Question({
         }
       })
     }
-  }, [pageid, text, onLazyLoadQuestion, onToggle])
+  }, [shortId, gdocId, answer, onLazyLoadQuestion, onToggle])
 
   const isExpanded = questionState === '_'
   const isRelated = questionState === 'r'
@@ -88,7 +88,7 @@ export function Question({
 
   const handleToggle = () => {
     onToggle(questionProps)
-    if (!text) {
+    if (!answer) {
       refreshOnToggleAfterLoading.current = true
     }
   }
@@ -97,9 +97,9 @@ export function Question({
     <article className={cls}>
       <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'}>
         <button className="transparent-button">
-          {title}
+          {question}
           <CopyLink
-            to={`?state=${pageid}_`}
+            to={`?state=${gdocId}_`}
             title="Link to question"
             onMouseEnter={() => setLinkHovered(true)}
             onMouseLeave={() => setLinkHovered(false)}
@@ -113,15 +113,15 @@ export function Question({
           {isExpanded && (
             <>
               <div
-                dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}}
+                dangerouslySetInnerHTML={{__html: answer || '<p>Loading...</p>'}}
                 ref={answerRef}
               />
               <div className="actions">
-                {answerEditLink && (
+                {editLink && (
                   // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
                   <a
                     className="icon-link"
-                    href={answerEditLink}
+                    href={editLink}
                     target="_blank"
                     rel="noreferrer"
                     title="edit answer"

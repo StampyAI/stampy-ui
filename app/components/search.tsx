@@ -1,21 +1,24 @@
-import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
+import {useState, MouseEvent, useMemo, MutableRefObject} from 'react'
 import debounce from 'lodash/debounce'
-import Question from '~/components/question'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
 type Props = {
-  canonicallyAnsweredQuestionsRef: MutableRefObject<string[]>
+  canonicallyAnsweredQuestionsRef: MutableRefObject<RawSearchableItem[]>
   openQuestionTitles: string[]
-  onSelect: (title: string) => void
+  onSelect: (gdocId: string) => void
 }
 
-type Question = {
+export type RawSearchableItem = {
+  gdocId: string
   title: string
+}
+
+type SearchableItem = RawSearchableItem & {
   normalized: string
 }
 
-type SearchResult = Question & {
+type SearchResult = SearchableItem & {
   score: number
 }
 
@@ -28,56 +31,27 @@ export default function Search({
 }: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
   const [searchInput, setSearchInput] = useState('')
-  const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
-  const tfWorkerRef = useRef<Worker>()
-  const tfFinishedLoadingRef = useRef(false)
 
   const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
   const canonicalQuestionsNormalized = useMemo(
     () =>
-      canonicallyAnsweredQuestions.map((title) => ({
+      canonicallyAnsweredQuestions.map(({gdocId, title}) => ({
+        gdocId,
         title,
         normalized: normalize(title),
       })),
     [canonicallyAnsweredQuestions]
   )
 
-  useEffect(() => {
-    const handleWorker = (event: MessageEvent) => {
-      const {data} = event
-      console.debug('onmessage from tfWorker:', data)
-      if (data.searchResults) {
-        tfFinishedLoadingRef.current = true
-        setSearchResults(data.searchResults)
-      }
-    }
-    const initWorker = () => {
-      if (self.Worker && !tfWorkerRef.current) {
-        tfWorkerRef.current = new Worker('/tfWorker.js')
-        tfWorkerRef.current.addEventListener('message', handleWorker)
-      } else {
-        console.log('Sorry! No Web Worker support.')
-      }
-    }
-    initWorker()
-  }, [])
-
   const handleChange = debounce((value: string) => {
     setSearchInput(value)
-    if (!tfFinishedLoadingRef.current) {
-      console.debug('plaintext search:', value)
-      runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
-    }
-
-    if (tfWorkerRef.current) {
-      console.debug('postMessage to tfWorker:', value)
-      tfWorkerRef.current.postMessage(value)
-    }
+    // TODO: implement search API BE
+    runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
   }, 400)
 
-  const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
-  const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
+  const results = baselineSearchResults
+  const model = 'plaintext'
 
   return (
     <div>
@@ -94,13 +68,14 @@ export default function Search({
         <MagnifyingGlass />
       </label>
       <AutoHeight>
-        <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
+        <div className={`dropdown ${showResults && searchInput ? '' : 'hidden'}`}>
           <div>
             {showResults &&
-              results.map(({title, score}) => (
+              results.map(({gdocId, title, score}) => (
                 <ResultItem
-                  key={title}
+                  key={gdocId}
                   {...{
+                    gdocId,
                     title,
                     score,
                     model,
@@ -127,16 +102,18 @@ export default function Search({
 }
 
 const ResultItem = ({
+  gdocId,
   title,
   score,
   model,
   onSelect,
   isAlreadyOpen,
 }: {
+  gdocId: string
   title: string
   score: number
   model: string
-  onSelect: (t: string) => void
+  onSelect: (gdocId: string) => void
   isAlreadyOpen: boolean
 }) => {
   const handleSelect = (e: MouseEvent) => {
@@ -144,7 +121,7 @@ const ResultItem = ({
       // don't setShowResults(false) from input onBlur, allowing multiselect
       e.preventDefault()
     }
-    onSelect(title)
+    onSelect(gdocId)
   }
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
@@ -153,7 +130,7 @@ const ResultItem = ({
   return (
     <button
       className={`transparent-button result-item ${isAlreadyOpen ? 'already-open' : ''}`}
-      key={title}
+      key={gdocId}
       title={tooltip}
       onMouseDown={handleSelect}
       // onKeyDown={handleSelect} TODO: #13 figure out accessibility of not blurring on keyboard navigation
@@ -172,7 +149,7 @@ const ResultItem = ({
  */
 export const runBaselineSearch = async (
   searchQueryRaw: string,
-  questions: Question[],
+  questions: SearchableItem[],
   numResults = 5
 ): Promise<SearchResult[]> => {
   if (!searchQueryRaw) {
@@ -212,12 +189,14 @@ export const runBaselineSearch = async (
     return score / totalWeight
   }
 
-  const questionsScored: SearchResult[] = questions.map(({title, normalized}) => ({
+  const questionsScored: SearchResult[] = questions.map(({gdocId, title, normalized}) => ({
+    gdocId,
     title,
     normalized,
     score: scoringFn(normalized),
   }))
   questionsScored.sort(byScore)
+  console.log(questionsScored)
 
   return questionsScored.slice(0, numResults).filter(({score}) => score > 0)
 }

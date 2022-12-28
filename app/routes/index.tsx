@@ -44,14 +44,14 @@ export default function App() {
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
-    selectQuestionByTitle,
+    selectQuestionByGdocId,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
   const openQuestionTitles = questions
     .filter(({questionState}) => questionState === '_')
-    .map(({title}) => title)
+    .map(({question}) => question)
 
   return (
     <>
@@ -105,11 +105,11 @@ export default function App() {
         <Search
           canonicallyAnsweredQuestionsRef={canonicallyAnsweredQuestionsRef}
           openQuestionTitles={openQuestionTitles}
-          onSelect={selectQuestionByTitle}
+          onSelect={selectQuestionByGdocId}
         />
         {questions.map((questionProps) => (
           <Question
-            key={questionProps.pageid}
+            key={questionProps.shortId}
             questionProps={questionProps}
             onLazyLoadQuestion={onLazyLoadQuestion}
             onToggle={toggleQuestion}
