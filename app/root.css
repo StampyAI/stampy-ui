@@ -181,7 +181,7 @@ svg * {
   transition: fill 300ms;
 }
 
-.icon-link:not(:hover) svg *:not(path[style*='fill:#333'], path[style*='fill: rgb(51, 51, 51)']),
+.icon-link:not(:hover) svg *:not(.image-core),
 .searchbar input + svg circle {
   fill: transparent !important;
 }
@@ -557,8 +557,6 @@ a:focus-visible,
     --colorLinkVisited: #79f;
   }
 
-  svg path[style*='fill:#333'],
-  svg path[style*='fill: rgb(51, 51, 51)'],
   article > h2::after {
     filter: invert(1);
   }
