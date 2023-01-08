@@ -181,7 +181,11 @@ svg * {
   transition: fill 300ms;
 }
 
-.icon-link:not(:hover) svg *:not(.image-core),
+.icon-link:not(:hover) svg *:not(
+  .share_svg__gray,
+  .code_svg__gray,
+  .users_svg__gray
+),
 .searchbar input + svg circle {
   fill: transparent !important;
 }
@@ -555,6 +559,12 @@ a:focus-visible,
     --bgColorTableRows: #1d2436;
     --colorLink: #89e3ff;
     --colorLinkVisited: #79f;
+  }
+
+  .share_svg__gray,
+  .code_svg__gray,
+  .users_svg__gray {
+    fill: #ccc;
   }
 
   article > h2::after {
