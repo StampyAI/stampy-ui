@@ -64,9 +64,7 @@ export default function App() {
             <div className="intro">
               Answering questions about
               <h1>
-                <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
                   AI Safety
-                </a>
               </h1>
             </div>
           </div>
@@ -79,10 +77,7 @@ export default function App() {
               <h1>
                 Welcome to <span className="highlight">stampy.ai</span>!
               </h1>
-              I can answer questions about{' '}
-              <a href="https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence">
-                artificial general intelligence safety
-              </a>
+              I can answer questions about artificial general intelligence safety
             </div>
           </div>
         )}
