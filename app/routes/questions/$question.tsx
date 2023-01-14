@@ -100,7 +100,7 @@ export function Question({
   } else if (text == null) {
     html = 'Loading...'
   } else {
-    html = text // TODO: parse markdown
+    html = text
   }
 
   return (

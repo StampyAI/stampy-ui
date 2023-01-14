@@ -11,7 +11,8 @@
     "react": "^17.0.2",
     "react-auto-height": "^1.1.6",
     "react-dom": "^17.0.2",
-    "remix": "^1.6.8"
+    "remix": "^1.6.8",
+    "showdown": "^2.1.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^2.2.2",
@@ -20,6 +21,7 @@
     "@types/lodash": "^4.14.184",
     "@types/react": "^17.0.48",
     "@types/react-dom": "^17.0.17",
+    "@types/showdown": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
     "cross-env": "^7.0.3",

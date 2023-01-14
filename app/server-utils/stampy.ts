@@ -1,4 +1,5 @@
 import {withCache} from '~/server-utils/kv-cache'
+import {Converter} from 'showdown'
 
 export type QuestionState = '_' | '-' | 'r'
 export type Question = {
@@ -77,12 +78,13 @@ const getCodaRows = async (
   return json.items
 }
 
+const mdConverter = new Converter()
 const extractText = (markdown: string) => markdown.replace(/```/g, '')
 const extractLink = (markdown: string) => markdown.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (v: CodaRow['values']): Question => ({
   title: extractText(v['Name']),
   pageid: v['UI ID'],
-  text: v['Rich Text'],
+  text: mdConverter.makeHtml(v['Rich Text']),
   answerEditLink: extractLink(v['Question']),
   relatedQuestions: v['Related answers']
     ? v['Related answers'].map(({name}, i) => ({
