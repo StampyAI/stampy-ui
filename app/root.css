@@ -295,10 +295,7 @@ article.expanded:not(.link-hovered) h2:hover::after {
   padding: 0 var(--paddingSides);
 }
 
-.answer p,
-.answer .card-shortdesc,
-.answer .card-longdesc,
-.answer .card-hide-longdesc {
+.answer > div {
   margin: var(--paddingSides) 0;
 }
 

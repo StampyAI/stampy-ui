@@ -28,7 +28,7 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
     const data = await fn(...args)
     const dataWithTimestamp = {timestamp: new Date(), data}
 
-    await STAMPY_KV.put(key, JSON.stringify(dataWithTimestamp))
+    if (data) await STAMPY_KV.put(key, JSON.stringify(dataWithTimestamp))
 
     return dataWithTimestamp
   }) as any

@@ -41,9 +41,10 @@ export function Question({
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
-    if (pageid !== tmpPageId && !text && !isLoading.current) {
+    if (pageid !== tmpPageId && text == null && !isLoading.current) {
       isLoading.current = true
       fetchQuestion(pageid).then((newQuestionProps) => {
+        if (!newQuestionProps) return
         onLazyLoadQuestion(newQuestionProps)
         if (refreshOnToggleAfterLoading.current) {
           onToggle(newQuestionProps)
@@ -88,9 +89,18 @@ export function Question({
 
   const handleToggle = () => {
     onToggle(questionProps)
-    if (!text) {
+    if (text == null) {
       refreshOnToggleAfterLoading.current = true
     }
+  }
+
+  let html
+  if (text == '') {
+    html = '<i>(empty)</i>'
+  } else if (text == null) {
+    html = 'Loading...'
+  } else {
+    html = text // TODO: parse markdown
   }
 
   return (
@@ -113,7 +123,9 @@ export function Question({
           {isExpanded && (
             <>
               <div
-                dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}}
+                dangerouslySetInnerHTML={{
+                  __html: html,
+                }}
                 ref={answerRef}
               />
               <div className="actions">
