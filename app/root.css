@@ -181,11 +181,7 @@ svg * {
   transition: fill 300ms;
 }
 
-.icon-link:not(:hover) svg *:not(
-  .share_svg__gray,
-  .code_svg__gray,
-  .users_svg__gray
-),
+.icon-link:not(:hover) svg *:not([class$="svg__gray"]),
 .searchbar input + svg circle {
   fill: transparent !important;
 }
@@ -561,9 +557,7 @@ a:focus-visible,
     --colorLinkVisited: #79f;
   }
 
-  .share_svg__gray,
-  .code_svg__gray,
-  .users_svg__gray {
+  svg *[class$="svg__gray"] {
     fill: #ccc;
   }
 
