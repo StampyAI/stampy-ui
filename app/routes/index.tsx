@@ -111,6 +111,7 @@ export default function App() {
       </main>
       <footer>
         <a href="https://discord.gg/vjFSCDyMCy">Join Discord</a>
+        <a href="https://all.aisafety.info/">All answers</a>
         <a href="https://get_involved.aisafety.info">About / Get Involved</a>
         <a href="https://dashboard.aisafety.info">Dashboard</a>
         <a href="https://github.com/StampyAI/stampy-ui">Help Code</a>
