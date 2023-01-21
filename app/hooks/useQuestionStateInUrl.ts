@@ -1,7 +1,7 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import {Question, QuestionState, TODO_CANONICAL} from '~/server-utils/stampy'
+import {Question, QuestionState} from '~/server-utils/stampy'
 import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
 import {fetchQuestion} from '~/routes/questions/$question'
 
@@ -96,8 +96,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       const canonicalQuestionTitleSet = new Set(canonicallyAnsweredQuestions)
 
       const newRelatedQuestions = relatedQuestions.filter((q) => {
-        const hasCanonicalAnswer =
-          canonicalQuestionTitleSet.has(TODO_CANONICAL) || canonicalQuestionTitleSet.has(q.title)
+        const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
         // hide already displayed questions, detect duplicates by title (pageid can be different due to redirects)
         // TODO: #25 relocate already displayed to slide in as a new related one
         const isAlreadyDisplayed = questions.some(({title}) => title === q.title)

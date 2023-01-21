@@ -81,8 +81,8 @@ const getCodaRows = async (
 const mdConverter = new Converter()
 const extractText = (markdown: string) => markdown?.replace(/```/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = (v: CodaRow['values']): Question => ({
-  title: extractText(v['Name']),
+const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
+  title,
   pageid: v['UI ID'],
   text: mdConverter.makeHtml(v['Rich Text']),
   answerEditLink: extractLink(v['Edit Answer']),
@@ -96,21 +96,17 @@ const convertToQuestion = (v: CodaRow['values']): Question => ({
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
   const rows = await getCodaRows('Answers', question.match(/^\d+$/) ? 'UI ID' : 'Name', question)
-
-  return convertToQuestion(rows[0].values)
+  return convertToQuestion(rows[0].name, rows[0].values)
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
   const rows = await getCodaRows('Initial questions')
-
-  const data: Question[] = rows.map(({values}) => convertToQuestion(values))
-
+  const data = rows.map(({name, values}) => convertToQuestion(name, values))
   return data
 })
 
-export const TODO_CANONICAL =
-  'TODO: fetch all live answers, but only names (mostly without Rich Text for performance)'
-export const loadAllCanonicallyAnsweredQuestions = withCache(
-  'canonicallyAnsweredQuestions',
-  async (): Promise<string[]> => [TODO_CANONICAL]
-)
+export const loadAllCanonicallyAnsweredQuestions = withCache('canonicallyAnsweredQuestions', async () => {
+  const rows = await getCodaRows('All on-site answers')
+  const data = rows.map(({name}) => name)
+  return data
+})
