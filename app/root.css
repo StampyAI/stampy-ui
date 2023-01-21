@@ -338,11 +338,9 @@ tr:nth-child(even) {
   font-style: italic;
 }
 
-.answer.long .card-shortdesc,
-.answer.long .card-show-longdesc,
-.answer.short .card-longdesc,
-.answer.short .card-hide-longdesc {
-  display: none;
+.answer img {
+  max-width: 100%;
+  max-height: 300px;
 }
 
 .actions {
