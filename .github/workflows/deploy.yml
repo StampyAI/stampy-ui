@@ -9,20 +9,20 @@ on:
 env:
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 jobs:
-  if_merged:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Clone stampy-ui repository code
-          uses: actions/checkout@v3
-        - name: Deploy to Cloudflare
-          run: |
-            cat wrangler.toml.template \
-              | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ \
-              | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ \
-              | set s/{CODA_TOKEN}/${{ secrets.CODA_TOKEN }} \
-              > wrangler.toml
-            npm ci
-            npm run deploy
-        - name: 'Debug: list files in build directory'
-          run: ls -R build public/build
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone stampy-ui repository code
+        uses: actions/checkout@v3
+      - name: Deploy to Cloudflare
+        run: |
+          cat wrangler.toml.template \
+            | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ \
+            | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ \
+            | set s/{CODA_TOKEN}/${{ secrets.CODA_TOKEN }} \
+            > wrangler.toml
+          npm ci
+          npm run deploy
+      - name: 'Debug: list files in build directory'
+        run: ls -R build public/build
