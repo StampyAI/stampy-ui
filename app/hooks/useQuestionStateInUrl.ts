@@ -5,8 +5,6 @@ import {Question, QuestionState} from '~/server-utils/stampy'
 import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
 import {fetchQuestion} from '~/routes/questions/$question'
 
-export const tmpPageId = 999999
-
 const getStateEntries = (state: string): [number, QuestionState][] =>
   Array.from(state.matchAll(/(\d+)(\D*)/g) ?? []).map((groups) => [
     Number(groups[1]),
@@ -35,7 +33,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     return initialMap
   })
 
-  const canonicallyAnsweredQuestionsRef = useRef<string[]>([])
+  const canonicallyAnsweredQuestionsRef = useRef<{pageid: number; title: string}[]>([])
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
@@ -83,7 +81,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       const {pageid, relatedQuestions} = questionProps
       let currentState = stateString ?? initialCollapsedState
       if (options?.moveToTop) {
-        const removePageRe = new RegExp(`${pageid}.|${tmpPageId}.`, 'g')
+        const removePageRe = new RegExp(`${pageid}.`, 'g')
         currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
       }
 
@@ -126,28 +124,23 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const onLazyLoadQuestion = useCallback((question: Question) => {
     setQuestionMap((currentMap) => {
       const newMap = new Map(currentMap)
-      if (question.pageid !== tmpPageId && question.title === newMap.get(tmpPageId)?.title) {
-        newMap.delete(tmpPageId)
-      }
       updateQuestionMap(question, newMap)
       return newMap
     })
   }, [])
 
-  const selectQuestionByTitle = useCallback(
-    (title: string) => {
+  const selectQuestion = useCallback(
+    (pageid: number, title: string) => {
       // if the question is already loaded, move it to top
       for (const q of questionMap.values()) {
-        if (title === q.title) {
-          if (q.pageid !== tmpPageId) {
-            toggleQuestion(q, {moveToTop: true})
-          }
+        if (pageid === q.pageid) {
+          toggleQuestion(q, {moveToTop: true})
           return
         }
       }
-      // else load new question
+      // else show the new question in main view and let the Question component fetch it
       const tmpQuestion = {
-        pageid: tmpPageId,
+        pageid,
         title,
         text: null,
         answerEditLink: null,
@@ -155,12 +148,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       }
       onLazyLoadQuestion(tmpQuestion)
       toggleQuestion(tmpQuestion, {moveToTop: true})
-
-      fetchQuestion(title).then((newQuestion) => {
-        if (!newQuestion) return
-        onLazyLoadQuestion(newQuestion)
-        toggleQuestion(newQuestion, {moveToTop: true})
-      })
     },
     [onLazyLoadQuestion, questionMap, toggleQuestion]
   )
@@ -171,6 +158,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
-    selectQuestionByTitle,
+    selectQuestion,
   }
 }

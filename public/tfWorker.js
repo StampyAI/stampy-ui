@@ -20,6 +20,7 @@ use.load().then(function (model) {
       encodings = tf.tensor2d(data.encodings)
       // successfully loaded model & downloaded encodings
       isReady = true
+      self.postMessage('ready')
     })
 })
 

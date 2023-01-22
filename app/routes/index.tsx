@@ -44,7 +44,7 @@ export default function App() {
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
-    selectQuestionByTitle,
+    selectQuestion,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -98,7 +98,7 @@ export default function App() {
         <Search
           canonicallyAnsweredQuestionsRef={canonicallyAnsweredQuestionsRef}
           openQuestionTitles={openQuestionTitles}
-          onSelect={selectQuestionByTitle}
+          onSelect={selectQuestion}
         />
         {questions.map((questionProps) => (
           <Question

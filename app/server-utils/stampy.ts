@@ -79,7 +79,6 @@ const getCodaRows = async (
 }
 
 const mdConverter = new Converter()
-const extractText = (markdown: string) => markdown?.replace(/```/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
@@ -105,8 +104,14 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
   return data
 })
 
-export const loadAllCanonicallyAnsweredQuestions = withCache('canonicallyAnsweredQuestions', async () => {
-  const rows = await getCodaRows('All on-site answers')
-  const data = rows.map(({name}) => name)
-  return data
-})
+export const loadAllCanonicallyAnsweredQuestions = withCache(
+  'canonicallyAnsweredQuestions',
+  async () => {
+    const rows = await getCodaRows('All on-site answers')
+    const data = rows.map(({name, values}) => ({
+      pageid: values['UI ID'],
+      title: name,
+    }))
+    return data
+  }
+)

@@ -4,7 +4,6 @@ import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
-import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
@@ -41,7 +40,7 @@ export function Question({
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
-    if (pageid !== tmpPageId && text == null && !isLoading.current) {
+    if (text == null && !isLoading.current) {
       isLoading.current = true
       fetchQuestion(pageid).then((newQuestionProps) => {
         if (!newQuestionProps) return
