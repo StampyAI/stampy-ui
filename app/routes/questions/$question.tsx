@@ -19,7 +19,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 }
 
 export function fetchQuestion(pageid: number | string) {
-  const url = `/questions/${pageid}`
+  const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
     const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
     reloadInBackgroundIfNeeded(url, timestamp)
