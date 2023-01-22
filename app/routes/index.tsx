@@ -44,7 +44,7 @@ export default function App() {
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
-    selectQuestionByTitle,
+    selectQuestion,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -63,9 +63,7 @@ export default function App() {
             </Link>
             <div className="intro">
               Answering questions about
-              <h1>
-                  AI Safety
-              </h1>
+              <h1>AI Safety</h1>
             </div>
           </div>
         ) : (
@@ -86,7 +84,7 @@ export default function App() {
             <Share />
             Share link
           </CopyLink>
-          <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
+          <a href="https://get_involved.aisafety.info" className="icon-link">
             <Users />
             Get Involved
           </a>
@@ -100,7 +98,7 @@ export default function App() {
         <Search
           canonicallyAnsweredQuestionsRef={canonicallyAnsweredQuestionsRef}
           openQuestionTitles={openQuestionTitles}
-          onSelect={selectQuestionByTitle}
+          onSelect={selectQuestion}
         />
         {questions.map((questionProps) => (
           <Question
@@ -112,14 +110,17 @@ export default function App() {
         ))}
       </main>
       <footer>
-        <a href="https://stampy.ai/wiki/Stampy">About</a>
-        <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
+        <a href="https://discord.gg/vjFSCDyMCy">Join Discord</a>
+        <a href="https://all.aisafety.info/">All answers</a>
+        <a href="https://get_involved.aisafety.info">About / Get Involved</a>
+        <a href="https://dashboard.aisafety.info">Dashboard</a>
         <a href="https://github.com/StampyAI/stampy-ui">Help Code</a>
-        <a href="https://stampy.ai/wiki/Discord_invite">Join Discord</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdT--8lx5F2pAZoRPPkDusA7vUTvKTVnNiAb9U5cqnohDhzHA/viewform">
           Feedback
         </a>
-        <a href="https://stampy.ai/wiki/Meta:Copyrights">@ 2022 stampy.ai</a>
+        <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
+          @ 2022 stampy.ai
+        </a>
       </footer>
     </>
   )

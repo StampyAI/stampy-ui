@@ -24,7 +24,14 @@ Stampy UI is an interface for [stampy.ai](https://stampy.ai/read/Get_involved), 
 - Copy `wrangler.toml.template` to `wrangler.toml`
 - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
-4. Create stampy-ui Remix environment
+4. Setup in [Coda](https://coda.io/account)
+
+- When logged in to Coda, `Generate API token` in your Account settigns
+- Add restrictions: `Doc or table`, `Read only`, for the doc with url `https://coda.io/d/_dfau7sl2hmG`
+  (you need access to the doc of course, which you can request on the Discord in source code)
+- Replace the value for `{CODA_TOKEN}` in `wrangler.toml`
+
+5. Create stampy-ui Remix environment
 
 - Change directory to where you downloaded the stampy-ui github repository: `cd stampy-ui`
 - Run `npm install` to install all the dependencies required to run the current version of stampy-ui.

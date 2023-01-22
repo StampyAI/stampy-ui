@@ -4,7 +4,6 @@ import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
-import {tmpPageId} from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
@@ -19,7 +18,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 }
 
 export function fetchQuestion(pageid: number | string) {
-  const url = `/questions/${pageid}`
+  const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
     const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
     reloadInBackgroundIfNeeded(url, timestamp)
@@ -41,9 +40,10 @@ export function Question({
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
-    if (pageid !== tmpPageId && !text && !isLoading.current) {
+    if (text == null && !isLoading.current) {
       isLoading.current = true
       fetchQuestion(pageid).then((newQuestionProps) => {
+        if (!newQuestionProps) return
         onLazyLoadQuestion(newQuestionProps)
         if (refreshOnToggleAfterLoading.current) {
           onToggle(newQuestionProps)
@@ -88,9 +88,18 @@ export function Question({
 
   const handleToggle = () => {
     onToggle(questionProps)
-    if (!text) {
+    if (text == null) {
       refreshOnToggleAfterLoading.current = true
     }
+  }
+
+  let html
+  if (text == '') {
+    html = '<i>(empty)</i>'
+  } else if (text == null) {
+    html = 'Loading...'
+  } else {
+    html = text
   }
 
   return (
@@ -113,7 +122,9 @@ export function Question({
           {isExpanded && (
             <>
               <div
-                dangerouslySetInnerHTML={{__html: text || '<p>Loading...</p>'}}
+                dangerouslySetInnerHTML={{
+                  __html: html,
+                }}
                 ref={answerRef}
               />
               <div className="actions">

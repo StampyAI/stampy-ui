@@ -1,23 +1,30 @@
 import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
 import debounce from 'lodash/debounce'
-import Question from '~/components/question'
+import {Question} from '~/routes/questions/$question'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
 type Props = {
-  canonicallyAnsweredQuestionsRef: MutableRefObject<string[]>
+  canonicallyAnsweredQuestionsRef: MutableRefObject<{pageid: number; title: string}[]>
   openQuestionTitles: string[]
-  onSelect: (title: string) => void
+  onSelect: (pageid: number, title: string) => void
 }
 
 type Question = {
+  pageid: number
   title: string
-  normalized: string
 }
 
 type SearchResult = Question & {
   score: number
 }
+
+type WorkerMessage =
+  | 'ready'
+  | {
+      searchResults: {title: string; pageid: number; score: number}[]
+      numQs: number
+    }
 
 const empty: [] = []
 
@@ -27,28 +34,21 @@ export default function Search({
   onSelect,
 }: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
-  const [searchInput, setSearchInput] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
+  const searchInputRef = useRef('')
   const tfWorkerRef = useRef<Worker>()
   const tfFinishedLoadingRef = useRef(false)
 
-  const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
-  const canonicalQuestionsNormalized = useMemo(
-    () =>
-      canonicallyAnsweredQuestions.map((title) => ({
-        title,
-        normalized: normalize(title),
-      })),
-    [canonicallyAnsweredQuestions]
-  )
-
   useEffect(() => {
-    const handleWorker = (event: MessageEvent) => {
+    const handleWorker = (event: MessageEvent<WorkerMessage>) => {
       const {data} = event
       console.debug('onmessage from tfWorker:', data)
-      if (data.searchResults) {
+      if (data === 'ready') {
         tfFinishedLoadingRef.current = true
+        return
+      }
+      if (data.searchResults) {
         setSearchResults(data.searchResults)
       }
     }
@@ -63,18 +63,24 @@ export default function Search({
     initWorker()
   }, [])
 
-  const handleChange = debounce((value: string) => {
-    setSearchInput(value)
+  const searchFn = (value: string) => {
+    if (value === searchInputRef.current) return
+
+    searchInputRef.current = value
     if (!tfFinishedLoadingRef.current) {
       console.debug('plaintext search:', value)
-      runBaselineSearch(value, canonicalQuestionsNormalized).then(setBaselineSearchResults)
+      runBaselineSearch(value, canonicallyAnsweredQuestionsRef.current).then(
+        setBaselineSearchResults
+      )
     }
 
     if (tfWorkerRef.current) {
       console.debug('postMessage to tfWorker:', value)
       tfWorkerRef.current.postMessage(value)
     }
-  }, 400)
+  }
+
+  const handleChange = debounce(searchFn, 500)
 
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
@@ -88,6 +94,7 @@ export default function Search({
           placeholder="Search for more questions here..."
           autoComplete="off"
           onChange={(e) => handleChange(e.currentTarget.value)}
+          onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
           onFocus={() => setShowResults(true)}
           onBlur={() => setShowResults(false)} // TODO: figure out accessibility - do not blur on keyboard navigation into the result list
         />
@@ -96,11 +103,15 @@ export default function Search({
       <AutoHeight>
         <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
           <div>
+            {!tfFinishedLoadingRef.current && (
+              <i>Showing plain text search results while tensorflow is loading:</i>
+            )}
             {showResults &&
-              results.map(({title, score}) => (
+              results.map(({pageid, title, score}) => (
                 <ResultItem
-                  key={title}
+                  key={pageid}
                   {...{
+                    pageid,
                     title,
                     score,
                     model,
@@ -111,7 +122,7 @@ export default function Search({
               ))}
           </div>
           <a
-            href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInput}`}
+            href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInputRef.current}`}
             target="_blank"
             rel="noreferrer"
             className="result-item none-of-the-above"
@@ -127,16 +138,18 @@ export default function Search({
 }
 
 const ResultItem = ({
+  pageid,
   title,
   score,
   model,
   onSelect,
   isAlreadyOpen,
 }: {
+  pageid: number
   title: string
   score: number
   model: string
-  onSelect: (t: string) => void
+  onSelect: Props['onSelect']
   isAlreadyOpen: boolean
 }) => {
   const handleSelect = (e: MouseEvent) => {
@@ -144,7 +157,7 @@ const ResultItem = ({
       // don't setShowResults(false) from input onBlur, allowing multiselect
       e.preventDefault()
     }
-    onSelect(title)
+    onSelect(pageid, title)
   }
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
@@ -212,11 +225,15 @@ export const runBaselineSearch = async (
     return score / totalWeight
   }
 
-  const questionsScored: SearchResult[] = questions.map(({title, normalized}) => ({
-    title,
-    normalized,
-    score: scoringFn(normalized),
-  }))
+  const questionsScored: SearchResult[] = questions.map(({pageid, title}) => {
+    const normalized = normalize(title)
+    return {
+      pageid,
+      title,
+      normalized,
+      score: scoringFn(normalized),
+    }
+  })
   questionsScored.sort(byScore)
 
   return questionsScored.slice(0, numResults).filter(({score}) => score > 0)

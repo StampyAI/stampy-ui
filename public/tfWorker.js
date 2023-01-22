@@ -16,9 +16,11 @@ use.load().then(function (model) {
     .then((response) => response.json())
     .then((data) => {
       questions = data.questions
+      pageids = data.pageids
       encodings = tf.tensor2d(data.encodings)
       // successfully loaded model & downloaded encodings
       isReady = true
+      self.postMessage('ready')
     })
 })
 
@@ -55,6 +57,7 @@ const runSemanticSearch = (searchQueryRaw, attempt = 1) => {
 
     const questionsScored = questions.map((title, index) => ({
       title,
+      pageid: pageids[index],
       score: scores[index],
     }))
     questionsScored.sort(byScore)
