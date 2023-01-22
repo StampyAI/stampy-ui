@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
 import debounce from 'lodash/debounce'
-import Question from '~/components/question'
+import {Question} from '~/routes/questions/$question'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
