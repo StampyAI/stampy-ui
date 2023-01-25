@@ -53,6 +53,7 @@ jobs:
             | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ \
             | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ \
             | sed s/{CODA_TOKEN}/${{ secrets.CODA_TOKEN }}/ \
+            | sed s/{CODA_INCOMING_TOKEN}/${{ secrets.CODA_INCOMING_TOKEN }}/ \
             > wrangler.toml
           npm ci
           npm run deploy

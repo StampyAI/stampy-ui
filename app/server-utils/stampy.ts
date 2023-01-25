@@ -2,13 +2,19 @@ import {withCache} from '~/server-utils/kv-cache'
 import {Converter} from 'showdown'
 
 export type QuestionState = '_' | '-' | 'r'
+export type RelatedQuestions = { title: string; pageid?: number }[]
 export type Question = {
   title: string
   pageid: number
   text: string | null
   answerEditLink: string | null
-  relatedQuestions: {title: string; pageid?: number}[]
+  relatedQuestions: RelatedQuestions
   questionState?: QuestionState
+}
+export type NewQuestion = {
+  title: string
+  relatedQuestions: RelatedQuestions
+  source?: string
 }
 type Entity = {
   '@context': string
@@ -52,16 +58,17 @@ const CODA_DOC_ID = 'fau7sl2hmG'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
-const getCodaRows = async (
-  table: string,
-  queryColumn?: string,
-  queryValue?: string
-): Promise<CodaRow[]> => {
-  const params = `useColumnNames=true&sortBy=natural&valueFormat=rich${
-    queryColumn && queryValue ? `&query=${quote(queryColumn)}:${quote(queryValue)}` : ''
-  }`
-  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
 
+
+/**
+   Coda has limits on how many rows can be returned at once (default is 200).
+   This function will keep on fetching pages until it has downloaded all items
+   that match the given url.
+   Any errors will cause the whole chain to abort.
+ **/
+const paginateCoda = async (
+    url: string
+): Promise<CodaRow[]> => {
   let json
   try {
     json = await (await fetch(url, {headers: {Authorization: `Bearer ${CODA_TOKEN}`}})).json()
@@ -75,7 +82,22 @@ const getCodaRows = async (
     throw e
   }
 
-  return json.items
+  if (json.nextPageLink) {
+    return json.items.concat(await paginateCoda(json.nextPageLink));
+  }
+  return json.items;
+}
+
+const getCodaRows = async (
+  table: string,
+  queryColumn?: string,
+  queryValue?: string
+): Promise<CodaRow[]> => {
+  const params = `useColumnNames=true&sortBy=natural&valueFormat=rich${queryColumn && queryValue ? `&query=${quote(queryColumn)}:${quote(queryValue)}` : ''
+    }`
+  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
+
+  return paginateCoda(url);
 }
 
 const mdConverter = new Converter()
@@ -115,3 +137,55 @@ export const loadAllCanonicallyAnsweredQuestions = withCache(
     return data
   }
 )
+
+export const loadAllQuestions = withCache(
+  'allQuestions',
+  async () => {
+    const rows = await getCodaRows('All answers')
+    return rows.map(({ name }) => name)
+  }
+)
+
+
+export const insertRows = async (
+  table: string,
+  rows: NewQuestion[],
+) => {
+  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows`
+  const payload = {
+    'rows': rows.map(row => (
+        {
+          'cells': [
+              { 'column': 'Question', 'value': row.title },
+              { 'column': 'Possible matches', 'value': row.relatedQuestions.map(({title}) => title) },
+              { 'column': 'Source', 'value': row.source || 'UI' },
+          ]
+      }),
+    ),
+  }
+  const params = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${CODA_INCOMING_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload)
+  }
+
+  let json
+  try {
+    json = await (await fetch(url, params)).json()
+    return json;
+  } catch (e: any) {
+    // forward debug message to HTTP Response
+    e.message = `\n>>> Error inserting rows ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    throw e
+  }
+}
+
+export const addQuestion = async (
+  title: string,
+  relatedQuestions: RelatedQuestions
+) => {
+  return await insertRows('Incoming questions', [{ title, relatedQuestions }])
+}

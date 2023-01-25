@@ -31,6 +31,16 @@ Stampy UI is an interface for [stampy.ai](https://stampy.ai/read/Get_involved), 
   (you need access to the doc of course, which you can request on the Discord in source code)
 - Replace the value for `{CODA_TOKEN}` in `wrangler.toml`
 
+  4.1 Setup write access to the "Incoming questions" table in [Coda](https://coda.io/account)
+
+This step is only needed if you want to add new questions to Coda. Seeing as they will then
+go live, it would probably be better to only set this if you are working on that specific
+component, in order to not mess up the list of incoming questions.
+
+- When logged in to Coda, `Generate API token` in your Account settigns
+- Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tugrid-S_6SYj6Tjm`
+- Replace the value for `{CODA_INCOMING_TOKEN}` in `wrangler.toml`
+
 5. Create stampy-ui Remix environment
 
 - Change directory to where you downloaded the stampy-ui github repository: `cd stampy-ui`
@@ -53,12 +63,13 @@ $ npm run deploy
 Live demo: https://ui.stampy.ai
 
 ## Add new domain
-* log in to [Cloudflare Dashboard](https://dash.cloudflare.com/) owned by @plexish
-* use `Add a site` button on homepage, choose the Free plan
-   * in the DNS section for this site > `Add record` for 2 new CNAME records:
-   * `CNAME   @   stampy-ui.stampy.workers.dev`
-   * `CNAME   *   stampy-ui.stampy.workers.dev`
-* go to Workers > stampy-ui > [Triggers](https://dash.cloudflare.com/841738ad455064a5846675cc41124c85/workers/services/view/stampy-ui/production/triggers)
-   * in Routes section > `Add route` with the new domain (e.g. `example.com/*` and select the zone to the just-added site)
-* [update your domain registrar](https://developers.cloudflare.com/fundamentals/get-started/setup/add-site/#update-your-registrar) to enable CF
-* check the site after a few minutes (CF claims "up to 24 hours", it's usually faster ... but don't share the link too widely on the first day)
+
+- log in to [Cloudflare Dashboard](https://dash.cloudflare.com/) owned by @plexish
+- use `Add a site` button on homepage, choose the Free plan
+  - in the DNS section for this site > `Add record` for 2 new CNAME records:
+  - `CNAME @ stampy-ui.stampy.workers.dev`
+  - `CNAME * stampy-ui.stampy.workers.dev`
+- go to Workers > stampy-ui > [Triggers](https://dash.cloudflare.com/841738ad455064a5846675cc41124c85/workers/services/view/stampy-ui/production/triggers)
+  - in Routes section > `Add route` with the new domain (e.g. `example.com/*` and select the zone to the just-added site)
+- [update your domain registrar](https://developers.cloudflare.com/fundamentals/get-started/setup/add-site/#update-your-registrar) to enable CF
+- check the site after a few minutes (CF claims "up to 24 hours", it's usually faster ... but don't share the link too widely on the first day)

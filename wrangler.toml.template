@@ -17,3 +17,4 @@ command = ""
 
 [vars]
 CODA_TOKEN = "{CODA_TOKEN}"
+CODA_INCOMING_TOKEN = "{CODA_INCOMING_TOKEN}"
