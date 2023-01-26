@@ -2,15 +2,22 @@ import {useState} from 'react'
 import type { ActionArgs } from '@remix-run/cloudflare'
 import { useActionData, Form, useSearchParams, useSubmit } from '@remix-run/react'
 import { redirect } from '@remix-run/cloudflare'
-import { addQuestion, loadAllQuestions } from '~/server-utils/stampy'
+import { addQuestion, loadAllQuestions, fetchJsonList } from '~/server-utils/stampy'
 
+
+const getRelated = async (question) => {
+    const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}`
+    try {
+        return await fetchJsonList(url);
+    } catch (e: any) {}
+    return [];
+}
 
 export const action = async ({ request }: ActionArgs) => {
     const formData = await request.formData();
     let title = formData.get('title')
     const state = formData.get('stateString');
     const redirectTo = '/' + (state ? '?state=' + state : '')
-    const relatedQuestions = formData.getAll('relatedQuestion').map(question => ({ title: question }));
 
     // Make sure that the question was provided
     if (!title) return redirect(redirectTo);
@@ -22,6 +29,15 @@ export const action = async ({ request }: ActionArgs) => {
         question => question.toLowerCase().startsWith(title.toLowerCase())
     );
     if (isPrefix) return redirect(redirectTo);
+
+    // Try to get the related questions from semantic search, and if that doesn't work,
+    // fallback to sending along whatever was displayed by the search box
+    let relatedQuestions = await getRelated(title);
+    if (relatedQuestions && relatedQuestions.length > 0) {
+        relatedQuestions = relatedQuestions.map(({pageid, title}) => ({ title, pageid: parseInt(pageid, 10)}));
+    } else {
+        relatedQuestions = formData.getAll('relatedQuestion').map(question => ({ title: question }));
+    }
 
     // Make sure the question is formatted as a question
     if (!title.endsWith('?')) title = title + '?'

@@ -56,9 +56,42 @@ type CodaRow = {
 
 const CODA_DOC_ID = 'fau7sl2hmG'
 
+// Use table ide, rather than names, in case of renames
+const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File'  // Answers
+const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4'    // Initial questions
+const ON_SITE_TABLE = 'table-1Q8_MjxUes'              // On-site answers
+const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a'          // All answers
+const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm'     // Incoming questions
+
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 
+
+export const fetchJson = async (
+  url: string,
+  params: Record<string, any>
+) => {
+  let json;
+  try {
+    json = await (await fetch(url, params)).json()
+  } catch (e: any) {
+    // forward debug message to HTTP Response
+    e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    throw e
+  }
+  return json;
+}
+
+export const fetchJsonList = async (
+  url: string,
+  params: Record<string, any>
+) => {
+  const json = await fetchJson(url, params);
+  if (!json.items || json.items.length === 0) {
+    throw Error('Empty response')
+  }
+  return json;
+}
 
 /**
    Coda has limits on how many rows can be returned at once (default is 200).
@@ -67,20 +100,9 @@ const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
    Any errors will cause the whole chain to abort.
  **/
 const paginateCoda = async (
-    url: string
+  url: string,
 ): Promise<CodaRow[]> => {
-  let json
-  try {
-    json = await (await fetch(url, {headers: {Authorization: `Bearer ${CODA_TOKEN}`}})).json()
-
-    if (!json.items || json.items.length === 0) {
-      throw Error('Empty response')
-    }
-  } catch (e: any) {
-    // forward debug message to HTTP Response
-    e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
-    throw e
-  }
+  const json = await fetchJsonList(url, {headers: {Authorization: `Bearer ${CODA_TOKEN}`}});
 
   if (json.nextPageLink) {
     return json.items.concat(await paginateCoda(json.nextPageLink));
@@ -116,12 +138,12 @@ const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
-  const rows = await getCodaRows('Answers', question.match(/^\d+$/) ? 'UI ID' : 'Name', question)
+  const rows = await getCodaRows(QUESTION_DETAILS_TABLE, question.match(/^\d+$/) ? 'UI ID' : 'Name', question)
   return convertToQuestion(rows[0].name, rows[0].values)
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
-  const rows = await getCodaRows('Initial questions')
+  const rows = await getCodaRows(INITIAL_QUESTIONS_TABLE)
   const data = rows.map(({name, values}) => convertToQuestion(name, values))
   return data
 })
@@ -129,7 +151,7 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
 export const loadAllCanonicallyAnsweredQuestions = withCache(
   'canonicallyAnsweredQuestions',
   async () => {
-    const rows = await getCodaRows('All on-site answers')
+    const rows = await getCodaRows(ON_SITE_TABLE)
     const data = rows.map(({name, values}) => ({
       pageid: values['UI ID'],
       title: name,
@@ -141,7 +163,7 @@ export const loadAllCanonicallyAnsweredQuestions = withCache(
 export const loadAllQuestions = withCache(
   'allQuestions',
   async () => {
-    const rows = await getCodaRows('All answers')
+    const rows = await getCodaRows(ALL_ANSWERS_TABLE)
     return rows.map(({ name }) => name)
   }
 )
@@ -172,20 +194,12 @@ export const insertRows = async (
     body: JSON.stringify(payload)
   }
 
-  let json
-  try {
-    json = await (await fetch(url, params)).json()
-    return json;
-  } catch (e: any) {
-    // forward debug message to HTTP Response
-    e.message = `\n>>> Error inserting rows ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
-    throw e
-  }
+  return await fetchJson(url, params);
 }
 
 export const addQuestion = async (
   title: string,
   relatedQuestions: RelatedQuestions
 ) => {
-  return await insertRows('Incoming questions', [{ title, relatedQuestions }])
+  return await insertRows(INCOMING_QUESTIONS_TABLE, [{ title, relatedQuestions }])
 }

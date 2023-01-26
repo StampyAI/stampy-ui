@@ -94,9 +94,13 @@ export default function Search({
     const focusedOnResult = e.relatedTarget?.classList.contains('result-item');
     setShowResults(focusedOnResult);
   }
-  const onQuestionAdded = (title) => {
-      alert('Your question "' + title + '" was added. It might take a while for it to be shown here, as it has yet to be answered.');
+  const onQuestionAdded = (title: string) => {
       hideSearchResults();
+      alert(
+          'Thanks for asking a new question! "' + title + '" was added to our suggestion box ' +
+          'It might take a while for it to be answered by our writers, but check back in a few months.\n\n' +
+          'The list of current suggestions can be found at https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66'
+      );
   }
 
   return (
@@ -130,7 +134,7 @@ export default function Search({
                     title,
                     score,
                     model,
-                    onSelect: (e) => hideSearchResults() || onSelect(e),
+                    onSelect: (...args) => { hideSearchResults(); onSelect(...args) },
                     isAlreadyOpen: openQuestionTitles.includes(title),
                   }}
                 />
