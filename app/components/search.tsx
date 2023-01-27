@@ -1,6 +1,7 @@
 import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
 import debounce from 'lodash/debounce'
 import {Question} from '~/routes/questions/$question'
+import {AddQuestion} from '~/routes/questions/add'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
@@ -85,8 +86,28 @@ export default function Search({
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
+  const hideSearchResults = () => setShowResults(false);
+  const handleBlur = (e) => {
+    // If the focus changes from something in the search widget to something outside
+    // of it, then hide the results. If it's just jumping around the results, then keep
+    // them shown.
+    const focusedOnResult = e.relatedTarget?.classList.contains('result-item');
+    setShowResults(focusedOnResult);
+  }
+  const onQuestionAdded = (title: string) => {
+      hideSearchResults();
+      alert(
+          'Thanks for asking a new question! "' + title + '" was added to our suggestion box ' +
+          'It might take a while for it to be answered by our writers, but check back in a few months.\n\n' +
+          'The list of current suggestions can be found at https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66'
+      );
+  }
+
   return (
-    <div>
+    <div
+      onFocus={() => setShowResults(true)}
+      onBlur={handleBlur}
+      >
       <label className="searchbar">
         <input
           type="search"
@@ -95,8 +116,6 @@ export default function Search({
           autoComplete="off"
           onChange={(e) => handleChange(e.currentTarget.value)}
           onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
-          onFocus={() => setShowResults(true)}
-          onBlur={() => setShowResults(false)} // TODO: figure out accessibility - do not blur on keyboard navigation into the result list
         />
         <MagnifyingGlass />
       </label>
@@ -115,22 +134,17 @@ export default function Search({
                     title,
                     score,
                     model,
-                    onSelect,
+                    onSelect: (...args) => { hideSearchResults(); onSelect(...args) },
                     isAlreadyOpen: openQuestionTitles.includes(title),
                   }}
                 />
               ))}
           </div>
-          <a
-            href={`https://stampy.ai/wiki/Special:FormStart?form=Q&page_name=${searchInputRef.current}`}
-            target="_blank"
-            rel="noreferrer"
-            className="result-item none-of-the-above"
-            title="Request a new question"
-            onMouseDown={(e) => e.preventDefault()} // prevent onBlur handler before click on the link happens
-          >
-            ＋ None of these: Request an answer to my exact question above
-          </a>
+          <AddQuestion
+              title={searchInputRef.current}
+              relatedQuestions={results.map(({title}) => title)}
+              onQuestionAdded={onQuestionAdded}
+          />
         </div>
       </AutoHeight>
     </div>
@@ -152,13 +166,6 @@ const ResultItem = ({
   onSelect: Props['onSelect']
   isAlreadyOpen: boolean
 }) => {
-  const handleSelect = (e: MouseEvent) => {
-    if (e.ctrlKey || e.metaKey || e.shiftKey) {
-      // don't setShowResults(false) from input onBlur, allowing multiselect
-      e.preventDefault()
-    }
-    onSelect(pageid, title)
-  }
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
   }`
@@ -168,8 +175,7 @@ const ResultItem = ({
       className={`transparent-button result-item ${isAlreadyOpen ? 'already-open' : ''}`}
       key={title}
       title={tooltip}
-      onMouseDown={handleSelect}
-      // onKeyDown={handleSelect} TODO: #13 figure out accessibility of not blurring on keyboard navigation
+      onClick={() => onSelect(pageid, title)}
     >
       {title}
     </button>

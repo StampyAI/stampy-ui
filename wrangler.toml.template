@@ -17,3 +17,5 @@ command = ""
 
 [vars]
 CODA_TOKEN = "{CODA_TOKEN}"
+CODA_INCOMING_TOKEN = "{CODA_INCOMING_TOKEN}"
+NLP_SEARCH_ENDPOINT = "https://stampy-nlp.uw.r.appspot.com"
