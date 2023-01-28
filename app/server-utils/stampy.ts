@@ -2,10 +2,10 @@ import {withCache} from '~/server-utils/kv-cache'
 import {Converter} from 'showdown'
 
 export type QuestionState = '_' | '-' | 'r'
-export type RelatedQuestions = {title: string; pageid?: number}[]
+export type RelatedQuestions = {title: string; pageid?: string}[]
 export type Question = {
   title: string
-  pageid: number
+  pageid: string
   text: string | null
   answerEditLink: string | null
   relatedQuestions: RelatedQuestions
@@ -43,10 +43,10 @@ type CodaRow = {
       '@type': string
       url: string
     }
-    'UI ID': number
+    'UI ID': string
     'Alternate phrasings': string
     'Related answers': '' | Entity[]
-    'Related IDs': '' | number[]
+    'Related IDs': '' | string[]
     Tags: '' | Entity[]
     'All Phrasings': string
     Name: string
@@ -119,15 +119,16 @@ const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
-  pageid: v['UI ID'],
+  pageid: extractText(v['UI ID']),
   text: mdConverter.makeHtml(extractText(v['Rich Text'])),
   answerEditLink: extractLink(v['Edit Answer']),
-  relatedQuestions: v['Related answers']
-    ? v['Related answers'].map(({name}, i) => ({
-        title: name,
-        pageid: v['Related IDs'] ? v['Related IDs'][i] : undefined,
-      }))
-    : [],
+  relatedQuestions:
+    v['Related answers'] && v['Related IDs']
+      ? v['Related answers'].map(({name}, i) => ({
+          title: name,
+          pageid: extractText(v['Related IDs'][i]),
+        }))
+      : [],
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {

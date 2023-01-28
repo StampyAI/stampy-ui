@@ -17,7 +17,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
   return await loadQuestionDetail(request, question)
 }
 
-export function fetchQuestion(pageid: number | string) {
+export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
     const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()

@@ -6,13 +6,13 @@ import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
 type Props = {
-  canonicallyAnsweredQuestionsRef: MutableRefObject<{pageid: number; title: string}[]>
+  canonicallyAnsweredQuestionsRef: MutableRefObject<{pageid: string; title: string}[]>
   openQuestionTitles: string[]
-  onSelect: (pageid: number, title: string) => void
+  onSelect: (pageid: string, title: string) => void
 }
 
 type Question = {
-  pageid: number
+  pageid: string
   title: string
 }
 
@@ -23,7 +23,7 @@ type SearchResult = Question & {
 type WorkerMessage =
   | 'ready'
   | {
-      searchResults: {title: string; pageid: number; score: number}[]
+      searchResults: {title: string; pageid: string; score: number}[]
       numQs: number
     }
 
@@ -150,7 +150,7 @@ const ResultItem = ({
   onSelect,
   isAlreadyOpen,
 }: {
-  pageid: number
+  pageid: string
   title: string
   score: number
   model: string

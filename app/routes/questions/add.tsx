@@ -36,7 +36,7 @@ export const action = async ({request}: ActionArgs) => {
   if (relatedQuestions && relatedQuestions.length > 0) {
     relatedQuestions = relatedQuestions.map(({pageid, title}) => ({
       title,
-      pageid: typeof pageid === 'string' ? parseInt(pageid, 10) : pageid,
+      pageid,
     }))
   } else {
     relatedQuestions = formData

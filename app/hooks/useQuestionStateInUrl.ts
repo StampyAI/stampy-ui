@@ -4,9 +4,9 @@ import {useSearchParams, useTransition} from '@remix-run/react'
 import {Question, QuestionState} from '~/server-utils/stampy'
 import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
 
-const getStateEntries = (state: string): [number, QuestionState][] =>
-  Array.from(state.matchAll(/(\d+)(\D*)/g) ?? []).map((groups) => [
-    Number(groups[1]),
+const getStateEntries = (state: string): [string, QuestionState][] =>
+  Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map((groups) => [
+    groups[1],
     (groups[2] || '_') as QuestionState,
   ])
 
@@ -32,7 +32,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     return initialMap
   })
 
-  const canonicallyAnsweredQuestionsRef = useRef<{pageid: number; title: string}[]>([])
+  const canonicallyAnsweredQuestionsRef = useRef<{pageid: string; title: string}[]>([])
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
@@ -131,7 +131,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   }, [])
 
   const selectQuestion = useCallback(
-    (pageid: number, title: string) => {
+    (pageid: string, title: string) => {
       // if the question is already loaded, move it to top
       for (const q of questionMap.values()) {
         if (pageid === q.pageid) {
