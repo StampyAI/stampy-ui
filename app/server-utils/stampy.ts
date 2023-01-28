@@ -115,11 +115,12 @@ const getCodaRows = async (
 }
 
 const mdConverter = new Converter()
+const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
   pageid: v['UI ID'],
-  text: mdConverter.makeHtml(v['Rich Text']),
+  text: mdConverter.makeHtml(extractText(v['Rich Text'])),
   answerEditLink: extractLink(v['Edit Answer']),
   relatedQuestions: v['Related answers']
     ? v['Related answers'].map(({name}, i) => ({
