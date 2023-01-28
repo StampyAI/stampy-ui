@@ -1,4 +1,4 @@
-import {useState, FormEvent} from 'react'
+import {useState, useEffect, FormEvent} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams, useSubmit} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
@@ -57,19 +57,38 @@ export const action = async ({request}: ActionArgs) => {
 type Props = {
   title: string
   relatedQuestions: string[]
-  onQuestionAdded: (title: string) => void
 }
 
-export const AddQuestion = ({title, relatedQuestions, onQuestionAdded}: Props) => {
+export const AddQuestion = ({title, relatedQuestions}: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
+  const [isSubmitted, setSubmitted] = useState(false)
 
   const submit = useSubmit()
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     submit(e.currentTarget, {replace: true})
-    onQuestionAdded(title)
+    setSubmitted(true)
+  }
+
+  useEffect(() => {
+    setSubmitted(false)
+  }, [title])
+
+  if (isSubmitted) {
+    return (
+      <p className="result-item none-of-the-above">
+        Thanks for asking a new question! {title} was added to our suggestion box. It might take a
+        while for it to be answered by our writers, but check back in a few months.
+        <br />
+        <br />
+        The list of current suggestions can be found at{' '}
+        <a href="https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66">
+          https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66
+        </a>
+      </p>
+    )
   }
 
   return (

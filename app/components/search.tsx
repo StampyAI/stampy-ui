@@ -94,16 +94,6 @@ export default function Search({
     const focusedOnResult = e.relatedTarget?.classList.contains('result-item') || false
     setShowResults(focusedOnResult)
   }
-  const onQuestionAdded = (title: string) => {
-    hideSearchResults()
-    alert(
-      'Thanks for asking a new question! "' +
-        title +
-        '" was added to our suggestion box ' +
-        'It might take a while for it to be answered by our writers, but check back in a few months.\n\n' +
-        'The list of current suggestions can be found at https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66'
-    )
-  }
 
   return (
     <div onFocus={() => setShowResults(true)} onBlur={handleBlur}>
@@ -145,7 +135,6 @@ export default function Search({
           <AddQuestion
             title={searchInputRef.current}
             relatedQuestions={results.map(({title}) => title)}
-            onQuestionAdded={onQuestionAdded}
           />
         </div>
       </AutoHeight>
