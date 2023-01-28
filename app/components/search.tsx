@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
+import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
 import {Question} from '~/routes/questions/$question'
 import {AddQuestion} from '~/routes/questions/add'
@@ -6,13 +6,13 @@ import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
 type Props = {
-  canonicallyAnsweredQuestionsRef: MutableRefObject<{pageid: number; title: string}[]>
+  canonicallyAnsweredQuestionsRef: MutableRefObject<{pageid: string; title: string}[]>
   openQuestionTitles: string[]
-  onSelect: (pageid: number, title: string) => void
+  onSelect: (pageid: string, title: string) => void
 }
 
 type Question = {
-  pageid: number
+  pageid: string
   title: string
 }
 
@@ -23,7 +23,7 @@ type SearchResult = Question & {
 type WorkerMessage =
   | 'ready'
   | {
-      searchResults: {title: string; pageid: number; score: number}[]
+      searchResults: {title: string; pageid: string; score: number}[]
       numQs: number
     }
 
@@ -86,28 +86,17 @@ export default function Search({
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
-  const hideSearchResults = () => setShowResults(false);
-  const handleBlur = (e) => {
+  const hideSearchResults = () => setShowResults(false)
+  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     // If the focus changes from something in the search widget to something outside
     // of it, then hide the results. If it's just jumping around the results, then keep
     // them shown.
-    const focusedOnResult = e.relatedTarget?.classList.contains('result-item');
-    setShowResults(focusedOnResult);
-  }
-  const onQuestionAdded = (title: string) => {
-      hideSearchResults();
-      alert(
-          'Thanks for asking a new question! "' + title + '" was added to our suggestion box ' +
-          'It might take a while for it to be answered by our writers, but check back in a few months.\n\n' +
-          'The list of current suggestions can be found at https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66'
-      );
+    const focusedOnResult = e.relatedTarget?.classList.contains('result-item') || false
+    setShowResults(focusedOnResult)
   }
 
   return (
-    <div
-      onFocus={() => setShowResults(true)}
-      onBlur={handleBlur}
-      >
+    <div onFocus={() => setShowResults(true)} onBlur={handleBlur}>
       <label className="searchbar">
         <input
           type="search"
@@ -134,16 +123,18 @@ export default function Search({
                     title,
                     score,
                     model,
-                    onSelect: (...args) => { hideSearchResults(); onSelect(...args) },
+                    onSelect: (...args) => {
+                      hideSearchResults()
+                      onSelect(...args)
+                    },
                     isAlreadyOpen: openQuestionTitles.includes(title),
                   }}
                 />
               ))}
           </div>
           <AddQuestion
-              title={searchInputRef.current}
-              relatedQuestions={results.map(({title}) => title)}
-              onQuestionAdded={onQuestionAdded}
+            title={searchInputRef.current}
+            relatedQuestions={results.map(({title}) => title)}
           />
         </div>
       </AutoHeight>
@@ -159,7 +150,7 @@ const ResultItem = ({
   onSelect,
   isAlreadyOpen,
 }: {
-  pageid: number
+  pageid: string
   title: string
   score: number
   model: string

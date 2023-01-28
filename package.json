@@ -51,6 +51,7 @@
     "start": "npm run generate-icons && cross-env NODE_ENV=development remix build && run-p dev:*",
     "dev": "npm start",
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
+    "tsc": "tsc",
     "deploy": "npm run build && wrangler publish"
   },
   "main": "build/index.js"
