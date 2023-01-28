@@ -66,7 +66,7 @@ const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 
-export const fetchJson = async (url: string, params: Record<string, any>) => {
+export const fetchJson = async (url: string, params?: Record<string, any>) => {
   let json
   try {
     json = await (await fetch(url, params)).json()
@@ -78,7 +78,7 @@ export const fetchJson = async (url: string, params: Record<string, any>) => {
   return json
 }
 
-export const fetchJsonList = async (url: string, params: Record<string, any>) => {
+export const fetchJsonList = async (url: string, params?: Record<string, any>) => {
   const json = await fetchJson(url, params)
   if (!json.items || json.items.length === 0) {
     throw Error('Empty response')

@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, MouseEvent, useMemo, MutableRefObject} from 'react'
+import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
 import {Question} from '~/routes/questions/$question'
 import {AddQuestion} from '~/routes/questions/add'
@@ -87,11 +87,11 @@ export default function Search({
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
   const hideSearchResults = () => setShowResults(false)
-  const handleBlur = (e) => {
+  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     // If the focus changes from something in the search widget to something outside
     // of it, then hide the results. If it's just jumping around the results, then keep
     // them shown.
-    const focusedOnResult = e.relatedTarget?.classList.contains('result-item')
+    const focusedOnResult = e.relatedTarget?.classList.contains('result-item') || false
     setShowResults(focusedOnResult)
   }
   const onQuestionAdded = (title: string) => {

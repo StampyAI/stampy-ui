@@ -3,7 +3,6 @@ import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import {Question, QuestionState} from '~/server-utils/stampy'
 import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
-import {fetchQuestion} from '~/routes/questions/$question'
 
 const getStateEntries = (state: string): [number, QuestionState][] =>
   Array.from(state.matchAll(/(\d+)(\D*)/g) ?? []).map((groups) => [
@@ -91,7 +90,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         setTimeout(() => toggleQuestion(questionProps, options), 500)
         return
       }
-      const canonicalQuestionTitleSet = new Set(canonicallyAnsweredQuestions)
+      const canonicalQuestionTitleSet = new Set(
+        canonicallyAnsweredQuestions.map(({title}) => title)
+      )
 
       const newRelatedQuestions = relatedQuestions.filter((q) => {
         const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)

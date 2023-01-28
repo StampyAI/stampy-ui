@@ -1,20 +1,21 @@
-import {useState} from 'react'
+import {useState, FormEvent} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
-import {useActionData, Form, useSearchParams, useSubmit} from '@remix-run/react'
+import {Form, useSearchParams, useSubmit} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
-import {addQuestion, loadAllQuestions, fetchJsonList} from '~/server-utils/stampy'
+import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
 
-const getRelated = async (question) => {
+const getRelated = async (question: string): Promise<RelatedQuestions> => {
   const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}`
   try {
     return await fetchJsonList(url)
-  } catch (e: any) {}
-  return []
+  } catch (e) {
+    return []
+  }
 }
 
 export const action = async ({request}: ActionArgs) => {
   const formData = await request.formData()
-  let title = formData.get('title')
+  let title = formData.get('title') as string
   const state = formData.get('stateString')
   const redirectTo = '/' + (state ? '?state=' + state : '')
 
@@ -35,10 +36,12 @@ export const action = async ({request}: ActionArgs) => {
   if (relatedQuestions && relatedQuestions.length > 0) {
     relatedQuestions = relatedQuestions.map(({pageid, title}) => ({
       title,
-      pageid: parseInt(pageid, 10),
+      pageid: typeof pageid === 'string' ? parseInt(pageid, 10) : pageid,
     }))
   } else {
-    relatedQuestions = formData.getAll('relatedQuestion').map((question) => ({title: question}))
+    relatedQuestions = formData
+      .getAll('relatedQuestion')
+      .map((question) => ({title: question})) as RelatedQuestions
   }
 
   // Make sure the question is formatted as a question
@@ -51,14 +54,19 @@ export const action = async ({request}: ActionArgs) => {
   return redirect(redirectTo)
 }
 
-export const AddQuestion = ({title, relatedQuestions, onQuestionAdded}) => {
-  const actionData = useActionData<typeof action>()
+type Props = {
+  title: string
+  relatedQuestions: string[]
+  onQuestionAdded: (title: string) => void
+}
+
+export const AddQuestion = ({title, relatedQuestions, onQuestionAdded}: Props) => {
   const [remixSearchParams] = useSearchParams()
-  const [stateString] = useState(() => remixSearchParams.get('state'))
+  const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
 
   const submit = useSubmit()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     submit(e.currentTarget, {replace: true})
     onQuestionAdded(title)
