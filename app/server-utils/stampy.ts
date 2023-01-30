@@ -114,7 +114,33 @@ const getCodaRows = async (
   return paginateCoda(url)
 }
 
-const mdConverter = new Converter()
+// markdown processing, inspired by https://github.com/halbgut/showdown-footnotes/blob/master/dist/index.js but regex match includes dot
+const rawConverter = new Converter()
+const footnotesExtension = [{
+  type: 'lang',
+  filter(text: string) {
+    return text.replace(/^\[\^([.\w]+)\]:\s*((\n+(\s{2,4}|\t).+)+)$/mg, (str, name, rawContent, _, padding) => {
+      const content = rawConverter.makeHtml(rawContent.replace(new RegExp('^' + padding, 'gm'), ''));
+      return '<div class="footnote" id="footnote-' + name + '"><a href="#footnote-' + name + '"><sup>[' + name + ']</sup></a>:' + content + '</div>';
+    });
+  }
+}, {
+  type: 'lang',
+  filter(text: string) {
+    return text.replace(/^\[\^([.\w]+)\]:( |\n)((.+\n)*.+)$/mg, (str, name, _, content) => {
+      return '<small class="footnote" id="footnote-' + name + '"><a href="#footnote-' + name + '"><sup>[' + name + ']</sup></a>: ' + content + '</small>';
+    });
+  }
+}, {
+  type: 'lang',
+  filter(text: string) {
+    return text.replace(/\[\^([.\w]+)\]/mg, (str, name) => {
+      return '<a href="#footnote-' + name + '"><sup>[' + name + ']</sup></a>';
+    });
+  }
+}]
+const mdConverter = new Converter({extensions: [footnotesExtension]})
+
 const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
