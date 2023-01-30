@@ -169,7 +169,7 @@ export const insertRows = async (table: string, rows: NewQuestion[]) => {
     rows: rows.map((row) => ({
       cells: [
         {column: 'Question', value: row.title},
-        {column: 'Possible matches', value: row.relatedQuestions.map(({title}) => title)},
+        {column: 'Possible Duplicates', value: row.relatedQuestions.map(({title}) => title)},
         {column: 'Source', value: row.source || 'UI'},
       ],
     })),
