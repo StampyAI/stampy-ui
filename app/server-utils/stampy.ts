@@ -115,7 +115,7 @@ const getCodaRows = async (
   return paginateCoda(url)
 }
 
-const md = new MarkdownIt().use(MarkdownItFootnote)
+const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 
 const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
