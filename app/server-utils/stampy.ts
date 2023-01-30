@@ -38,19 +38,16 @@ type CodaRow = {
   browserLink: string
   values: {
     'Edit Answer': string
-    'Initial order': number
     Link: {
       '@context': string
       '@type': string
       url: string
     }
     'UI ID': string
-    'Alternate phrasings': string
-    'Related answers': '' | Entity[]
+    'Alternate Phrasings': string
+    'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
     Tags: '' | Entity[]
-    'All Phrasings': string
-    Name: string
     'Rich Text': string
   }
 }
@@ -125,8 +122,8 @@ const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   text: md.render(extractText(v['Rich Text'])),
   answerEditLink: extractLink(v['Edit Answer']),
   relatedQuestions:
-    v['Related answers'] && v['Related IDs']
-      ? v['Related answers'].map(({name}, i) => ({
+    v['Related Answers'] && v['Related IDs']
+      ? v['Related Answers'].map(({name}, i) => ({
           title: name,
           pageid: extractText(v['Related IDs'][i]),
         }))
