@@ -293,6 +293,7 @@ article.expanded:not(.link-hovered) h2:hover::after {
 
 .answer {
   padding: 0 var(--paddingSides);
+  white-space: pre-wrap;
 }
 
 .answer > div {
