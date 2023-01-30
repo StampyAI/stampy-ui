@@ -340,7 +340,11 @@ tr:nth-child(even) {
 
 .answer img {
   max-width: 100%;
-  max-height: 300px;
+}
+
+.answer iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
 }
 
 .actions {
