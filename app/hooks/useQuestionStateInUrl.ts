@@ -124,7 +124,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
           return `${k}${v}`
         })
         .join('')
-      console.log(pageid, currentState, newState)
       const newSearchParams = new URLSearchParams(remixSearchParams)
       newSearchParams.set('state', newState)
       history.replaceState(newState, '', '?' + newSearchParams.toString())
