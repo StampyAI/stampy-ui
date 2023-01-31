@@ -38,14 +38,8 @@ export default function App() {
     }
   }, [timestamp])
 
-  const {
-    questions,
-    canonicallyAnsweredQuestionsRef,
-    reset,
-    toggleQuestion,
-    onLazyLoadQuestion,
-    selectQuestion,
-  } = useQuestionStateInUrl(minLogo, initialQuestions)
+  const {questions, onSiteAnswersRef, reset, toggleQuestion, onLazyLoadQuestion, selectQuestion} =
+    useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
@@ -96,7 +90,7 @@ export default function App() {
       </header>
       <main>
         <Search
-          canonicallyAnsweredQuestionsRef={canonicallyAnsweredQuestionsRef}
+          onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestion}
         />

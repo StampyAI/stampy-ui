@@ -145,17 +145,14 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
   return data
 })
 
-export const loadAllCanonicallyAnsweredQuestions = withCache(
-  'canonicallyAnsweredQuestions',
-  async () => {
-    const rows = await getCodaRows(ON_SITE_TABLE)
-    const data = rows.map(({name, values}) => ({
-      pageid: values['UI ID'],
-      title: name,
-    }))
-    return data
-  }
-)
+export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
+  const rows = await getCodaRows(ON_SITE_TABLE)
+  const data = rows.map(({name, values}) => ({
+    pageid: values['UI ID'],
+    title: name,
+  }))
+  return data
+})
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
   const rows = await getCodaRows(ALL_ANSWERS_TABLE)

@@ -2,7 +2,7 @@ import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import {Question, QuestionState} from '~/server-utils/stampy'
-import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
+import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 
 const getStateEntries = (state: string): [string, QuestionState][] =>
   Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map((groups) => [
@@ -32,12 +32,12 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     return initialMap
   })
 
-  const canonicallyAnsweredQuestionsRef = useRef<{pageid: string; title: string}[]>([])
+  const onSiteAnswersRef = useRef<{pageid: string; title: string}[]>([])
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
-    fetchAllCanonicallyAnsweredQuestions().then((data) => {
-      canonicallyAnsweredQuestionsRef.current = data
+    fetchOnSiteAnswers().then((data) => {
+      onSiteAnswersRef.current = data
     })
   }, [])
 
@@ -84,15 +84,13 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
       }
 
-      const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
-      if (canonicallyAnsweredQuestions.length === 0 && relatedQuestions.length > 0) {
-        // if canonicallyAnsweredQuestions (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
+      const onSiteAnswers = onSiteAnswersRef.current
+      if (onSiteAnswers.length === 0 && relatedQuestions.length > 0) {
+        // if onSiteAnswers (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
         setTimeout(() => toggleQuestion(questionProps, options), 500)
         return
       }
-      const canonicalQuestionTitleSet = new Set(
-        canonicallyAnsweredQuestions.map(({title}) => title)
-      )
+      const canonicalQuestionTitleSet = new Set(onSiteAnswers.map(({title}) => title))
 
       const newRelatedQuestions = relatedQuestions.filter((q) => {
         const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
@@ -155,7 +153,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   return {
     questions,
-    canonicallyAnsweredQuestionsRef,
+    onSiteAnswersRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
