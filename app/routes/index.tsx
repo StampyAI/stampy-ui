@@ -10,7 +10,7 @@ import logoFunSvg from '~/assets/stampy-logo.svg'
 import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
-import {useEffect} from 'react'
+import {useEffect, MouseEvent} from 'react'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -38,14 +38,33 @@ export default function App() {
     }
   }, [timestamp])
 
-  const {questions, onSiteAnswersRef, reset, toggleQuestion, onLazyLoadQuestion, selectQuestion} =
-    useQuestionStateInUrl(minLogo, initialQuestions)
+  const {
+    questions,
+    onSiteAnswersRef,
+    onSiteGDocLinkMapRef,
+    reset,
+    toggleQuestion,
+    onLazyLoadQuestion,
+    selectQuestion,
+  } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
 
   const openQuestionTitles = questions
     .filter(({questionState}) => questionState === '_')
     .map(({title}) => title)
+
+  const handleSpecialLinks = (e: MouseEvent) => {
+    const el = e.target as HTMLAnchorElement
+    if (el.tagName !== 'A') return
+
+    const href = el.href.replace(/\?.*$/, '')
+    const found = onSiteGDocLinkMapRef.current[href]
+    if (found) {
+      e.preventDefault()
+      selectQuestion(found.pageid, found.title)
+    }
+  }
 
   return (
     <>
@@ -88,7 +107,7 @@ export default function App() {
           </a>
         </div>
       </header>
-      <main>
+      <main onClick={handleSpecialLinks}>
         <Search
           onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}

@@ -19,6 +19,9 @@ function updateQuestionMap(question: Question, map: Map<Question['pageid'], Ques
   }
 }
 
+const emptyQuestionArray: Question[] = []
+const emptyQuestionMap: Record<string, Question> = {}
+
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
@@ -32,12 +35,17 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     return initialMap
   })
 
-  const onSiteAnswersRef = useRef<{pageid: string; title: string}[]>([])
+  const onSiteAnswersRef = useRef(emptyQuestionArray)
+  const onSiteGDocLinkMapRef = useRef(emptyQuestionMap)
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
     fetchOnSiteAnswers().then((data) => {
       onSiteAnswersRef.current = data
+      onSiteGDocLinkMapRef.current = data.reduce((acc, q) => {
+        if (q.answerEditLink) acc[q.answerEditLink] = q
+        return acc
+      }, emptyQuestionMap)
     })
   }, [])
 
@@ -82,6 +90,10 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       if (options?.moveToTop) {
         const removePageRe = new RegExp(`${pageid}.`, 'g')
         currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
       }
 
       const onSiteAnswers = onSiteAnswersRef.current
@@ -90,19 +102,19 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         setTimeout(() => toggleQuestion(questionProps, options), 500)
         return
       }
-      const canonicalQuestionTitleSet = new Set(onSiteAnswers.map(({title}) => title))
+      const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
 
-      const newRelatedQuestions = relatedQuestions.filter((q) => {
-        const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
-        // hide already displayed questions, detect duplicates by title (pageid can be different due to redirects)
+      const newRelatedQuestions = relatedQuestions.filter((question) => {
+        const isOnSite = onSiteSet.has(question.pageid)
+        // hide already displayed questions, detect duplicates by pageid (pageid can be different due to redirects)
         // TODO: #25 relocate already displayed to slide in as a new related one
-        const isAlreadyDisplayed = questions.some(({title}) => title === q.title)
-        return hasCanonicalAnswer && !isAlreadyDisplayed
+        const isAlreadyDisplayed = questions.some(({pageid}) => pageid === question.pageid)
+        return isOnSite && !isAlreadyDisplayed
       })
 
       const newState = getStateEntries(currentState)
         .map(([k, v]) => {
-          if (k === pageid) {
+          if (k === pageid.toString()) {
             const newValue: QuestionState = v === '_' ? '-' : '_'
             const related = newRelatedQuestions
               .map((r) => (r.pageid ? `${r.pageid}r` : ''))
@@ -112,6 +124,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
           return `${k}${v}`
         })
         .join('')
+      console.log(pageid, currentState, newState)
       const newSearchParams = new URLSearchParams(remixSearchParams)
       newSearchParams.set('state', newState)
       history.replaceState(newState, '', '?' + newSearchParams.toString())
@@ -154,6 +167,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   return {
     questions,
     onSiteAnswersRef,
+    onSiteGDocLinkMapRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,

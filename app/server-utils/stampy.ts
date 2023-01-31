@@ -3,7 +3,7 @@ import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 
 export type QuestionState = '_' | '-' | 'r'
-export type RelatedQuestions = {title: string; pageid?: string}[]
+export type RelatedQuestions = {title: string; pageid: string}[]
 export type Question = {
   title: string
   pageid: string
@@ -119,8 +119,8 @@ const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
   pageid: extractText(v['UI ID']),
-  text: md.render(extractText(v['Rich Text'])),
-  answerEditLink: extractLink(v['Edit Answer']),
+  text: v['Rich Text'] ? md.render(extractText(v['Rich Text'])) : null,
+  answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
   relatedQuestions:
     v['Related Answers'] && v['Related IDs']
       ? v['Related Answers'].map(({name}, i) => ({
@@ -147,10 +147,7 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = await getCodaRows(ON_SITE_TABLE)
-  const data = rows.map(({name, values}) => ({
-    pageid: values['UI ID'],
-    title: name,
-  }))
+  const data = rows.map(({name, values}) => convertToQuestion(name, values))
   return data
 })
 

@@ -6,7 +6,7 @@ import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
 type Props = {
-  onSiteAnswersRef: MutableRefObject<{pageid: string; title: string}[]>
+  onSiteAnswersRef: MutableRefObject<Question[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
 }
