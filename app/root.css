@@ -2,8 +2,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 :root {
@@ -232,6 +230,7 @@ article {
 }
 
 article > h2 {
+  margin: 0;
   padding: 9px var(--paddingSides) 10px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
@@ -340,7 +339,11 @@ tr:nth-child(even) {
 
 .answer img {
   max-width: 100%;
-  max-height: 300px;
+}
+
+.answer iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
 }
 
 .actions {

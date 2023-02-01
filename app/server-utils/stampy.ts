@@ -1,8 +1,9 @@
 import {withCache} from '~/server-utils/kv-cache'
-import {Converter} from 'showdown'
+import MarkdownIt from 'markdown-it'
+import MarkdownItFootnote from 'markdown-it-footnote'
 
 export type QuestionState = '_' | '-' | 'r'
-export type RelatedQuestions = {title: string; pageid?: string}[]
+export type RelatedQuestions = {title: string; pageid: string}[]
 export type Question = {
   title: string
   pageid: string
@@ -37,19 +38,16 @@ type CodaRow = {
   browserLink: string
   values: {
     'Edit Answer': string
-    'Initial order': number
     Link: {
       '@context': string
       '@type': string
       url: string
     }
     'UI ID': string
-    'Alternate phrasings': string
-    'Related answers': '' | Entity[]
+    'Alternate Phrasings': string
+    'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
     Tags: '' | Entity[]
-    'All Phrasings': string
-    Name: string
     'Rich Text': string
   }
 }
@@ -114,17 +112,18 @@ const getCodaRows = async (
   return paginateCoda(url)
 }
 
-const mdConverter = new Converter()
+const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
+
 const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
   pageid: extractText(v['UI ID']),
-  text: mdConverter.makeHtml(extractText(v['Rich Text'])),
-  answerEditLink: extractLink(v['Edit Answer']),
+  text: v['Rich Text'] ? md.render(extractText(v['Rich Text'])) : null,
+  answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
   relatedQuestions:
-    v['Related answers'] && v['Related IDs']
-      ? v['Related answers'].map(({name}, i) => ({
+    v['Related Answers'] && v['Related IDs']
+      ? v['Related Answers'].map(({name}, i) => ({
           title: name,
           pageid: extractText(v['Related IDs'][i]),
         }))
@@ -146,17 +145,11 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
   return data
 })
 
-export const loadAllCanonicallyAnsweredQuestions = withCache(
-  'canonicallyAnsweredQuestions',
-  async () => {
-    const rows = await getCodaRows(ON_SITE_TABLE)
-    const data = rows.map(({name, values}) => ({
-      pageid: values['UI ID'],
-      title: name,
-    }))
-    return data
-  }
-)
+export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
+  const rows = await getCodaRows(ON_SITE_TABLE)
+  const data = rows.map(({name, values}) => convertToQuestion(name, values))
+  return data
+})
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
   const rows = await getCodaRows(ALL_ANSWERS_TABLE)

@@ -2,7 +2,7 @@ import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import {Question, QuestionState} from '~/server-utils/stampy'
-import {fetchAllCanonicallyAnsweredQuestions} from '~/routes/questions/allCanonicallyAnswered'
+import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 
 const getStateEntries = (state: string): [string, QuestionState][] =>
   Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map((groups) => [
@@ -19,6 +19,9 @@ function updateQuestionMap(question: Question, map: Map<Question['pageid'], Ques
   }
 }
 
+const emptyQuestionArray: Question[] = []
+const emptyQuestionMap: Record<string, Question> = {}
+
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
@@ -32,12 +35,17 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     return initialMap
   })
 
-  const canonicallyAnsweredQuestionsRef = useRef<{pageid: string; title: string}[]>([])
+  const onSiteAnswersRef = useRef(emptyQuestionArray)
+  const onSiteGDocLinkMapRef = useRef(emptyQuestionMap)
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
-    fetchAllCanonicallyAnsweredQuestions().then((data) => {
-      canonicallyAnsweredQuestionsRef.current = data
+    fetchOnSiteAnswers().then((data) => {
+      onSiteAnswersRef.current = data
+      onSiteGDocLinkMapRef.current = data.reduce((acc, q) => {
+        if (q.answerEditLink) acc[q.answerEditLink] = q
+        return acc
+      }, emptyQuestionMap)
     })
   }, [])
 
@@ -82,29 +90,31 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       if (options?.moveToTop) {
         const removePageRe = new RegExp(`${pageid}.`, 'g')
         currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
       }
 
-      const canonicallyAnsweredQuestions = canonicallyAnsweredQuestionsRef.current
-      if (canonicallyAnsweredQuestions.length === 0 && relatedQuestions.length > 0) {
-        // if canonicallyAnsweredQuestions (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
+      const onSiteAnswers = onSiteAnswersRef.current
+      if (onSiteAnswers.length === 0 && relatedQuestions.length > 0) {
+        // if onSiteAnswers (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
         setTimeout(() => toggleQuestion(questionProps, options), 500)
         return
       }
-      const canonicalQuestionTitleSet = new Set(
-        canonicallyAnsweredQuestions.map(({title}) => title)
-      )
+      const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
 
-      const newRelatedQuestions = relatedQuestions.filter((q) => {
-        const hasCanonicalAnswer = canonicalQuestionTitleSet.has(q.title)
-        // hide already displayed questions, detect duplicates by title (pageid can be different due to redirects)
+      const newRelatedQuestions = relatedQuestions.filter((question) => {
+        const isOnSite = onSiteSet.has(question.pageid)
+        // hide already displayed questions, detect duplicates by pageid (pageid can be different due to redirects)
         // TODO: #25 relocate already displayed to slide in as a new related one
-        const isAlreadyDisplayed = questions.some(({title}) => title === q.title)
-        return hasCanonicalAnswer && !isAlreadyDisplayed
+        const isAlreadyDisplayed = questions.some(({pageid}) => pageid === question.pageid)
+        return isOnSite && !isAlreadyDisplayed
       })
 
       const newState = getStateEntries(currentState)
         .map(([k, v]) => {
-          if (k === pageid) {
+          if (k === pageid.toString()) {
             const newValue: QuestionState = v === '_' ? '-' : '_'
             const related = newRelatedQuestions
               .map((r) => (r.pageid ? `${r.pageid}r` : ''))
@@ -155,7 +165,8 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   return {
     questions,
-    canonicallyAnsweredQuestionsRef,
+    onSiteAnswersRef,
+    onSiteGDocLinkMapRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,

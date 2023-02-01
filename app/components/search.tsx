@@ -6,7 +6,7 @@ import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 
 type Props = {
-  canonicallyAnsweredQuestionsRef: MutableRefObject<{pageid: string; title: string}[]>
+  onSiteAnswersRef: MutableRefObject<Question[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
 }
@@ -29,11 +29,7 @@ type WorkerMessage =
 
 const empty: [] = []
 
-export default function Search({
-  canonicallyAnsweredQuestionsRef,
-  openQuestionTitles,
-  onSelect,
-}: Props) {
+export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}: Props) {
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
   const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
@@ -70,9 +66,7 @@ export default function Search({
     searchInputRef.current = value
     if (!tfFinishedLoadingRef.current) {
       console.debug('plaintext search:', value)
-      runBaselineSearch(value, canonicallyAnsweredQuestionsRef.current).then(
-        setBaselineSearchResults
-      )
+      runBaselineSearch(value, onSiteAnswersRef.current).then(setBaselineSearchResults)
     }
 
     if (tfWorkerRef.current) {
