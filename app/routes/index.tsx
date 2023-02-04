@@ -126,7 +126,7 @@ export default function App() {
         <a href="https://discord.gg/vjFSCDyMCy">Join Discord</a>
         <a href="https://all.aisafety.info/">All answers</a>
         <a href="https://get_involved.aisafety.info">About / Get Involved</a>
-        <a href="https://dashboard.aisafety.info">Dashboard</a>
+        <a href="https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Improve-answers_suxEW">Dashboard</a>
         <a href="https://github.com/StampyAI/stampy-ui">Help Code</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdT--8lx5F2pAZoRPPkDusA7vUTvKTVnNiAb9U5cqnohDhzHA/viewform">
           Feedback
