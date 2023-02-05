@@ -27,6 +27,8 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
+const year = new Date().getFullYear()
+
 export default function App() {
   const minLogo = useOutletContext<boolean>()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
@@ -132,7 +134,7 @@ export default function App() {
           Feedback
         </a>
         <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
-          @ 2022 stampy.ai
+          © stampy.ai, 2022 - {year}
         </a>
       </footer>
     </>
