@@ -20,7 +20,7 @@ jobs:
         id: generate
         run: |
           npm install node-fetch @tensorflow/tfjs-node@4.1.0 @tensorflow-models/universal-sentence-encoder
-          node questions-encodings.mjs
+          node questions-encodings.mjs ${{ secrets.CODA_TOKEN }}
           OUTPUT=$(git diff --name-only | tail -1)
           echo "::set-output name=gitdiff::$OUTPUT"
       - name: Check for changes
@@ -49,6 +49,11 @@ jobs:
       - name: Deploy to Cloudflare
         if: github.event.pull_request.merged == 'true' || steps.check.outputs.changed == 'true'
         run: |
-          cat wrangler.toml.template | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ > wrangler.toml
+          cat wrangler.toml.template \
+            | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ \
+            | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ \
+            | sed s/{CODA_TOKEN}/${{ secrets.CODA_TOKEN }}/ \
+            | sed s/{CODA_INCOMING_TOKEN}/${{ secrets.CODA_INCOMING_TOKEN }}/ \
+            > wrangler.toml
           npm ci
           npm run deploy

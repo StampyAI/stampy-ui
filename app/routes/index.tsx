@@ -10,7 +10,7 @@ import logoFunSvg from '~/assets/stampy-logo.svg'
 import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
-import {useEffect} from 'react'
+import {useEffect, MouseEvent} from 'react'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -27,6 +27,8 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
+const year = new Date().getFullYear()
+
 export default function App() {
   const minLogo = useOutletContext<boolean>()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
@@ -40,11 +42,12 @@ export default function App() {
 
   const {
     questions,
-    canonicallyAnsweredQuestionsRef,
+    onSiteAnswersRef,
+    onSiteGDocLinkMapRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
-    selectQuestionByTitle,
+    selectQuestion,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -52,6 +55,18 @@ export default function App() {
   const openQuestionTitles = questions
     .filter(({questionState}) => questionState === '_')
     .map(({title}) => title)
+
+  const handleSpecialLinks = (e: MouseEvent) => {
+    const el = e.target as HTMLAnchorElement
+    if (el.tagName !== 'A') return
+
+    const href = el.href.replace(/\?.*$/, '')
+    const found = onSiteGDocLinkMapRef.current[href]
+    if (found) {
+      e.preventDefault()
+      selectQuestion(found.pageid, found.title)
+    }
+  }
 
   return (
     <>
@@ -63,9 +78,7 @@ export default function App() {
             </Link>
             <div className="intro">
               Answering questions about
-              <h1>
-                  AI Safety
-              </h1>
+              <h1>AI Safety</h1>
             </div>
           </div>
         ) : (
@@ -86,7 +99,7 @@ export default function App() {
             <Share />
             Share link
           </CopyLink>
-          <a href="https://stampy.ai/wiki/Get_involved" className="icon-link">
+          <a href="https://get_involved.aisafety.info" className="icon-link">
             <Users />
             Get Involved
           </a>
@@ -96,11 +109,11 @@ export default function App() {
           </a>
         </div>
       </header>
-      <main>
+      <main onClick={handleSpecialLinks}>
         <Search
-          canonicallyAnsweredQuestionsRef={canonicallyAnsweredQuestionsRef}
+          onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}
-          onSelect={selectQuestionByTitle}
+          onSelect={selectQuestion}
         />
         {questions.map((questionProps) => (
           <Question
@@ -112,14 +125,17 @@ export default function App() {
         ))}
       </main>
       <footer>
-        <a href="https://stampy.ai/wiki/Stampy">About</a>
-        <a href="https://stampy.ai/wiki/Get_involved">Get Involved</a>
+        <a href="https://discord.gg/vjFSCDyMCy">Join Discord</a>
+        <a href="https://all.aisafety.info/">All answers</a>
+        <a href="https://get_involved.aisafety.info">About / Get Involved</a>
+        <a href="https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Improve-answers_suxEW">Dashboard</a>
         <a href="https://github.com/StampyAI/stampy-ui">Help Code</a>
-        <a href="https://stampy.ai/wiki/Discord_invite">Join Discord</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSdT--8lx5F2pAZoRPPkDusA7vUTvKTVnNiAb9U5cqnohDhzHA/viewform">
           Feedback
         </a>
-        <a href="https://stampy.ai/wiki/Meta:Copyrights">@ 2022 stampy.ai</a>
+        <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
+          © stampy.ai, 2022 - {year}
+        </a>
       </footer>
     </>
   )

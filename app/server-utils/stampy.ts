@@ -1,155 +1,184 @@
-import {parse} from 'node-html-parser'
 import {withCache} from '~/server-utils/kv-cache'
+import MarkdownIt from 'markdown-it'
+import MarkdownItFootnote from 'markdown-it-footnote'
 
 export type QuestionState = '_' | '-' | 'r'
+export type RelatedQuestions = {title: string; pageid: string}[]
 export type Question = {
   title: string
-  pageid: number
+  pageid: string
   text: string | null
   answerEditLink: string | null
-  relatedQuestions: {title: string; pageid?: number}[]
+  relatedQuestions: RelatedQuestions
   questionState?: QuestionState
 }
-type QueryResults = {
-  query: {
-    results: {
-      [key in string]: {
-        printouts: {
-          [key in string]: {
-            fulltext: string
-          }[]
-        }
-      }
+export type NewQuestion = {
+  title: string
+  relatedQuestions: RelatedQuestions
+  source?: string
+}
+type Entity = {
+  '@context': string
+  '@type': string
+  additionalType: string
+  name: string
+  url: string
+  tableId: string
+  rowId: string
+  tableUrl: string
+}
+type CodaRow = {
+  id: string
+  type: string
+  href: string
+  name: string
+  index: number
+  createdAt: string
+  updatedAt: string
+  browserLink: string
+  values: {
+    'Edit Answer': string
+    Link: {
+      '@context': string
+      '@type': string
+      url: string
     }
+    'UI ID': string
+    'Alternate Phrasings': string
+    'Related Answers': '' | Entity[]
+    'Related IDs': '' | string[]
+    Tags: '' | Entity[]
+    'Rich Text': string
   }
 }
 
-const reQuestion = /{{[^|]+\|([^}]+)}}/g
-const answerEditLinkBase = 'https://stampy.ai/w/index.php?action=formedit&title='
+const CODA_DOC_ID = 'fau7sl2hmG'
 
-const stampyParse = (page: string) => {
-  const prop = page.match(/^\d+$/) ? 'pageid' : 'page'
-  return `https://stampy.ai/w/api.php?action=parse&prop=text&format=json&formatversion=2&redirects&${prop}=${page}`
-}
+// Use table ide, rather than names, in case of renames
+const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File' // Answers
+const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4' // Initial questions
+const ON_SITE_TABLE = 'table-1Q8_MjxUes' // On-site answers
+const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
+const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 
-const stampyQueryAll = (idsOrTitles: string[] | number[]) => {
-  const prop = typeof idsOrTitles[0] === 'number' ? 'pageids' : 'titles'
-  const value = idsOrTitles.join('|')
-  return `https://stampy.ai/w/api.php?action=query&format=json&formatversion=2&${prop}=${value}`
-}
+const enc = encodeURIComponent
+const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 
-const stampyQueryContent = (title: string) =>
-  `https://stampy.ai/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=content&rvslots=*&titles=${title}`
-
-const stampyAsk = (query: string) =>
-  `https://stampy.ai/w/api.php?action=ask&format=json&formatversion=2&query=${query}`
-
-const getAnswer = (html: string): {answerText: string; answerEditLink: string | undefined} => {
-  const root = parse(html)
-  const answerEl = root.getElementById('canonicalanswer')
-  return {
-    answerText: answerEl?.toString() ?? '<p>¯\\_(ツ)_/¯</p>',
-    answerEditLink: answerEl?.previousElementSibling
-      .querySelector('a')
-      ?.getAttribute('href')
-      ?.replace('/wiki/', answerEditLinkBase),
-  }
-}
-
-const normalizeWikiLinks = (html: string): string =>
-  html.replace(/href="\/wiki/g, 'href="https://stampy.ai/read')
-
-const getRelatedQuestions = (html: string): {title: string; pageid: number}[] => {
-  if (!html.includes('Related_questionsedit')) return []
-  const root = parse(html)
-  const links = root
-    .querySelector('#Related_questionsedit')
-    ?.parentNode.nextElementSibling.querySelectorAll('li')
-    .map((li) => ({
-      title: li.querySelector('a:not(.new)')?.innerText ?? '', // ignore red links with class new
-      pageid: Number(li.querySelector('div[style*="display: none"]')?.innerText),
-    }))
-
-  return links ?? []
-}
-
-export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
-  let data: Question & {text: string}
-  const url = stampyParse(question)
+export const fetchJson = async (url: string, params?: Record<string, any>) => {
   let json
   try {
-    json = await (await fetch(url)).json()
-    const {
-      parse: {title, pageid, text},
-    } = json
-    const {answerText = text, answerEditLink = null} = text.match(/canonicalanswer/)
-      ? getAnswer(text)
-      : {}
-    data = {
-      title,
-      pageid,
-      text: normalizeWikiLinks(answerText),
-      answerEditLink,
-      relatedQuestions: getRelatedQuestions(text),
-    }
+    json = await (await fetch(url, params)).json()
   } catch (e: any) {
+    // forward debug message to HTTP Response
     e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
     throw e
   }
+  return json
+}
 
-  return data
+export const fetchJsonList = async (url: string, params?: Record<string, any>) => {
+  const json = await fetchJson(url, params)
+  if (!json.items || json.items.length === 0) {
+    throw Error('Empty response')
+  }
+  return json
+}
+
+/**
+   Coda has limits on how many rows can be returned at once (default is 200).
+   This function will keep on fetching pages until it has downloaded all items
+   that match the given url.
+   Any errors will cause the whole chain to abort.
+ **/
+const paginateCoda = async (url: string): Promise<CodaRow[]> => {
+  const json = await fetchJsonList(url, {headers: {Authorization: `Bearer ${CODA_TOKEN}`}})
+
+  if (json.nextPageLink) {
+    return json.items.concat(await paginateCoda(json.nextPageLink))
+  }
+  return json.items
+}
+
+const getCodaRows = async (
+  table: string,
+  queryColumn?: string,
+  queryValue?: string
+): Promise<CodaRow[]> => {
+  const params = `useColumnNames=true&sortBy=natural&valueFormat=rich${
+    queryColumn && queryValue ? `&query=${quote(queryColumn)}:${quote(queryValue)}` : ''
+  }`
+  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
+
+  return paginateCoda(url)
+}
+
+const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
+
+const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
+const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
+const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
+  title,
+  pageid: extractText(v['UI ID']),
+  text: v['Rich Text'] ? md.render(extractText(v['Rich Text'])) : null,
+  answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
+  relatedQuestions:
+    v['Related Answers'] && v['Related IDs']
+      ? v['Related Answers'].map(({name}, i) => ({
+          title: name,
+          pageid: extractText(v['Related IDs'][i]),
+        }))
+      : [],
 })
 
-const getMetadata = async (
-  idsOrTitles: string[] | number[]
-): Promise<{title: string; pageid: number}[]> => {
-  if (idsOrTitles.length === 0) return []
-  const {query} = await (await fetch(stampyQueryAll(idsOrTitles))).json()
-  return query.pages
-}
-
-const getContent = async (title: string): Promise<string> => {
-  const {query} = await (await fetch(stampyQueryContent(title))).json()
-  const content = query.pages?.[0].revisions?.[0].slots.main.content?.replace(
-    /<!--[\w\W]*?-->/g,
-    ''
+export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
+  const rows = await getCodaRows(
+    QUESTION_DETAILS_TABLE,
+    question.match(/^\d+$/) ? 'UI ID' : 'Name',
+    question
   )
-
-  return content
-}
+  return convertToQuestion(rows[0].name, rows[0].values)
+})
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
-  const initialContent = await getContent('Initial questions')
-  const questions = initialContent?.match(reQuestion)?.map((x) => x.replace(reQuestion, '$1')) ?? []
-  const pageidByTitle = Object.fromEntries(
-    (await getMetadata(questions)).map(({title, pageid}) => [title, pageid])
-  )
-
-  const data: Question[] = []
-  for (const title of questions) {
-    const pageid = pageidByTitle[title]
-    data.push({
-      title,
-      pageid,
-      text: null,
-      answerEditLink: null,
-      relatedQuestions: [],
-    })
-  }
-
+  const rows = await getCodaRows(INITIAL_QUESTIONS_TABLE)
+  const data = rows.map(({name, values}) => convertToQuestion(name, values))
   return data
 })
 
-const getAskPrintouts = async (queryString: `[[${string}]]|?${string}`): Promise<string[]> => {
-  const {query} = (await (await fetch(stampyAsk(queryString))).json()) as QueryResults
-  const {results = {}} = query
-  const {printouts = {}} = Object.values(results)[0] ?? {}
-  const printoutsList = Object.values(printouts)[0] ?? []
-  return printoutsList.map(({fulltext}) => fulltext)
+export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
+  const rows = await getCodaRows(ON_SITE_TABLE)
+  const data = rows.map(({name, values}) => convertToQuestion(name, values))
+  return data
+})
+
+export const loadAllQuestions = withCache('allQuestions', async () => {
+  const rows = await getCodaRows(ALL_ANSWERS_TABLE)
+  return rows.map(({name}) => name)
+})
+
+export const insertRows = async (table: string, rows: NewQuestion[]) => {
+  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows`
+  const payload = {
+    rows: rows.map((row) => ({
+      cells: [
+        {column: 'Question', value: row.title},
+        {column: 'Possible Duplicates', value: row.relatedQuestions.map(({title}) => title)},
+        {column: 'Source', value: row.source || 'UI'},
+      ],
+    })),
+  }
+  const params = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${CODA_INCOMING_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  }
+
+  return await fetchJson(url, params)
 }
 
-export const loadAllCanonicallyAnsweredQuestions = withCache(
-  'canonicallyAnsweredQuestions',
-  async (): Promise<string[]> =>
-    getAskPrintouts('[[Canonically answered questions]]|?CanonicalQuestions')
-)
+export const addQuestion = async (title: string, relatedQuestions: RelatedQuestions) => {
+  return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
+}

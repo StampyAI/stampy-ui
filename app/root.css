@@ -2,8 +2,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 :root {
@@ -181,11 +179,7 @@ svg * {
   transition: fill 300ms;
 }
 
-.icon-link:not(:hover) svg *:not(
-  .share_svg__gray,
-  .code_svg__gray,
-  .users_svg__gray
-),
+.icon-link:not(:hover) svg *:not([class$='svg__gray']),
 .searchbar input + svg circle {
   fill: transparent !important;
 }
@@ -236,6 +230,7 @@ article {
 }
 
 article > h2 {
+  margin: 0;
   padding: 9px var(--paddingSides) 10px;
   background-color: var(--bgColorQuestionTitle);
   color: var(--colorQuestionTitle);
@@ -299,10 +294,7 @@ article.expanded:not(.link-hovered) h2:hover::after {
   padding: 0 var(--paddingSides);
 }
 
-.answer p,
-.answer .card-shortdesc,
-.answer .card-longdesc,
-.answer .card-hide-longdesc {
+.answer > div {
   margin: var(--paddingSides) 0;
 }
 
@@ -345,11 +337,13 @@ tr:nth-child(even) {
   font-style: italic;
 }
 
-.answer.long .card-shortdesc,
-.answer.long .card-show-longdesc,
-.answer.short .card-longdesc,
-.answer.short .card-hide-longdesc {
-  display: none;
+.answer img {
+  max-width: 100%;
+}
+
+.answer iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
 }
 
 .actions {
@@ -561,9 +555,7 @@ a:focus-visible,
     --colorLinkVisited: #79f;
   }
 
-  .share_svg__gray,
-  .code_svg__gray,
-  .users_svg__gray {
+  svg *[class$='svg__gray'] {
     fill: #ccc;
   }
 
