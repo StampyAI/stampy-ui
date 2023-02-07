@@ -1,7 +1,7 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
-import {loadInitialQuestions} from '~/server-utils/stampy'
+import {loadInitialQuestions, loadAllTags} from '~/server-utils/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
@@ -16,6 +16,7 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   let initialQuestionsData
   try {
+    await loadAllTags(request)
     initialQuestionsData = await loadInitialQuestions(request)
   } catch (e) {
     console.error(e)

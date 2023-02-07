@@ -346,6 +346,24 @@ tr:nth-child(even) {
   aspect-ratio: 16/9;
 }
 
+.question-footer {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.tags-container {
+  align-items: center;
+  display: grid;
+}
+.question-tag {
+  outline: 1px solid var(--borderColor);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
+  padding: 5px;
+  line-height: 2.3;
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;
