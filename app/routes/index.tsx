@@ -122,6 +122,7 @@ export default function App() {
             questionProps={questionProps}
             onLazyLoadQuestion={onLazyLoadQuestion}
             onToggle={toggleQuestion}
+            selectQuestion={selectQuestion}
           />
         ))}
       </main>

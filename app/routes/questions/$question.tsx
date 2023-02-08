@@ -32,10 +32,12 @@ export function Question({
   questionProps,
   onLazyLoadQuestion,
   onToggle,
+  selectQuestion,
 }: {
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
+  selectQuestion: (pageid: string, title: string) => void
 }) {
   const {pageid, title, text, answerEditLink, questionState, tags} = questionProps
   const isLoading = useRef(false)
@@ -129,7 +131,7 @@ export function Question({
                 ref={answerRef}
               />
               <div className="question-footer">
-                <Tags tags={tags} />
+                <Tags tags={tags} selectQuestion={selectQuestion} />
                 <div className="actions">
                   {answerEditLink && (
                     // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup

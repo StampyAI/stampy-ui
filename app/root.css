@@ -356,12 +356,14 @@ tr:nth-child(even) {
   display: grid;
 }
 .question-tag {
-  outline: 1px solid var(--borderColor);
-  border-radius: 4px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  margin-right: 10px;
+  margin: 5px 2px 0 0;
   padding: 5px;
-  line-height: 2.3;
+}
+.tag-questions {
+  margin: 20px 0 10px 10px;
+}
+.tag-questions .question-tag {
+  margin: 5px;
 }
 
 .actions {
