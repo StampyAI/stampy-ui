@@ -26,7 +26,7 @@ export const action = async ({request}: ActionArgs) => {
   // and if so ignore it
   const allQuestions = await loadAllQuestions(request)
   const isPrefix = allQuestions.data.some((question) =>
-    question.toLowerCase().startsWith(title.toLowerCase())
+    question.title.toLowerCase().startsWith(title.toLowerCase())
   )
   if (isPrefix) return redirect(redirectTo)
 

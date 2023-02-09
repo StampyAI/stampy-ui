@@ -346,6 +346,26 @@ tr:nth-child(even) {
   aspect-ratio: 16/9;
 }
 
+.question-footer {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.tags-container {
+  align-items: center;
+  display: grid;
+}
+.question-tag {
+  margin: 5px 2px 0 0;
+  padding: 5px;
+}
+.tag-questions {
+  margin: 20px 0 10px 10px;
+}
+.tag-questions .question-tag {
+  margin: 5px;
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;

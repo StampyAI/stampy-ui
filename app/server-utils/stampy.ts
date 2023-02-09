@@ -4,6 +4,25 @@ import MarkdownItFootnote from 'markdown-it-footnote'
 
 export type QuestionState = '_' | '-' | 'r'
 export type RelatedQuestions = {title: string; pageid: string}[]
+export enum QuestionStatus {
+  WITHDRAWN = 'Withdrawn',
+  SKETCH = 'Bulletpoint sketch',
+  TO_DELETE = 'Marked for deletion',
+  UNCATEGORIZED = 'Uncategorized',
+  NOT_STARTED = 'Not started',
+  IN_PROGRESS = 'In progress',
+  IN_REVIEW = 'In review',
+  LIVE = 'Live on site',
+}
+export type Tag = {
+  rowId: string
+  tagId: number
+  name: string
+  url: string
+  internal: boolean
+  questions: RelatedQuestions
+  mainQuestion: string | null
+}
 export type Question = {
   title: string
   pageid: string
@@ -11,6 +30,8 @@ export type Question = {
   answerEditLink: string | null
   relatedQuestions: RelatedQuestions
   questionState?: QuestionState
+  tags: Tag[]
+  status: QuestionStatus
 }
 export type NewQuestion = {
   title: string
@@ -43,12 +64,18 @@ type CodaRow = {
       '@type': string
       url: string
     }
+    Status: Entity
     'UI ID': string
     'Alternate Phrasings': string
     'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
     Tags: '' | Entity[]
     'Rich Text': string
+
+    'Tag ID': number
+    'Internal?': boolean
+    'Questions tagged with this': Entity[]
+    'Main question': string | Entity | null
   }
 }
 
@@ -60,9 +87,11 @@ const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4' // Initial questions
 const ON_SITE_TABLE = 'table-1Q8_MjxUes' // On-site answers
 const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
+const TAGS_TABLE = 'grid-4uOTjz1Rkz'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
+let allTags = {} as Record<string, Tag>
 
 export const fetchJson = async (url: string, params?: Record<string, any>) => {
   let json
@@ -114,13 +143,19 @@ const getCodaRows = async (
 
 const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 
-const extractText = (markdown: string) => markdown?.replace(/^```|```$/g, '')
+// Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
+const head = (item: any) => {
+  if (Array.isArray(item)) return item[0]
+  return item
+}
+const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
   pageid: extractText(v['UI ID']),
   text: v['Rich Text'] ? md.render(extractText(v['Rich Text'])) : null,
   answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
+  tags: ((v['Tags'] || []) as Entity[]).map((e) => allTags[e.name]),
   relatedQuestions:
     v['Related Answers'] && v['Related IDs']
       ? v['Related Answers'].map(({name}, i) => ({
@@ -128,6 +163,7 @@ const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
           pageid: extractText(v['Related IDs'][i]),
         }))
       : [],
+  status: v['Status']?.name as QuestionStatus,
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
@@ -153,7 +189,38 @@ export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
   const rows = await getCodaRows(ALL_ANSWERS_TABLE)
-  return rows.map(({name}) => name)
+  return rows.map((r) => convertToQuestion(r.name, r.values))
+})
+
+const extractMainQuestion = (question: string | Entity | null): string | null => {
+  switch (typeof question) {
+    case 'string':
+      return extractText(question)
+    case 'object':
+      return question?.name || null
+    default:
+      return question
+  }
+}
+const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
+  rowId: r.id,
+  tagId: r.values['Tag ID'],
+  name: r.name,
+  url: r.browserLink,
+  internal: r.values['Internal?'],
+  questions: r.values['Questions tagged with this']
+    .map(({name}) => ({title: name, pageid: nameToId[name]}))
+    .filter((q) => q.pageid),
+  mainQuestion: extractMainQuestion(r.values['Main question']),
+})
+export const loadAllTags = withCache('allTags', async () => {
+  const rows = await getCodaRows(TAGS_TABLE)
+  const questions = await loadAllQuestions({url: ''})
+  const nameToId = Object.fromEntries(
+    questions.data.filter((q) => q.status == QuestionStatus.LIVE).map((q) => [q.title, q.pageid])
+  )
+  allTags = Object.fromEntries(rows.map((r) => [r.name, toTag(r, nameToId)])) as Record<string, Tag>
+  return allTags
 })
 
 export const insertRows = async (table: string, rows: NewQuestion[]) => {

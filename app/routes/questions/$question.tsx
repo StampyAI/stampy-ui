@@ -5,6 +5,7 @@ import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
+import Tags from '~/components/tags'
 import CopyLink from '~/components/copyLink'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
@@ -31,12 +32,14 @@ export function Question({
   questionProps,
   onLazyLoadQuestion,
   onToggle,
+  selectQuestion,
 }: {
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
+  selectQuestion: (pageid: string, title: string) => void
 }) {
-  const {pageid, title, text, answerEditLink, questionState} = questionProps
+  const {pageid, title, text, answerEditLink, questionState, tags} = questionProps
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
@@ -127,20 +130,23 @@ export function Question({
                 }}
                 ref={answerRef}
               />
-              <div className="actions">
-                {answerEditLink && (
-                  // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
-                  <a
-                    className="icon-link"
-                    href={answerEditLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    title="edit answer"
-                  >
-                    <Edit />
-                    Edit
-                  </a>
-                )}
+              <div className="question-footer">
+                <Tags tags={tags} selectQuestion={selectQuestion} />
+                <div className="actions">
+                  {answerEditLink && (
+                    // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
+                    <a
+                      className="icon-link"
+                      href={answerEditLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      title="edit answer"
+                    >
+                      <Edit />
+                      Edit
+                    </a>
+                  )}
+                </div>
               </div>
             </>
           )}
