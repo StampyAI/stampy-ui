@@ -1,16 +1,18 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {ShouldReloadFunction, useOutletContext} from '@remix-run/react'
+import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
 import {useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions, loadAllTags} from '~/server-utils/stampy'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import Search from '~/components/search'
 import {Question} from '~/routes/questions/$question'
+import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 import logoFunSvg from '~/assets/stampy-logo.svg'
 import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code, Discord} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
-import {useEffect, MouseEvent} from 'react'
+import InfiniteScroll from '~/components/infiniteScroll'
+import {useEffect, MouseEvent, useState} from 'react'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -49,6 +51,7 @@ export default function App() {
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestion,
+    addQuestions,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -67,6 +70,16 @@ export default function App() {
       e.preventDefault()
       selectQuestion(found.pageid, found.title)
     }
+  }
+
+  const [nextPageLink, setNextPageLink] = useState(null)
+  const fetchMoreQuestions = async () => {
+    const result = await fetchOnSiteAnswers(nextPageLink)
+    setNextPageLink(result.nextPageLink)
+    if (result.questions) {
+      addQuestions(result.questions)
+    }
+    return result.questions
   }
 
   return (
@@ -116,15 +129,16 @@ export default function App() {
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestion}
         />
-        {questions.map((questionProps) => (
-          <Question
-            key={questionProps.pageid}
-            questionProps={questionProps}
-            onLazyLoadQuestion={onLazyLoadQuestion}
-            onToggle={toggleQuestion}
-            selectQuestion={selectQuestion}
-          />
-        ))}
+        <InfiniteScroll className="articles-container" fetchMore={fetchMoreQuestions}>
+          {questions.map((question) => (
+            <Question
+              key={question.pageid}
+              questionProps={question}
+              onLazyLoadQuestion={onLazyLoadQuestion}
+              onToggle={toggleQuestion}
+            />
+          ))}
+        </InfiniteScroll>
       </main>
       <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
           <Discord />
