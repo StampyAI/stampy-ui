@@ -5,7 +5,7 @@ type Props = {
   perPage: number
   fetchMore: (page: number, perPage: number) => any[]
   loadingRenderer: (loading: boolean) => ReactNode
-  [k: string]: any
+  [k: string]: JSX.IntrinsicElements['div']
 }
 
 export default function InfiniteScroll({

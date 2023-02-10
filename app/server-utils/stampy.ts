@@ -2,11 +2,10 @@ import {withCache} from '~/server-utils/kv-cache'
 import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 
-// export type QuestionState = '_' | '-' | 'r'
 export enum QuestionState {
   OPEN = '_',
   COLLAPSED = '-',
-  SUBQUESTION = 'r',
+  RELATED = 'r',
 }
 export type RelatedQuestions = {title: string; pageid: string}[]
 export enum QuestionStatus {

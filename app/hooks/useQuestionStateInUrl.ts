@@ -131,7 +131,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
             v === QuestionState.OPEN ? QuestionState.COLLAPSED : QuestionState.OPEN
           const related = relatedQuestions
             .filter((i) => i)
-            .map((r) => `${r.pageid}${QuestionState.SUBQUESTION}`)
+            .map((r) => `${r.pageid}${QuestionState.RELATED}`)
             .join('')
           return `${k}${newValue}${related}`
         }
