@@ -1,5 +1,6 @@
 export {default as Code} from './Code'
 export {default as DarkLight} from './DarkLight'
+export {default as Discord} from './Discord'
 export {default as Edit} from './Edit'
 export {default as Ellipsis} from './Ellipsis'
 export {default as Flag} from './Flag'

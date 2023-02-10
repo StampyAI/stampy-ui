@@ -8,7 +8,7 @@ import Search from '~/components/search'
 import {Question} from '~/routes/questions/$question'
 import logoFunSvg from '~/assets/stampy-logo.svg'
 import logoMinSvg from '~/assets/stampy-logo-min.svg'
-import {Share, Users, Code} from '~/components/icons-generated'
+import {Share, Users, Code, Discord} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 import {useEffect, MouseEvent} from 'react'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
@@ -126,6 +126,9 @@ export default function App() {
           />
         ))}
       </main>
+      <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
+          <Discord />
+      </a>
       <footer>
         <a href="https://discord.gg/vjFSCDyMCy">Join Discord</a>
         <a href="https://all.aisafety.info/">All answers</a>
