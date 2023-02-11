@@ -19,6 +19,7 @@
     "@cloudflare/workers-types": "^2.2.2",
     "@remix-run/dev": "^1.13.0",
     "@svgr/cli": "^6.5.1",
+    "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/markdown-it": "^12.2.3",
     "@types/markdown-it-footnote": "^3.0.0",
