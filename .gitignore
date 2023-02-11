@@ -9,3 +9,6 @@ node_modules
 
 .DS_store
 wrangler.toml
+
+## vscode
+launch.json
