@@ -499,6 +499,11 @@ footer > *:not(:last-child) {
   background-color: var(--bgColorHighlight);
 }
 
+.tippy-box[data-theme~='search-tooltip'] {
+  background-color: var(--bgColorCopied);
+  color: var(--colorText);
+}
+
 .result-item.already-open {
   color: #999;
   cursor: default;

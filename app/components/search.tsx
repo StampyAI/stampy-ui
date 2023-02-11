@@ -4,6 +4,7 @@ import {Question} from '~/routes/questions/$question'
 import {AddQuestion} from '~/routes/questions/add'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
+import Tippy from '@tippyjs/react';
 
 type Props = {
   onSiteAnswersRef: MutableRefObject<Question[]>
@@ -156,14 +157,15 @@ const ResultItem = ({
   }`
 
   return (
-    <button
-      className={`transparent-button result-item ${isAlreadyOpen ? 'already-open' : ''}`}
-      key={title}
-      title={tooltip}
-      onClick={() => onSelect(pageid, title)}
-    >
-      {title}
-    </button>
+    <Tippy content={tooltip} theme="search-tooltip">
+      <button
+        className={`transparent-button result-item ${isAlreadyOpen ? 'already-open' : ''}`}
+        key={title}
+        onClick={() => onSelect(pageid, title)}
+      >
+        {title}
+      </button>
+    </Tippy>
   )
 }
 
