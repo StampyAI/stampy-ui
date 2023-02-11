@@ -162,14 +162,19 @@ export function Question({
  * @param text text in which URLs should be replaced
  */
 function urlToIframe(text: string) {
-  let updatedText = text;
-  // https://stackoverflow.com/a/3809435
+  const whitelistedHosts = [
+    "coda.io",
+    "airtable.com", 
+    "aisafety.world"
+  ]
+  // Regex is from: https://stackoverflow.com/a/3809435
   const httpsUrlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi)
-  const matches = text.matchAll(httpsUrlRegex);
+  const matches = text.matchAll(httpsUrlRegex)
+  let updatedText = text
   for (const match of matches) {
-    // replace with iframe
-    const url = match[0]
+    const url = match[0] 
+    if (whitelistedHosts.includes(new URL(url).host))
     updatedText = text.replace(url, `<iframe src="${url}">`)
   }
-  return updatedText;
+  return updatedText
 }
