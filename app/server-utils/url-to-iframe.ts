@@ -9,9 +9,6 @@ export const urlToIframe = (text: string): string => {
     "aisafety.world"
   ]
 
-  // Regex is from: https://stackoverflow.com/a/3809435
-  // const httpsUrlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi)
-
   // Regex is from: https://stackoverflow.com/a/26764609
   const anchorTagRegex = new RegExp(/<a[\s]+([^>]+)>((?:.(?!<\/a>))*.)<\/a>/gi)
   const matches = text.matchAll(anchorTagRegex)
