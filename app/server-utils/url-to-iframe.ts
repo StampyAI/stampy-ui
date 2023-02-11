@@ -21,7 +21,7 @@ export const urlToIframe = (text: string): string => {
     const hrefUrl = match[1].replace('href=','').replace(/"/g, '') 
     const tagContent = match[2] 
     if (whitelistedHosts.includes(new URL(hrefUrl).host) && hrefUrl === tagContent) {
-      updatedText = text.replace(fullTag, `<iframe src="${hrefUrl}"/>`)
+      updatedText = text.replace(fullTag, `<iframe src="${hrefUrl}"></iframe>`)
     }
   }
   return updatedText
