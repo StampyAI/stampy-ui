@@ -2,7 +2,11 @@ import {withCache} from '~/server-utils/kv-cache'
 import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 
-export type QuestionState = '_' | '-' | 'r'
+export enum QuestionState {
+  OPEN = '_',
+  COLLAPSED = '-',
+  RELATED = 'r',
+}
 export type RelatedQuestions = {title: string; pageid: string}[]
 export enum QuestionStatus {
   WITHDRAWN = 'Withdrawn',
@@ -78,6 +82,10 @@ type CodaRow = {
     'Main question': string | Entity | null
   }
 }
+type CodaResponse = {
+  items: CodaRow[]
+  nextPageLink: string | null
+}
 
 const CODA_DOC_ID = 'fau7sl2hmG'
 
@@ -119,27 +127,40 @@ export const fetchJsonList = async (url: string, params?: Record<string, any>) =
    that match the given url.
    Any errors will cause the whole chain to abort.
  **/
-const paginateCoda = async (url: string): Promise<CodaRow[]> => {
+const fetchRows = async (url: string): Promise<CodaResponse> => {
   const json = await fetchJsonList(url, {headers: {Authorization: `Bearer ${CODA_TOKEN}`}})
+  return {nextPageLink: json.nextPageLink, items: json.items}
+}
+const paginateCoda = async (url: string): Promise<CodaRow[]> => {
+  const {nextPageLink, items} = await fetchRows(url)
 
-  if (json.nextPageLink) {
-    return json.items.concat(await paginateCoda(json.nextPageLink))
+  if (nextPageLink) {
+    return items.concat(await paginateCoda(nextPageLink))
   }
-  return json.items
+  return items
+}
+
+type CodaRequest = {
+  table: string
+  queryColumn?: string
+  queryValue?: string
+  limit?: number
+}
+const makeCodaRequest = ({table, queryColumn, queryValue, limit}: CodaRequest): string => {
+  let params = `useColumnNames=true&sortBy=natural&valueFormat=rich${
+    queryColumn && queryValue ? `&query=${quote(queryColumn)}:${quote(queryValue)}` : ''
+  }`
+  if (limit) {
+    params = `${params}&limit=${limit}`
+  }
+  return `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
 }
 
 const getCodaRows = async (
   table: string,
   queryColumn?: string,
   queryValue?: string
-): Promise<CodaRow[]> => {
-  const params = `useColumnNames=true&sortBy=natural&valueFormat=rich${
-    queryColumn && queryValue ? `&query=${quote(queryColumn)}:${quote(queryValue)}` : ''
-  }`
-  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
-
-  return paginateCoda(url)
-}
+): Promise<CodaRow[]> => paginateCoda(makeCodaRequest({table, queryColumn, queryValue}))
 
 const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 
@@ -224,6 +245,19 @@ export const loadAllTags = withCache('allTags', async () => {
   allTags = Object.fromEntries(rows.map((r) => [r.name, toTag(r, nameToId)])) as Record<string, Tag>
   return allTags
 })
+
+export const loadMoreQuestions = withCache(
+  'loadMoreQuestions',
+  async (
+    nextPageLink: string | null,
+    perPage = 10
+  ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
+    const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: perPage})
+    const result = await fetchRows(url)
+    const questions = result.items.map(({name, values}) => convertToQuestion(name, values))
+    return {nextPageLink: result.nextPageLink, questions}
+  }
+)
 
 export const insertRows = async (table: string, rows: NewQuestion[]) => {
   const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows`

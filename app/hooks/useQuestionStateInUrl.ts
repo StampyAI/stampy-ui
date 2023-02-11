@@ -1,22 +1,25 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import {Question, QuestionState} from '~/server-utils/stampy'
+import {Question, QuestionState, RelatedQuestions} from '~/server-utils/stampy'
 import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 
-const getStateEntries = (state: string): [string, QuestionState][] =>
+type PageId = Question['pageid']
+
+const getStateEntries = (state: string): [PageId, QuestionState][] =>
   Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map((groups) => [
-    groups[1],
-    (groups[2] || '_') as QuestionState,
+    groups[1], // question id
+    (groups[2] as QuestionState) || QuestionState.OPEN,
   ])
 
-function updateQuestionMap(question: Question, map: Map<Question['pageid'], Question>): void {
+function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<PageId, Question> {
   map.set(question.pageid, question)
   for (const {pageid, title} of question.relatedQuestions) {
     if (!pageid || map.has(pageid)) continue
 
     map.set(pageid, {title, pageid, text: null, answerEditLink: null, relatedQuestions: []})
   }
+  return map
 }
 
 const emptyQuestionArray: Question[] = []
@@ -28,7 +31,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
   const [questionMap, setQuestionMap] = useState(() => {
-    const initialMap: Map<Question['pageid'], Question> = new Map()
+    const initialMap: Map<PageId, Question> = new Map()
     for (const question of initialQuestions) {
       updateQuestionMap(question, initialMap)
     }
@@ -62,7 +65,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   }, [stateString, minLogo])
 
   const initialCollapsedState = useMemo(
-    () => initialQuestions.map(({pageid}) => `${pageid}-`).join(''),
+    () => initialQuestions.map(({pageid}) => `${pageid}${QuestionState.COLLAPSED}`).join(''),
     [initialQuestions]
   )
   const questions: Question[] = useMemo(() => {
@@ -83,17 +86,111 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     setStateString(null)
   }
 
+  const moveToTop = (currentState: string, {pageid}: Question) => {
+    const removePageRe = new RegExp(`${pageid}.`, 'g')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+    return `${pageid}-${currentState.replace(removePageRe, '')}`
+  }
+
+  /*
+   * Get all related questions of the provided `question` that aren't already displayed on the site
+   */
+  const unshownRelatedQuestions = (
+    questions: Question[],
+    questionProps: Question
+  ): RelatedQuestions => {
+    const {relatedQuestions} = questionProps
+
+    const onSiteAnswers = onSiteAnswersRef.current
+    const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
+
+    return relatedQuestions.filter((question) => {
+      const isOnSite = onSiteSet.has(question.pageid)
+      // hide already displayed questions, detect duplicates by pageid (pageid can be different due to redirects)
+      // TODO: #25 relocate already displayed to slide in as a new related one
+      const isAlreadyDisplayed = questions.some(({pageid}) => pageid === question.pageid)
+      return isOnSite && !isAlreadyDisplayed
+    })
+  }
+
+  /*
+   * Open the given question and add its subquestions - this will return an appropriate URL param string
+   */
+  const insertIntoState = (
+    state: string,
+    pageid: PageId,
+    relatedQuestions: RelatedQuestions
+  ): string =>
+    getStateEntries(state)
+      .map(([k, v]) => {
+        if (k === pageid.toString()) {
+          const newValue: QuestionState =
+            v === QuestionState.OPEN ? QuestionState.COLLAPSED : QuestionState.OPEN
+          const related = relatedQuestions
+            .filter((i) => i)
+            .map((r) => `${r.pageid}${QuestionState.RELATED}`)
+            .join('')
+          return `${k}${newValue}${related}`
+        }
+        return `${k}${v}`
+      })
+      .join('')
+
+  /*
+   * Update the window.location with the new URL state
+   */
+  const updateStateString = useCallback(
+    (newState: string) => {
+      const newSearchParams = new URLSearchParams(remixSearchParams)
+      newSearchParams.set('state', newState)
+      history.replaceState(newState, '', '?' + newSearchParams.toString())
+      setStateString(newState)
+    },
+    [remixSearchParams]
+  )
+
+  /*
+   * Add the given `questions` to the global questions map. This will not update the URL
+   */
+  const mergeNewQuestions = useCallback((questions: Question[]) => {
+    setQuestionMap((currentMap) =>
+      questions.reduce((map, question) => updateQuestionMap(question, map), new Map(currentMap))
+    )
+  }, [])
+
+  /*
+   * Add the given `newQuestions` to the collection of questions. This will also update the URL
+   */
+  const addQuestions = useCallback(
+    (newQuestions: Question[]) => {
+      const questions = newQuestions.filter((q) => !questionMap.get(q.pageid))
+      mergeNewQuestions(questions)
+
+      const newState = questions.reduce(
+        (newState, q) => `${newState}${q.pageid}${QuestionState.COLLAPSED}`,
+        stateString ?? initialCollapsedState
+      )
+      updateStateString(newState)
+    },
+    [initialCollapsedState, stateString, questionMap, updateStateString, mergeNewQuestions]
+  )
+
+  /*
+   * Toggle the selected question.
+   *
+   * If the question is to be opened, this will also make sure all it's related questions
+   * are on the page
+   */
   const toggleQuestion = useCallback(
     (questionProps: Question, options?: {moveToTop?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
       let currentState = stateString ?? initialCollapsedState
+
       if (options?.moveToTop) {
-        const removePageRe = new RegExp(`${pageid}.`, 'g')
-        currentState = `${pageid}-${currentState.replace(removePageRe, '')}`
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        })
+        currentState = moveToTop(currentState, questionProps)
       }
 
       const onSiteAnswers = onSiteAnswersRef.current
@@ -102,44 +199,23 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         setTimeout(() => toggleQuestion(questionProps, options), 500)
         return
       }
-      const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
 
-      const newRelatedQuestions = relatedQuestions.filter((question) => {
-        const isOnSite = onSiteSet.has(question.pageid)
-        // hide already displayed questions, detect duplicates by pageid (pageid can be different due to redirects)
-        // TODO: #25 relocate already displayed to slide in as a new related one
-        const isAlreadyDisplayed = questions.some(({pageid}) => pageid === question.pageid)
-        return isOnSite && !isAlreadyDisplayed
-      })
+      const newRelatedQuestions = unshownRelatedQuestions(questions, questionProps)
+      const newState = insertIntoState(currentState, pageid, newRelatedQuestions)
 
-      const newState = getStateEntries(currentState)
-        .map(([k, v]) => {
-          if (k === pageid.toString()) {
-            const newValue: QuestionState = v === '_' ? '-' : '_'
-            const related = newRelatedQuestions
-              .map((r) => (r.pageid ? `${r.pageid}r` : ''))
-              .join('')
-            return `${k}${newValue}${related}`
-          }
-          return `${k}${v}`
-        })
-        .join('')
-      const newSearchParams = new URLSearchParams(remixSearchParams)
-      newSearchParams.set('state', newState)
-      history.replaceState(newState, '', '?' + newSearchParams.toString())
-      setStateString(newState)
+      updateStateString(newState)
     },
-    [initialCollapsedState, questions, remixSearchParams, stateString]
+    [initialCollapsedState, questions, stateString, updateStateString]
   )
 
-  const onLazyLoadQuestion = useCallback((question: Question) => {
-    setQuestionMap((currentMap) => {
-      const newMap = new Map(currentMap)
-      updateQuestionMap(question, newMap)
-      return newMap
-    })
-  }, [])
+  const onLazyLoadQuestion = useCallback(
+    (question: Question) => mergeNewQuestions([question]),
+    [mergeNewQuestions]
+  )
 
+  /*
+   * Moves the given question to the top of the page, opens it, and make sure all related ones are loaded
+   */
   const selectQuestion = useCallback(
     (pageid: string, title: string) => {
       // if the question is already loaded, move it to top
@@ -171,5 +247,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestion,
+    addQuestions,
   }
 }
