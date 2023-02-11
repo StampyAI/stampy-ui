@@ -108,7 +108,7 @@ export const fetchJson = async (url: string, params?: Record<string, any>) => {
 export const fetchJsonList = async (url: string, params?: Record<string, any>) => {
   const json = await fetchJson(url, params)
   if (!json.items || json.items.length === 0) {
-    throw Error('Empty response')
+    throw Error(`Empty response for ${url}`)
   }
   return json
 }
@@ -169,7 +169,9 @@ const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
   const rows = await getCodaRows(
     QUESTION_DETAILS_TABLE,
-    question.match(/^\d+$/) ? 'UI ID' : 'Name',
+    // ids are now alphanumerical, so not possible to detect id by regex match for \d
+    // let's detect ids by length, hopefully no one will make question name so short
+    question.length <= 6 ? 'UI ID' : 'Name',
     question
   )
   return convertToQuestion(rows[0].name, rows[0].values)
