@@ -102,7 +102,8 @@ export function Question({
   } else if (text == null) {
     html = 'Loading...'
   } else {
-    html = text
+    const textWithUrlsInIframes = urlToIframe(text);
+    html = textWithUrlsInIframes;
   }
 
   return (
@@ -154,4 +155,21 @@ export function Question({
       </AutoHeight>
     </article>
   )
+}
+
+/**
+ * Replaces all of the URLs in text with iframes of the URLs
+ * @param text text in which URLs should be replaced
+ */
+function urlToIframe(text: string) {
+  let updatedText = text;
+  // https://stackoverflow.com/a/3809435
+  const httpsUrlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi)
+  const matches = text.matchAll(httpsUrlRegex);
+  for (const match of matches) {
+    // replace with iframe
+    const url = match[0]
+    updatedText = text.replace(url, `<iframe src="${url}">`)
+  }
+  return updatedText;
 }
