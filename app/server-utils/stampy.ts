@@ -1,5 +1,5 @@
 import {withCache} from '~/server-utils/kv-cache'
-import { urlToIframe } from './url-to-iframe'
+import {urlToIframe} from './url-to-iframe'
 import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 

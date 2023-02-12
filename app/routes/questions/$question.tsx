@@ -102,7 +102,7 @@ export function Question({
   } else if (text == null) {
     html = 'Loading...'
   } else {
-    html = text;
+    html = text
   }
 
   return (
