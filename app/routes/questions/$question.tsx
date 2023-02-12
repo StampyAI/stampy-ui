@@ -33,11 +33,13 @@ export function Question({
   onLazyLoadQuestion,
   onToggle,
   selectQuestion,
+  ...props
 }: {
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
   selectQuestion: (pageid: string, title: string) => void
+  [k: string]: JSX.IntrinsicElements['div']
 }) {
   const {pageid, title, text, answerEditLink, questionState, tags} = questionProps
   const isLoading = useRef(false)
@@ -67,6 +69,7 @@ export function Question({
   const [showLongDescription, setShowLongDescription] = useState(false)
   const answerRef = useRef<HTMLDivElement>(null)
   const isExpandedAfterLoading = isExpanded && !refreshOnToggleAfterLoading.current
+
   useEffect(() => {
     if (isExpandedAfterLoading) {
       const el = answerRef.current
@@ -106,7 +109,7 @@ export function Question({
   }
 
   return (
-    <article className={cls}>
+    <article className={cls} {...props}>
       <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'}>
         <button className="transparent-button">
           {title}

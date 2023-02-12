@@ -240,7 +240,6 @@ svg * {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 16px;
 }
 
 article {
@@ -580,26 +579,25 @@ a:focus-visible,
 
 /* Begin Discord chat embed */
 
-#discordChatBtn > svg{
-    -webkit-filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5));
-    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, .5));
-    cursor: pointer;
-    position: fixed;
-    bottom: 1vw;
-    right: 2vw;
-    height: 3vw;
-    min-height: 40px;
-    min-width: 45px;
+#discordChatBtn > svg {
+  -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+  cursor: pointer;
+  position: fixed;
+  bottom: 1vw;
+  right: 2vw;
+  height: 3vw;
+  min-height: 40px;
+  min-width: 45px;
 }
 
 @media screen and (max-width: 410px) {
-    /* avoid potential overlap with .fixedBottom buttons on small screens */
-    #discordChatBtn {
-        bottom: 40px;
-    }
+  /* avoid potential overlap with .fixedBottom buttons on small screens */
+  #discordChatBtn {
+    bottom: 40px;
+  }
 }
 /* End Discord chat embed */
-
 
 /* dark theme */
 @media (prefers-color-scheme: dark) {
