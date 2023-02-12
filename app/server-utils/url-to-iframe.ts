@@ -3,7 +3,7 @@
  * @param text text in which URLs should be replaced
  */
 export const urlToIframe = (text: string): string => {
-  const whitelistedHosts = ['coda.io', 'airtable.com', 'aisafety.world']
+  const whitelistedHosts = ['aisafety.world']
 
   // Regex is from: https://stackoverflow.com/a/26764609
   const anchorTagRegex = new RegExp(/<a[\s]+([^>]+)>((?:.(?!<\/a>))*.)<\/a>/gi)
