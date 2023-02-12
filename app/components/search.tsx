@@ -81,12 +81,16 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
   const hideSearchResults = () => setShowResults(false)
+  const [hideEnabled, enableHide] = useState(true)
   const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     // If the focus changes from something in the search widget to something outside
     // of it, then hide the results. If it's just jumping around the results, then keep
     // them shown.
     const focusedOnResult = e.relatedTarget?.classList.contains('result-item') || false
-    setShowResults(focusedOnResult)
+    // Safari doesn't provide related target info in the blur event, so this will
+    // make sure that it won't hide the search results right away, as that stops
+    // the clicked element from fireing (it gets destroyed before the click handler fires)
+    if (hideEnabled) setShowResults(focusedOnResult)
   }
 
   return (
@@ -118,10 +122,12 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                     score,
                     model,
                     onSelect: (...args) => {
+                      enableHide(true)
                       hideSearchResults()
                       onSelect(...args)
                     },
                     isAlreadyOpen: openQuestionTitles.includes(title),
+                    enableHide,
                   }}
                 />
               ))}
@@ -129,6 +135,8 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           <AddQuestion
             title={searchInputRef.current}
             relatedQuestions={results.map(({title}) => title)}
+            onMouseDown={() => enableHide(false)}
+            onMouseUp={() => enableHide(true)}
           />
         </div>
       </AutoHeight>
@@ -143,6 +151,7 @@ const ResultItem = ({
   model,
   onSelect,
   isAlreadyOpen,
+  enableHide,
 }: {
   pageid: string
   title: string
@@ -150,6 +159,7 @@ const ResultItem = ({
   model: string
   onSelect: Props['onSelect']
   isAlreadyOpen: boolean
+  enableHide: (boolean) => void
 }) => {
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
@@ -161,6 +171,7 @@ const ResultItem = ({
       key={title}
       title={tooltip}
       onClick={() => onSelect(pageid, title)}
+      onMouseDown={() => enableHide(false)}
     >
       {title}
     </button>

@@ -141,7 +141,7 @@ export default function App() {
         </InfiniteScroll>
       </main>
       <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-          <Discord />
+        <Discord />
       </a>
       <footer>
         <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
