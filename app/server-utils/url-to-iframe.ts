@@ -10,8 +10,11 @@ export const urlToIframe = (text: string): string => {
   const matches = text.matchAll(anchorTagRegex)
   let updatedText = text
   for (const match of matches) {
+    // Example fulltag: '<a href="https://aisafety.world/">https://aisafety.world/</a>'
     const fullTag = match[0]
+    // Example hrefUrl: 'https://aisafety.world/'
     const hrefUrl = match[1].replace('href=', '').replace(/"/g, '')
+    // Example tagContent: 'https://aisafety.world/'
     const tagContent = match[2]
     if (whitelistedHosts.includes(new URL(hrefUrl).host) && hrefUrl === tagContent) {
       updatedText = text.replace(fullTag, `<iframe src="${hrefUrl}"></iframe>`)
