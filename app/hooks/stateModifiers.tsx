@@ -20,7 +20,7 @@ export const moveToTop = (state: StateString, pageid: PageId): StateString => {
  * Add all the provided `questions` to the state string as collapsed
  */
 export const addQuestions = (state: StateString, questions: Question[]): StateString =>
-  questions.reduce((newState, q) => `${newState}${q.pageid}${QuestionState.COLLAPSED}`, state)
+    getStateEntries(state).concat(questions.map(q => [q.pageid, QuestionState.COLLAPSED])).flat().join('')
 
 export const insertAfter = (state: StateString, pageId: PageId, to: PageId): StateString => {
   const entries = getStateEntries(state)
