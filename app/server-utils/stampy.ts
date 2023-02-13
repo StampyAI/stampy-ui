@@ -37,6 +37,7 @@ export type Question = {
   tags: Tag[]
   status: QuestionStatus
 }
+export type PageId = Question['pageid']
 export type NewQuestion = {
   title: string
   relatedQuestions: RelatedQuestions
