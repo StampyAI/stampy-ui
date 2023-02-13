@@ -33,15 +33,15 @@ If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hm
   (you need access to the doc of course, which you can request on the Discord in source code)
 - Replace the value for `{CODA_TOKEN}` in `wrangler.toml`
 
-  4.1 Setup write access to the "Incoming questions" table in [Coda](https://coda.io/account)
+  4.1 Setup write access to the "Answers" table in [Coda](https://coda.io/account)
 
-This step is only needed if you want to add new questions to Coda. Seeing as they will then
-go live, it would probably be better to only set this if you are working on that specific
-component, in order to not mess up the list of incoming questions.
+This step is only needed if you want to add new questions to Coda, or you want to mark answers as
+helpful. Seeing as they will then go live, it would probably be better to only set this if you are
+working on those specific component, in order to not mess up the list of incoming questions.
 
 - When logged in to Coda, `Generate API token` in your Account settigns
-- Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tugrid-S_6SYj6Tjm`
-- Replace the value for `{CODA_INCOMING_TOKEN}` in `wrangler.toml`
+- Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG`
+- Replace the value for `{CODA_WRITE_TOKEN}` in `wrangler.toml`
 
 5. Create stampy-ui Remix environment
 

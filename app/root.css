@@ -178,10 +178,16 @@ a:visited.icon-link {
   text-transform: uppercase;
   white-space: nowrap;
   color: inherit;
+  border: none;
+  background: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
+}
+button.icon-link:hover,
+button.icon-link:focus {
+  background: inherit;
 }
 
 svg {
