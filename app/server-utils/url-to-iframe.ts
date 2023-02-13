@@ -3,7 +3,9 @@
  * @param text text in which URLs should be replaced
  */
 export const urlToIframe = (text: string): string => {
-  const whitelistedHosts = ['aisafety.world']
+  const whitelistedHosts: Record<string, HostConfig> = {
+    'aisafety.world': {sandboxValue: 'allow-scripts allow-same-origin'},
+  }
 
   // Regex is from: https://stackoverflow.com/a/26764609
   const anchorTagRegex = new RegExp(/<a[\s]+([^>]+)>((?:.(?!<\/a>))*.)<\/a>/gi)
@@ -14,11 +16,20 @@ export const urlToIframe = (text: string): string => {
     const fullTag = match[0]
     // Example hrefUrl: 'https://aisafety.world/'
     const hrefUrl = match[1].replace('href=', '').replace(/"/g, '')
+    const host = new URL(hrefUrl).host
     // Example tagContent: 'https://aisafety.world/'
     const tagContent = match[2]
-    if (whitelistedHosts.includes(new URL(hrefUrl).host) && hrefUrl === tagContent) {
-      updatedText = text.replace(fullTag, `<iframe src="${hrefUrl}"></iframe>`)
+    if (Object.keys(whitelistedHosts).includes(host) && hrefUrl === tagContent) {
+      const hostConfig = whitelistedHosts[host]
+      updatedText = text.replace(
+        fullTag,
+        `<iframe src="${hrefUrl}" sandbox="${hostConfig.sandboxValue}"></iframe>`
+      )
     }
   }
   return updatedText
+}
+
+interface HostConfig {
+  sandboxValue: string
 }
