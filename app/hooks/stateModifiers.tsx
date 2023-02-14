@@ -5,25 +5,28 @@ type StateString = string
 
 export const TOP = '-1'
 
-const uniqueChecker = (): ((e: StateEntry) => boolean) => {
+const makeUniqueChecker = (): ((e: StateEntry) => boolean) => {
   const seen = new Set()
   return ([pageid]) => !seen.has(pageid) && Boolean(seen.add(pageid))
 }
-export const getStateEntries = (state: StateString): StateEntry[] =>
-  Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? [])
-    .map(
+export const getStateEntries = (
+  state: StateString,
+  func = (e: StateEntry[]): StateEntry[] => e
+): StateEntry[] =>
+  func(
+    Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map(
       (groups) =>
         [
           groups[1], // question id
           (groups[2] as QuestionState) || QuestionState.OPEN,
         ] as StateEntry
     )
-    .filter(uniqueChecker())
+  ).filter(makeUniqueChecker())
 
 export const processStateEntries = (
   state: StateString,
-  func = (e: StateEntry[]): StateEntry[] => e
-): StateString => func(getStateEntries(state)).filter(uniqueChecker()).flat().join('')
+  func: (e: StateEntry[]) => StateEntry[]
+): StateString => getStateEntries(state, func).flat().join('')
 
 export const moveToTop = (state: StateString, pageid: PageId): StateString => {
   const removePageRe = new RegExp(`${pageid}.`, 'g')
