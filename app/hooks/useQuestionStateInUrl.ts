@@ -4,6 +4,7 @@ import {useSearchParams, useTransition} from '@remix-run/react'
 import {Question, QuestionState, RelatedQuestions, PageId} from '~/server-utils/stampy'
 import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 import {
+  processStateEntries,
   getStateEntries,
   addQuestions as addQuestionsToState,
   insertInto as insertIntoState,
@@ -28,7 +29,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
 
-  const [stateString, setStateString] = useState(() => remixSearchParams.get('state'))
+  const [stateString, setStateString] = useState(
+    () => remixSearchParams.get('state') && processStateEntries(remixSearchParams.get('state'))
+  )
   const [questionMap, setQuestionMap] = useState(() => {
     const initialMap: Map<PageId, Question> = new Map()
     for (const question of initialQuestions) {
@@ -188,9 +191,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const moveQuestion = useCallback(
     (pageId: PageId, to: PageId) => {
       const currentState = stateString ?? initialCollapsedState
-      setStateString(moveQuestionInState(currentState, pageId, to))
+      updateStateString(moveQuestionInState(currentState, pageId, to))
     },
-    [initialCollapsedState, stateString]
+    [initialCollapsedState, stateString, updateStateString]
   )
 
   /*

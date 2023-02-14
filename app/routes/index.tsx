@@ -33,7 +33,7 @@ export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 const year = new Date().getFullYear()
 
-const Header = () => {
+const Header = ({reset}: {reset: (e: MouseEvent) => void}) => {
   const minLogo = useOutletContext<boolean>()
 
   return (

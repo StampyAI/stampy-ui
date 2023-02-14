@@ -5,11 +5,28 @@ type StateString = string
 
 export const TOP = '-1'
 
-export const getStateEntries = (state: StateString): StateEntry[] =>
-  Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map((groups) => [
-    groups[1], // question id
-    (groups[2] as QuestionState) || QuestionState.OPEN,
-  ])
+const makeUniqueChecker = (): ((e: StateEntry) => boolean) => {
+  const seen = new Set()
+  return ([pageid]) => !seen.has(pageid) && Boolean(seen.add(pageid))
+}
+export const getStateEntries = (
+  state: StateString,
+  func = (e: StateEntry[]): StateEntry[] => e
+): StateEntry[] =>
+  func(
+    Array.from(state.matchAll(/([^-_r]+)([-_r]*)/g) ?? []).map(
+      (groups) =>
+        [
+          groups[1], // question id
+          (groups[2] as QuestionState) || QuestionState.OPEN,
+        ] as StateEntry
+    )
+  ).filter(makeUniqueChecker())
+
+export const processStateEntries = (
+  state: StateString,
+  func: (e: StateEntry[]) => StateEntry[]
+): StateString => getStateEntries(state, func).flat().join('')
 
 export const moveToTop = (state: StateString, pageid: PageId): StateString => {
   const removePageRe = new RegExp(`${pageid}.`, 'g')
@@ -20,16 +37,17 @@ export const moveToTop = (state: StateString, pageid: PageId): StateString => {
  * Add all the provided `questions` to the state string as collapsed
  */
 export const addQuestions = (state: StateString, questions: Question[]): StateString =>
-    getStateEntries(state).concat(questions.map(q => [q.pageid, QuestionState.COLLAPSED])).flat().join('')
+  processStateEntries(state, (entries) =>
+    entries.concat(questions.map((q) => [q.pageid, QuestionState.COLLAPSED]))
+  )
 
 export const insertAfter = (state: StateString, pageId: PageId, to: PageId): StateString => {
-  const entries = getStateEntries(state)
-  const moved = entries.find((e) => e[0] == pageId)
+  const moveEntry = (entries: StateEntry[]) => {
+    const moved = entries.find((e) => e[0] == pageId)
 
-  if (!moved) return state
+    if (!moved) return entries
 
-  return entries
-    .reduce((acc: StateEntry[], entry: StateEntry) => {
+    return entries.reduce((acc: StateEntry[], entry: StateEntry) => {
       const [currentId] = entry
       if (currentId !== pageId) {
         acc.push(entry)
@@ -39,8 +57,8 @@ export const insertAfter = (state: StateString, pageId: PageId, to: PageId): Sta
       }
       return acc
     }, [])
-    .flat()
-    .join('')
+  }
+  return processStateEntries(state, moveEntry)
 }
 
 /*
@@ -51,26 +69,25 @@ export const insertInto = (
   pageid: PageId,
   relatedQuestions: RelatedQuestions
 ): StateString =>
-  getStateEntries(state)
-    .map(([k, v]) => {
+  processStateEntries(state, (entries: StateEntry[]) =>
+    entries.reduce((acc: StateEntry[], [k, v]: StateEntry) => {
       if (k === pageid.toString()) {
         const newValue: QuestionState =
           v === QuestionState.OPEN ? QuestionState.COLLAPSED : QuestionState.OPEN
         const related = relatedQuestions
           .filter((i) => i)
-          .map((r) => `${r.pageid}${QuestionState.RELATED}`)
-          .join('')
-        return `${k}${newValue}${related}`
+          .map((r) => [r.pageid, QuestionState.RELATED] as StateEntry)
+        acc.push([k, newValue])
+        return acc.concat(related)
+      } else {
+        acc.push([k, v])
       }
-      return `${k}${v}`
-    })
-    .join('')
+      return acc
+    }, [])
+  )
 
 export const removeQuestion = (state: StateString, pageid: PageId): StateString =>
-  getStateEntries(state)
-    .filter((q) => q[0] != pageid)
-    .flat()
-    .join('')
+  processStateEntries(state, (entries) => entries.filter((q) => q[0] != pageid))
 
 export const moveQuestion = (state: StateString, pageid: PageId, to: PageId): StateString => {
   switch (to) {
