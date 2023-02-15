@@ -97,16 +97,22 @@ const ON_SITE_TABLE = 'table-1Q8_MjxUes' // On-site answers
 const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
+const WRITES_TABLE = 'table-eEhx2YPsBE'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 let allTags = {} as Record<string, Tag>
 
-const sendToCoda = async (url: string, payload: any, method = 'POST') => {
+const sendToCoda = async (
+  url: string,
+  payload: any,
+  method = 'POST',
+  token = `${CODA_WRITES_TOKEN}`
+) => {
   const params = {
     method,
     headers: {
-      Authorization: `Bearer ${CODA_WRITE_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   }
@@ -283,7 +289,7 @@ export const insertRows = async (table: string, rows: NewQuestion[]) => {
       ],
     })),
   }
-  return await sendToCoda(url, payload)
+  return await sendToCoda(url, payload, 'POST', `${CODA_INCOMING_TOKEN}`)
 }
 
 export const addQuestion = async (title: string, relatedQuestions: RelatedQuestions) => {
@@ -291,7 +297,7 @@ export const addQuestion = async (title: string, relatedQuestions: RelatedQuesti
 }
 
 export const likeQuestion = async (pageid: PageId) => {
-  const table = QUESTION_DETAILS_TABLE
+  const table = WRITES_TABLE
   const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
   const current = await sendToCoda(currentRowUrl, '', 'GET')
 

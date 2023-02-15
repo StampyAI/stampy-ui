@@ -33,7 +33,16 @@ If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hm
   (you need access to the doc of course, which you can request on the Discord in source code)
 - Replace the value for `{CODA_TOKEN}` in `wrangler.toml`
 
-  4.1 Setup write access to the "Answers" table in [Coda](https://coda.io/account)
+  4.1 Setup write access to the API write view in [Coda](https://coda.io/account)
+
+This step is only needed for incrementing counters (helpful, etc.). There isn't a test environment,
+so any changes there will also effect the live site, so think twice before using them.
+
+- When logged in to Coda, `Generate API token` in your Account settings
+- Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tutable-eEhx2YPsBE`
+- Replace the value for `{CODA_WRITES_TOKEN}` in `wrangler.toml`
+
+  4.2 Setup write access to the "Incoming questions" table in [Coda](https://coda.io/account)
 
 This step is only needed if you want to add new questions to Coda, or you want to mark answers as
 helpful. Seeing as they will then go live, it would probably be better to only set this if you are
