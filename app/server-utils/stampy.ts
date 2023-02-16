@@ -97,10 +97,28 @@ const ON_SITE_TABLE = 'table-1Q8_MjxUes' // On-site answers
 const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
+const WRITES_TABLE = 'table-eEhx2YPsBE'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 let allTags = {} as Record<string, Tag>
+
+const sendToCoda = async (
+  url: string,
+  payload: any,
+  method = 'POST',
+  token = `${CODA_WRITES_TOKEN}`
+) => {
+  const params = {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  }
+  if (method != 'GET') params.body = JSON.stringify(payload)
+  return await fetchJson(url, params)
+}
 
 export const fetchJson = async (url: string, params?: Record<string, any>) => {
   let json
@@ -271,18 +289,27 @@ export const insertRows = async (table: string, rows: NewQuestion[]) => {
       ],
     })),
   }
-  const params = {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${CODA_INCOMING_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  }
-
-  return await fetchJson(url, params)
+  return await sendToCoda(url, payload, 'POST', `${CODA_INCOMING_TOKEN}`)
 }
 
 export const addQuestion = async (title: string, relatedQuestions: RelatedQuestions) => {
   return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
+}
+
+export const likeQuestion = async (pageid: PageId) => {
+  const table = WRITES_TABLE
+  const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
+  const current = await sendToCoda(currentRowUrl, '', 'GET')
+
+  const row = current?.items && current?.items[0]
+  if (!row) return 'Nothing found'
+
+  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows/${enc(row.id)}`
+  const payload = {
+    row: {
+      cells: [{column: 'Helpful', value: (row.values.Helpful || 0) + 1}],
+    },
+  }
+  const result = await sendToCoda(url, payload, 'PUT')
+  return result.id ? 'ok' : result
 }

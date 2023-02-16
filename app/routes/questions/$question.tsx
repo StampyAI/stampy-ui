@@ -7,6 +7,7 @@ import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import Tags from '~/components/tags'
 import CopyLink from '~/components/copyLink'
+import {Action, ActionType} from '~/routes/questions/actions'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
@@ -136,6 +137,7 @@ export function Question({
               <div className="question-footer">
                 <Tags tags={tags} selectQuestion={selectQuestion} />
                 <div className="actions">
+                  <Action pageid={pageid} actionType={ActionType.HELPFUL} />
                   {answerEditLink && (
                     // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
                     <a
