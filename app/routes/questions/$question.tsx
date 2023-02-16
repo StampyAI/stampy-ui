@@ -134,6 +134,7 @@ export function Question({
                 }}
                 ref={answerRef}
               />
+              {/* Any changes to this class should also be reflected in App.handleSpecialLinks */}
               <div className="question-footer">
                 <Tags tags={tags} selectQuestion={selectQuestion} />
                 <div className="actions">

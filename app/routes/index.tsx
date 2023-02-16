@@ -110,7 +110,7 @@ export default function App() {
 
   const handleSpecialLinks = (e: MouseEvent) => {
     const el = e.target as HTMLAnchorElement
-    if (el.tagName !== 'A') return
+    if (el.tagName !== 'A' || el.closest('.question-footer')) return
 
     const href = el.href.replace(/\?.*$/, '')
     const found = onSiteGDocLinkMapRef.current[href]
