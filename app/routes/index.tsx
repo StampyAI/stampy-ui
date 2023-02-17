@@ -1,4 +1,4 @@
-import {Fragment, useEffect, MouseEvent, useState} from 'react'
+import {useEffect, MouseEvent, useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions, loadAllTags} from '~/server-utils/stampy'
@@ -14,6 +14,7 @@ import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code, Discord} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 import InfiniteScroll from '~/components/infiniteScroll'
+import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -155,7 +156,7 @@ export default function App() {
           onDragOver={handleDragOver()}
         >
           {questions.map((question) => (
-            <Fragment key={question.pageid}>
+            <ErrorBoundary title={question.title} key={question.pageid}>
               <Question
                 questionProps={question}
                 onLazyLoadQuestion={onLazyLoadQuestion}
@@ -167,7 +168,7 @@ export default function App() {
                 draggable
               />
               <DragPlaceholder pageid={question.pageid} />
-            </Fragment>
+            </ErrorBoundary>
           ))}
         </InfiniteScroll>
       </main>
