@@ -20,6 +20,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
     return await loadQuestionDetail(request, question)
   } catch (error) {
     return {
+      error: error.toString(),
       timestamp: new Date().toISOString(),
       data: {
         pageid: question,
@@ -36,7 +37,10 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
-    const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
+    const {data, timestamp, error}: Awaited<ReturnType<typeof loader>> = await response.json()
+
+    if (error) console.error(error)
+
     reloadInBackgroundIfNeeded(url, timestamp)
 
     return data
