@@ -1,5 +1,5 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {loadQuestionDetail} from '~/server-utils/stampy'
+import {loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
@@ -16,13 +16,31 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
     throw Error('missing question title')
   }
 
-  return await loadQuestionDetail(request, question)
+  try {
+    return await loadQuestionDetail(request, question)
+  } catch (error) {
+    return {
+      error: error.toString(),
+      timestamp: new Date().toISOString(),
+      data: {
+        pageid: question,
+        title: 'Unknown question',
+        text: `No question found with ID ${question}. Please go to the Discord in the lower right
+(or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
+        relatedQuestions: [],
+        status: QuestionStatus.UNKNOWN,
+      },
+    }
+  }
 }
 
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
-    const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
+    const {data, timestamp, error}: Awaited<ReturnType<typeof loader>> = await response.json()
+
+    if (error) console.error(error)
+
     reloadInBackgroundIfNeeded(url, timestamp)
 
     return data
@@ -34,7 +52,7 @@ export function Question({
   onLazyLoadQuestion,
   onToggle,
   selectQuestion,
-  ...props
+  ...dragProps
 }: {
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
@@ -110,8 +128,8 @@ export function Question({
   }
 
   return (
-    <article className={cls} {...props}>
-      <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'}>
+    <article className={cls}>
+      <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'} {...dragProps}>
         <button className="transparent-button">
           {title}
           <CopyLink
@@ -125,7 +143,7 @@ export function Question({
         </button>
       </h2>
       <AutoHeight>
-        <div className={`answer ${showLongDescription ? 'long' : 'short'}`}>
+        <div className={`answer ${showLongDescription ? 'long' : 'short'}`} draggable="false">
           {isExpanded && (
             <>
               <div
@@ -134,26 +152,28 @@ export function Question({
                 }}
                 ref={answerRef}
               />
-              {/* Any changes to this class should also be reflected in App.handleSpecialLinks */}
-              <div className="question-footer">
-                <Tags tags={tags} selectQuestion={selectQuestion} />
-                <div className="actions">
-                  <Action pageid={pageid} actionType={ActionType.HELPFUL} />
-                  {answerEditLink && (
-                    // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
-                    <a
-                      className="icon-link"
-                      href={answerEditLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      title="edit answer"
-                    >
-                      <Edit />
-                      Edit
-                    </a>
-                  )}
+              {text !== null && questionProps.status != QuestionStatus.UNKNOWN && (
+                /* Any changes to this class should also be reflected in App.handleSpecialLinks */
+                <div className="question-footer">
+                  <Tags tags={tags} selectQuestion={selectQuestion} />
+                  <div className="actions">
+                    <Action pageid={pageid} actionType={ActionType.HELPFUL} />
+                    {answerEditLink && (
+                      // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
+                      <a
+                        className="icon-link"
+                        href={answerEditLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="edit answer"
+                      >
+                        <Edit />
+                        Edit
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>
