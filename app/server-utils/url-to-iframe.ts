@@ -19,7 +19,7 @@ export const urlToIframe = (text: string): string => {
     const host = new URL(hrefUrl).host
     // Example tagContent: 'https://aisafety.world/'
     const tagContent = match[2]
-    if (Object.keys(whitelistedHosts).includes(host) && hrefUrl === tagContent) {
+    if (whitelistedHosts[host] && hrefUrl === tagContent) {
       const hostConfig = whitelistedHosts[host]
       updatedText = text.replace(
         fullTag,
