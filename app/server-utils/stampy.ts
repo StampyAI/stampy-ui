@@ -258,7 +258,7 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
 })
 export const loadAllTags = withCache('allTags', async () => {
   const rows = await getCodaRows(TAGS_TABLE)
-  const questions = await loadAllQuestions(new Request(''))
+  const questions = await loadAllQuestions()
   const nameToId = Object.fromEntries(
     questions.data.filter((q) => q.status == QuestionStatus.LIVE).map((q) => [q.title, q.pageid])
   )
