@@ -30,7 +30,6 @@ function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<
       answerEditLink: null,
       relatedQuestions: [],
       tags: [],
-      status: QuestionStatus.UNKNOWN,
     })
   }
   return map
@@ -95,7 +94,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       ...questionMap.get(pageid),
       questionState,
       tags: [],
-      status: QuestionStatus.UNKNOWN,
     }))
   }, [stateString, initialCollapsedState, questionMap])
 
@@ -233,7 +231,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         answerEditLink: null,
         relatedQuestions: [],
         tags: [],
-        status: QuestionStatus.UNKNOWN,
       }
       onLazyLoadQuestion(tmpQuestion)
       toggleQuestion(tmpQuestion, {moveToTop: true})

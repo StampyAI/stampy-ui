@@ -27,7 +27,6 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
       answerEditLink: null,
       relatedQuestions: [],
       tags: [],
-      status: QuestionStatus.UNKNOWN,
     }
     return {
       error: error.toString(),
