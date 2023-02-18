@@ -15,7 +15,7 @@ export enum ActionType {
   SEARCH = 'search',
 }
 export type ActionProps = {
-  Icon: JSX.IntrinsicElements['svg']
+  Icon: React.FC
   title: string
   handler?: (pageid: string) => Promise<string>
 }

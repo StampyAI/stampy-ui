@@ -121,7 +121,7 @@ export default function App() {
     }
   }
 
-  const [nextPageLink, setNextPageLink] = useState(null)
+  const [nextPageLink, setNextPageLink] = useState<string | null>(null)
   const fetchMoreQuestions = async () => {
     const result = await fetchOnSiteAnswers(nextPageLink)
     setNextPageLink(result.nextPageLink)
@@ -153,7 +153,7 @@ export default function App() {
         <InfiniteScroll
           className="articles-container"
           fetchMore={fetchMoreQuestions}
-          onDragOver={handleDragOver()}
+          onDragOver={() => handleDragOver({pageid: null})}
         >
           {questions.map((question) => (
             <ErrorBoundary title={question.title} key={question.pageid}>

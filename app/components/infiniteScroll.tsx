@@ -1,17 +1,15 @@
 import {ReactNode, useState, useRef, useCallback} from 'react'
+import {Question} from '~/server-utils/stampy'
 
 type Props = {
   children: ReactNode[]
-  perPage: number
-  fetchMore: (page: number, perPage: number) => any[]
-  loadingRenderer: (loading: boolean) => ReactNode
-  [k: string]: JSX.IntrinsicElements['div']
-}
+  fetchMore: () => Promise<Question[]>
+  loadingRenderer?: (loading: boolean) => ReactNode
+} & JSX.IntrinsicElements['div']
 
 export default function InfiniteScroll({
   children,
   fetchMore,
-  perPage = 10,
   loadingRenderer = (loading: boolean) => loading && <div className="loader"></div>,
   ...props
 }: Props) {
@@ -24,7 +22,7 @@ export default function InfiniteScroll({
 
     setLoading(true)
 
-    const nextPage = await fetchMore(pageNum, perPage)
+    const nextPage = await fetchMore()
     setPageNum(pageNum + 1)
 
     if (nextPage?.length === 0) {
@@ -32,9 +30,9 @@ export default function InfiniteScroll({
     }
 
     setLoading(false)
-  }, [loading, hasMore, pageNum, setLoading, setPageNum, setHasMore, fetchMore, perPage])
+  }, [loading, hasMore, pageNum, setLoading, setPageNum, setHasMore, fetchMore])
 
-  const observer = useRef<IntersectionObserver>(null)
+  const observer = useRef<IntersectionObserver | null>(null)
   const lastElementRef = useCallback(
     (node) => {
       if (observer.current) observer.current.disconnect()

@@ -58,8 +58,7 @@ export const action = async ({request}: ActionArgs) => {
 type Props = {
   title: string
   relatedQuestions: string[]
-  [k: string]: JSX.IntrinsicElements['form']
-}
+} & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref'>
 
 export const AddQuestion = ({title, relatedQuestions, ...props}: Props) => {
   const [remixSearchParams] = useSearchParams()

@@ -11,7 +11,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   return await loadOnSiteAnswers(request)
 }
 
-export function fetchOnSiteAnswers(nextPage: string | undefined) {
+export function fetchOnSiteAnswers(nextPage: string | null) {
   let url = `/questions/allOnSite`
   if (nextPage !== undefined) {
     url = `${url}?nextPage=${nextPage || ''}`

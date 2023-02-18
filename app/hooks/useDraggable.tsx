@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, DragEvent} from 'react'
 import type {Question, PageId} from '~/server-utils/stampy'
 
 export default function useDraggable(onMove: (pageid: PageId, to: PageId | null) => void) {
@@ -14,20 +14,20 @@ export default function useDraggable(onMove: (pageid: PageId, to: PageId | null)
       }
     }
 
-    window.addEventListener('dragover', handleDrag)
+    window.addEventListener('dragover', handleDrag as any)
     return () => {
       // Make sure to remove this listner when the component is destroyed
-      window.removeEventListener('dragover', handleDrag)
+      window.removeEventListener('dragover', handleDrag as any)
     }
   }, [])
 
-  const handleDragOver = (question: Question) => (e: DragEvent) => {
+  const handleDragOver = (question: {pageid: PageId | null}) => (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.dataTransfer.effectAllowed = 'move'
     if (question) setDraggedOver(question.pageid)
   }
 
-  const handleDragStart = (question: Question) => (e: DragEvent) => {
+  const handleDragStart = (question: Question) => (e: DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('pageId', question.pageid)
 
     // Add the question's URL so it can be dragged to a new tab
