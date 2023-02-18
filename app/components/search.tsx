@@ -81,7 +81,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
   const hideSearchResults = () => setShowResults(false)
-  const [hideEnabled, enableHide] = useState(true)
+  const [hideEnabled, setHide] = useState(true)
   const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     // If the focus changes from something in the search widget to something outside
     // of it, then hide the results. If it's just jumping around the results, then keep
@@ -122,12 +122,12 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                     score,
                     model,
                     onSelect: (...args) => {
-                      enableHide(true)
+                      setHide(true)
                       hideSearchResults()
                       onSelect(...args)
                     },
                     isAlreadyOpen: openQuestionTitles.includes(title),
-                    enableHide,
+                    setHide,
                   }}
                 />
               ))}
@@ -135,8 +135,8 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           <AddQuestion
             title={searchInputRef.current}
             relatedQuestions={results.map(({title}) => title)}
-            onMouseDown={() => enableHide(false)}
-            onMouseUp={() => enableHide(true)}
+            onMouseDown={() => setHide(false)}
+            onMouseUp={() => setHide(true)}
           />
         </div>
       </AutoHeight>
@@ -151,7 +151,7 @@ const ResultItem = ({
   model,
   onSelect,
   isAlreadyOpen,
-  enableHide,
+  setHide,
 }: {
   pageid: string
   title: string
@@ -159,7 +159,7 @@ const ResultItem = ({
   model: string
   onSelect: Props['onSelect']
   isAlreadyOpen: boolean
-  enableHide: (boolean) => void
+  setHide: (b: boolean) => void
 }) => {
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
@@ -171,7 +171,7 @@ const ResultItem = ({
       key={title}
       title={tooltip}
       onClick={() => onSelect(pageid, title)}
-      onMouseDown={() => enableHide(false)}
+      onMouseDown={() => setHide(false)}
     >
       {title}
     </button>

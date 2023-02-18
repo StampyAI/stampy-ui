@@ -8,7 +8,7 @@ type Props = {
 
 export default function Dialog({children, onClose}: Props) {
   // React magic to get the actual DOM element once it's been mounted
-  const dialogRef = useRef<HTMLDialogElement>(null)
+  const dialogRef = useRef<HTMLDialogElement | null>(null)
   const dialogSetter = useCallback((node: HTMLDialogElement) => {
     if (node !== null) {
       // Show the dialog this way, in order for it to automatically handle escapes

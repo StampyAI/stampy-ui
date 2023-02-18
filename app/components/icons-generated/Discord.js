@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgDiscord = (props) => (
   <svg
     id="discord_svg__discordChatBtn"
@@ -29,5 +28,4 @@ const SvgDiscord = (props) => (
     </g>
   </svg>
 )
-
 export default SvgDiscord

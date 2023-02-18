@@ -30,7 +30,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   }
 }
 
-function Head({minLogo}: {minLogo: boolean}) {
+function Head({minLogo}: {minLogo?: boolean}) {
   return (
     <head>
       <meta charSet="utf-8" />

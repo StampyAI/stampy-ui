@@ -18,18 +18,20 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 
   try {
     return await loadQuestionDetail(request, question)
-  } catch (error) {
+  } catch (error: any) {
+    const data: Question = {
+      pageid: question,
+      title: 'Unknown question',
+      text: `No question found with ID ${question}. Please go to the Discord in the lower right
+(or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
+      answerEditLink: null,
+      relatedQuestions: [],
+      tags: [],
+    }
     return {
       error: error.toString(),
       timestamp: new Date().toISOString(),
-      data: {
-        pageid: question,
-        title: 'Unknown question',
-        text: `No question found with ID ${question}. Please go to the Discord in the lower right
-(or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
-        relatedQuestions: [],
-        status: QuestionStatus.UNKNOWN,
-      },
+      data,
     }
   }
 }
@@ -37,9 +39,9 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
-    const {data, timestamp, error}: Awaited<ReturnType<typeof loader>> = await response.json()
-
-    if (error) console.error(error)
+    const json: Awaited<ReturnType<typeof loader>> = await response.json()
+    if ('error' in json) console.error(json.error)
+    const {data, timestamp} = json
 
     reloadInBackgroundIfNeeded(url, timestamp)
 
@@ -58,8 +60,7 @@ export function Question({
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
   selectQuestion: (pageid: string, title: string) => void
-  [k: string]: JSX.IntrinsicElements['div']
-}) {
+} & JSX.IntrinsicElements['div']) {
   const {pageid, title, text, answerEditLink, questionState, tags} = questionProps
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)

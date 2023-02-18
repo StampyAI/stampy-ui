@@ -1,13 +1,9 @@
-import {Component} from 'react'
-import PropTypes from 'prop-types'
+import {Component, ErrorInfo} from 'react'
 
-export default class ErrorBoundary extends Component {
-  static propTypes = {
-    children: PropTypes.any,
-    title: PropTypes.string,
-  }
-
-  constructor(props: {children: JSX.Element[]; title: string}) {
+type Props = {title: string; children: JSX.Element[]}
+type State = {hasError: boolean}
+export default class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {hasError: false}
   }
@@ -16,7 +12,7 @@ export default class ErrorBoundary extends Component {
     return {hasError: true}
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.log(error, errorInfo)
   }
 

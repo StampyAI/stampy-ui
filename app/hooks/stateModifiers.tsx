@@ -25,7 +25,7 @@ export const getStateEntries = (
 
 export const processStateEntries = (
   state: StateString,
-  func: (e: StateEntry[]) => StateEntry[]
+  func?: (e: StateEntry[]) => StateEntry[]
 ): StateString => getStateEntries(state, func).flat().join('')
 
 export const moveToTop = (state: StateString, pageid: PageId): StateString => {

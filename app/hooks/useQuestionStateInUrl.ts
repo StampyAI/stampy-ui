@@ -1,7 +1,13 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import {Question, QuestionState, RelatedQuestions, PageId} from '~/server-utils/stampy'
+import {
+  Question,
+  QuestionState,
+  RelatedQuestions,
+  PageId,
+  QuestionStatus,
+} from '~/server-utils/stampy'
 import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 import {
   processStateEntries,
@@ -17,7 +23,14 @@ function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<
   for (const {pageid, title} of question.relatedQuestions) {
     if (!pageid || map.has(pageid)) continue
 
-    map.set(pageid, {title, pageid, text: null, answerEditLink: null, relatedQuestions: []})
+    map.set(pageid, {
+      title,
+      pageid,
+      text: null,
+      answerEditLink: null,
+      relatedQuestions: [],
+      tags: [],
+    })
   }
   return map
 }
@@ -30,7 +43,8 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const transition = useTransition()
 
   const [stateString, setStateString] = useState(
-    () => remixSearchParams.get('state') && processStateEntries(remixSearchParams.get('state'))
+    () =>
+      remixSearchParams.get('state') && processStateEntries(remixSearchParams.get('state') ?? '')
   )
   const [questionMap, setQuestionMap] = useState(() => {
     const initialMap: Map<PageId, Question> = new Map()
@@ -45,9 +59,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
-    fetchOnSiteAnswers().then((data) => {
-      onSiteAnswersRef.current = data
-      onSiteGDocLinkMapRef.current = data.reduce((acc, q) => {
+    fetchOnSiteAnswers(null).then(({questions}) => {
+      onSiteAnswersRef.current = questions
+      onSiteGDocLinkMapRef.current = questions.reduce((acc, q) => {
         if (q.answerEditLink) acc[q.answerEditLink] = q
         return acc
       }, emptyQuestionMap)
@@ -79,6 +93,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       relatedQuestions: [],
       ...questionMap.get(pageid),
       questionState,
+      tags: [],
     }))
   }, [stateString, initialCollapsedState, questionMap])
 
@@ -189,9 +204,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   )
 
   const moveQuestion = useCallback(
-    (pageId: PageId, to: PageId) => {
+    (pageId: PageId, to: PageId | null) => {
       const currentState = stateString ?? initialCollapsedState
-      updateStateString(moveQuestionInState(currentState, pageId, to))
+      updateStateString(moveQuestionInState(currentState, pageId, to ?? ''))
     },
     [initialCollapsedState, stateString, updateStateString]
   )
@@ -209,12 +224,13 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         }
       }
       // else show the new question in main view and let the Question component fetch it
-      const tmpQuestion = {
+      const tmpQuestion: Question = {
         pageid,
         title,
         text: null,
         answerEditLink: null,
         relatedQuestions: [],
+        tags: [],
       }
       onLazyLoadQuestion(tmpQuestion)
       toggleQuestion(tmpQuestion, {moveToTop: true})

@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgLink = (props) => (
   <svg
     id="link_svg__Layer_1"
@@ -34,5 +33,4 @@ const SvgLink = (props) => (
     />
   </svg>
 )
-
 export default SvgLink

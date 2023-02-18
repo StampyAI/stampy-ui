@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgFlag = (props) => (
   <svg
     id="flag_svg__Layer_1"
@@ -30,5 +29,4 @@ const SvgFlag = (props) => (
     />
   </svg>
 )
-
 export default SvgFlag

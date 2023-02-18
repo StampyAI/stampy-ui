@@ -36,7 +36,7 @@ export type Question = {
   relatedQuestions: RelatedQuestions
   questionState?: QuestionState
   tags: Tag[]
-  status: QuestionStatus
+  status?: QuestionStatus
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -110,7 +110,7 @@ const sendToCoda = async (
   method = 'POST',
   token = `${CODA_WRITES_TOKEN}`
 ) => {
-  const params = {
+  const params: RequestInit = {
     method,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ const sendToCoda = async (
   return await fetchJson(url, params)
 }
 
-export const fetchJson = async (url: string, params?: Record<string, any>) => {
+export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
     json = await (await fetch(url, params)).json()
@@ -133,7 +133,7 @@ export const fetchJson = async (url: string, params?: Record<string, any>) => {
   return json
 }
 
-export const fetchJsonList = async (url: string, params?: Record<string, any>) => {
+export const fetchJsonList = async (url: string, params?: RequestInit) => {
   const json = await fetchJson(url, params)
   if (!json.items || json.items.length === 0) {
     throw Error(`Empty response for ${url}`)
@@ -226,8 +226,8 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = await getCodaRows(ON_SITE_TABLE)
-  const data = rows.map(({name, values}) => convertToQuestion(name, values))
-  return data
+  const questions = rows.map(({name, values}) => convertToQuestion(name, values))
+  return {questions, nextPageLink: null}
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
@@ -258,7 +258,7 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
 })
 export const loadAllTags = withCache('allTags', async () => {
   const rows = await getCodaRows(TAGS_TABLE)
-  const questions = await loadAllQuestions({url: ''})
+  const questions = await loadAllQuestions()
   const nameToId = Object.fromEntries(
     questions.data.filter((q) => q.status == QuestionStatus.LIVE).map((q) => [q.title, q.pageid])
   )
@@ -269,10 +269,9 @@ export const loadAllTags = withCache('allTags', async () => {
 export const loadMoreQuestions = withCache(
   'loadMoreQuestions',
   async (
-    nextPageLink: string | null,
-    perPage = 10
+    nextPageLink: string | null
   ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
-    const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: perPage})
+    const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
     const result = await fetchRows(url)
     const questions = result.items.map(({name, values}) => convertToQuestion(name, values))
     return {nextPageLink: result.nextPageLink, questions}

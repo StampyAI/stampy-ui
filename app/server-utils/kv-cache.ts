@@ -6,13 +6,13 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
   defaultKey: string,
   fn: Fn
 ): (
-  request: DataFunctionArgs['request'],
+  request?: DataFunctionArgs['request'],
   ...args: Parameters<Fn>
 ) => Promise<{data: Awaited<ReturnType<Fn>>; timestamp: string}> {
-  return (async (request: DataFunctionArgs['request'], ...args: Parameters<Fn>) => {
+  return (async (request?: DataFunctionArgs['request'], ...args: Parameters<Fn>) => {
     const key = args[0] ?? defaultKey
 
-    const shouldReload = request.url.includes(RELOAD)
+    const shouldReload = request?.url.includes(RELOAD)
     if (!shouldReload) {
       const cached = await STAMPY_KV.get(key)
 
