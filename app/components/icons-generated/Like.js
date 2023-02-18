@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgLike = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -35,5 +34,4 @@ const SvgLike = (props) => (
     />
   </svg>
 )
-
 export default SvgLike

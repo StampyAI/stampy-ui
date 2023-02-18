@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgDarkLight = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -18,5 +17,4 @@ const SvgDarkLight = (props) => (
     />
   </svg>
 )
-
 export default SvgDarkLight

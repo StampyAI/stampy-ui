@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const SvgFollowup = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -24,5 +23,4 @@ const SvgFollowup = (props) => (
     />
   </svg>
 )
-
 export default SvgFollowup
