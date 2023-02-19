@@ -1,7 +1,7 @@
 import {useEffect, MouseEvent, useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
-import {loadInitialQuestions, loadAllTags} from '~/server-utils/stampy'
+import {loadInitialQuestions} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
@@ -18,15 +18,11 @@ import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  let initialQuestionsData
   try {
-    await loadAllTags(request)
-    initialQuestionsData = await loadInitialQuestions(request)
+    const initialQuestionsData = await loadInitialQuestions(request)
+    return {initialQuestionsData}
   } catch (e) {
     console.error(e)
-  }
-  return {
-    initialQuestionsData,
   }
 }
 

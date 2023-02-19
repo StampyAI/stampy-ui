@@ -35,7 +35,7 @@ export type Question = {
   answerEditLink: string | null
   relatedQuestions: RelatedQuestions
   questionState?: QuestionState
-  tags: Tag[]
+  tags: string[]
   status?: QuestionStatus
 }
 export type PageId = Question['pageid']
@@ -94,7 +94,7 @@ const CODA_DOC_ID = 'fau7sl2hmG'
 // Use table ide, rather than names, in case of renames
 const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File' // Answers
 const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4' // Initial questions
-const ON_SITE_TABLE = 'table-1Q8_MjxUes' // On-site answers
+const ON_SITE_TABLE = 'table-aOTSHIz_mN' // On-site answers
 const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
@@ -102,7 +102,6 @@ const WRITES_TABLE = 'table-eEhx2YPsBE'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
-let allTags = {} as Record<string, Tag>
 
 const sendToCoda = async (
   url: string,
@@ -196,7 +195,7 @@ const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   pageid: extractText(v['UI ID']),
   text: v['Rich Text'] ? md.render(extractText(v['Rich Text'])) : null,
   answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
-  tags: ((v['Tags'] || []) as Entity[]).map((e) => allTags[e.name]),
+  tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
   relatedQuestions:
     v['Related Answers'] && v['Related IDs']
       ? v['Related Answers'].map(({name}, i) => ({
@@ -256,14 +255,15 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
     .filter((q) => q.pageid),
   mainQuestion: extractMainQuestion(r.values['Main question']),
 })
-export const loadAllTags = withCache('allTags', async () => {
-  const rows = await getCodaRows(TAGS_TABLE)
+
+export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> => {
+  const rows = await getCodaRows(TAGS_TABLE, 'Tag name', tagName)
+
   const questions = await loadAllQuestions()
   const nameToId = Object.fromEntries(
     questions.data.filter((q) => q.status == QuestionStatus.LIVE).map((q) => [q.title, q.pageid])
   )
-  allTags = Object.fromEntries(rows.map((r) => [r.name, toTag(r, nameToId)])) as Record<string, Tag>
-  return allTags
+  return toTag(rows[0], nameToId)
 })
 
 export const loadMoreQuestions = withCache(
