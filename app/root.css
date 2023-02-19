@@ -204,7 +204,7 @@ svg * {
   transition: fill 300ms;
 }
 
-.icon-link:not(:hover) svg *:not([class$='svg__gray']),
+.icon-link:not(.focused, :hover) svg *:not([class$='svg__gray']),
 .searchbar input + svg circle {
   fill: transparent !important;
 }

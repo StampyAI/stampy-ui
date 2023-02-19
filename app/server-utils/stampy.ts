@@ -296,7 +296,7 @@ export const addQuestion = async (title: string, relatedQuestions: RelatedQuesti
   return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
 }
 
-export const likeQuestion = async (pageid: PageId) => {
+export const likeQuestion = async (pageid: PageId, incBy: number) => {
   const table = WRITES_TABLE
   const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
   const current = await sendToCoda(currentRowUrl, '', 'GET')
@@ -307,7 +307,7 @@ export const likeQuestion = async (pageid: PageId) => {
   const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows/${enc(row.id)}`
   const payload = {
     row: {
-      cells: [{column: 'Helpful', value: (row.values.Helpful || 0) + 1}],
+      cells: [{column: 'Helpful', value: (row.values.Helpful || 0) + incBy}],
     },
   }
   const result = await sendToCoda(url, payload, 'PUT')
