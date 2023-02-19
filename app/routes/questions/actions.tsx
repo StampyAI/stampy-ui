@@ -17,7 +17,7 @@ export enum ActionType {
 export type ActionProps = {
   Icon: React.FC
   title: string
-  handler?: (pageid: string) => Promise<string>
+  handler?: (pageid: string, incBy: number) => Promise<string>
 }
 type ActionsDict = {
   [k: string]: ActionProps
@@ -58,10 +58,11 @@ export const action = async ({request}: ActionArgs) => {
   const formData = await request.formData()
   const pageid = formData.get('pageid') as string
   const actionType = formData.get('action') as ActionType
+  const incBy = parseInt((formData.get('incBy') as string) || '1', 10)
 
   const handler = actions[actionType]?.handler
   if (handler) {
-    const result = await handler(pageid)
+    const result = await handler(pageid, incBy)
     if (result != 'ok') return json({error: result}, {status: 400})
   } else {
     console.log(`Got unhandled action: ${actionType} for page ${pageid}`)
@@ -92,22 +93,27 @@ export const Action = ({pageid, actionType}: {pageid: string; actionType: Action
   const handleAction = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
 
-    setActionTaken(true)
-    const searchParams = new URLSearchParams({pageid, action: actionType})
+    const incBy = actionTaken ? '-1' : '1'
+    setActionTaken(!actionTaken)
+
+    // This sort of cheats - if more than 1 request is sent per second (or some other such time
+    // period), one of them will be (sort of) picked at random. This should be ok in the long run.
+    // Hopefully.
+    const searchParams = new URLSearchParams({pageid, incBy, action: actionType})
     const response = await fetch('/questions/actions', {method: 'POST', body: searchParams})
-    setActionTaken(response.ok === true)
+
+    if (response.ok !== true) setActionTaken(!actionTaken)
   }
 
-  if (actionTaken) {
-    return <></>
-  }
+  const className = 'icon-link' + (actionTaken ? ' focused' : '')
 
   return (
-    <Form replace action="/questions/actions" method="post" className="icon-link" title={title}>
+    <Form replace action="/questions/actions" method="post" title={title}>
       <input type="hidden" name="action" value={actionType} />
       <input type="hidden" name="pageid" value={pageid} />
+      <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
-      <button className="icon-link" title={title} type="submit" onClick={handleAction}>
+      <button className={className} title={title} type="submit" onClick={handleAction}>
         <Icon />
         {title}
       </button>

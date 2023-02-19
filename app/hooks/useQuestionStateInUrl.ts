@@ -1,13 +1,7 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import {
-  Question,
-  QuestionState,
-  RelatedQuestions,
-  PageId,
-  QuestionStatus,
-} from '~/server-utils/stampy'
+import {Question, QuestionState, RelatedQuestions, PageId} from '~/server-utils/stampy'
 import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
 import {
   processStateEntries,

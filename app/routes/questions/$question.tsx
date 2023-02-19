@@ -1,5 +1,5 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
+import {loadQuestionDetail} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
@@ -9,6 +9,8 @@ import Tags from '~/components/tags'
 import CopyLink from '~/components/copyLink'
 import {Action, ActionType} from '~/routes/questions/actions'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
+
+const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
   const {question} = params
@@ -21,7 +23,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
   } catch (error: any) {
     const data: Question = {
       pageid: question,
-      title: 'Unknown question',
+      title: UNKNOWN_QUESTION_TITLE,
       text: `No question found with ID ${question}. Please go to the Discord in the lower right
 (or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
       answerEditLink: null,
@@ -153,7 +155,7 @@ export function Question({
                 }}
                 ref={answerRef}
               />
-              {text !== null && questionProps.status != QuestionStatus.UNKNOWN && (
+              {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
                 /* Any changes to this class should also be reflected in App.handleSpecialLinks */
                 <div className="question-footer">
                   <Tags tags={tags} selectQuestion={selectQuestion} />
