@@ -182,6 +182,26 @@ const getCodaRows = async (
 ): Promise<CodaRow[]> => paginateCoda(makeCodaRequest({table, queryColumn, queryValue}))
 
 const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
+/*
+ * Transform the Coda markdown into HTML
+ */
+const renderText = (text: string | null): string | null => {
+  if (text === null) return null
+
+  let contents = extractText(text)
+
+  // Recursively wrap any [See more...] segments in HTML Details
+  const wrapInDetails = ([chunk, ...rest]: string[]): string => {
+    if (!rest || rest.length == 0) return chunk
+    return `${chunk}
+           <details>
+             <summary>See more...</summary>
+             ${wrapInDetails(rest)}
+           </details>`
+  }
+  contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
+  return wrapInDetails(contents)
+}
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
 const head = (item: any) => {
@@ -193,7 +213,7 @@ const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
   pageid: extractText(v['UI ID']),
-  text: v['Rich Text'] ? md.render(extractText(v['Rich Text'])) : null,
+  text: renderText(v['Rich Text']),
   answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
   tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
   relatedQuestions:
