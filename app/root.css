@@ -537,6 +537,11 @@ footer > *:not(:last-child) {
   font-style: italic;
 }
 
+.possible-question svg {
+  width: 16px;
+  height: 16px;
+}
+
 input:focus-visible,
 button:focus-visible,
 a:focus-visible,

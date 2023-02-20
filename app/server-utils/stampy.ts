@@ -186,7 +186,7 @@ const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
  * Transform the Coda markdown into HTML
  */
 const renderText = (text: string | null): string | null => {
-  if (text === null) return null
+  if (!text) return null
 
   let contents = extractText(text)
 
@@ -316,7 +316,7 @@ export const addQuestion = async (title: string, relatedQuestions: RelatedQuesti
   return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
 }
 
-export const likeQuestion = async (pageid: PageId, incBy: number) => {
+export const incAnswerColumn = async (column: string, pageid: PageId, subtract: boolean) => {
   const table = WRITES_TABLE
   const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
   const current = await sendToCoda(currentRowUrl, '', 'GET')
@@ -325,11 +325,15 @@ export const likeQuestion = async (pageid: PageId, incBy: number) => {
   if (!row) return 'Nothing found'
 
   const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows/${enc(row.id)}`
+  const incBy = subtract ? -1 : 1
   const payload = {
     row: {
-      cells: [{column: 'Helpful', value: (row.values.Helpful || 0) + incBy}],
+      cells: [{column, value: (row.values.Helpful || 0) + incBy}],
     },
   }
   const result = await sendToCoda(url, payload, 'PUT')
   return result.id ? 'ok' : result
 }
+
+export const makeColumnIncrementer = (column: string) => (pageid: PageId, subtract: boolean) =>
+  incAnswerColumn(column, pageid, subtract)

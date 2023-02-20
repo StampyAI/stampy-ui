@@ -2,8 +2,10 @@ import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
 import {Question} from '~/routes/questions/$question'
 import {AddQuestion} from '~/routes/questions/add'
-import {MagnifyingGlass} from '~/components/icons-generated'
+import {Action, ActionType} from '~/routes/questions/actions'
+import {MagnifyingGlass, Edit} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
+import Dialog from '~/components/dialog'
 
 type Props = {
   onSiteAnswersRef: MutableRefObject<Question[]>
@@ -18,6 +20,7 @@ type Question = {
 
 type SearchResult = Question & {
   score: number
+  url?: string
 }
 
 type WorkerMessage =
@@ -33,6 +36,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
   const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
+  const [showMore, setShowMore] = useState(false)
   const searchInputRef = useRef('')
   const tfWorkerRef = useRef<Worker>()
   const tfFinishedLoadingRef = useRef(false)
@@ -93,54 +97,73 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     if (hideEnabled) setShowResults(focusedOnResult)
   }
 
+  const handleSelect = (pageid: string, title: string) => {
+    setHide(true)
+    setShowMore(false)
+    hideSearchResults()
+    onSelect(pageid, title)
+  }
+
   return (
-    <div onFocus={() => setShowResults(true)} onBlur={handleBlur}>
-      <label className="searchbar">
-        <input
-          type="search"
-          name="searchbar"
-          placeholder="Search for more questions here..."
-          autoComplete="off"
-          onChange={(e) => handleChange(e.currentTarget.value)}
-          onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
-        />
-        <MagnifyingGlass />
-      </label>
-      <AutoHeight>
-        <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
-          <div>
-            {!tfFinishedLoadingRef.current && (
-              <i>Showing plain text search results while tensorflow is loading:</i>
-            )}
-            {showResults &&
-              results.map(({pageid, title, score}) => (
-                <ResultItem
-                  key={pageid}
-                  {...{
-                    pageid,
-                    title,
-                    score,
-                    model,
-                    onSelect: (...args) => {
-                      setHide(true)
-                      hideSearchResults()
-                      onSelect(...args)
-                    },
-                    isAlreadyOpen: openQuestionTitles.includes(title),
-                    setHide,
-                  }}
-                />
-              ))}
-          </div>
-          <AddQuestion
-            title={searchInputRef.current}
-            relatedQuestions={results.map(({title}) => title)}
-            onMouseDown={() => setHide(false)}
-            onMouseUp={() => setHide(true)}
+    <>
+      <div onFocus={() => setShowResults(true)} onBlur={handleBlur}>
+        <label className="searchbar">
+          <input
+            type="search"
+            name="searchbar"
+            placeholder="Search for more questions here..."
+            autoComplete="off"
+            onChange={(e) => handleChange(e.currentTarget.value)}
+            onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
           />
-        </div>
-      </AutoHeight>
-    </div>
+          <MagnifyingGlass />
+        </label>
+        <AutoHeight>
+          <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
+            <div>
+              {!tfFinishedLoadingRef.current && (
+                <i>Showing plain text search results while tensorflow is loading:</i>
+              )}
+              {showResults &&
+                results.map(({pageid, title, score}) => (
+                  <ResultItem
+                    key={pageid}
+                    {...{
+                      pageid,
+                      title,
+                      score,
+                      model,
+                      onSelect: handleSelect,
+                      isAlreadyOpen: openQuestionTitles.includes(title),
+                      setHide,
+                    }}
+                  />
+                ))}
+            </div>
+            <button
+              className="result-item none-of-the-above"
+              onClick={() => setShowMore(true)}
+              onMouseDown={() => setHide(false)}
+              onMouseUp={() => setHide(true)}
+            >
+              Show more answers
+            </button>
+          </div>
+        </AutoHeight>
+      </div>
+      {showMore && (
+        <ShowMoreSuggestions
+          openQuestionTitles={openQuestionTitles}
+          onSelect={handleSelect}
+          onClose={() => {
+            setShowMore(false)
+            setHide(true)
+          }}
+          question={searchInputRef.current}
+          relatedQuestions={results.map(({title}) => title)}
+        />
+      )}
+    </>
   )
 }
 
@@ -159,7 +182,7 @@ const ResultItem = ({
   model: string
   onSelect: Props['onSelect']
   isAlreadyOpen: boolean
-  setHide: (b: boolean) => void
+  setHide?: (b: boolean) => void
 }) => {
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
@@ -171,10 +194,83 @@ const ResultItem = ({
       key={title}
       title={tooltip}
       onClick={() => onSelect(pageid, title)}
-      onMouseDown={() => setHide(false)}
+      onMouseDown={() => setHide && setHide(false)}
     >
       {title}
     </button>
+  )
+}
+
+const ShowMoreSuggestions = ({
+  question,
+  relatedQuestions,
+  openQuestionTitles,
+  onClose,
+  onSelect,
+}: {
+  question: string
+  relatedQuestions: string[]
+  openQuestionTitles: Props['openQuestionTitles']
+  onSelect: Props['onSelect']
+  onClose: (e: any) => void
+}) => {
+  const title = `Does any of the following questions match your question?`
+  const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
+
+  useEffect(() => {
+    const getResults = async (question: string) => {
+      try {
+        const results = await (
+          await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
+        ).json()
+        setExtraQuestions(results)
+      } catch (error) {
+        console.error(error)
+        setExtraQuestions([])
+      }
+    }
+    getResults(question)
+  }, [setExtraQuestions, question])
+
+  if (extraQuestions === empty) {
+    return (
+      <Dialog onClose={onClose}>
+        <div className="dialog-title">{title}</div>
+        <div className="loader"></div>
+      </Dialog>
+    )
+  }
+  return (
+    <Dialog onClose={onClose}>
+      <div className="dialog-title">{title}</div>
+      {extraQuestions.map(({pageid, title, score, url}) => (
+        <div className="possible-question" key={`extra-question-${pageid}`}>
+          <div className="actions">
+            <ResultItem
+              key={pageid}
+              pageid={pageid}
+              title={title}
+              score={score}
+              onSelect={onSelect}
+              isAlreadyOpen={openQuestionTitles.includes(title)}
+              model="NLP"
+            />
+            <Action pageid={pageid} actionType={ActionType.PING} />
+            <a
+              className="icon-link"
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              title="edit answer"
+            >
+              <Edit />
+              Edit
+            </a>
+          </div>
+        </div>
+      ))}
+      <AddQuestion title={question} relatedQuestions={relatedQuestions} />
+    </Dialog>
   )
 }
 

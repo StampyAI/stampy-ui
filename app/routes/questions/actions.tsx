@@ -2,10 +2,11 @@ import {useState, useEffect, MouseEvent, useCallback} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
-import {likeQuestion} from '~/server-utils/stampy'
+import {makeColumnIncrementer} from '~/server-utils/stampy'
 import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
 
 export enum ActionType {
+  PING = 'ping',
   DARKLIGHT = 'darkLight',
   EDIT = 'edit',
   FLAG = 'flag',
@@ -17,7 +18,7 @@ export enum ActionType {
 export type ActionProps = {
   Icon: React.FC
   title: string
-  handler?: (pageid: string, incBy: number) => Promise<string>
+  handler?: (pageid: string, actionTaken: boolean) => Promise<string>
 }
 type ActionsDict = {
   [k: string]: ActionProps
@@ -39,10 +40,15 @@ const actions = {
     Icon: Followup,
     title: 'Followup',
   },
+  ping: {
+    Icon: Like,
+    title: 'Ping',
+    handler: makeColumnIncrementer('Request Count'),
+  },
   helpful: {
     Icon: Like,
     title: 'Helpful',
-    handler: likeQuestion,
+    handler: makeColumnIncrementer('Helpful'),
   },
   hide: {
     Icon: Hide,
@@ -58,11 +64,11 @@ export const action = async ({request}: ActionArgs) => {
   const formData = await request.formData()
   const pageid = formData.get('pageid') as string
   const actionType = formData.get('action') as ActionType
-  const incBy = parseInt((formData.get('incBy') as string) || '1', 10)
+  const actionTaken = (formData.get('actionTaken') as string) === 'true'
 
   const handler = actions[actionType]?.handler
   if (handler) {
-    const result = await handler(pageid, incBy)
+    const result = await handler(pageid, actionTaken)
     if (result != 'ok') return json({error: result}, {status: 400})
   } else {
     console.log(`Got unhandled action: ${actionType} for page ${pageid}`)
@@ -93,13 +99,16 @@ export const Action = ({pageid, actionType}: {pageid: string; actionType: Action
   const handleAction = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
 
-    const incBy = actionTaken ? '-1' : '1'
     setActionTaken(!actionTaken)
 
     // This sort of cheats - if more than 1 request is sent per second (or some other such time
     // period), one of them will be (sort of) picked at random. This should be ok in the long run.
     // Hopefully.
-    const searchParams = new URLSearchParams({pageid, incBy, action: actionType})
+    const searchParams = new URLSearchParams({
+      pageid,
+      actionTaken: actionTaken.toString(),
+      action: actionType,
+    })
     const response = await fetch('/questions/actions', {method: 'POST', body: searchParams})
 
     if (response.ok !== true) setActionTaken(!actionTaken)
