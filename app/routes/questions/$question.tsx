@@ -122,8 +122,8 @@ export function Question({
   }
 
   let html
-  if (text == '') {
-    html = '<i>(empty)</i>'
+  if (text == '' || text === null) {
+    html = `<i>We don't have an answer for this question yet. Would you like to <a href="${answerEditLink}">write one</a>?</a>`
   } else if (text == null) {
     html = 'Loading...'
   } else {
