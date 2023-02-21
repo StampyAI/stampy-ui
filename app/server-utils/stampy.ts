@@ -194,10 +194,8 @@ const renderText = (text: string | null): string | null => {
   const wrapInDetails = ([chunk, ...rest]: string[]): string => {
     if (!rest || rest.length == 0) return chunk
     return `${chunk}
-           <details>
-             <summary>See more...</summary>
-             ${wrapInDetails(rest)}
-           </details>`
+           <a href="" class="see-more">See more...</a>
+           <div class="see-more-contents">${wrapInDetails(rest)}</div>`
   }
   contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
   return wrapInDetails(contents)

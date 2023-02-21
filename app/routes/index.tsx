@@ -106,17 +106,20 @@ export default function App() {
     .map(({title}) => title)
 
   const handleSpecialLinks = (e: MouseEvent) => {
+    const el = e.target as HTMLAnchorElement
+    if (el.tagName !== 'A' || el.closest('.question-footer')) return
+
     // The AutoHeight component doesn't notice when a HTML details is opened.
     // Manually removing the height from the style fixes this, but can potentially
     // break something else...
-    const target = e.nativeEvent.target as HTMLElement
-    if (target !== null && target.nodeName == 'SUMMARY') {
-      const container = target.closest('.react-auto-height') as HTMLElement
+    if (el.classList.contains('see-more')) {
+      el.classList.toggle('visible')
+      const container = el.closest('.react-auto-height') as HTMLElement
       container.style.removeProperty('height')
-    }
 
-    const el = e.target as HTMLAnchorElement
-    if (el.tagName !== 'A' || el.closest('.question-footer')) return
+      e.preventDefault()
+      return
+    }
 
     const href = el.href.replace(/\?.*$/, '')
     const found = onSiteGDocLinkMapRef.current[href]

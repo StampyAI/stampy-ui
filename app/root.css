@@ -545,6 +545,11 @@ a:focus-visible,
   border-radius: 2px;
 }
 
+a.see-more:not(.visible) + div.see-more-contents,
+a.see-more.visible {
+  display: none;
+}
+
 @media (max-width: 740px) {
   body {
     /* overflow to avoid horizontal scrollbar when sliding related questions,
