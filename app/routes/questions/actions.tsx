@@ -6,13 +6,13 @@ import {makeColumnIncrementer} from '~/server-utils/stampy'
 import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
 
 export enum ActionType {
-  PING = 'ping',
   DARKLIGHT = 'darkLight',
   EDIT = 'edit',
   FLAG = 'flag',
   FOLLOWUP = 'followup',
   HELPFUL = 'helpful',
   HIDE = 'hide',
+  REQUEST = 'request',
   SEARCH = 'search',
 }
 export type ActionProps = {
@@ -40,9 +40,9 @@ const actions = {
     Icon: Followup,
     title: 'Followup',
   },
-  ping: {
+  request: {
     Icon: Like,
-    title: 'Ping',
+    title: 'Request',
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {

@@ -146,7 +146,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
               onMouseDown={() => setHide(false)}
               onMouseUp={() => setHide(true)}
             >
-              Show more answers
+              I&apos;m asking something else
             </button>
           </div>
         </AutoHeight>
@@ -214,20 +214,19 @@ const ShowMoreSuggestions = ({
   onSelect: Props['onSelect']
   onClose: (e: any) => void
 }) => {
-  const title = `Does any of the following questions match your question?`
   const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
 
   useEffect(() => {
     const getResults = async (question: string) => {
+      let questions = []
       try {
-        const results = await (
+        questions = await (
           await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
         ).json()
-        setExtraQuestions(results)
       } catch (error) {
         console.error(error)
-        setExtraQuestions([])
       }
+      setExtraQuestions(questions)
     }
     getResults(question)
   }, [setExtraQuestions, question])
@@ -235,14 +234,24 @@ const ShowMoreSuggestions = ({
   if (extraQuestions === empty) {
     return (
       <Dialog onClose={onClose}>
-        <div className="dialog-title">{title}</div>
         <div className="loader"></div>
+      </Dialog>
+    )
+  } else if (extraQuestions.length === 0) {
+    return (
+      <Dialog onClose={onClose}>
+        <AddQuestion title={question} relatedQuestions={relatedQuestions} immediately={true} />
       </Dialog>
     )
   }
   return (
     <Dialog onClose={onClose}>
-      <div className="dialog-title">{title}</div>
+      <div className="dialog-title">
+        You searched for &quot;{question}&quot;.
+        <br />
+        Here are some questions we&apos;re still answering. Are any of these what you&apos;re
+        looking for?
+      </div>
       {extraQuestions.map(({pageid, title, score, url}) => (
         <div className="possible-question" key={`extra-question-${pageid}`}>
           <div className="actions">
@@ -255,7 +264,7 @@ const ShowMoreSuggestions = ({
               isAlreadyOpen={openQuestionTitles.includes(title)}
               model="NLP"
             />
-            <Action pageid={pageid} actionType={ActionType.PING} />
+            <Action pageid={pageid} actionType={ActionType.REQUEST} />
             <a
               className="icon-link"
               href={url}

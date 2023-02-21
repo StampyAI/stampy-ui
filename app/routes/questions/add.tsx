@@ -1,6 +1,6 @@
-import {useState, useEffect, FormEvent} from 'react'
+import {useState, useEffect} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
-import {Form, useSearchParams, useSubmit} from '@remix-run/react'
+import {Form, useSearchParams} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
 import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
 
@@ -58,24 +58,30 @@ export const action = async ({request}: ActionArgs) => {
 type Props = {
   title: string
   relatedQuestions: string[]
+  immediately?: boolean
 } & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref'>
 
-export const AddQuestion = ({title, relatedQuestions, ...props}: Props) => {
+export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Props) => {
+  const url = '/questions/add'
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
-  const [isSubmitted, setSubmitted] = useState(false)
+  const [isSubmitted, setSubmitted] = useState(immediately)
 
-  const submit = useSubmit()
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    submit(e.currentTarget, {replace: true})
+  const handleSubmit = async () => {
     setSubmitted(true)
   }
 
   useEffect(() => {
-    setSubmitted(false)
-  }, [title])
+    const addQuestion = async () => {
+      const body = new FormData()
+      body.append('title', title)
+      body.append('stateString', stateString)
+      await fetch(url, {method: 'POST', body})
+    }
+    if (immediately) {
+      addQuestion()
+    }
+  }, [title, stateString, immediately])
 
   if (isSubmitted) {
     return (
@@ -95,7 +101,7 @@ export const AddQuestion = ({title, relatedQuestions, ...props}: Props) => {
   return (
     <Form
       method="post"
-      action="/questions/add"
+      action={url}
       className="result-item none-of-the-above"
       title="Request a new question"
       onSubmit={handleSubmit}
