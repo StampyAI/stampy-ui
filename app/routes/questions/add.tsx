@@ -102,7 +102,7 @@ export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Pr
     <Form
       method="post"
       action={url}
-      className="result-item none-of-the-above"
+      className="result-item result-item-box none-of-the-above"
       title="Request a new question"
       onSubmit={handleSubmit}
       {...props}

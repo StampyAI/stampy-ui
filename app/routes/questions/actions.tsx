@@ -1,4 +1,4 @@
-import {useState, useEffect, MouseEvent, useCallback} from 'react'
+import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
@@ -79,7 +79,13 @@ export const action = async ({request}: ActionArgs) => {
   return redirect('/')
 }
 
-export const Action = ({pageid, actionType}: {pageid: string; actionType: ActionType}) => {
+type Props = {
+  pageid: string
+  actionType: ActionType
+  children?: ReactNode | ReactNode[]
+  [k: string]: any
+}
+export const Action = ({pageid, actionType, children, ...props}: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
   const {Icon, title} = actions[actionType]
@@ -117,12 +123,20 @@ export const Action = ({pageid, actionType}: {pageid: string; actionType: Action
   const className = 'icon-link' + (actionTaken ? ' focused' : '')
 
   return (
-    <Form replace action="/questions/actions" method="post" title={title}>
+    <Form
+      replace
+      action="/questions/actions"
+      method="post"
+      title={title}
+      onClick={handleAction}
+      {...props}
+    >
       <input type="hidden" name="action" value={actionType} />
       <input type="hidden" name="pageid" value={pageid} />
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
-      <button className={className} title={title} type="submit" onClick={handleAction}>
+      {children}
+      <button className={className} title={title} type="button">
         <Icon />
         {title}
       </button>

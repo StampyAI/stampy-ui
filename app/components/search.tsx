@@ -153,8 +153,6 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
       </div>
       {showMore && (
         <ShowMoreSuggestions
-          openQuestionTitles={openQuestionTitles}
-          onSelect={handleSelect}
           onClose={() => {
             setShowMore(false)
             setHide(true)
@@ -190,7 +188,9 @@ const ResultItem = ({
 
   return (
     <button
-      className={`transparent-button result-item ${isAlreadyOpen ? 'already-open' : ''}`}
+      className={`transparent-button result-item result-item-box ${
+        isAlreadyOpen ? 'already-open' : ''
+      }`}
       key={title}
       title={tooltip}
       onClick={() => onSelect(pageid, title)}
@@ -204,14 +204,10 @@ const ResultItem = ({
 const ShowMoreSuggestions = ({
   question,
   relatedQuestions,
-  openQuestionTitles,
   onClose,
-  onSelect,
 }: {
   question: string
   relatedQuestions: string[]
-  openQuestionTitles: Props['openQuestionTitles']
-  onSelect: Props['onSelect']
   onClose: (e: any) => void
 }) => {
   const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
@@ -252,34 +248,27 @@ const ShowMoreSuggestions = ({
         Here are some questions we&apos;re still answering. Are any of these what you&apos;re
         looking for?
       </div>
-      {extraQuestions.map(({pageid, title, score, url}) => (
-        <div className="possible-question" key={`extra-question-${pageid}`}>
-          <div className="actions">
-            <ResultItem
-              key={pageid}
-              pageid={pageid}
-              title={title}
-              score={score}
-              onSelect={onSelect}
-              isAlreadyOpen={openQuestionTitles.includes(title)}
-              model="NLP"
-            />
-            <Action pageid={pageid} actionType={ActionType.REQUEST} />
-            <a
-              className="icon-link"
-              href={url}
-              target="_blank"
-              rel="noreferrer"
-              title="edit answer"
-            >
-              <Edit />
-              Edit
-            </a>
-          </div>
-        </div>
+      {extraQuestions.map((question) => (
+        <RequestQuestion key={question.pageid} {...question} />
       ))}
       <AddQuestion title={question} relatedQuestions={relatedQuestions} />
     </Dialog>
+  )
+}
+
+const RequestQuestion = ({pageid, title, url}: SearchResult) => {
+  return (
+    <div className="possible-question" key={`extra-question-${pageid}`}>
+      <Action className="result-item" pageid={pageid} actionType={ActionType.REQUEST}>
+        <button className="transparent-button title" key={title}>
+          {title}
+        </button>
+      </Action>
+      <a className="icon-link" href={url} target="_blank" rel="noreferrer" title="edit answer">
+        <Edit />
+        Edit
+      </a>
+    </div>
   )
 }
 

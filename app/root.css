@@ -510,14 +510,17 @@ footer > *:not(:last-child) {
   display: none;
 }
 
-.result-item {
-  line-height: 1;
-  cursor: pointer;
-  color: currentColor;
+.result-item-box {
   padding: 12px 16px;
-  text-decoration: none;
+  line-height: 1;
   display: block;
   width: 100%;
+}
+
+.result-item {
+  cursor: pointer;
+  color: currentColor;
+  text-decoration: none;
 }
 
 .result-item:hover {
@@ -535,8 +538,25 @@ footer > *:not(:last-child) {
   text-decoration: none;
   color: inherit;
   font-style: italic;
+  padding: 12px 16px;
+  line-height: 1;
+  display: block;
 }
 
+.possible-question {
+  display: flex;
+  align-items: center;
+  margin: 16px;
+  gap: 16px;
+}
+.possible-question .result-item {
+  display: flex;
+  flex: auto;
+  padding: 12px 0 12px 16px;
+}
+.possible-question .title {
+  flex: auto;
+}
 .possible-question svg {
   width: 16px;
   height: 16px;
