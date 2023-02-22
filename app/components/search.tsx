@@ -141,7 +141,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                 ))}
             </div>
             <button
-              className="result-item none-of-the-above"
+              className="result-item result-item-box none-of-the-above"
               onClick={() => setShowMore(true)}
               onMouseDown={() => setHide(false)}
               onMouseUp={() => setHide(true)}

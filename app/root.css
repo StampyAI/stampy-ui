@@ -561,6 +561,18 @@ footer > *:not(:last-child) {
   width: 16px;
   height: 16px;
 }
+.possible-question .padding {
+  width: 23px;
+}
+.possible-question form.none-of-the-above {
+  padding-left: 0;
+  margin-bottom: 2.8em;
+}
+
+.no-stretch {
+  width: 0;
+  min-width: 100%;
+}
 
 input:focus-visible,
 button:focus-visible,
