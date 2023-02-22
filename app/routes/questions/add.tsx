@@ -47,6 +47,7 @@ export const action = async ({request}: ActionArgs) => {
   // Make sure the question is formatted as a question
   if (!title.endsWith('?')) title = title + '?'
   title = title[0].toUpperCase() + title.substring(1)
+  title = title.trim()
 
   const result = await addQuestion(title, relatedQuestions)
   console.log('Added question "' + title + '", response:', result)
@@ -57,9 +58,9 @@ export const action = async ({request}: ActionArgs) => {
 type Props = {
   title: string
   relatedQuestions: string[]
-}
+} & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref'>
 
-export const AddQuestion = ({title, relatedQuestions}: Props) => {
+export const AddQuestion = ({title, relatedQuestions, ...props}: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
   const [isSubmitted, setSubmitted] = useState(false)
@@ -98,6 +99,7 @@ export const AddQuestion = ({title, relatedQuestions}: Props) => {
       className="result-item none-of-the-above"
       title="Request a new question"
       onSubmit={handleSubmit}
+      {...props}
     >
       <input type="hidden" name="title" value={title} />
       <input type="hidden" name="stateString" value={stateString} />

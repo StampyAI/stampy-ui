@@ -30,21 +30,18 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   }
 }
 
-export default function App() {
-  const {minLogo} = useLoaderData<ReturnType<typeof loader>>()
-
+function Head({minLogo}: {minLogo?: boolean}) {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        {/* https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024 */}
-        <meta name="color-scheme" content="light dark" />
-        <Meta />
-        <Links />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      {/* https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024 */}
+      <meta name="color-scheme" content="light dark" />
+      <Meta />
+      <Links />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
             (function(h,o,t,j,a,r){
                 h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                 h._hjSettings={hjid:3110255,hjsv:6};
@@ -54,14 +51,38 @@ export default function App() {
                 a.appendChild(r);
             })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
             `,
-          }}
-        />
-        {minLogo ? (
-          <link id="favicon" rel="icon" href="/favicon-min.ico" />
-        ) : (
-          <link id="favicon" rel="icon" href="/favicon.ico" />
-        )}
-      </head>
+        }}
+      />
+      {minLogo ? (
+        <link id="favicon" rel="icon" href="/favicon-min.ico" />
+      ) : (
+        <link id="favicon" rel="icon" href="/favicon.ico" />
+      )}
+    </head>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <html>
+      <Head />
+      <body>
+        <h2>Oops! Something went wrong!</h2>
+        <div>
+          Please report this error to <a href="https://discord.gg/5ZFqAKBX">the Stampy Discord</a>
+        </div>
+        <Scripts />
+      </body>
+    </html>
+  )
+}
+
+export default function App() {
+  const {minLogo} = useLoaderData<ReturnType<typeof loader>>()
+
+  return (
+    <html lang="en">
+      <Head minLogo={minLogo} />
       <body>
         <Outlet context={minLogo} />
         {/* <ScrollRestoration /> wasn't doing anything useful */}

@@ -1,9 +1,11 @@
+import {useEffect, MouseEvent, useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
-import {useLoaderData, Link} from '@remix-run/react'
-import {loadInitialQuestions, loadAllTags} from '~/server-utils/stampy'
+import {loadInitialQuestions} from '~/server-utils/stampy'
+import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
+import useDraggable from '~/hooks/useDraggable'
 import Search from '~/components/search'
 import {Question} from '~/routes/questions/$question'
 import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
@@ -12,25 +14,67 @@ import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code, Discord} from '~/components/icons-generated'
 import CopyLink from '~/components/copyLink'
 import InfiniteScroll from '~/components/infiniteScroll'
-import {useEffect, MouseEvent, useState} from 'react'
+import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  let initialQuestionsData
   try {
-    await loadAllTags(request)
-    initialQuestionsData = await loadInitialQuestions(request)
+    const initialQuestionsData = await loadInitialQuestions(request)
+    return {initialQuestionsData}
   } catch (e) {
     console.error(e)
-  }
-  return {
-    initialQuestionsData,
   }
 }
 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 const year = new Date().getFullYear()
+
+const Header = ({reset}: {reset: (e: MouseEvent) => void}) => {
+  const minLogo = useOutletContext<boolean>()
+
+  return (
+    <header className={minLogo ? 'min-logo' : 'fun-logo'}>
+      {minLogo ? (
+        <div className="logo-intro-group">
+          <Link to="/" onClick={(e) => reset(e)}>
+            <img className="logo" alt="logo" src={logoMinSvg} />
+          </Link>
+          <div className="intro">
+            Answering questions about
+            <h1>AI Safety</h1>
+          </div>
+        </div>
+      ) : (
+        <div className="logo-intro-group">
+          <Link to="/" onClick={(e) => reset(e)}>
+            <img className="logo" alt="logo" src={logoFunSvg} />
+          </Link>
+          <div className="intro">
+            <h1>
+              Welcome to <span className="highlight">stampy.ai</span>!
+            </h1>
+            I can answer questions about artificial general intelligence safety
+          </div>
+        </div>
+      )}
+      <div className="icon-link-group">
+        <CopyLink>
+          <Share />
+          Share link
+        </CopyLink>
+        <a href="https://get_involved.aisafety.info" className="icon-link">
+          <Users />
+          Get Involved
+        </a>
+        <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
+          <Code />
+          Help Code
+        </a>
+      </div>
+    </header>
+  )
+}
 
 export default function App() {
   const minLogo = useOutletContext<boolean>()
@@ -52,6 +96,7 @@ export default function App() {
     onLazyLoadQuestion,
     selectQuestion,
     addQuestions,
+    moveQuestion,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -61,8 +106,17 @@ export default function App() {
     .map(({title}) => title)
 
   const handleSpecialLinks = (e: MouseEvent) => {
+    // The AutoHeight component doesn't notice when a HTML details is opened.
+    // Manually removing the height from the style fixes this, but can potentially
+    // break something else...
+    const target = e.nativeEvent.target as HTMLElement
+    if (target !== null && target.nodeName == 'SUMMARY') {
+      const container = target.closest('.react-auto-height') as HTMLElement
+      container.style.removeProperty('height')
+    }
+
     const el = e.target as HTMLAnchorElement
-    if (el.tagName !== 'A') return
+    if (el.tagName !== 'A' || el.closest('.question-footer')) return
 
     const href = el.href.replace(/\?.*$/, '')
     const found = onSiteGDocLinkMapRef.current[href]
@@ -72,7 +126,7 @@ export default function App() {
     }
   }
 
-  const [nextPageLink, setNextPageLink] = useState(null)
+  const [nextPageLink, setNextPageLink] = useState<string | null>(null)
   const fetchMoreQuestions = async () => {
     const result = await fetchOnSiteAnswers(nextPageLink)
     setNextPageLink(result.nextPageLink)
@@ -82,66 +136,49 @@ export default function App() {
     return result.questions
   }
 
+  const {handleDragOver, handleDragStart, handleDragEnd, DragPlaceholder} =
+    useDraggable(moveQuestion)
+
   return (
     <>
-      <header className={minLogo ? 'min-logo' : 'fun-logo'}>
-        {minLogo ? (
-          <div className="logo-intro-group">
-            <Link to="/" onClick={(e) => reset(e)}>
-              <img className="logo" alt="logo" src={logoMinSvg} />
-            </Link>
-            <div className="intro">
-              Answering questions about
-              <h1>AI Safety</h1>
-            </div>
-          </div>
-        ) : (
-          <div className="logo-intro-group">
-            <Link to="/" onClick={(e) => reset(e)}>
-              <img className="logo" alt="logo" src={logoFunSvg} />
-            </Link>
-            <div className="intro">
-              <h1>
-                Welcome to <span className="highlight">stampy.ai</span>!
-              </h1>
-              I can answer questions about artificial general intelligence safety
-            </div>
-          </div>
-        )}
-        <div className="icon-link-group">
-          <CopyLink>
-            <Share />
-            Share link
-          </CopyLink>
-          <a href="https://get_involved.aisafety.info" className="icon-link">
-            <Users />
-            Get Involved
-          </a>
-          <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
-            <Code />
-            Help Code
-          </a>
-        </div>
-      </header>
+      <Header reset={reset} />
       <main onClick={handleSpecialLinks}>
         <Search
           onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestion}
         />
-        <InfiniteScroll className="articles-container" fetchMore={fetchMoreQuestions}>
+
+        {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
+        <div draggable onDragOver={handleDragOver({pageid: TOP})}>
+          &nbsp;
+        </div>
+        <DragPlaceholder pageid={TOP} />
+
+        <InfiniteScroll
+          className="articles-container"
+          fetchMore={fetchMoreQuestions}
+          onDragOver={() => handleDragOver({pageid: null})}
+        >
           {questions.map((question) => (
-            <Question
-              key={question.pageid}
-              questionProps={question}
-              onLazyLoadQuestion={onLazyLoadQuestion}
-              onToggle={toggleQuestion}
-            />
+            <ErrorBoundary title={question.title} key={question.pageid}>
+              <Question
+                questionProps={question}
+                onLazyLoadQuestion={onLazyLoadQuestion}
+                onToggle={toggleQuestion}
+                selectQuestion={selectQuestion}
+                onDragStart={handleDragStart(question)}
+                onDragEnd={handleDragEnd(question)}
+                onDragOver={handleDragOver(question)}
+                draggable
+              />
+              <DragPlaceholder pageid={question.pageid} />
+            </ErrorBoundary>
           ))}
         </InfiniteScroll>
       </main>
       <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-          <Discord />
+        <Discord />
       </a>
       <footer>
         <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">

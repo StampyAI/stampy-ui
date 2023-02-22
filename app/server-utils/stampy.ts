@@ -18,6 +18,7 @@ export enum QuestionStatus {
   IN_PROGRESS = 'In progress',
   IN_REVIEW = 'In review',
   LIVE = 'Live on site',
+  UNKNOWN = 'Unknown',
 }
 export type Tag = {
   rowId: string
@@ -35,9 +36,10 @@ export type Question = {
   answerEditLink: string | null
   relatedQuestions: RelatedQuestions
   questionState?: QuestionState
-  tags: Tag[]
-  status: QuestionStatus
+  tags: string[]
+  status?: QuestionStatus
 }
+export type PageId = Question['pageid']
 export type NewQuestion = {
   title: string
   relatedQuestions: RelatedQuestions
@@ -93,16 +95,33 @@ const CODA_DOC_ID = 'fau7sl2hmG'
 // Use table ide, rather than names, in case of renames
 const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File' // Answers
 const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4' // Initial questions
-const ON_SITE_TABLE = 'table-1Q8_MjxUes' // On-site answers
+const ON_SITE_TABLE = 'table-aOTSHIz_mN' // On-site answers
 const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
+const WRITES_TABLE = 'table-eEhx2YPsBE'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
-let allTags = {} as Record<string, Tag>
 
-export const fetchJson = async (url: string, params?: Record<string, any>) => {
+const sendToCoda = async (
+  url: string,
+  payload: any,
+  method = 'POST',
+  token = `${CODA_WRITES_TOKEN}`
+) => {
+  const params: RequestInit = {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  }
+  if (method != 'GET') params.body = JSON.stringify(payload)
+  return await fetchJson(url, params)
+}
+
+export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
     json = await (await fetch(url, params)).json()
@@ -114,7 +133,7 @@ export const fetchJson = async (url: string, params?: Record<string, any>) => {
   return json
 }
 
-export const fetchJsonList = async (url: string, params?: Record<string, any>) => {
+export const fetchJsonList = async (url: string, params?: RequestInit) => {
   const json = await fetchJson(url, params)
   if (!json.items || json.items.length === 0) {
     throw Error(`Empty response for ${url}`)
@@ -164,6 +183,26 @@ const getCodaRows = async (
 ): Promise<CodaRow[]> => paginateCoda(makeCodaRequest({table, queryColumn, queryValue}))
 
 const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
+/*
+ * Transform the Coda markdown into HTML
+ */
+const renderText = (text: string | null): string | null => {
+  if (text === null) return null
+
+  let contents = extractText(text)
+
+  // Recursively wrap any [See more...] segments in HTML Details
+  const wrapInDetails = ([chunk, ...rest]: string[]): string => {
+    if (!rest || rest.length == 0) return chunk
+    return `${chunk}
+           <details>
+             <summary>See more...</summary>
+             ${wrapInDetails(rest)}
+           </details>`
+  }
+  contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
+  return wrapInDetails(contents)
+}
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
 const head = (item: any) => {
@@ -172,21 +211,25 @@ const head = (item: any) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
-  title,
-  pageid: extractText(v['UI ID']),
-  text: v['Rich Text'] ? urlToIframe(md.render(extractText(v['Rich Text']))) : null,
-  answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
-  tags: ((v['Tags'] || []) as Entity[]).map((e) => allTags[e.name]),
-  relatedQuestions:
-    v['Related Answers'] && v['Related IDs']
-      ? v['Related Answers'].map(({name}, i) => ({
-          title: name,
-          pageid: extractText(v['Related IDs'][i]),
-        }))
-      : [],
-  status: v['Status']?.name as QuestionStatus,
-})
+const convertToQuestion = (title: string, v: CodaRow['values']): Question => {
+  const renderedText = renderText(v['Rich Text'])
+  const text = renderedText ? urlToIframe(renderedText) : renderedText
+  return ({
+    title,
+    pageid: extractText(v['UI ID']),
+    text,
+    answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
+    tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
+    relatedQuestions:
+      v['Related Answers'] && v['Related IDs']
+        ? v['Related Answers'].map(({name}, i) => ({
+            title: name,
+            pageid: extractText(v['Related IDs'][i]),
+          }))
+        : [],
+    status: v['Status']?.name as QuestionStatus,
+  })
+}
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
   const rows = await getCodaRows(
@@ -207,8 +250,8 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = await getCodaRows(ON_SITE_TABLE)
-  const data = rows.map(({name, values}) => convertToQuestion(name, values))
-  return data
+  const questions = rows.map(({name, values}) => convertToQuestion(name, values))
+  return {questions, nextPageLink: null}
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
@@ -237,23 +280,23 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
     .filter((q) => q.pageid),
   mainQuestion: extractMainQuestion(r.values['Main question']),
 })
-export const loadAllTags = withCache('allTags', async () => {
-  const rows = await getCodaRows(TAGS_TABLE)
-  const questions = await loadAllQuestions({url: ''})
+
+export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> => {
+  const rows = await getCodaRows(TAGS_TABLE, 'Tag name', tagName)
+
+  const questions = await loadAllQuestions()
   const nameToId = Object.fromEntries(
     questions.data.filter((q) => q.status == QuestionStatus.LIVE).map((q) => [q.title, q.pageid])
   )
-  allTags = Object.fromEntries(rows.map((r) => [r.name, toTag(r, nameToId)])) as Record<string, Tag>
-  return allTags
+  return toTag(rows[0], nameToId)
 })
 
 export const loadMoreQuestions = withCache(
   'loadMoreQuestions',
   async (
-    nextPageLink: string | null,
-    perPage = 10
+    nextPageLink: string | null
   ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
-    const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: perPage})
+    const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
     const result = await fetchRows(url)
     const questions = result.items.map(({name, values}) => convertToQuestion(name, values))
     return {nextPageLink: result.nextPageLink, questions}
@@ -271,18 +314,27 @@ export const insertRows = async (table: string, rows: NewQuestion[]) => {
       ],
     })),
   }
-  const params = {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${CODA_INCOMING_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  }
-
-  return await fetchJson(url, params)
+  return await sendToCoda(url, payload, 'POST', `${CODA_INCOMING_TOKEN}`)
 }
 
 export const addQuestion = async (title: string, relatedQuestions: RelatedQuestions) => {
   return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
+}
+
+export const likeQuestion = async (pageid: PageId, incBy: number) => {
+  const table = WRITES_TABLE
+  const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
+  const current = await sendToCoda(currentRowUrl, '', 'GET')
+
+  const row = current?.items && current?.items[0]
+  if (!row) return 'Nothing found'
+
+  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows/${enc(row.id)}`
+  const payload = {
+    row: {
+      cells: [{column: 'Helpful', value: (row.values.Helpful || 0) + incBy}],
+    },
+  }
+  const result = await sendToCoda(url, payload, 'PUT')
+  return result.id ? 'ok' : result
 }

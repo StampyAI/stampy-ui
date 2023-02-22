@@ -5,9 +5,12 @@ import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
-import Tags from '~/components/tags'
+import {Tags} from '~/routes/tags/$tag'
 import CopyLink from '~/components/copyLink'
+import {Action, ActionType} from '~/routes/questions/actions'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
+
+const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
   const {question} = params
@@ -15,13 +18,33 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
     throw Error('missing question title')
   }
 
-  return await loadQuestionDetail(request, question)
+  try {
+    return await loadQuestionDetail(request, question)
+  } catch (error: any) {
+    const data: Question = {
+      pageid: question,
+      title: UNKNOWN_QUESTION_TITLE,
+      text: `No question found with ID ${question}. Please go to the Discord in the lower right
+(or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
+      answerEditLink: null,
+      relatedQuestions: [],
+      tags: [],
+    }
+    return {
+      error: error.toString(),
+      timestamp: new Date().toISOString(),
+      data,
+    }
+  }
 }
 
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
-    const {data, timestamp}: Awaited<ReturnType<typeof loader>> = await response.json()
+    const json: Awaited<ReturnType<typeof loader>> = await response.json()
+    if ('error' in json) console.error(json.error)
+    const {data, timestamp} = json
+
     reloadInBackgroundIfNeeded(url, timestamp)
 
     return data
@@ -33,12 +56,13 @@ export function Question({
   onLazyLoadQuestion,
   onToggle,
   selectQuestion,
+  ...dragProps
 }: {
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
   selectQuestion: (pageid: string, title: string) => void
-}) {
+} & JSX.IntrinsicElements['div']) {
   const {pageid, title, text, answerEditLink, questionState, tags} = questionProps
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
@@ -67,6 +91,7 @@ export function Question({
   const [showLongDescription, setShowLongDescription] = useState(false)
   const answerRef = useRef<HTMLDivElement>(null)
   const isExpandedAfterLoading = isExpanded && !refreshOnToggleAfterLoading.current
+
   useEffect(() => {
     if (isExpandedAfterLoading) {
       const el = answerRef.current
@@ -97,8 +122,8 @@ export function Question({
   }
 
   let html
-  if (text == '') {
-    html = '<i>(empty)</i>'
+  if (text == '' || text === null) {
+    html = `<i>We don't have an answer for this question yet. Would you like to <a href="${answerEditLink}">write one</a>?</a>`
   } else if (text == null) {
     html = 'Loading...'
   } else {
@@ -107,7 +132,7 @@ export function Question({
 
   return (
     <article className={cls}>
-      <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'}>
+      <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'} {...dragProps}>
         <button className="transparent-button">
           {title}
           <CopyLink
@@ -121,7 +146,7 @@ export function Question({
         </button>
       </h2>
       <AutoHeight>
-        <div className={`answer ${showLongDescription ? 'long' : 'short'}`}>
+        <div className={`answer ${showLongDescription ? 'long' : 'short'}`} draggable="false">
           {isExpanded && (
             <>
               <div
@@ -130,24 +155,28 @@ export function Question({
                 }}
                 ref={answerRef}
               />
-              <div className="question-footer">
-                <Tags tags={tags} selectQuestion={selectQuestion} />
-                <div className="actions">
-                  {answerEditLink && (
-                    // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
-                    <a
-                      className="icon-link"
-                      href={answerEditLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      title="edit answer"
-                    >
-                      <Edit />
-                      Edit
-                    </a>
-                  )}
+              {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
+                /* Any changes to this class should also be reflected in App.handleSpecialLinks */
+                <div className="question-footer">
+                  <Tags tags={tags} selectQuestion={selectQuestion} />
+                  <div className="actions">
+                    <Action pageid={pageid} actionType={ActionType.HELPFUL} />
+                    {answerEditLink && (
+                      // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
+                      <a
+                        className="icon-link"
+                        href={answerEditLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="edit answer"
+                      >
+                        <Edit />
+                        Edit
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>
