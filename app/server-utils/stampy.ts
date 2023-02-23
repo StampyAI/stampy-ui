@@ -201,7 +201,7 @@ const renderText = (text: string | null): string | null => {
            </details>`
   }
   contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
-  return wrapInDetails(contents)
+  return urlToIframe(wrapInDetails(contents))
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
@@ -211,25 +211,21 @@ const head = (item: any) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = (title: string, v: CodaRow['values']): Question => {
-  const renderedText = renderText(v['Rich Text'])
-  const text = renderedText ? urlToIframe(renderedText) : renderedText
-  return ({
-    title,
-    pageid: extractText(v['UI ID']),
-    text,
-    answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
-    tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
-    relatedQuestions:
-      v['Related Answers'] && v['Related IDs']
-        ? v['Related Answers'].map(({name}, i) => ({
-            title: name,
-            pageid: extractText(v['Related IDs'][i]),
-          }))
-        : [],
-    status: v['Status']?.name as QuestionStatus,
-  })
-}
+const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
+  title,
+  pageid: extractText(v['UI ID']),
+  text: renderText(v['Rich Text']),
+  answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
+  tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
+  relatedQuestions:
+    v['Related Answers'] && v['Related IDs']
+      ? v['Related Answers'].map(({name}, i) => ({
+          title: name,
+          pageid: extractText(v['Related IDs'][i]),
+        }))
+      : [],
+  status: v['Status']?.name as QuestionStatus,
+})
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
   const rows = await getCodaRows(
