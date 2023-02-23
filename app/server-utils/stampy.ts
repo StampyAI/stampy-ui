@@ -1,7 +1,5 @@
 import {withCache} from '~/server-utils/kv-cache'
-import {urlToIframe} from '~/server-utils/url-to-iframe'
-import MarkdownIt from 'markdown-it'
-import MarkdownItFootnote from 'markdown-it-footnote'
+import { extractText, MdRenderer } from '~/server-utils/md-to-html/md-renderer';
 
 export enum QuestionState {
   OPEN = '_',
@@ -182,37 +180,12 @@ const getCodaRows = async (
   queryValue?: string
 ): Promise<CodaRow[]> => paginateCoda(makeCodaRequest({table, queryColumn, queryValue}))
 
-const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
-/*
- * Transform the Coda markdown into HTML
- */
-const renderText = (text: string | null): string | null => {
-  if (text === null) return null
 
-  let contents = extractText(text)
-
-  // Recursively wrap any [See more...] segments in HTML Details
-  const wrapInDetails = ([chunk, ...rest]: string[]): string => {
-    if (!rest || rest.length == 0) return chunk
-    return `${chunk}
-           <a href="" class="see-more">See more...</a>
-           <div class="see-more-contents">${wrapInDetails(rest)}</div>`
-  }
-  contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
-  return urlToIframe(wrapInDetails(contents))
-}
-
-// Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
-const head = (item: any) => {
-  if (Array.isArray(item)) return item[0]
-  return item
-}
-const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
   title,
   pageid: extractText(v['UI ID']),
-  text: renderText(v['Rich Text']),
+  text: MdRenderer.renderText(v['Rich Text']),
   answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
   tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
   relatedQuestions:
