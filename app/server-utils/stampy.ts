@@ -1,4 +1,5 @@
 import {withCache} from '~/server-utils/kv-cache'
+import {urlToIframe} from '~/server-utils/url-to-iframe'
 import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 
@@ -198,7 +199,7 @@ const renderText = (text: string | null): string | null => {
            <div class="see-more-contents">${wrapInDetails(rest)}</div>`
   }
   contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
-  return wrapInDetails(contents)
+  return urlToIframe(wrapInDetails(contents))
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
