@@ -1,6 +1,6 @@
-import {useState, useEffect, FormEvent} from 'react'
+import {useState, useEffect} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
-import {Form, useSearchParams, useSubmit} from '@remix-run/react'
+import {Form, useSearchParams} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
 import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
 
@@ -58,57 +58,63 @@ export const action = async ({request}: ActionArgs) => {
 type Props = {
   title: string
   relatedQuestions: string[]
+  immediately?: boolean
 } & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref'>
 
-export const AddQuestion = ({title, relatedQuestions, ...props}: Props) => {
+export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Props) => {
+  const url = '/questions/add'
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
-  const [isSubmitted, setSubmitted] = useState(false)
+  const [isSubmitted, setSubmitted] = useState(immediately)
 
-  const submit = useSubmit()
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    submit(e.currentTarget, {replace: true})
+  const handleSubmit = async () => {
     setSubmitted(true)
   }
 
   useEffect(() => {
-    setSubmitted(false)
-  }, [title])
+    const addQuestion = async () => {
+      const body = new FormData()
+      body.append('title', title)
+      body.append('stateString', stateString)
+      await fetch(url, {method: 'POST', body})
+    }
+    if (immediately) {
+      addQuestion()
+    }
+  }, [title, stateString, immediately])
 
   if (isSubmitted) {
     return (
-      <p className="result-item none-of-the-above">
-        Thanks for asking a new question! {title} was added to our suggestion box. It might take a
-        while for it to be answered by our writers, but check back in a few months.
-        <br />
-        <br />
-        The list of current suggestions can be found at{' '}
+      <p className="none-of-the-above no-stretch">
+        Thank you! {title} was added to our suggestion box. Our editors will work on answering these
+        in the upcoming weeks. Feel free to browse through our current list of{' '}
         <a href="https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66">
-          https://coda.io/@alignmentdev/ai-safety-info/suggested-questions-66
+          suggested questions
         </a>
+        .
       </p>
     )
   }
 
   return (
-    <Form
-      method="post"
-      action="/questions/add"
-      className="result-item none-of-the-above"
-      title="Request a new question"
-      onSubmit={handleSubmit}
-      {...props}
-    >
-      <input type="hidden" name="title" value={title} />
-      <input type="hidden" name="stateString" value={stateString} />
-      {relatedQuestions.map((title) => (
-        <input type="hidden" name="relatedQuestion" key={title} value={title} />
-      ))}
-      <button type="submit" className="transparent-button result-item">
-        ＋ None of these: Request an answer to my exact question above
-      </button>
-    </Form>
+    <div className="possible-question">
+      <Form
+        method="post"
+        action={url}
+        className="result-item result-item-box none-of-the-above"
+        onSubmit={handleSubmit}
+        {...props}
+      >
+        <input type="hidden" name="title" value={title} />
+        <input type="hidden" name="stateString" value={stateString} />
+        {relatedQuestions.map((title) => (
+          <input type="hidden" name="relatedQuestion" key={title} value={title} />
+        ))}
+        <button type="submit" className="transparent-button result-item">
+          ＋ None of these: Request an answer to my exact question above
+        </button>
+      </Form>
+      <div className="padding"></div>
+    </div>
   )
 }
