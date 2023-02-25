@@ -1,5 +1,5 @@
 /**
- * Replaces all of the URLs in text with iframes of the URLs
+ * Replaces all whitelisted URLs in the text with iframes of the URLs
  * @param text text in which URLs should be replaced
  */
 export const urlToIframe = (text: string): string => {
@@ -7,23 +7,28 @@ export const urlToIframe = (text: string): string => {
     'aisafety.world': {sandboxValue: 'allow-scripts allow-same-origin'},
   }
 
-  // Regex is from: https://stackoverflow.com/a/26764609
-  const anchorTagRegex = new RegExp(/<a[\s]+([^>]+)>((?:.(?!<\/a>))*.)<\/a>/gi)
-  const matches = text.matchAll(anchorTagRegex)
+  // Regex to extract known links:
+  // \[               <-- start of markdown link, i.e. [name](url)
+  //   (              <-- capture the url
+  //     https?:\/\/  <-- check for both http and https
+  //     [\.\w]+?     <-- any string of alphanumerical characters and full stops
+  //     \/?[^\]]*    <-- optional query params
+  //   )
+  // \]
+  // \(
+  //     \1           <-- lookback to match whatever the first group caught
+  // \)
+  const linkRegex = new RegExp(/\[(https?:\/\/[.\w]+?\/?[^]]*?)\]\(\1\)/gi)
+
   let updatedText = text
-  for (const match of matches) {
-    // Example fulltag: '<a href="https://aisafety.world/">https://aisafety.world/</a>'
-    const fullTag = match[0]
-    // Example hrefUrl: 'https://aisafety.world/'
-    const hrefUrl = match[1].replace('href=', '').replace(/"/g, '')
-    const host = new URL(hrefUrl).host
-    // Example tagContent: 'https://aisafety.world/'
-    const tagContent = match[2]
-    if (whitelistedHosts[host] && hrefUrl === tagContent) {
-      const hostConfig = whitelistedHosts[host]
+  const matches = text.matchAll(linkRegex)
+  for (const [link, url] of matches) {
+    const host = new URL(url).host
+    const hostConfig = whitelistedHosts[host]
+    if (hostConfig) {
       updatedText = text.replace(
-        fullTag,
-        `<iframe src="${hrefUrl}" sandbox="${hostConfig.sandboxValue}"></iframe>`
+        link,
+        `<iframe src="${url}" sandbox="${hostConfig.sandboxValue}"></iframe>`
       )
     }
   }

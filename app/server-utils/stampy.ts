@@ -191,6 +191,9 @@ const renderText = (text: string | null): string | null => {
 
   let contents = extractText(text)
 
+  // transform known iframes links to iframes
+  contents = urlToIframe(contents)
+
   // Recursively wrap any [See more...] segments in HTML Details
   const wrapInDetails = ([chunk, ...rest]: string[]): string => {
     if (!rest || rest.length == 0) return chunk
@@ -199,7 +202,7 @@ const renderText = (text: string | null): string | null => {
            <div class="see-more-contents">${wrapInDetails(rest)}</div>`
   }
   contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
-  return urlToIframe(wrapInDetails(contents))
+  return wrapInDetails(contents)
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
