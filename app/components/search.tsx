@@ -37,6 +37,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
   const [showMore, setShowMore] = useState(false)
+  const [loading, setLoading] = useState(false)
   const searchInputRef = useRef('')
   const tfWorkerRef = useRef<Worker>()
   const tfFinishedLoadingRef = useRef(false)
@@ -52,6 +53,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
       if (data.searchResults) {
         setSearchResults(data.searchResults)
       }
+      setLoading(false)
     }
     const initWorker = () => {
       if (self.Worker && !tfWorkerRef.current) {
@@ -67,6 +69,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const searchFn = (value: string) => {
     if (value === searchInputRef.current) return
 
+    setLoading(true)
     searchInputRef.current = value
     if (!tfFinishedLoadingRef.current) {
       console.debug('plaintext search:', value)
@@ -118,6 +121,10 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           />
           <MagnifyingGlass />
         </label>
+        <div className={`search-loader ${loading ? 'loader' : ''}`}> </div>
+        {loading && results.length == 0 && (
+          <div className="result-item-box no-questions">Searching for questions...</div>
+        )}
         <AutoHeight>
           <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
             <div>
