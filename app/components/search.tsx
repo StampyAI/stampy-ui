@@ -79,8 +79,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     }
   }
 
-  // const handleChange = debounce(searchFn, 300)
-  const handleChange = searchFn
+  const handleChange = debounce(searchFn, 500)
 
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
