@@ -18,10 +18,9 @@ export const urlToIframe = (text: string): string => {
   // \(
   //     \1           <-- lookback to match whatever the first group caught
   // \)
-  const linkRegex = new RegExp(/\[(https?:\/\/[.\w]+?\/?[^]]*?)\]\(\1\)/gi)
+  const matches = text.matchAll(/\[(https?:\/\/[.\w]+?\/?[^]]*?)\]\(\1\)/gi)
 
   let updatedText = text
-  const matches = text.matchAll(linkRegex)
   for (const [link, url] of matches) {
     const host = new URL(url).host
     const hostConfig = whitelistedHosts[host]
