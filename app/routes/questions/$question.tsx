@@ -1,5 +1,5 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {loadQuestionDetail} from '~/server-utils/stampy'
+import {loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question} from '~/server-utils/stampy'
@@ -63,7 +63,16 @@ export function Question({
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
   selectQuestion: (pageid: string, title: string) => void
 } & JSX.IntrinsicElements['div']) {
-  const {pageid, title, text, answerEditLink, questionState, tags} = questionProps
+  const {
+    pageid,
+    title: codaTitle,
+    status: codaStatus,
+    text,
+    answerEditLink,
+    questionState,
+    tags,
+  } = questionProps
+  const title = codaStatus && codaStatus !== QuestionStatus.LIVE ? `WIP - ${codaTitle}` : codaTitle
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {
