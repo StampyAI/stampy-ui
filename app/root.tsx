@@ -11,7 +11,7 @@ import {loadQuestionDetail} from '~/server-utils/stampy'
  *
  * In practice, this means stripping out any HTML tags and limiting its length
  */
-const metafyText = (text: string | null, defaultText: string) => {
+const makeSocialPreviewText = (text: string | null, defaultText: string, maxLen = 350) => {
   if (!text || text.length == 0) return defaultText
 
   let cleaned = text
@@ -20,9 +20,7 @@ const metafyText = (text: string | null, defaultText: string) => {
   const removals = [/<\/?p.*?>/gi, /<\/?a.*?>/gi, /<\/?iframe.*?>/gi]
   cleaned = removals.reduce((str, regex) => str.replace(regex, ''), cleaned)
 
-  // This first random website I found claims that the description limit is 155,
-  // so keep it to that: https://www.contentkingapp.com/academy/meta-description/
-  if (cleaned.length > 155) cleaned = cleaned.slice(0, 152) + '...'
+  if (cleaned.length > maxLen) cleaned = cleaned.slice(0, maxLen - 3) + '...'
   return cleaned
 }
 
@@ -41,19 +39,29 @@ const fetchQuestion = async (request: Request) => {
 
 const TITLE = 'Stampy'
 const DESCRIPTION = 'AI Safety FAQ'
-const ogImage = 'https://github.com/StampyAI/StampyAIAssets/blob/main/banner/stampy-ui-preview.png'
 const twitterCreator = '@stampyai'
 export const meta: MetaFunction = ({data}) => {
-  const title = metafyText(data?.question?.title, TITLE)
-  const description = metafyText(data?.question?.text, DESCRIPTION)
+  const title = makeSocialPreviewText(data?.question?.title, TITLE, 150)
+  const description = makeSocialPreviewText(data?.question?.text, DESCRIPTION)
+  const url = new URL(data.url)
+  const logo = `${url.origin}/favicon-512.png`
   return {
     title,
     description,
+    'og:url': data.url,
+    'og:type': 'article',
     'og:title': title,
     'og:description': description,
-    'og:image': ogImage,
-    'twitter:image': ogImage,
+    'og:image': logo,
+    'og:image:type': 'image/png',
+    'og:image:width': '512',
+    'og:image:height': '512',
+    'twitter:card': 'summary_large_image',
+    'twitter:title': title,
+    'twitter:description': description,
+    'twitter:image': logo,
     'twitter:creator': twitterCreator,
+    'twitter:url': data.url,
   }
 }
 export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
@@ -66,6 +74,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 
   return {
     question: await fetchQuestion(request),
+    url: request.url,
     minLogo,
   }
 }
