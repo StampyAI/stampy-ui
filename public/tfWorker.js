@@ -22,7 +22,7 @@ use.load().then(function (model) {
       isReady = true
       self.postMessage('ready')
       // warm up model for faster response later
-      runSemanticSearch("What is AGI Safety?", 1)
+      runSemanticSearch('What is AGI Safety?', 1)
     })
 })
 
