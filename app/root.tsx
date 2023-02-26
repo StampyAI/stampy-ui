@@ -3,20 +3,59 @@ import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloud
 import styles from '~/root.css'
 
 import {useLoaderData} from '@remix-run/react'
+import {getStateEntries} from '~/hooks/stateModifiers'
+import {loadQuestionDetail} from '~/server-utils/stampy'
 
-const title = 'Stampy'
-const description = 'AI Safety FAQ'
+/*
+ * Transform the given text into a meta header format.
+ *
+ * In practice, this means stripping out any HTML tags and limiting its length
+ */
+const metafyText = (text: string | null, defaultText: string) => {
+  if (!text || text.length == 0) return defaultText
+
+  let cleaned = text
+  // Totally remove any P, A or IFRAME tags, but leave the contents. Any other
+  // tags will be ignored for now
+  const removals = [/<\/?p.*?>/gi, /<\/?a.*?>/gi, /<\/?iframe.*?>/gi]
+  cleaned = removals.reduce((str, regex) => str.replace(regex, ''), cleaned)
+
+  // This first random website I found claims that the description limit is 155,
+  // so keep it to that: https://www.contentkingapp.com/academy/meta-description/
+  if (cleaned.length > 155) cleaned = cleaned.slice(0, 152) + '...'
+  return cleaned
+}
+
+/*
+ * Return the question if the url only contains one
+ */
+const fetchQuestion = async (request: Request) => {
+  const url = new URL(request.url)
+  const questions = getStateEntries(url.searchParams.get('state') || '')
+
+  if (questions.length != 1) return null
+
+  const {data} = await loadQuestionDetail(request, questions[0][0])
+  return data
+}
+
+const TITLE = 'Stampy'
+const DESCRIPTION = 'AI Safety FAQ'
 const ogImage = 'https://github.com/StampyAI/StampyAIAssets/blob/main/banner/stampy-ui-preview.png'
 const twitterCreator = '@stampyai'
-export const meta: MetaFunction = () => ({
-  title,
-  description,
-  'og:title': title,
-  'og:description': description,
-  'og:image': ogImage,
-  'twitter:image': ogImage,
-  'twitter:creator': twitterCreator,
-})
+export const meta: MetaFunction = ({data}) => {
+  const title = metafyText(data?.question?.title, TITLE)
+  const description = metafyText(data?.question?.text, DESCRIPTION)
+  return {
+    title,
+    description,
+    'og:title': title,
+    'og:description': description,
+    'og:image': ogImage,
+    'twitter:image': ogImage,
+    'twitter:creator': twitterCreator,
+  }
+}
 export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -26,6 +65,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const minLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
 
   return {
+    question: await fetchQuestion(request),
     minLogo,
   }
 }
