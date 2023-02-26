@@ -236,7 +236,6 @@ const ShowMoreSuggestions = ({
   } else if (extraQuestions.length === 0) {
     return (
       <Dialog onClose={onClose}>
-        <div style={{minWidth: '30em'}}></div>
         <AddQuestion title={question} relatedQuestions={relatedQuestions} immediately={true} />
       </Dialog>
     )
