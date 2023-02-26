@@ -498,6 +498,15 @@ footer > *:not(:last-child) {
   right: 11px; /* visually aligned to the chevron */
 }
 
+.search-loader {
+  position: absolute;
+  left: 50%;
+  margin-top: 15px;
+}
+.no-questions {
+  margin-top: 10px;
+}
+
 .dropdown div {
   color: var(--colorText);
   background-color: var(--bgColorQuestionAnswer);
