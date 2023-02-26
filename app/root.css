@@ -569,6 +569,10 @@ footer > *:not(:last-child) {
   margin-bottom: 2.8em;
 }
 
+.dialog {
+  min-width: 30em;
+}
+
 .no-stretch {
   width: 0;
   min-width: 100%;
