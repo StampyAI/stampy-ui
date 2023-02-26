@@ -89,6 +89,11 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       tags: [],
       ...questionMap.get(pageid),
     }))
+    .map(entry => ({
+      ...entry,
+      title: entry.status === 'Live on site'
+        ? entry.title : 'WIP - ' + entry.title
+    }))
   }, [stateString, initialCollapsedState, questionMap])
 
   const reset = (event: MouseEvent) => {
