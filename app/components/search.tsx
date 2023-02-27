@@ -45,7 +45,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     const handleWorker = (event: MessageEvent<WorkerMessage>) => {
       const {data} = event
       console.debug('onmessage from tfWorker:', data)
-      if (data === 'ready') {
+      if (data.status === 'ready') {
         tfFinishedLoadingRef.current = true
         return
       }
@@ -79,9 +79,8 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     }
   }
 
-  // const handleChange = debounce(searchFn, 300)
-  const handleChange = searchFn
-
+  const handleChange = debounce(searchFn, 100)
+  
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
 
