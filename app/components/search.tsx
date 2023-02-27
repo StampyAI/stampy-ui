@@ -23,12 +23,11 @@ type SearchResult = Question & {
   url?: string
 }
 
-type WorkerMessage =
-  {
-    searchResults: {title: string; pageid: string; score: number}[]
-    status: string
-    numQs: number
-  }
+type WorkerMessage = {
+  searchResults: {title: string; pageid: string; score: number}[]
+  status: string
+  numQs: number
+}
 
 const empty: [] = []
 
