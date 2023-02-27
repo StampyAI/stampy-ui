@@ -24,9 +24,9 @@ type SearchResult = Question & {
 }
 
 type WorkerMessage = {
-  searchResults: {title: string; pageid: string; score: number}[]
+  searchResults?: {title: string; pageid: string; score: number}[]
   status: string
-  numQs: number
+  numQs?: number
 }
 
 const empty: [] = []
