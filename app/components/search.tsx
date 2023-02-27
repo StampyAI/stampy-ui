@@ -24,11 +24,11 @@ type SearchResult = Question & {
 }
 
 type WorkerMessage =
-  | 'ready'
-  | {
-      searchResults: {title: string; pageid: string; score: number}[]
-      numQs: number
-    }
+  {
+    searchResults: {title: string; pageid: string; score: number}[]
+    status: string
+    numQs: number
+  }
 
 const empty: [] = []
 
