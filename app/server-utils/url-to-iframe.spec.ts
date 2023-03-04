@@ -1,21 +1,14 @@
 import { urlToIframe } from "./url-to-iframe"
 
 describe('urlToIframe', () => {
-  it('should handle question 8392_', () => {
-    const input = `
-      <p>There is a Cambrian explosion of approaches to solving alignment. 
-        Click through to the follow-up questions to explore the research directions of groups and individuals in the field, 
-        or browse <a href="https://aisafety.world/">this map</a>:</p>\n
-      <p><a href="https://aisafety.world/">https://aisafety.world/</a></p>\n
-      <p>See also: <a href="https://www.alignmentforum.org/posts/QBAjndPuFbhEXKcCr/my-understanding-of-what-everyone-in-technical-alignment-is">https://www.alignmentforum.org/posts/QBAjndPuFbhEXKcCr/my-understanding-of-what-everyone-in-technical-alignment-is</a></p>\n`;
+  it('should not convert an anchor tag whose href does not match tag content', () => {
+    const input = `<a href="https://aisafety.world/">this map</a>`
+    expect(urlToIframe(input)).toBe(input);
+  });
 
-    const output = `
-      <p>There is a Cambrian explosion of approaches to solving alignment. 
-        Click through to the follow-up questions to explore the research directions of groups and individuals in the field, 
-        or browse <a href="https://aisafety.world/">this map</a>:</p>\n
-      <p><iframe src="https://aisafety.world/"/></p>\n
-      <p>See also: <a href="https://www.alignmentforum.org/posts/QBAjndPuFbhEXKcCr/my-understanding-of-what-everyone-in-technical-alignment-is">https://www.alignmentforum.org/posts/QBAjndPuFbhEXKcCr/my-understanding-of-what-everyone-in-technical-alignment-is</a></p>\n`;
-
+  it('should convert an anchor tag whose href matches tag content', () => {
+    const input = `<a href="https://aisafety.world/">https://aisafety.world/</a>`
+    const output = `<iframe src="https://aisafety.world/"/>`
     expect(urlToIframe(input)).toBe(output);
   });
 })
