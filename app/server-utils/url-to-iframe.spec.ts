@@ -8,7 +8,7 @@ describe('urlToIframe', () => {
 
   it('should convert an anchor tag whose href matches tag content', () => {
     const input = `<a href="https://aisafety.world/">https://aisafety.world/</a>`
-    const output = `<iframe src="https://aisafety.world/"/>`
+    const output = `<iframe src="https://aisafety.world/" sandbox="allow-scripts allow-same-origin"/>`
     expect(urlToIframe(input)).toBe(output);
   });
 })
