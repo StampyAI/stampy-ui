@@ -1,14 +1,25 @@
 import { urlToIframe } from "./url-to-iframe"
 
 describe('urlToIframe', () => {
-  it('should not convert an anchor tag whose href does not match tag content', () => {
-    const input = `<a href="https://aisafety.world/">this map</a>`
-    expect(urlToIframe(input)).toBe(input);
-  });
+  describe('should not convert an anchor tag', () => {
+    it('whose href does not match tag content', () => {
+      const input = `<a href="https://aisafety.world/">this map</a>`
+      expect(urlToIframe(input)).toBe(input);
+    });
 
-  it('should convert an anchor tag whose href matches tag content', () => {
-    const input = `<a href="https://aisafety.world/">https://aisafety.world/</a>`
-    const output = `<iframe src="https://aisafety.world/" sandbox="allow-scripts allow-same-origin"/>`
-    expect(urlToIframe(input)).toBe(output);
-  });
+    it('whose href matches tag content but is not whitelisted', () => {
+      const url = 'https://example.com/'
+      const input = `<a href="${url}">${url}</a>`
+      expect(urlToIframe(input)).toBe(input);
+    });
+  })
+
+  describe('should convert an anchor tag', () => {
+    it('whose href matches tag content and is whitelisted', () => {
+      const url = 'https://example.com/'
+      const input = `<a href="${url}">${url}</a>`
+      const output = `<iframe src="${url}" sandbox="allow-scripts allow-same-origin"/>`
+      expect(urlToIframe(input)).toBe(output);
+    });
+  })
 })
