@@ -23,11 +23,15 @@ type SearchResult = Question & {
   url?: string
 }
 
-type WorkerMessage =
-  | 'ready'
+// type of postMessage() values from tfWorker.js (manually synchronized)
+export type WorkerMessage =
+  | {
+      status: 'ready'
+      numQs: number
+    }
   | {
       searchResults: {title: string; pageid: string; score: number}[]
-      numQs: number
+      userQuery?: string
     }
 
 const empty: [] = []
@@ -46,8 +50,8 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     const handleWorker = (event: MessageEvent<WorkerMessage>) => {
       const {data} = event
       console.debug('onmessage from tfWorker:', data)
-      if (data === 'ready') {
-        tfFinishedLoadingRef.current = true
+      if ('status' in data) {
+        tfFinishedLoadingRef.current = data.status === 'ready'
         return
       }
       if (data.searchResults) {
@@ -82,7 +86,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     }
   }
 
-  const handleChange = debounce(searchFn, 500)
+  const handleChange = debounce(searchFn, 100)
 
   const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
   const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'

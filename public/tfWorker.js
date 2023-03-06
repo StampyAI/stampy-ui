@@ -8,6 +8,8 @@ let isReady = false
 let langModel = undefined
 let questions = []
 let encodings = undefined
+let pageids = []
+let numResults = 0
 
 // initialize search properties
 use.load().then(function (model) {
@@ -20,7 +22,9 @@ use.load().then(function (model) {
       encodings = tf.tensor2d(data.encodings)
       // successfully loaded model & downloaded encodings
       isReady = true
-      self.postMessage('ready')
+      self.postMessage({status: 'ready', numQs: questions.length})
+      // warm up model for faster response later
+      runSemanticSearch('What is AGI Safety?', 1)
     })
 })
 
@@ -30,22 +34,22 @@ self.onmessage = (e) => {
 }
 
 const maxAttempts = 10
-const runSemanticSearch = (searchQueryRaw, attempt = 1) => {
+const runSemanticSearch = (userQuery, attempt = 1) => {
   numResults = 5
 
-  if (!searchQueryRaw || attempt >= maxAttempts) {
+  if (!userQuery || attempt >= maxAttempts) {
     self.postMessage({searchResults: []})
     return
   }
 
   if (!isReady) {
     setTimeout(() => {
-      runSemanticSearch(searchQueryRaw, attempt + 1)
+      runSemanticSearch(userQuery, attempt + 1)
     }, 1000)
     return
   }
 
-  const searchQuery = searchQueryRaw.toLowerCase().trim().replace(/\s+/g, ' ')
+  const searchQuery = userQuery.toLowerCase().trim().replace(/\s+/g, ' ')
 
   // encodings is 2D tensor of 512-dims embeddings for each sentence
   langModel.embed(searchQuery).then((encoding) => {
@@ -62,9 +66,8 @@ const runSemanticSearch = (searchQueryRaw, attempt = 1) => {
     }))
     questionsScored.sort(byScore)
     const searchResults = questionsScored.slice(0, numResults)
-    const numQs = questions.length
 
-    self.postMessage({searchResults, numQs})
+    self.postMessage({searchResults, userQuery})
   })
 }
 
