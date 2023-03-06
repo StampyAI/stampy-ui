@@ -8,6 +8,8 @@ let isReady = false
 let langModel = undefined
 let questions = []
 let encodings = undefined
+let pageids = []
+let numResults = 0
 
 // initialize search properties
 use.load().then(function (model) {
