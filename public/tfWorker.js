@@ -14,7 +14,7 @@ let numResults = 0
 // initialize search properties
 use.load().then(function (model) {
   langModel = model
-  fetch('/assets/stampy-questions-encodings.json')
+  fetch('https://storage.googleapis.com/stampy-nlp-resources/stampy-encodings.json')
     .then((response) => response.json())
     .then((data) => {
       questions = data.questions
@@ -38,7 +38,6 @@ const runSemanticSearch = (userQuery, attempt = 1) => {
   numResults = 5
 
   if (!userQuery || attempt >= maxAttempts) {
-    self.postMessage({searchResults: []})
     return
   }
 
