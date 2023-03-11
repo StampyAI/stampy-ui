@@ -1,4 +1,4 @@
-import {useEffect, MouseEvent, useState} from 'react'
+import {useEffect, MouseEvent, useState, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions} from '~/server-utils/stampy'
@@ -129,14 +129,14 @@ export default function App() {
     }
   }
 
-  const [nextPageLink, setNextPageLink] = useState<string | null>(null)
+  const nextPageLinkRef = useRef<null | string>(null)
   const fetchMoreQuestions = async () => {
-    const result = await fetchOnSiteAnswers(nextPageLink)
-    setNextPageLink(result.nextPageLink)
+    const result = await fetchOnSiteAnswers(nextPageLinkRef.current)
+    nextPageLinkRef.current = result.nextPageLink
     if (result.questions) {
       addQuestions(result.questions)
     }
-    return result.questions
+    return result.nextPageLink
   }
 
   const {handleDragOver, handleDragStart, handleDragEnd, DragPlaceholder} =
@@ -157,12 +157,7 @@ export default function App() {
           &nbsp;
         </div>
         <DragPlaceholder pageid={TOP} />
-
-        <InfiniteScroll
-          className="articles-container"
-          fetchMore={fetchMoreQuestions}
-          onDragOver={() => handleDragOver({pageid: null})}
-        >
+        <div className="articles-container">
           {questions.map((question) => (
             <ErrorBoundary title={question.title} key={question.pageid}>
               <Question
@@ -178,16 +173,19 @@ export default function App() {
               <DragPlaceholder pageid={question.pageid} />
             </ErrorBoundary>
           ))}
-        </InfiniteScroll>
+        </div>
       </main>
       <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
         <Discord />
       </a>
-      <footer>
-        <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
-          © stampy.ai, 2022 - {year}
-        </a>
-      </footer>
+
+      <InfiniteScroll fetchMore={fetchMoreQuestions}>
+        <footer>
+          <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
+            © stampy.ai, 2022 - {year}
+          </a>
+        </footer>
+      </InfiniteScroll>
     </>
   )
 }

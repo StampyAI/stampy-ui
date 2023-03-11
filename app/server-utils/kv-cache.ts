@@ -1,7 +1,5 @@
 import type {DataFunctionArgs} from '@remix-run/cloudflare'
 
-const RELOAD = '?reload'
-
 export function withCache<Fn extends (...args: string[]) => Promise<any>>(
   defaultKey: string,
   fn: Fn
@@ -12,7 +10,7 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
   return (async (request?: DataFunctionArgs['request'], ...args: Parameters<Fn>) => {
     const key = args[0] ?? defaultKey
 
-    const shouldReload = request?.url.includes(RELOAD)
+    const shouldReload = request?.url.match(/[?&]reload/)
     if (!shouldReload) {
       const cached = await STAMPY_KV.get(key)
 
@@ -37,7 +35,7 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
 export async function reloadInBackgroundIfNeeded(url: string, timestamp: string) {
   const ageInMilliseconds = new Date().getTime() - new Date(timestamp).getTime()
   if (ageInMilliseconds > 10 * 60 * 1000) {
-    fetch(`${url.replace(/\?.*$/, '')}${RELOAD}`)
+    fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)
   }
 }
 
