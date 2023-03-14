@@ -9,7 +9,7 @@ describe('urlToIframe', () => {
 
     it('whose text matches url but is not whitelisted', () => {
       const url = 'https://example.com/'
-      const input = `[${url}](${url})</a>`
+      const input = `[${url}](${url})`
       expect(urlToIframe(input)).toBe(input)
     })
   })
