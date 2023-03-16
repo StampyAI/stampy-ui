@@ -1,4 +1,4 @@
-import {useEffect, MouseEvent, useState, useRef} from 'react'
+import {useEffect, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions} from '~/server-utils/stampy'

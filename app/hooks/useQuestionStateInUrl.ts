@@ -120,9 +120,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     return relatedQuestions.filter((question) => {
       const isOnSite = onSiteSet.has(question.pageid)
       // hide already displayed questions, detect duplicates by pageid (pageid can be different due to redirects)
-      // TODO: #25 relocate already displayed to slide in as a new related one
+      // TODO: #25 relocate already displayed to slide in as a new related one.
       const isAlreadyDisplayed = questions.some(({pageid}) => pageid === question.pageid)
-      return isOnSite && !isAlreadyDisplayed
+      return !isOnSite && !isAlreadyDisplayed
     })
   }
 
