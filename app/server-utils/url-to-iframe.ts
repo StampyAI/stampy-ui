@@ -18,7 +18,7 @@ export const urlToIframe = (text: string): string => {
   // \(
   //     \1           <-- lookback to match whatever the first group caught
   // \)
-  const matches = text.matchAll(/\[(https?:\/\/[.\w]+?\/?[^]]*?)\]\(\1\)/gi)
+  const matches = text.matchAll(/\[(https?:\/\/[.\w]+?\/?[^\]]*?)\]\(\1\)/gi)
 
   let updatedText = text
   for (const [link, url] of matches) {

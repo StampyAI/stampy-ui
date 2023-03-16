@@ -23,18 +23,13 @@ describe('urlToIframe', () => {
       const input = `[${url}](${url})`
       expect(urlToIframe(input)).toBe(input)
     })
-
-    it('whose text matches url but url contains query string', () => {
-      const url = 'https://aisafety.world/?bla=bla'
-      const input = `[${url}](${url})`
-      expect(urlToIframe(input)).toBe(input)
-    })
-  })
+   })
 
   describe('should convert a markdown link', () => {
     it.each([
       {url: 'https://aisafety.world/'},
       {url: 'http://aisafety.world/'},
+      {url: 'https://aisafety.world/?bla=bla'},
     ])('whose text matches url and host is whitelisted', ({url}) => {
       const input = `[${url}](${url})`
       const output = `<iframe src="${url}" sandbox="allow-scripts allow-same-origin"></iframe>`
