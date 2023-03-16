@@ -23,7 +23,7 @@ describe('urlToIframe', () => {
       const input = `[${url}](${url})`
       expect(urlToIframe(input)).toBe(input)
     })
-   })
+  })
 
   describe('should convert a markdown link', () => {
     it.each([
