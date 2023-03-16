@@ -1,58 +1,43 @@
 import {ReactNode, useState, useRef, useCallback} from 'react'
-import {Question} from '~/server-utils/stampy'
 
 type Props = {
-  children: ReactNode[]
-  fetchMore: () => Promise<Question[]>
-  loadingRenderer?: (loading: boolean) => ReactNode
+  children: ReactNode
+  fetchMore: () => Promise<string | null>
 } & JSX.IntrinsicElements['div']
 
-export default function InfiniteScroll({
-  children,
-  fetchMore,
-  loadingRenderer = (loading: boolean) => loading && <div className="loader"></div>,
-  ...props
-}: Props) {
-  const [pageNum, setPageNum] = useState(0)
-  const [hasMore, setHasMore] = useState(true)
+export default function InfiniteScroll({children, fetchMore}: Props) {
   const [loading, setLoading] = useState(false)
 
-  const getMore = useCallback(async () => {
-    if (loading || !hasMore) return
+  // must use stable callback without depencencies, otherwise it will create many instances of IntersectionObserver
+  const fetchMoreRef = useRef(fetchMore)
+  fetchMoreRef.current = fetchMore
+  const lastElementRef = useCallback((node: HTMLDivElement) => {
+    if (!node) return
 
-    setLoading(true)
+    let loadingInternal = false
+    const observer = new IntersectionObserver(async (entries) => {
+      if (entries[0].isIntersecting) {
+        // state is needed for re-render, internal variable to avoid dependencies
+        if (loadingInternal) return
+        setLoading(true)
+        loadingInternal = true
 
-    const nextPage = await fetchMore()
-    setPageNum(pageNum + 1)
-
-    if (nextPage?.length === 0) {
-      setHasMore(false)
-    }
-
-    setLoading(false)
-  }, [loading, hasMore, pageNum, setLoading, setPageNum, setHasMore, fetchMore])
-
-  const observer = useRef<IntersectionObserver | null>(null)
-  const lastElementRef = useCallback(
-    (node) => {
-      if (observer.current) observer.current.disconnect()
-
-      if (node) {
-        observer.current = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            getMore()
-          }
-        })
-        observer.current.observe(node)
+        const nextPageLink = await fetchMoreRef.current()
+        if (!nextPageLink) {
+          observer.disconnect()
+        }
+        setLoading(false)
+        loadingInternal = false
       }
-    },
-    [getMore]
-  )
+    })
+    observer.observe(node)
+  }, [])
+
   return (
-    <div {...props}>
+    <>
+      {loading && <div className="loader" />}
       {children}
-      {loadingRenderer(loading)}
-      <div ref={lastElementRef}></div>
-    </div>
+      <div ref={lastElementRef} />
+    </>
   )
 }

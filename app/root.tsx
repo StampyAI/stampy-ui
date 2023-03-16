@@ -56,7 +56,7 @@ export const meta: MetaFunction = ({data}) => {
     'og:image:type': 'image/png',
     'og:image:width': '512',
     'og:image:height': '512',
-    'twitter:card': 'summary_large_image',
+    'twitter:card': 'summary',
     'twitter:title': title,
     'twitter:description': description,
     'twitter:image': logo,
@@ -67,10 +67,10 @@ export const meta: MetaFunction = ({data}) => {
 export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  const isDomainWithLogo = request.url.match(/ui.stampy.ai/)
-  const isLogoForcedOff = request.url.match(/minLogo/)
-  const isLogoForcedOn = request.url.match(/funLogo/)
-  const minLogo = isDomainWithLogo ? !!isLogoForcedOff : !isLogoForcedOn
+  const isDomainWithFunLogo = request.url.match(/stampy.ai|localhost/) // min logo by default on aisafety.info and 127.0.0.1
+  const isFunLogoForcedOff = request.url.match(/minLogo/)
+  const isFunLogoForcedOn = request.url.match(/funLogo/)
+  const minLogo = isDomainWithFunLogo ? !!isFunLogoForcedOff : !isFunLogoForcedOn
 
   return {
     question: await fetchQuestion(request),

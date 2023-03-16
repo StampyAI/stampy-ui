@@ -5,7 +5,7 @@ import {redirect} from '@remix-run/cloudflare'
 import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
 
 const getRelated = async (question: string): Promise<RelatedQuestions> => {
-  const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}`
+  const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}?status=all`
   try {
     return await fetchJsonList(url)
   } catch (e) {

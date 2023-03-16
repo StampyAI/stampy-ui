@@ -27,13 +27,14 @@
 }
 
 .loader {
+  flex: none;
   border: 4px solid #f3f3f3; /* Light grey */
   border-top: 4px solid #3498db; /* Blue */
   border-radius: 50%;
   width: 30px;
   height: 30px;
   animation: spin 2s linear infinite;
-  margin: auto;
+  margin: 10px auto;
 }
 
 @keyframes spin {
@@ -67,7 +68,7 @@ html {
 }
 
 body {
-  height: 100%;
+  height: 101%; /* make sure infinite scroll trigger is below initial screen */
   width: 100%;
   max-width: 1000px;
   margin: auto;
@@ -77,6 +78,10 @@ body {
   flex-direction: column;
   font-family: 'Open Sans', Arial, sans-serif;
   line-height: 1.5;
+}
+
+body > div:last-of-type {
+  min-height: 1px;
 }
 
 a,
@@ -453,7 +458,7 @@ footer {
   --space: 12px;
   align-self: center;
   margin-top: auto;
-  padding: 100px var(--space) var(--space);
+  padding: 100px var(--space) 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
