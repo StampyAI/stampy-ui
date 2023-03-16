@@ -65,6 +65,12 @@ Once that's done, you should be able to test and deploy your app!
 $ npm run dev
 ```
 
+## Test
+
+```sh
+$ npm run test
+```
+
 ## Deployment
 
 ```sh

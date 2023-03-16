@@ -19,6 +19,7 @@
     "@cloudflare/workers-types": "^2.2.2",
     "@remix-run/dev": "^1.13.0",
     "@svgr/cli": "^6.5.1",
+    "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/markdown-it": "^12.2.3",
     "@types/markdown-it-footnote": "^3.0.0",
@@ -30,10 +31,12 @@
     "eslint": "^8.34.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^29.4.2",
     "miniflare": "^2.12.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.5",
     "typescript": "^4.9.5",
     "wrangler": "^2.10.0"
   },
@@ -57,7 +60,8 @@
     "dev": "npm start",
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "tsc": "tsc",
-    "deploy": "npm run build && wrangler publish"
+    "deploy": "npm run build && wrangler publish",
+    "test": "jest"
   },
   "main": "build/index.js"
 }
