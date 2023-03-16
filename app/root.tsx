@@ -56,7 +56,7 @@ export const meta: MetaFunction = ({data}) => {
     'og:image:type': 'image/png',
     'og:image:width': '512',
     'og:image:height': '512',
-    'twitter:card': 'summary_large_image',
+    'twitter:card': 'summary',
     'twitter:title': title,
     'twitter:description': description,
     'twitter:image': logo,
