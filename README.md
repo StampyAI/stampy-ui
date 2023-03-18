@@ -1,12 +1,12 @@
 ![Stampy!](https://github.com/StampyAI/StampyAIAssets/blob/main/profile/stampy-profile-228.png?raw=true)
 
-Stampy UI is an interface for [stampy.ai](https://coda.io/@alignmentdev/ai-safety-info/get-involved-26), a database of questions and answers about AGI safety, built with [Remix](https://remix.run/docs) and [Cloudflare Workers](https://developers.cloudflare.com/workers). Contributions are welcome, and the code is released under the MIT License.
+Stampy UI is an interface for [aisafety.info](https://aisafety.info), a questions and answers site about AGI safety, built with [Remix](https://remix.run/docs) and [Cloudflare Workers](https://developers.cloudflare.com/workers). When reading about existential risks becomes "too serious", we also have a more playful version of the site: [stampy.ai](https://stampy.ai).
 
-If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Dev-team_sulmV#_luYjG), drop by [our Discord](https://discord.com/invite/7wjJbFJnSN) and post in #stampy-dev!
+Contributions are welcome, the code is released under the MIT License. If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Dev-team_sulmV#_luYjG), drop by [our Discord](https://discord.com/invite/7wjJbFJnSN) and post in #stampy-dev!
 
-# Stampy UI
+# Stampy UI Development Setup
 
-1. Setup Requirements
+1. Requirements
 
 - [Install Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [Create Cloudflare account](https://dash.cloudflare.com/sign-up)
@@ -30,27 +30,27 @@ If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hm
 
 - When logged in to Coda, `Generate API token` in your Account settigns
 - Add restrictions: `Doc or table`, `Read only`, for the doc with url `https://coda.io/d/_dfau7sl2hmG`
-  (you need access to the doc of course, which you can request on the Discord in source code)
+  (you need access to the doc of course, which you can request on the Discord)
 - Replace the value for `{CODA_TOKEN}` in `wrangler.toml`
 
-  4.1 Setup write access to the API write view in [Coda](https://coda.io/account)
+  4.1 Setup write access to the API write view in Coda
 
-This step is only needed for incrementing counters (helpful, etc.). There isn't a test environment,
-so any changes there will also effect the live site, so think twice before using them.
+  This step is only needed for incrementing counters (helpful, etc.). There isn't a test environment,
+  so any changes there will also effect the live site, so think twice before using them.
 
-- When logged in to Coda, `Generate API token` in your Account settings
-- Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tutable-eEhx2YPsBE`
-- Replace the value for `{CODA_WRITES_TOKEN}` in `wrangler.toml`
+  - When logged in to Coda, `Generate API token` in your Account settings
+  - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tutable-eEhx2YPsBE`
+  - Replace the value for `{CODA_WRITES_TOKEN}` in `wrangler.toml`
 
-  4.2 Setup write access to the "Incoming questions" table in [Coda](https://coda.io/account)
+  4.2 Setup write access to the "Incoming questions" table in Coda
 
-This step is only needed if you want to add new questions to Coda, or you want to mark answers as
-helpful. Seeing as they will then go live, it would probably be better to only set this if you are
-working on those specific component, in order to not mess up the list of incoming questions.
+  This step is only needed if you want to add new questions to Coda, or you want to mark answers as
+  helpful. Seeing as they will then go live, it would probably be better to only set this if you are
+  working on those specific component, in order to not mess up the list of incoming questions.
 
-- When logged in to Coda, `Generate API token` in your Account settigns
-- Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG`
-- Replace the value for `{CODA_WRITE_TOKEN}` in `wrangler.toml`
+  - When logged in to Coda, `Generate API token` in your Account settigns
+  - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG`
+  - Replace the value for `{CODA_WRITE_TOKEN}` in `wrangler.toml`
 
 5. Create stampy-ui Remix environment
 
@@ -59,27 +59,28 @@ working on those specific component, in order to not mess up the list of incomin
 
 Once that's done, you should be able to test and deploy your app!
 
-## Development
+## Local Development
 
-```sh
+```
 $ npm run dev
 ```
 
-## Test
+## Lint and Tests
 
-```sh
+```
+$ npm run lint
 $ npm run test
 ```
 
-## Deployment
+## Deployment to your CF Worker
 
-```sh
+```
 $ npm run deploy
 ```
 
-Live demo: https://ui.stampy.ai
+Production domains are deployed via GitHub Actions.
 
-## Add new domain
+## Add a new domain
 
 - log in to [Cloudflare Dashboard](https://dash.cloudflare.com/) owned by @plexish
 - use `Add a site` button on homepage, choose the Free plan
