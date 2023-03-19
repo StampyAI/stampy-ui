@@ -48,7 +48,7 @@
     "postinstall": "remix setup cloudflare-workers",
     "generate-icons": "npx @svgr/cli --out-dir app/components/icons-generated -- app/assets/icons",
     "eslint": "eslint --ignore-pattern .gitignore \"**/*.ts*\"",
-    "prettier": "prettier --check --ignore-path .gitignore \"**/*.{ts*,js,css,md}\"",
+    "prettier": "prettier --check --ignore-path .gitignore \"**/*.{ts*,js,css}\"",
     "lint": "tsc && npm run prettier && npm run eslint",
     "eslint:fix": "eslint --fix --ignore-pattern .gitignore \"**/*.ts*\"",
     "prettier:fix": "prettier --write --ignore-path .gitignore \"**/*.{ts*,js,css,md}\"",

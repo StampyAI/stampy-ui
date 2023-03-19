@@ -17,7 +17,7 @@ export enum QuestionStatus {
   NOT_STARTED = 'Not started',
   IN_PROGRESS = 'In progress',
   IN_REVIEW = 'In review',
-  LIVE = 'Live on site',
+  LIVE_ON_SITE = 'Live on site',
   UNKNOWN = 'Unknown',
 }
 export type Tag = {
@@ -283,13 +283,15 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
 
   const questions = await loadAllQuestions()
   const nameToId = Object.fromEntries(
-    questions.data.filter((q) => q.status == QuestionStatus.LIVE).map((q) => [q.title, q.pageid])
+    questions.data
+      .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
+      .map((q) => [q.title, q.pageid])
   )
   return toTag(rows[0], nameToId)
 })
 
-export const loadMoreQuestions = withCache(
-  'loadMoreQuestions',
+export const loadMoreAnswerDetails = withCache(
+  'loadMoreAnswerDetails',
   async (
     nextPageLink: string | null
   ): Promise<{questions: Question[]; nextPageLink: string | null}> => {

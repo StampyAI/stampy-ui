@@ -1,4 +1,4 @@
-import {useEffect, MouseEvent, useState, useRef} from 'react'
+import {useEffect, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
 import {loadInitialQuestions} from '~/server-utils/stampy'
@@ -8,7 +8,7 @@ import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import useDraggable from '~/hooks/useDraggable'
 import Search from '~/components/search'
 import {Question} from '~/routes/questions/$question'
-import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
+import {fetchAnswerDetailsOnSite} from '~/routes/questions/answerDetailsOnSite'
 import logoFunSvg from '~/assets/stampy-logo.svg'
 import logoMinSvg from '~/assets/stampy-logo-min.svg'
 import {Share, Users, Code, Discord} from '~/components/icons-generated'
@@ -131,7 +131,7 @@ export default function App() {
 
   const nextPageLinkRef = useRef<null | string>(null)
   const fetchMoreQuestions = async () => {
-    const result = await fetchOnSiteAnswers(nextPageLinkRef.current)
+    const result = await fetchAnswerDetailsOnSite(nextPageLinkRef.current)
     nextPageLinkRef.current = result.nextPageLink
     if (result.questions) {
       addQuestions(result.questions)
