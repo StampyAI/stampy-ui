@@ -161,7 +161,7 @@ h1 {
 .icon-link-group {
   align-self: flex-end;
   padding: 0 0 10px 30px;
-  flex: 0;
+  flex: none;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -181,7 +181,6 @@ button.icon-link,
 a:visited.icon-link {
   font-size: 0.6rem;
   text-transform: uppercase;
-  white-space: nowrap;
   color: inherit;
   border: none;
   background: inherit;
@@ -277,6 +276,7 @@ article > h2 {
 article > h2 > .transparent-button {
   padding-right: var(--paddingSides);
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -606,11 +606,6 @@ a.see-more.visible {
 }
 
 @media (max-width: 740px) {
-  body {
-    /* overflow to avoid horizontal scrollbar when sliding related questions,
-     * which was shifting vertical scroll on mobile */
-    overflow-x: hidden;
-  }
   header {
     flex-direction: column;
     padding: 12px 0 12px;
