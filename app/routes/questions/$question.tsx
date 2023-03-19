@@ -72,7 +72,8 @@ export function Question({
     questionState,
     tags,
   } = questionProps
-  const title = codaStatus && codaStatus !== QuestionStatus.LIVE ? `WIP - ${codaTitle}` : codaTitle
+  const title =
+    codaStatus && codaStatus !== QuestionStatus.LIVE_ON_SITE ? `WIP - ${codaTitle}` : codaTitle
   const isLoading = useRef(false)
   const refreshOnToggleAfterLoading = useRef(false)
   useEffect(() => {

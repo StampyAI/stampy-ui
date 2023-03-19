@@ -1,8 +1,14 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import {Question, QuestionState, RelatedQuestions, PageId} from '~/server-utils/stampy'
-import {fetchOnSiteAnswers} from '~/routes/questions/allOnSite'
+import {
+  Question,
+  QuestionState,
+  RelatedQuestions,
+  PageId,
+  QuestionStatus,
+} from '~/server-utils/stampy'
+import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
 import {
   processStateEntries,
   getStateEntries,
@@ -53,9 +59,10 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
-    fetchOnSiteAnswers(null).then(({questions}) => {
-      onSiteAnswersRef.current = questions
-      onSiteGDocLinkMapRef.current = questions.reduce((acc, q) => {
+    fetchAllQuestionsOnSite().then((questions) => {
+      const liveQuestions = questions.filter((q) => q.status === QuestionStatus.LIVE_ON_SITE)
+      onSiteAnswersRef.current = liveQuestions
+      onSiteGDocLinkMapRef.current = liveQuestions.reduce((acc, q) => {
         if (q.answerEditLink) acc[q.answerEditLink] = q
         return acc
       }, emptyQuestionMap)
@@ -116,6 +123,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
     const onSiteAnswers = onSiteAnswersRef.current
     const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
+    console.debug(relatedQuestions, onSiteSet)
 
     return relatedQuestions.filter((question) => {
       const isOnSite = onSiteSet.has(question.pageid)
