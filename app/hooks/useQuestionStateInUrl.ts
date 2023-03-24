@@ -123,7 +123,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
     const onSiteAnswers = onSiteAnswersRef.current
     const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
-    console.debug(relatedQuestions, onSiteSet)
 
     return relatedQuestions.filter((question) => {
       const isOnSite = onSiteSet.has(question.pageid)

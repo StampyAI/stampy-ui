@@ -586,6 +586,21 @@ footer > *:not(:last-child) {
 .dialog {
   min-width: 30em;
 }
+/* Make sure older browsers work correctly */
+div.dialog {
+  z-index: 100;
+  background-color: var(--bgColorQuestionAnswer);
+  border: 2px solid;
+  padding: 10px;
+  left: 50%;
+  max-width: 90%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+div.dialog .close {
+  position: absolute;
+  right: 10px;
+}
 
 .no-stretch {
   width: 0;
