@@ -67,13 +67,17 @@ export const insertAfter = (state: StateString, pageId: PageId, to: PageId): Sta
 export const insertInto = (
   state: StateString,
   pageid: PageId,
-  relatedQuestions: RelatedQuestions
+  relatedQuestions: RelatedQuestions,
+  options = {toggle: true}
 ): StateString =>
   processStateEntries(state, (entries: StateEntry[]) =>
     entries.reduce((acc: StateEntry[], [k, v]: StateEntry) => {
       if (k === pageid.toString()) {
-        const newValue: QuestionState =
-          v === QuestionState.OPEN ? QuestionState.COLLAPSED : QuestionState.OPEN
+        const newValue: QuestionState = options.toggle
+          ? v === QuestionState.OPEN
+            ? QuestionState.COLLAPSED
+            : QuestionState.OPEN
+          : v
         const related = relatedQuestions
           .filter((i) => i)
           .map((r) => [r.pageid, QuestionState.RELATED] as StateEntry)

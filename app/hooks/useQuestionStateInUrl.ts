@@ -78,7 +78,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   useEffect(() => {
     const suffix = stateString ? ` - ${stateString}` : ''
-    document.title = minLogo ? 'AI Safety FAQ' : `Stampy (alpha)${suffix}`
+    document.title = minLogo ? 'AI Safety FAQ' : `Stampy ${suffix}`
   }, [stateString, minLogo])
 
   const initialCollapsedState = useMemo(
@@ -238,6 +238,20 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     },
     [onLazyLoadQuestion, questionMap, toggleQuestion]
   )
+
+  // if there is only 1 question from a direct link, load related questions too
+  useEffect(() => {
+    if (questions.length === 1) {
+      const newState = insertIntoState(
+        stateString ?? initialCollapsedState,
+        questions[0].pageid,
+        questions[0].relatedQuestions,
+        {toggle: false}
+      )
+
+      updateStateString(newState)
+    }
+  }, [questions, stateString, initialCollapsedState, updateStateString])
 
   return {
     questions,
