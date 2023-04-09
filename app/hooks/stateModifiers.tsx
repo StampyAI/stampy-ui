@@ -23,6 +23,9 @@ export const getStateEntries = (
     )
   ).filter(makeUniqueChecker())
 
+export const removeRelated = (questions: StateEntry[]): StateEntry[] =>
+  questions.filter((i) => i[1] != QuestionState.RELATED)
+
 export const processStateEntries = (
   state: StateString,
   func?: (e: StateEntry[]) => StateEntry[]
