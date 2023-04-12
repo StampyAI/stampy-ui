@@ -1,7 +1,7 @@
 import {useEffect, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
-import {loadInitialQuestions} from '~/server-utils/stampy'
+import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
@@ -129,8 +129,12 @@ export default function App() {
     }
   }
 
+  const useInfiniscroll =
+    questions.filter((i) => i.questionState != QuestionState.RELATED).length != 1
   const nextPageLinkRef = useRef<null | string>(null)
   const fetchMoreQuestions = async () => {
+    if (!useInfiniscroll) return null
+
     const result = await fetchAnswerDetailsOnSite(nextPageLinkRef.current)
     nextPageLinkRef.current = result.nextPageLink
     if (result.questions) {

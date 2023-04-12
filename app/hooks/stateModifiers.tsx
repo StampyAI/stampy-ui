@@ -107,3 +107,6 @@ export const moveQuestion = (state: StateString, pageid: PageId, to: PageId): St
       return insertAfter(state, pageid, to)
   }
 }
+
+export const questionsOnPage = (state: StateString): StateEntry[] =>
+  removeRelated(getStateEntries(state))
