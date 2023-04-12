@@ -76,11 +76,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     }
   }, [transition.location])
 
-  useEffect(() => {
-    const suffix = stateString ? ` - ${stateString}` : ''
-    document.title = minLogo ? 'AI Safety FAQ' : `Stampy ${suffix}`
-  }, [stateString, minLogo])
-
   const initialCollapsedState = useMemo(
     () => initialQuestions.map(({pageid}) => `${pageid}${QuestionState.COLLAPSED}`).join(''),
     [initialQuestions]
@@ -97,6 +92,23 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       ...questionMap.get(pageid),
     }))
   }, [stateString, initialCollapsedState, questionMap])
+
+  useEffect(() => {
+    const mainQuestions = questions.filter(
+      ({questionState}) => questionState != QuestionState.RELATED
+    )
+    let title
+    if (minLogo) {
+      title = 'AI Safety FAQ'
+    } else if (mainQuestions.length == 1) {
+      title = mainQuestions[0].title
+    } else {
+      const suffix = stateString ? ` - ${stateString}` : ''
+      title = `Stampy ${suffix}`
+    }
+    if (title.length > 150) title = title.slice(0, 150 - 3) + '...'
+    document.title = title
+  }, [stateString, minLogo, questions])
 
   const reset = (event: MouseEvent) => {
     event.preventDefault()
