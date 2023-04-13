@@ -150,12 +150,13 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
    */
   const updateStateString = useCallback(
     (newState: string) => {
+      if (stateString == newState) return
       const newSearchParams = new URLSearchParams(remixSearchParams)
       newSearchParams.set('state', newState)
       history.replaceState(newState, '', '?' + newSearchParams.toString())
       setStateString(newState)
     },
-    [remixSearchParams]
+    [remixSearchParams, stateString]
   )
 
   /*

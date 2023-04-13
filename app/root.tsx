@@ -3,7 +3,7 @@ import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloud
 import styles from '~/root.css'
 
 import {useLoaderData} from '@remix-run/react'
-import {getStateEntries, removeRelated} from '~/hooks/stateModifiers'
+import {questionsOnPage} from '~/hooks/stateModifiers'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 
 /*
@@ -29,9 +29,9 @@ const makeSocialPreviewText = (text: string | null, defaultText: string, maxLen 
  */
 const fetchQuestion = async (request: Request) => {
   const url = new URL(request.url)
-  const questions = getStateEntries(url.searchParams.get('state') || '')
+  const questions = questionsOnPage(url.searchParams.get('state') || '')
 
-  if (removeRelated(questions).length != 1) return null
+  if (questions.length != 1) return null
 
   const {data} = await loadQuestionDetail(request, questions[0][0])
   return data
