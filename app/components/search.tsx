@@ -237,10 +237,14 @@ const ShowMoreSuggestions = ({
   useEffect(() => {
     const getResults = async (question: string) => {
       try {
-        const questions = await (
-          await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
-        ).json()
-        setExtraQuestions(questions) // don't set on API errors
+        const result = await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
+
+        if (result.status == 200) {
+          const questions = await result.json()
+          setExtraQuestions(questions) // don't set on API errors
+        } else {
+          setError(await result.text())
+        }
       } catch (e) {
         console.error(e)
         setError(e instanceof Error ? e.message : '')
@@ -253,7 +257,7 @@ const ShowMoreSuggestions = ({
     return (
       <Dialog onClose={onClose}>
         <div className="loader"></div>
-        {error && <div className='error'>{error}</div>}
+        {error && <div className="error">{error}</div>}
       </Dialog>
     )
   } else if (extraQuestions.length === 0) {

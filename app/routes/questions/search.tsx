@@ -15,6 +15,10 @@ export function search(question: string, onlyLive: boolean) {
     onlyLive ? 1 : 0
   }`
   return fetch(url).then(async (response) => {
+    if (response.status != 200) {
+      console.error(await response.text())
+      return new Response('Error while searching for questions', {status: 502})
+    }
     return await response.json()
   })
 }
