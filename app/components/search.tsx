@@ -43,6 +43,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const [showMore, setShowMore] = useState(false)
   const [loading, setLoading] = useState(false)
   const searchInputRef = useRef('')
+  const modelRef = useRef<'tensorflow' | 'plaintext'>('plaintext')
   const tfWorkerRef = useRef<Worker>()
   const tfFinishedLoadingRef = useRef(false)
 
@@ -70,26 +71,33 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     initWorker()
   }, [])
 
-  const searchFn = (value: string) => {
+  const searchFn = (rawValue: string) => {
+    const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
     setLoading(true)
     searchInputRef.current = value
-    if (!tfFinishedLoadingRef.current) {
-      console.debug('plaintext search:', value)
-      runBaselineSearch(value, onSiteAnswersRef.current).then(setBaselineSearchResults)
-    }
 
-    if (tfWorkerRef.current) {
+    const wordCount = value.split(' ').length
+    const useBaseline = wordCount <= 2 || !tfFinishedLoadingRef.current || !tfWorkerRef.current
+
+    if (useBaseline) {
+      modelRef.current = 'plaintext'
+      console.debug('plaintext search:', value)
+      runBaselineSearch(value, onSiteAnswersRef.current).then((results) => {
+        setBaselineSearchResults(results)
+        setLoading(false)
+      })
+    } else {
+      modelRef.current = 'tensorflow'
       console.debug('postMessage to tfWorker:', value)
-      tfWorkerRef.current.postMessage(value)
+      tfWorkerRef.current?.postMessage(value)
     }
   }
 
   const handleChange = debounce(searchFn, 100)
 
-  const results = tfFinishedLoadingRef.current ? searchResults : baselineSearchResults
-  const model = tfFinishedLoadingRef.current ? 'tensorflow' : 'plaintext'
+  const results = modelRef.current === 'tensorflow' ? searchResults : baselineSearchResults
 
   const hideSearchResults = () => setShowResults(false)
   const [hideEnabled, setHide] = useState(true)
@@ -130,11 +138,12 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           <div className="result-item-box no-questions">Searching for questions...</div>
         )}
         <AutoHeight>
-          <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
+          <div
+            className={`dropdown ${
+              showResults && searchInputRef.current.length > 0 ? '' : 'hidden'
+            }`}
+          >
             <div>
-              {!tfFinishedLoadingRef.current && (
-                <i>Showing plain text search results while tensorflow is loading:</i>
-              )}
               {showResults &&
                 results.map(({pageid, title, score}) => (
                   <ResultItem
@@ -143,13 +152,14 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                       pageid,
                       title,
                       score,
-                      model,
+                      model: modelRef.current,
                       onSelect: handleSelect,
                       isAlreadyOpen: openQuestionTitles.includes(title),
                       setHide,
                     }}
                   />
                 ))}
+              {showResults && results.length === 0 && <i>(no results)</i>}
             </div>
             <button
               className="result-item result-item-box none-of-the-above"
@@ -222,26 +232,28 @@ const ShowMoreSuggestions = ({
   onClose: (e: any) => void
 }) => {
   const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
+  const [error, setError] = useState<string>()
 
   useEffect(() => {
     const getResults = async (question: string) => {
-      let questions = []
       try {
-        questions = await (
+        const questions = await (
           await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
         ).json()
-      } catch (error) {
-        console.error(error)
+        setExtraQuestions(questions) // don't set on API errors
+      } catch (e) {
+        console.error(e)
+        setError(e instanceof Error ? e.message : '')
       }
-      setExtraQuestions(questions)
     }
     getResults(question)
-  }, [setExtraQuestions, question])
+  }, [question])
 
   if (extraQuestions === empty) {
     return (
       <Dialog onClose={onClose}>
         <div className="loader"></div>
+        {error && <div className='error'>{error}</div>}
       </Dialog>
     )
   } else if (extraQuestions.length === 0) {
