@@ -138,7 +138,11 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           <div className="result-item-box no-questions">Searching for questions...</div>
         )}
         <AutoHeight>
-          <div className={`dropdown ${showResults && results.length > 0 ? '' : 'hidden'}`}>
+          <div
+            className={`dropdown ${
+              showResults && searchInputRef.current.length > 0 ? '' : 'hidden'
+            }`}
+          >
             <div>
               {showResults &&
                 results.map(({pageid, title, score}) => (
@@ -155,6 +159,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                     }}
                   />
                 ))}
+              {showResults && results.length === 0 && <i>(no results)</i>}
             </div>
             <button
               className="result-item result-item-box none-of-the-above"
