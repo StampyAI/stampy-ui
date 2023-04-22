@@ -200,7 +200,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       const onSiteAnswers = onSiteAnswersRef.current
       if (onSiteAnswers.length === 0 && relatedQuestions.length > 0) {
         // if onSiteAnswers (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
-        setTimeout(() => toggleQuestion(questionProps, options), 500)
+        setTimeout(() => toggleQuestion(questionProps, options), 200)
         return
       }
 
@@ -255,14 +255,22 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   // if there is only 1 question from a direct link, load related questions too
   useEffect(() => {
     if (questions.length === 1) {
-      const newState = insertIntoState(
-        stateString ?? initialCollapsedState,
-        questions[0].pageid,
-        questions[0].relatedQuestions,
-        {toggle: false}
-      )
+      const insertAfterOnSiteStatusIsKnown = () => {
+        if (onSiteAnswersRef.current.length === 0) {
+          setTimeout(insertAfterOnSiteStatusIsKnown, 200)
+          return
+        }
+        const relatedQuestions = unshownRelatedQuestions([], questions[0])
+        const newState = insertIntoState(
+          stateString ?? initialCollapsedState,
+          questions[0].pageid,
+          relatedQuestions,
+          {toggle: false}
+        )
 
-      updateStateString(newState)
+        updateStateString(newState)
+      }
+      insertAfterOnSiteStatusIsKnown()
     }
   }, [questions, stateString, initialCollapsedState, updateStateString])
 
