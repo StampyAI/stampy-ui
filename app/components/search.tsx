@@ -243,7 +243,8 @@ const ShowMoreSuggestions = ({
           const questions = await result.json()
           setExtraQuestions(questions) // don't set on API errors
         } else {
-          setError(await result.text())
+          console.error(await result.text())
+          setError('Error while searching for similar questions')
         }
       } catch (e) {
         console.error(e)
