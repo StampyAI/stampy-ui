@@ -227,26 +227,28 @@ const ShowMoreSuggestions = ({
   onClose: (e: any) => void
 }) => {
   const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
+  const [error, setError] = useState<string>()
 
   useEffect(() => {
     const getResults = async (question: string) => {
-      let questions = []
       try {
-        questions = await (
+        const questions = await (
           await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
         ).json()
-      } catch (error) {
-        console.error(error)
+        setExtraQuestions(questions) // don't set on API errors
+      } catch (e) {
+        console.error(e)
+        setError(e instanceof Error ? e.message : '')
       }
-      setExtraQuestions(questions)
     }
     getResults(question)
-  }, [setExtraQuestions, question])
+  }, [question])
 
   if (extraQuestions === empty) {
     return (
       <Dialog onClose={onClose}>
         <div className="loader"></div>
+        {error && <div className='error'>{error}</div>}
       </Dialog>
     )
   } else if (extraQuestions.length === 0) {
