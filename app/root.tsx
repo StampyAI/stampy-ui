@@ -11,7 +11,11 @@ import {loadQuestionDetail} from '~/server-utils/stampy'
  *
  * In practice, this means stripping out any HTML tags and limiting its length
  */
-const makeSocialPreviewText = (text: string | null, defaultText: string, maxLen = 350) => {
+const makeSocialPreviewText = (
+  text: string | null | undefined,
+  defaultText: string,
+  maxLen = 350
+) => {
   if (!text || text.length == 0) return defaultText
 
   let cleaned = text
@@ -40,11 +44,11 @@ const fetchQuestion = async (request: Request) => {
 const TITLE = 'Stampy'
 const DESCRIPTION = 'AI Safety FAQ'
 const twitterCreator = '@stampyai'
-export const meta: MetaFunction = ({data}) => {
-  const title = makeSocialPreviewText(data?.question?.title, TITLE, 150)
-  const description = makeSocialPreviewText(data?.question?.text, DESCRIPTION)
+export const meta: MetaFunction<typeof loader> = ({data}) => {
+  const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
+  const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
   const url = new URL(data.url)
-  const logo = `${url.origin}/favicon-512.png`
+  const logo = `${url.origin}/${data.minLogo ? 'favicon-min-512.png' : 'favicon-512.png'}`
   return {
     title,
     description,
