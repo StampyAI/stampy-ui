@@ -195,14 +195,26 @@ const renderText = (text: string | null): string | null => {
   contents = urlToIframe(contents)
 
   // Recursively wrap any [See more...] segments in HTML Details
+  const seeMoreToken = 'SEE-MORE-BUTTON'
   const wrapInDetails = ([chunk, ...rest]: string[]): string => {
     if (!rest || rest.length == 0) return chunk
-    return `${chunk}
+    return `<div>${chunk}<div>
            <a href="" class="see-more">See more...</a>
            <div class="see-more-contents">${wrapInDetails(rest)}</div>`
   }
-  contents = contents.split(/\[[Ss]ee more\W*?\]/).map((i: string) => md.render(i))
-  return wrapInDetails(contents)
+  // Add magic to handle markdown shortcomings.
+  // The [See more...] button will be transformed into an empty link if processed.
+  // On the other hand, if the whole text isn't rendered as one, footnotes will break.
+  // To get round this, replace the [See more...] button with a magic string, render the
+  // markdown, then mangle the resulting HTML to add an appropriate button link
+  contents = contents.replaceAll(/\[[Ss]ee more\W*?\]/g, seeMoreToken)
+  contents = md.render(contents)
+  contents = wrapInDetails(contents.split(seeMoreToken))
+  // The parser sometimes generates chunks of bolded or italicised texts next to
+  // each other, e.g. `**this is bolded****, but so is this**`. The renderer doesn't
+  // know what to do with this, so it results in something like `<b>this is bolded****, but so is this</b>`.
+  // For lack of a better solution, just remove any '**'
+  return contents.replaceAll('**', '')
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda

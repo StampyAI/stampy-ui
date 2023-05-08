@@ -105,6 +105,13 @@ export default function App() {
     .filter(({questionState}) => questionState === '_')
     .map(({title}) => title)
 
+  const showMore = (el: HTMLElement) => {
+    const container = el.closest('.react-auto-height') as HTMLElement
+    const button = container.getElementsByClassName('see-more')[0]
+    button.classList.toggle('visible')
+    container.style.removeProperty('height')
+  }
+
   const handleSpecialLinks = (e: MouseEvent) => {
     const el = e.target as HTMLAnchorElement
     if (el.tagName !== 'A' || el.closest('.question-footer')) return
@@ -113,11 +120,12 @@ export default function App() {
     // Manually removing the height from the style fixes this, but can potentially
     // break something else...
     if (el.classList.contains('see-more')) {
-      el.classList.toggle('visible')
-      const container = el.closest('.react-auto-height') as HTMLElement
-      container.style.removeProperty('height')
-
+      showMore(el)
       e.preventDefault()
+      return
+    }
+    if (el.parentElement?.classList.contains('footnote-ref')) {
+      showMore(el)
       return
     }
 
