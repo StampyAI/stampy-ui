@@ -26,7 +26,12 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
 - Copy `wrangler.toml.template` to `wrangler.toml`
 - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
-4. Setup in [Coda](https://coda.io/account)
+4. Setup in [Coda.io](https://coda.io/account)
+
+> *Note*:
+> Content in Coda comes from parsing Google Docs (so that site visitors can make suggestions that
+> will be reviewed by our editors). The parser lives in the
+> [GDocsRelatedThings](https://github.com/StampyAI/GDocsRelatedThings/#readme) repo.
 
 - When logged in to Coda, `Generate API token` in your Account settigns
 - Add restrictions: `Doc or table`, `Read only`, for the doc with url `https://coda.io/d/_dfau7sl2hmG`
