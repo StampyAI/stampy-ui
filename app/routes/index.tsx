@@ -6,6 +6,7 @@ import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import useDraggable from '~/hooks/useDraggable'
+import {getStateEntries} from '~/hooks/stateModifiers'
 import Search from '~/components/search'
 import {Question} from '~/routes/questions/$question'
 import {fetchAnswerDetailsOnSite} from '~/routes/questions/answerDetailsOnSite'
@@ -129,9 +130,15 @@ export default function App() {
       return
     }
 
+    const url = new URL(el.href)
     const href = el.href.replace(/\?.*$/, '')
     const found = onSiteGDocLinkMapRef.current[href]
-    if (found) {
+
+    if (url.hostname === window.location.hostname) {
+      e.preventDefault()
+      const state = new URLSearchParams(url.search).get('state')
+      if (state) selectQuestion(getStateEntries(state)[0][0], '')
+    } else if (found) {
       e.preventDefault()
       selectQuestion(found.pageid, found.title)
     }
