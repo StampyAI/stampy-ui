@@ -36,7 +36,6 @@ function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<
 }
 
 const emptyQuestionArray: Question[] = []
-const emptyQuestionMap: Record<string, Question> = {}
 
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
@@ -55,17 +54,12 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   })
 
   const onSiteAnswersRef = useRef(emptyQuestionArray)
-  const onSiteGDocLinkMapRef = useRef(emptyQuestionMap)
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
     fetchAllQuestionsOnSite().then((questions) => {
       const liveQuestions = questions.filter((q) => q.status === QuestionStatus.LIVE_ON_SITE)
       onSiteAnswersRef.current = liveQuestions
-      onSiteGDocLinkMapRef.current = liveQuestions.reduce((acc, q) => {
-        if (q.answerEditLink) acc[q.answerEditLink] = q
-        return acc
-      }, emptyQuestionMap)
     })
   }, [])
 
@@ -277,7 +271,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   return {
     questions,
     onSiteAnswersRef,
-    onSiteGDocLinkMapRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
