@@ -64,7 +64,10 @@ const runSemanticSearch = (userQuery, attempt = 1) => {
       score: scores[index],
     }))
     questionsScored.sort(byScore)
-    const searchResults = questionsScored.slice(0, numResults)
+    const seen = new Set()
+    const searchResults = questionsScored
+      .filter(({pageid}) => !seen.has(pageid) && seen.add(pageid))
+      .slice(0, numResults)
 
     self.postMessage({searchResults, userQuery})
   })
