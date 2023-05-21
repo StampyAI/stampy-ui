@@ -91,7 +91,6 @@ export default function App() {
   const {
     questions,
     onSiteAnswersRef,
-    onSiteGDocLinkMapRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,
@@ -131,16 +130,10 @@ export default function App() {
     }
 
     const url = new URL(el.href)
-    const href = el.href.replace(/\?.*$/, '')
-    const found = onSiteGDocLinkMapRef.current[href]
-
     if (url.hostname === window.location.hostname) {
       e.preventDefault()
       const state = new URLSearchParams(url.search).get('state')
       if (state) selectQuestion(getStateEntries(state)[0][0], '')
-    } else if (found) {
-      e.preventDefault()
-      selectQuestion(found.pageid, found.title)
     }
   }
 
