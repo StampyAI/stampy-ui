@@ -17,7 +17,7 @@ export function search(question: string, onlyLive: boolean) {
   return fetch(url).then(async (response) => {
     if (response.status != 200) {
       const errorMsg = await response.text()
-      console.error(errorMsg)
+      console.error(url, errorMsg)
       return new Response(errorMsg, {status: 502})
     }
     return await response.json()
