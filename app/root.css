@@ -376,6 +376,16 @@ tr:nth-child(even) {
   aspect-ratio: 16/9;
 }
 
+.answer .link-popup {
+  visibility: hidden;
+  position: relative;
+  display: inline-block;
+  background: black;
+}
+.answer .link-popup.shown {
+  visibility: visible;
+}
+
 .question-footer {
   display: grid;
   grid-template-columns: auto auto;
