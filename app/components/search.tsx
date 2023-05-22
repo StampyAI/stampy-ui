@@ -75,6 +75,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
+    logSearch(value)
     setLoading(true)
     searchInputRef.current = value
 
@@ -378,3 +379,41 @@ const normalize = (question: string) =>
  * Sort function for the highest score on top
  */
 const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
+
+/**
+ * Handle flushing searched phrases to the NLP logger endpoint
+ */
+let prevSearch = ''
+let lastTimestamp = 0
+
+const logSearch = (value: string) => {
+  setTimeout(shouldFlushSearch(value, prevSearch), 4000)
+  lastTimestamp = Date.now()
+  prevSearch = value
+}
+
+const shouldFlushSearch = (value: string, prevSearch: string) => () => {
+  const substring = prevSearch.startsWith(value) || value.startsWith(prevSearch)
+  const timeDiff = Math.abs(Date.now() - lastTimestamp)
+  const logValue = (value: string) =>
+    fetch(`/questions/log`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'search',
+        query: value,
+      }),
+    }).catch((error) => console.error(error))
+
+  // The searched value is totally different from the previous one - assume that they
+  // are searching for something new, and log the previous search value
+  if (prevSearch !== '' && !substring) {
+    logValue(prevSearch)
+    // The user has stopped typing for more than 4s - they either type very slowly,
+    // have gotten distracted, or have found what they were looking for, so might as well log it
+  } else if (value !== '' && timeDiff > 4000) {
+    logValue(value)
+  }
+}
