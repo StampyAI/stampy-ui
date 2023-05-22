@@ -75,7 +75,6 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
-    logSearch(value)
     setLoading(true)
     searchInputRef.current = value
 
@@ -94,6 +93,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
       console.debug('postMessage to tfWorker:', value)
       tfWorkerRef.current?.postMessage(value)
     }
+    logSearch(value)
   }
 
   const handleChange = debounce(searchFn, 100)
@@ -404,8 +404,9 @@ const shouldFlushSearch = (value: string, prevSearch: string) => () => {
       body: JSON.stringify({
         name: 'search',
         query: value,
+        type: location.hostname,
       }),
-    }).catch((error) => console.error(error))
+    })
 
   // The searched value is totally different from the previous one - assume that they
   // are searching for something new, and log the previous search value
