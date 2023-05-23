@@ -381,9 +381,13 @@ tr:nth-child(even) {
   position: relative;
   display: inline-block;
   background: black;
+  padding: 0 10px;
 }
 .answer .link-popup.shown {
   visibility: visible;
+}
+.answer .link-popup p {
+  margin: 0;
 }
 
 .question-footer {

@@ -177,7 +177,7 @@ function Contents({html}: {html: string}) {
         // Find the footnote. The href element is just the id, e.g. `#fnt12`, but
         // some browsers (or at least firefox) return a whole qualified url. Hence
         // this mucking around to extract the id
-        const [_, id] = (e as HTMLLinkElement)?.href?.split('#')
+        const id = (e as HTMLLinkElement)?.href?.split('#')[1]
         const footnote = el?.querySelector(`#${id}`) as HTMLLabelElement
 
         // Create an element wih the contents of the footnote ...
