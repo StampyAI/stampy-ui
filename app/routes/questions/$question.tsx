@@ -193,10 +193,10 @@ function Contents({html}: {html: string}) {
 
         // Add listeners to display the popup whenever the mouse is over the
         // footnote link or over the actual popup
-        e.addEventListener('mouseover', (ev) => popup.classList.add('shown'))
-        e.addEventListener('mouseout', (ev) => popup.classList.remove('shown'))
-        popup.addEventListener('mouseover', (ev) => popup.classList.add('shown'))
-        popup.addEventListener('mouseout', (ev) => popup.classList.remove('shown'))
+        e.addEventListener('mouseover', () => popup.classList.add('shown'))
+        e.addEventListener('mouseout', () => popup.classList.remove('shown'))
+        popup.addEventListener('mouseover', () => popup.classList.add('shown'))
+        popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
 
         // The event handlers don't need to be removed, as they should exist as long
         // as the elements do, and so will be deleted along with them

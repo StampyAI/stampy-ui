@@ -652,6 +652,31 @@ a.see-more.visible {
   color: red;
 }
 
+/* Tags */
+
+.tags-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+.tags-container .tag {
+  display: flex;
+  border-radius: 5px;
+  background: var(--colorTooltip);
+  padding: 10px;
+  margin: 10px;
+}
+.tags-container .tag img {
+  width: 5em;
+  height: 5em;
+  flex-grow: 0;
+  margin-right: 10px;
+}
+.tags-container .tag .tag-name {
+  font-size: 25px;
+}
+
+/* Smaller screen stuff */
+
 @media (max-width: 740px) {
   header {
     flex-direction: column;

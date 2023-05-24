@@ -25,6 +25,7 @@ export type Tag = {
   tagId: number
   name: string
   url: string
+  icon: string | null
   internal: boolean
   questions: RelatedQuestions
   mainQuestion: string | null
@@ -83,6 +84,7 @@ type CodaRow = {
     'Internal?': boolean
     'Questions tagged with this': Entity[]
     'Main question': string | Entity | null
+    Icon: string | Entity[]
   }
 }
 type CodaResponse = {
@@ -283,6 +285,7 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
   tagId: r.values['Tag ID'],
   name: r.name,
   url: r.browserLink,
+  icon: typeof r.values['Icon'] !== 'string' ? r.values['Icon'][0].url : null,
   internal: r.values['Internal?'],
   questions: r.values['Questions tagged with this']
     .map(({name}) => ({title: name, pageid: nameToId[name]}))
@@ -300,6 +303,18 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
       .map((q) => [q.title, q.pageid])
   )
   return toTag(rows[0], nameToId)
+})
+
+export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
+  const rows = await getCodaRows(TAGS_TABLE, 'Internal?', 'false')
+
+  const questions = await loadAllQuestions()
+  const nameToId = Object.fromEntries(
+    questions.data
+      .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
+      .map((q) => [q.title, q.pageid])
+  )
+  return rows.map((r) => toTag(r, nameToId))
 })
 
 export const loadMoreAnswerDetails = withCache(

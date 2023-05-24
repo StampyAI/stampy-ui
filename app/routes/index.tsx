@@ -1,6 +1,6 @@
 import {useEffect, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {ShouldReloadFunction, useOutletContext, useLoaderData, Link} from '@remix-run/react'
+import {ShouldReloadFunction, useOutletContext, useLoaderData} from '@remix-run/react'
 import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
@@ -8,12 +8,10 @@ import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import useDraggable from '~/hooks/useDraggable'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import Search from '~/components/search'
+import {Header, Footer} from '~/components/layouts'
 import {Question} from '~/routes/questions/$question'
 import {fetchAnswerDetailsOnSite} from '~/routes/questions/answerDetailsOnSite'
-import logoFunSvg from '~/assets/stampy-logo.svg'
-import logoMinSvg from '~/assets/stampy-logo-min.svg'
-import {Share, Users, Code, Discord} from '~/components/icons-generated'
-import CopyLink from '~/components/copyLink'
+import {Discord} from '~/components/icons-generated'
 import InfiniteScroll from '~/components/infiniteScroll'
 import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
@@ -28,54 +26,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 }
 
 export const unstable_shouldReload: ShouldReloadFunction = () => false
-
-const year = new Date().getFullYear()
-
-const Header = ({reset}: {reset: (e: MouseEvent) => void}) => {
-  const minLogo = useOutletContext<boolean>()
-
-  return (
-    <header className={minLogo ? 'min-logo' : 'fun-logo'}>
-      {minLogo ? (
-        <div className="logo-intro-group">
-          <Link to="/" onClick={(e) => reset(e)}>
-            <img className="logo" alt="logo" src={logoMinSvg} />
-          </Link>
-          <div className="intro">
-            Answering questions about
-            <h1>AI Safety</h1>
-          </div>
-        </div>
-      ) : (
-        <div className="logo-intro-group">
-          <Link to="/" onClick={(e) => reset(e)}>
-            <img className="logo" alt="logo" src={logoFunSvg} />
-          </Link>
-          <div className="intro">
-            <h1>
-              Welcome to <span className="highlight">stampy.ai</span>!
-            </h1>
-            I can answer questions about artificial general intelligence safety
-          </div>
-        </div>
-      )}
-      <div className="icon-link-group">
-        <CopyLink>
-          <Share />
-          Share link
-        </CopyLink>
-        <a href="https://get_involved.aisafety.info" className="icon-link">
-          <Users />
-          Get Involved
-        </a>
-        <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
-          <Code />
-          Help Code
-        </a>
-      </div>
-    </header>
-  )
-}
 
 export default function App() {
   const minLogo = useOutletContext<boolean>()
@@ -192,11 +142,7 @@ export default function App() {
       </a>
 
       <InfiniteScroll fetchMore={fetchMoreQuestions}>
-        <footer>
-          <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
-            © stampy.ai, 2022 - {year}
-          </a>
-        </footer>
+        <Footer />
       </InfiniteScroll>
     </>
   )
