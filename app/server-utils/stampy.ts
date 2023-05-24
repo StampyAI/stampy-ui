@@ -199,7 +199,7 @@ const renderText = (text: string | null): string | null => {
   const wrapInDetails = ([chunk, ...rest]: string[]): string => {
     if (!rest || rest.length == 0) return chunk
     return `<div>${chunk}<div>
-           <a href="" class="see-more">See more...</a>
+           <a href="" class="see-more"></a>
            <div class="see-more-contents">${wrapInDetails(rest)}</div>`
   }
   // Add magic to handle markdown shortcomings.
