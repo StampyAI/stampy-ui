@@ -18,6 +18,7 @@
   --bgColorTableRows: #e8f7fe;
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
+  --colorTooltip: #d1d1d1;
 
   /* same in both themes: */
   --colorButtonText: #c97;
@@ -376,6 +377,33 @@ tr:nth-child(even) {
   aspect-ratio: 16/9;
 }
 
+.answer .link-popup {
+  visibility: hidden;
+  position: absolute;
+  display: inline-block;
+  border-radius: 5px;
+  background: var(--colorTooltip);
+  padding: 5px 10px;
+  margin-left: 10px;
+  max-width: 35%;
+}
+.answer .link-popup::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 100%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--colorTooltip) transparent transparent;
+}
+
+.answer .link-popup.shown {
+  visibility: visible;
+}
+.answer .link-popup p {
+  margin: 0;
+}
+
 .question-footer {
   display: grid;
   grid-template-columns: auto auto;
@@ -694,6 +722,7 @@ a.see-more.visible {
     --bgColorTableRows: #1d2436;
     --colorLink: #89e3ff;
     --colorLinkVisited: #79f;
+    --colorTooltip: #2e2e2e;
   }
 
   svg *[class$='svg__gray'] {

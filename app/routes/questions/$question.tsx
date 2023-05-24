@@ -98,32 +98,6 @@ export function Question({
   const clsLinkHovered = isLinkHovered ? 'link-hovered' : ''
   const cls = `${clsExpanded} ${clsLinkHovered}`
 
-  const [showLongDescription, setShowLongDescription] = useState(false)
-  const answerRef = useRef<HTMLDivElement>(null)
-  const isExpandedAfterLoading = isExpanded && !refreshOnToggleAfterLoading.current
-
-  useEffect(() => {
-    if (isExpandedAfterLoading) {
-      const el = answerRef.current
-      const showEl = el?.querySelector('.card-show-longdesc')
-      const hideEl = el?.querySelector('.card-hide-longdesc')
-
-      if (showEl) {
-        const showLong = () => setShowLongDescription(true)
-        const hideLong = () => setShowLongDescription(false)
-
-        // TODO: #13 change to accessible button/link instead of <div>
-        showEl.addEventListener('click', showLong)
-        hideEl?.addEventListener('click', hideLong)
-
-        return () => {
-          showEl.removeEventListener('click', showLong)
-          hideEl?.removeEventListener('click', hideLong)
-        }
-      }
-    }
-  }, [isExpandedAfterLoading])
-
   const handleToggle = () => {
     onToggle(questionProps)
     if (text == null) {
@@ -156,15 +130,10 @@ export function Question({
         </button>
       </h2>
       <AutoHeight>
-        <div className={`answer ${showLongDescription ? 'long' : 'short'}`} draggable="false">
+        <div className="answer" draggable="false">
           {isExpanded && (
             <>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: html,
-                }}
-                ref={answerRef}
-              />
+              <Contents html={html} />
               {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
                 /* Any changes to this class should also be reflected in App.handleSpecialLinks */
                 <div className="question-footer">
@@ -192,5 +161,55 @@ export function Question({
         </div>
       </AutoHeight>
     </article>
+  )
+}
+
+function Contents({html}: {html: string}) {
+  const elementRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = elementRef.current
+
+    // In theory this could be extended to all links
+    const footnotes = el?.querySelectorAll('.footnote-ref a')
+    if (footnotes && footnotes.length) {
+      footnotes.forEach((e) => {
+        // Find the footnote. The href element is just the id, e.g. `#fnt12`, but
+        // some browsers (or at least firefox) return a whole qualified url. Hence
+        // this mucking around to extract the id
+        const id = (e as HTMLLinkElement)?.href?.split('#')[1]
+        const footnote = el?.querySelector(`#${id}`) as HTMLLabelElement
+
+        // Create an element wih the contents of the footnote ...
+        const popup = document.createElement('div')
+        popup.className = 'link-popup'
+        popup.innerHTML = footnote?.innerHTML
+
+        // ... but remove the back link, as it's useless in the popup
+        if (popup?.firstElementChild?.lastChild)
+          popup.firstElementChild.removeChild(popup.firstElementChild.lastChild)
+
+        e?.parentElement?.appendChild(popup)
+
+        // Add listeners to display the popup whenever the mouse is over the
+        // footnote link or over the actual popup
+        e.addEventListener('mouseover', (ev) => popup.classList.add('shown'))
+        e.addEventListener('mouseout', (ev) => popup.classList.remove('shown'))
+        popup.addEventListener('mouseover', (ev) => popup.classList.add('shown'))
+        popup.addEventListener('mouseout', (ev) => popup.classList.remove('shown'))
+
+        // The event handlers don't need to be removed, as they should exist as long
+        // as the elements do, and so will be deleted along with them
+      })
+    }
+  }, [html])
+
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: html,
+      }}
+      ref={elementRef}
+    />
   )
 }
