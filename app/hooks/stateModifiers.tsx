@@ -23,6 +23,11 @@ export const getStateEntries = (
     )
   ).filter(makeUniqueChecker())
 
+export const entryState = (state: StateString, pageid: PageId): QuestionState =>
+  getStateEntries(state)
+    .filter(([entryPageid]) => entryPageid === pageid.toString())
+    .map(([pageid, state]) => state)[0]
+
 export const removeRelated = (questions: StateEntry[]): StateEntry[] =>
   questions.filter((i) => i[1] != QuestionState.RELATED)
 
@@ -64,6 +69,24 @@ export const insertAfter = (state: StateString, pageId: PageId, to: PageId): Sta
   return processStateEntries(state, moveEntry)
 }
 
+const pushToEndOfRelated = (pageId: PageId, entries: StateEntry[]) => {
+  const pageIds = entries.map((entry: StateEntry) => entry[0])
+  const states = entries.map((entry: StateEntry) => entry[1])
+
+  const index = pageIds.indexOf(pageId)
+  if (index < 0 || entries[index][1] != QuestionState.RELATED) {
+    return entries
+  }
+
+  const nextParent = states.map((state) => state != QuestionState.RELATED).indexOf(true, index)
+  if (nextParent < 0) {
+    entries.push(entries[index])
+  } else {
+    entries.splice(nextParent, 0, entries[index])
+  }
+  entries.splice(index, 1)
+  return entries
+}
 /*
  * Open the given question and add its subquestions - this will return an appropriate URL param string
  */
@@ -72,26 +95,35 @@ export const insertInto = (
   pageid: PageId,
   relatedQuestions: RelatedQuestions,
   options = {toggle: true}
-): StateString =>
-  processStateEntries(state, (entries: StateEntry[]) =>
-    entries.reduce((acc: StateEntry[], [k, v]: StateEntry) => {
-      if (k === pageid.toString()) {
-        const newValue: QuestionState = options.toggle
-          ? v === QuestionState.OPEN
-            ? QuestionState.COLLAPSED
-            : QuestionState.OPEN
-          : v
-        const related = relatedQuestions
-          .filter((i) => i)
-          .map((r) => [r.pageid, QuestionState.RELATED] as StateEntry)
-        acc.push([k, newValue])
-        return acc.concat(related)
-      } else {
-        acc.push([k, v])
-      }
-      return acc
-    }, [])
+): StateString => {
+  return processStateEntries(state, (entries: StateEntry[]) =>
+    // If the question is a related one, move all other related questions above it
+    pushToEndOfRelated(pageid, entries)
+      // If the question's related questions are already displayed, remove them, so they are shown as this
+      // ones related questions
+      .filter(
+        ([statePageid]: StateEntry) => !relatedQuestions.some(({pageid}) => pageid == statePageid)
+      )
+      // Toggle the selected question and append all its related questions
+      .reduce((acc: StateEntry[], [statePageid, stateStatus]: StateEntry) => {
+        if (statePageid === pageid.toString()) {
+          const newValue: QuestionState = options.toggle
+            ? stateStatus === QuestionState.OPEN
+              ? QuestionState.COLLAPSED
+              : QuestionState.OPEN
+            : stateStatus
+          const related = relatedQuestions
+            .filter((i) => i)
+            .map((r) => [r.pageid, QuestionState.RELATED] as StateEntry)
+          acc.push([statePageid, newValue])
+          return acc.concat(related)
+        } else {
+          acc.push([statePageid, stateStatus])
+        }
+        return acc
+      }, [])
   )
+}
 
 export const removeQuestion = (state: StateString, pageid: PageId): StateString =>
   processStateEntries(state, (entries) => entries.filter((q) => q[0] != pageid))

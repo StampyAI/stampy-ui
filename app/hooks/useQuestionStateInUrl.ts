@@ -12,6 +12,7 @@ import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
 import {
   processStateEntries,
   getStateEntries,
+  entryState,
   addQuestions as addQuestionsToState,
   insertInto as insertIntoState,
   moveQuestion as moveQuestionInState,
@@ -119,24 +120,25 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   }
 
   /*
-   * Get all related questions of the provided `question` that aren't already displayed on the site
+   * Get all related questions of the provided `question` that should be displayed
    */
-  const unshownRelatedQuestions = (
-    questions: Question[],
-    questionProps: Question
+  const getRelatedQuestions = (
+    questionProps: Question,
+    topLevelQuestions: Question[] = []
   ): RelatedQuestions => {
     const {relatedQuestions} = questionProps
 
     const onSiteAnswers = onSiteAnswersRef.current
     const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
 
-    return relatedQuestions.filter((question) => {
-      const isOnSite = onSiteSet.has(question.pageid)
-      // hide already displayed questions, detect duplicates by pageid (pageid can be different due to redirects)
-      // TODO: #25 relocate already displayed to slide in as a new related one
-      const isAlreadyDisplayed = questions.some(({pageid}) => pageid === question.pageid)
-      return isOnSite && !isAlreadyDisplayed
-    })
+    return (
+      relatedQuestions
+        // If top level questions are provided, ignore them - otherwise they'd get collapsed and moved back
+        // into the related section
+        .filter((question) => !topLevelQuestions.some(({pageid}) => pageid === question.pageid))
+        // Remove all questions that aren't published
+        .filter((question) => onSiteSet.has(question.pageid))
+    )
   }
 
   /*
@@ -198,8 +200,14 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         return
       }
 
-      const newRelatedQuestions = unshownRelatedQuestions(questions, questionProps)
-      const newState = insertIntoState(currentState, pageid, newRelatedQuestions)
+      const displayableRelatedQuestions = getRelatedQuestions(
+        questionProps,
+        // if the question is being opened, pull in all related questions. On the other hand,
+        // if it's being closed, leave opened related questions, as the user could simply be cleaning
+        // things up
+        entryState(currentState, pageid) == QuestionState.OPEN ? questions : []
+      )
+      const newState = insertIntoState(currentState, pageid, displayableRelatedQuestions)
 
       updateStateString(newState)
     },
@@ -254,7 +262,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
           setTimeout(insertAfterOnSiteStatusIsKnown, 200)
           return
         }
-        const relatedQuestions = unshownRelatedQuestions([], questions[0])
+        const relatedQuestions = getRelatedQuestions(questions[0])
         const newState = insertIntoState(
           stateString ?? initialCollapsedState,
           questions[0].pageid,
