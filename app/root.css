@@ -643,9 +643,14 @@ a:focus-visible,
   border-radius: 2px;
 }
 
-a.see-more:not(.visible) + div.see-more-contents,
-a.see-more.visible {
+a.see-more:not(.visible) + div.see-more-contents {
   display: none;
+}
+a.see-more:after {
+  content: 'See more...';
+}
+a.see-more.visible:after {
+  content: 'See less';
 }
 
 .error {
