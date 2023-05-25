@@ -25,7 +25,6 @@ export type Tag = {
   tagId: number
   name: string
   url: string
-  icon: string | null
   internal: boolean
   questions: RelatedQuestions
   mainQuestion: string | null
@@ -84,7 +83,6 @@ type CodaRow = {
     'Internal?': boolean
     'Questions tagged with this': Entity[]
     'Main question': string | Entity | null
-    Icon: string | Entity[]
   }
 }
 type CodaResponse = {
@@ -285,7 +283,6 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
   tagId: r.values['Tag ID'],
   name: r.name,
   url: r.browserLink,
-  icon: typeof r.values['Icon'] !== 'string' ? r.values['Icon'][0].url : null,
   internal: r.values['Internal?'],
   questions: r.values['Questions tagged with this']
     .map(({name}) => ({title: name, pageid: nameToId[name]}))

@@ -653,26 +653,35 @@ a.see-more.visible {
 }
 
 /* Tags */
-
-.tags-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-}
-.tags-container .tag {
+.tag-controls {
   display: flex;
+}
+.tag-controls .searchbar {
+  flex: 1;
+  padding: 0 20px 0 10px;
+}
+.tag-controls .sort-by {
+  flex: 1;
+}
+.tag-controls .sort-by input {
+  padding: 10px;
+  font-size: 15px;
+}
+
+.all-tags-container .tag {
+  all: unset;
+}
+.all-tags-container .tag {
+  display: inline-block;
   border-radius: 5px;
   background: var(--colorTooltip);
-  padding: 10px;
+  padding: 15px;
   margin: 10px;
+  cursor: pointer;
 }
-.tags-container .tag img {
-  width: 5em;
-  height: 5em;
-  flex-grow: 0;
-  margin-right: 10px;
-}
-.tags-container .tag .tag-name {
+.all-tags-container .tag .tag-name {
   font-size: 25px;
+  padding-right: 10px;
 }
 
 /* Smaller screen stuff */

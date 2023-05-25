@@ -2,7 +2,7 @@ import {MouseEvent} from 'react'
 import {useOutletContext, Link} from '@remix-run/react'
 import logoFunSvg from '../assets/stampy-logo.svg'
 import logoMinSvg from '../assets/stampy-logo-min.svg'
-import {Share, Users, Code} from './icons-generated'
+import {Share, Users, Code, Tag} from './icons-generated'
 import CopyLink from './copyLink'
 
 const year = new Date().getFullYear()
@@ -44,6 +44,10 @@ export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) 
         <a href="https://github.com/StampyAI/stampy-ui" className="icon-link">
           <Code />
           Help Code
+        </a>
+        <a href="/tags/" className="icon-link">
+          <Tag />
+          Tags
         </a>
       </div>
     </header>

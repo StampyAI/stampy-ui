@@ -72,17 +72,15 @@ export function TagQuestions({
       <div className="tag-questions">
         {tag.questions.map((question) => (
           <div key={tag.rowId + '-' + question.pageid}>
-            <a href={`/?state=${question.pageid}_`}>
-              <button
-                className="question-tag"
-                onClick={() => {
-                  selectQuestion(question.pageid, question.title)
-                  clearTag()
-                }}
-              >
-                {question.title}
-              </button>
-            </a>
+            <button
+              className="question-tag"
+              onClick={() => {
+                selectQuestion(question.pageid, question.title)
+                clearTag()
+              }}
+            >
+              {question.title}
+            </button>
           </div>
         ))}
       </div>
