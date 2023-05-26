@@ -8,9 +8,30 @@
       "name": "Debug Jest Tests",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand", "--coverage", "false"],
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand",
+        "--coverage",
+        "false"
+      ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
+    },
+    // https://gist.github.com/kiliman/a9d7c874af03369a1d105a92560d89e9
+    {
+      "command": "npm run dev:miniflare",
+      "name": "Run npm run dev:miniflare",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Attach by Process ID",
+      "processId": "${command:PickProcess}",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     }
   ]
 }
