@@ -20,6 +20,11 @@ export enum QuestionStatus {
   LIVE_ON_SITE = 'Live on site',
   UNKNOWN = 'Unknown',
 }
+export type GlossaryEntry = {
+  term: string
+  pageid: PageId
+  contents: string
+}
 export type Tag = {
   rowId: string
   tagId: number
@@ -257,6 +262,29 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
   return data
 })
 
+export const loadGlossary = withCache('loadGlossary', async () => {
+  const rows = await getCodaRows(ON_SITE_TABLE)
+
+  const getContents = (q: Question): string => {
+    if (!q.text) return ''
+
+    // The contents are HTML paragraphs with random stuff in them. This function
+    // should return the first paragraph
+    const contents = q.text.split('</p>')[0]
+    return contents && contents + '</p>'
+  }
+
+  const gloss = rows
+    .map(({name, values}) => convertToQuestion(name, values))
+    .filter((q) => q.tags.includes('Glossary'))
+    .map((q) => ({
+      term: q.title.replace(/^What is ((a|an|the) )?('|")?(.*?)('|")?\?$/, '$4'),
+      pageid: q.pageid,
+      contents: getContents(q),
+    }))
+  return Object.fromEntries(gloss.map((e) => [e.term.toLowerCase(), e]))
+})
+
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = await getCodaRows(ON_SITE_TABLE)
   const questions = rows.map(({name, values}) => convertToQuestion(name, values))
@@ -300,6 +328,18 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
       .map((q) => [q.title, q.pageid])
   )
   return toTag(rows[0], nameToId)
+})
+
+export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
+  const rows = await getCodaRows(TAGS_TABLE, 'Internal?', 'false')
+
+  const questions = await loadAllQuestions()
+  const nameToId = Object.fromEntries(
+    questions.data
+      .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
+      .map((q) => [q.title, q.pageid])
+  )
+  return rows.map((r) => toTag(r, nameToId))
 })
 
 export const loadMoreAnswerDetails = withCache(

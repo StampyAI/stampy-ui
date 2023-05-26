@@ -41,7 +41,7 @@ export async function fetchTag(tagName: string): Promise<TagType | never[]> {
   })
 }
 
-function TagQuestions({
+export function TagQuestions({
   tag,
   selectQuestion,
   clearTag,

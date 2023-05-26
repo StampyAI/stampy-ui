@@ -23,6 +23,7 @@
   /* same in both themes: */
   --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
+  --marginTags: clamp(5px, 1vw, 10px);
 
   /* dark theme at the end of file to overwrite all previous rules */
 }
@@ -377,6 +378,11 @@ tr:nth-child(even) {
   aspect-ratio: 16/9;
 }
 
+.answer .glossary-entry {
+  border-bottom: 2px dotted grey;
+  cursor: pointer;
+}
+
 .answer .link-popup {
   visibility: hidden;
   position: absolute;
@@ -656,6 +662,43 @@ a.see-more.visible:after {
 .error {
   color: red;
 }
+
+/* Tags */
+.tag-controls {
+  display: flex;
+  flex-wrap: wrap;
+}
+.tag-controls .searchbar {
+  flex: 1;
+  margin: var(--marginTags);
+}
+.tag-controls .sort-by {
+  flex: 1;
+  margin: var(--marginTags);
+}
+.tag-controls .sort-by input {
+  padding: 10px;
+  font-size: 15px;
+}
+
+.all-tags-container .tag {
+  all: unset;
+}
+.all-tags-container .tag {
+  display: inline-block;
+  border-radius: 5px;
+  background: var(--colorTooltip);
+  /* visually consistent padding is numerically different due to line-height: 1.5 */
+  padding: 10px 15px;
+  margin: var(--marginTags);
+  cursor: pointer;
+}
+.all-tags-container .tag .tag-name {
+  font-size: clamp(0.9rem, 3vw, 1.56rem);
+  padding-right: 10px;
+}
+
+/* Smaller screen stuff */
 
 @media (max-width: 740px) {
   header {
