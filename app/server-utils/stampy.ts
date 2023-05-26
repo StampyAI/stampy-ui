@@ -302,6 +302,18 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
   return toTag(rows[0], nameToId)
 })
 
+export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
+  const rows = await getCodaRows(TAGS_TABLE, 'Internal?', 'false')
+
+  const questions = await loadAllQuestions()
+  const nameToId = Object.fromEntries(
+    questions.data
+      .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
+      .map((q) => [q.title, q.pageid])
+  )
+  return rows.map((r) => toTag(r, nameToId))
+})
+
 export const loadMoreAnswerDetails = withCache(
   'loadMoreAnswerDetails',
   async (
