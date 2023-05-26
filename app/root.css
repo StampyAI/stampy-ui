@@ -23,6 +23,7 @@
   /* same in both themes: */
   --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
+  --marginTags: clamp(5px, 1vw, 10px);
 
   /* dark theme at the end of file to overwrite all previous rules */
 }
@@ -655,13 +656,15 @@ a.see-more.visible {
 /* Tags */
 .tag-controls {
   display: flex;
+  flex-wrap: wrap;
 }
 .tag-controls .searchbar {
   flex: 1;
-  padding: 0 20px 0 10px;
+  margin: var(--marginTags);
 }
 .tag-controls .sort-by {
   flex: 1;
+  margin: var(--marginTags);
 }
 .tag-controls .sort-by input {
   padding: 10px;
@@ -675,12 +678,13 @@ a.see-more.visible {
   display: inline-block;
   border-radius: 5px;
   background: var(--colorTooltip);
-  padding: 15px;
-  margin: 10px;
+  /* visually consistent padding is numerically different due to line-height: 1.5 */
+  padding: 10px 15px;
+  margin: var(--marginTags);
   cursor: pointer;
 }
 .all-tags-container .tag .tag-name {
-  font-size: 25px;
+  font-size: clamp(0.9rem, 3vw, 1.56rem);
   padding-right: 10px;
 }
 
