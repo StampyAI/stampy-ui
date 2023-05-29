@@ -35,7 +35,7 @@ export default function App() {
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
   const [tagsFilter, setTagsFilter] = useState<string>('')
 
-  const [sortBy, setSortBy] = useState<string>('alphabetically')
+  const [sortBy, setSortBy] = useState<string>('by number of questions')
   const sortFuncs: SortFunc = {
     alphabetically: (a: TagType, b: TagType) => (a.name > b.name ? 1 : -1),
     'by number of questions': (a: TagType, b: TagType) => b.questions.length - a.questions.length,
