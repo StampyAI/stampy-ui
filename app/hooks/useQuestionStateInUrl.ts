@@ -7,8 +7,10 @@ import {
   RelatedQuestions,
   PageId,
   QuestionStatus,
+  Glossary,
 } from '~/server-utils/stampy'
 import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
+import {fetchGlossary} from '~/routes/questions/glossary'
 import {
   processStateEntries,
   getStateEntries,
@@ -62,6 +64,12 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       onSiteAnswersRef.current = liveQuestions
     })
   }, [])
+
+  const [glossary, setGlossary] = useState({} as Glossary)
+  useEffect(() => {
+    // not needed for initial screen => lazy load on client
+    fetchGlossary().then((glossary) => setGlossary(glossary))
+  }, [setGlossary])
 
   useEffect(() => {
     if (transition.location) {
@@ -277,5 +285,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     selectQuestion,
     addQuestions,
     moveQuestion,
+    glossary,
   }
 }

@@ -47,6 +47,7 @@ export default function App() {
     selectQuestion,
     addQuestions,
     moveQuestion,
+    glossary,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
@@ -127,6 +128,7 @@ export default function App() {
                 onLazyLoadQuestion={onLazyLoadQuestion}
                 onToggle={toggleQuestion}
                 selectQuestion={selectQuestion}
+                glossary={glossary}
                 onDragStart={handleDragStart(question)}
                 onDragEnd={handleDragEnd(question)}
                 onDragOver={handleDragOver(question)}

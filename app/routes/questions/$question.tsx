@@ -2,7 +2,7 @@ import type {LoaderFunction} from '@remix-run/cloudflare'
 import {loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question} from '~/server-utils/stampy'
+import type {Question, Glossary} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags/$tag'
@@ -56,11 +56,13 @@ export function Question({
   onLazyLoadQuestion,
   onToggle,
   selectQuestion,
+  glossary,
   ...dragProps
 }: {
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
+  glossary: Glossary
   selectQuestion: (pageid: string, title: string) => void
 } & JSX.IntrinsicElements['div']) {
   const {
@@ -79,6 +81,7 @@ export function Question({
   useEffect(() => {
     if (text == null && !isLoading.current) {
       isLoading.current = true
+      // This is where the actual contents of the question get fetched from the backend
       fetchQuestion(pageid).then((newQuestionProps) => {
         if (!newQuestionProps) return
         onLazyLoadQuestion(newQuestionProps)
@@ -133,7 +136,7 @@ export function Question({
         <div className="answer" draggable="false">
           {isExpanded && (
             <>
-              <Contents html={html} />
+              <Contents html={html} glossary={glossary} />
               {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
                 /* Any changes to this class should also be reflected in App.handleSpecialLinks */
                 <div className="question-footer">
@@ -164,50 +167,85 @@ export function Question({
   )
 }
 
-function Contents({html}: {html: string}) {
+function Contents({html, glossary}: {html: string; glossary: Glossary}) {
   const elementRef = useRef<HTMLDivElement>(null)
+
+  const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string => {
+    const id = e.getAttribute('href') || ''
+    const footnote = el.querySelector(id) as HTMLLabelElement
+
+    const elem = document.createElement('div')
+    elem.innerHTML = footnote.innerHTML
+
+    // remove the back link, as it's useless in the popup
+    if (elem?.firstElementChild?.lastChild)
+      elem.firstElementChild.removeChild(elem.firstElementChild.lastChild)
+
+    return elem.innerHTML
+  }
+
+  const addPopup = (e: HTMLElement, contents: string): HTMLElement => {
+    const popup = document.createElement('div')
+    popup.className = 'link-popup'
+    popup.innerHTML = contents
+
+    e.insertAdjacentElement('afterend', popup)
+
+    e.addEventListener('mouseover', () => popup.classList.add('shown'))
+    e.addEventListener('mouseout', () => popup.classList.remove('shown'))
+    popup.addEventListener('mouseover', () => popup.classList.add('shown'))
+    popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
+
+    return popup
+  }
+
+  // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
+  // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
+  // of longer definitions don't override them.
+  const processedHTML = Object.keys(glossary)
+    .sort((a, b) => b.length - a.length)
+    .reduce(
+      (html, entry) =>
+        html.replace(
+          new RegExp(`(^|\\W)(${entry})($|\\W)`, 'gi'),
+          '$1<span class="glossary-entry">$2</span>$3'
+        ),
+      html
+    )
 
   useEffect(() => {
     const el = elementRef.current
+    if (!el) return
+
+    el.querySelectorAll('.glossary-entry').forEach((e) => {
+      const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
+      // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
+      // if this entry is a subset of a bigger entry, remove it. Ditto for entries that are parts of
+      // external links, as that could get confusing
+      if (
+        e.parentElement?.classList.contains('glossary-entry') ||
+        e.parentElement?.tagName == 'A' ||
+        !entry
+      ) {
+        e.outerHTML = e.textContent || ''
+      } else {
+        addPopup(
+          e as HTMLSpanElement,
+          `<div>${entry.contents}</div><br><a href="/?state=${entry.pageid}_">See more...</a>`
+        )
+      }
+    })
 
     // In theory this could be extended to all links
-    const footnotes = el?.querySelectorAll('.footnote-ref a')
-    if (footnotes && footnotes.length) {
-      footnotes.forEach((e) => {
-        // Find the footnote. The href element is just the id, e.g. `#fnt12`, but
-        // some browsers (or at least firefox) return a whole qualified url. Hence
-        // this mucking around to extract the id
-        const id = (e as HTMLLinkElement)?.href?.split('#')[1]
-        const footnote = el?.querySelector(`#${id}`) as HTMLLabelElement
-
-        // Create an element wih the contents of the footnote ...
-        const popup = document.createElement('div')
-        popup.className = 'link-popup'
-        popup.innerHTML = footnote?.innerHTML
-
-        // ... but remove the back link, as it's useless in the popup
-        if (popup?.firstElementChild?.lastChild)
-          popup.firstElementChild.removeChild(popup.firstElementChild.lastChild)
-
-        e?.parentElement?.appendChild(popup)
-
-        // Add listeners to display the popup whenever the mouse is over the
-        // footnote link or over the actual popup
-        e.addEventListener('mouseover', () => popup.classList.add('shown'))
-        e.addEventListener('mouseout', () => popup.classList.remove('shown'))
-        popup.addEventListener('mouseover', () => popup.classList.add('shown'))
-        popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
-
-        // The event handlers don't need to be removed, as they should exist as long
-        // as the elements do, and so will be deleted along with them
-      })
-    }
-  }, [html])
+    el.querySelectorAll('.footnote-ref a').forEach((e) =>
+      addPopup(e as HTMLAnchorElement, footnoteHTML(el, e as HTMLAnchorElement))
+    )
+  }, [processedHTML, glossary])
 
   return (
     <div
       dangerouslySetInnerHTML={{
-        __html: html,
+        __html: processedHTML,
       }}
       ref={elementRef}
     />

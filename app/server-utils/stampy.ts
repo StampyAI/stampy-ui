@@ -20,6 +20,14 @@ export enum QuestionStatus {
   LIVE_ON_SITE = 'Live on site',
   UNKNOWN = 'Unknown',
 }
+export type GlossaryEntry = {
+  term: string
+  pageid: PageId
+  contents: string
+}
+export type Glossary = {
+  [key: string]: GlossaryEntry
+}
 export type Tag = {
   rowId: string
   tagId: number
@@ -255,6 +263,29 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
   const rows = await getCodaRows(INITIAL_QUESTIONS_TABLE)
   const data = rows.map(({name, values}) => convertToQuestion(name, values))
   return data
+})
+
+export const loadGlossary = withCache('loadGlossary', async () => {
+  const rows = await getCodaRows(ON_SITE_TABLE)
+
+  const getContents = (q: Question): string => {
+    if (!q.text) return ''
+
+    // The contents are HTML paragraphs with random stuff in them. This function
+    // should return the first paragraph
+    const contents = q.text.split('</p>')[0]
+    return contents && contents + '</p>'
+  }
+
+  const gloss = rows
+    .map(({name, values}) => convertToQuestion(name, values))
+    .filter((q) => q.tags.includes('Glossary'))
+    .map((q) => ({
+      term: q.title.replace(/^What is ((a|an|the) )?('|")?(.*?)('|")?\?$/, '$4'),
+      pageid: q.pageid,
+      contents: getContents(q),
+    }))
+  return Object.fromEntries(gloss.map((e) => [e.term.toLowerCase(), e]))
 })
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {

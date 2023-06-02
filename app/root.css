@@ -378,6 +378,11 @@ tr:nth-child(even) {
   aspect-ratio: 16/9;
 }
 
+.answer .glossary-entry {
+  border-bottom: 2px dotted grey;
+  cursor: pointer;
+}
+
 .answer .link-popup {
   visibility: hidden;
   position: absolute;
