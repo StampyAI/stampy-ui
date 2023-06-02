@@ -2,7 +2,7 @@ import type {LoaderFunction} from '@remix-run/cloudflare'
 import {loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question, GlossaryEntry} from '~/server-utils/stampy'
+import type {Question, Glossary} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags/$tag'
@@ -62,7 +62,7 @@ export function Question({
   questionProps: Question
   onLazyLoadQuestion: (question: Question) => void
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
-  glossary: {[key: string]: GlossaryEntry}
+  glossary: Glossary
   selectQuestion: (pageid: string, title: string) => void
 } & JSX.IntrinsicElements['div']) {
   const {
@@ -81,6 +81,7 @@ export function Question({
   useEffect(() => {
     if (text == null && !isLoading.current) {
       isLoading.current = true
+      // This is where the actual contents of the question get fetched from the backend
       fetchQuestion(pageid).then((newQuestionProps) => {
         if (!newQuestionProps) return
         onLazyLoadQuestion(newQuestionProps)
@@ -166,7 +167,7 @@ export function Question({
   )
 }
 
-function Contents({html, glossary}: {html: string; glossary: {[key: string]: GlossaryEntry}}) {
+function Contents({html, glossary}: {html: string; glossary: Glossary}) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string => {

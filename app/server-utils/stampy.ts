@@ -25,6 +25,9 @@ export type GlossaryEntry = {
   pageid: PageId
   contents: string
 }
+export type Glossary = {
+  [key: string]: GlossaryEntry
+}
 export type Tag = {
   rowId: string
   tagId: number

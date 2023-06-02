@@ -1,7 +1,7 @@
 import {useEffect, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldReloadFunction, useOutletContext, useLoaderData} from '@remix-run/react'
-import {loadInitialQuestions, loadGlossary, QuestionState} from '~/server-utils/stampy'
+import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useRerenderOnResize from '~/hooks/useRerenderOnResize'
@@ -19,8 +19,7 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {
     const initialQuestionsData = await loadInitialQuestions(request)
-    const glossaryData = await loadGlossary(request)
-    return {initialQuestionsData, glossaryData}
+    return {initialQuestionsData}
   } catch (e) {
     console.error(e)
   }
@@ -30,9 +29,8 @@ export const unstable_shouldReload: ShouldReloadFunction = () => false
 
 export default function App() {
   const minLogo = useOutletContext<boolean>()
-  const {initialQuestionsData, glossaryData} = useLoaderData<ReturnType<typeof loader>>()
+  const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
-  const {data: glossary = {}} = glossaryData ?? {}
 
   useEffect(() => {
     if (timestamp) {
@@ -49,6 +47,7 @@ export default function App() {
     selectQuestion,
     addQuestions,
     moveQuestion,
+    glossary,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   useRerenderOnResize() // recalculate AutoHeight
