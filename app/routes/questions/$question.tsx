@@ -1,8 +1,8 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
+import {GlossaryEntry, loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question, Glossary} from '~/server-utils/stampy'
+import type {Question, Glossary, PageId} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags/$tag'
@@ -136,7 +136,7 @@ export function Question({
         <div className="answer" draggable="false">
           {isExpanded && (
             <>
-              <Contents html={html} glossary={glossary} />
+              <Contents pageid={pageid} html={html} glossary={glossary} />
               {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
                 /* Any changes to this class should also be reflected in App.handleSpecialLinks */
                 <div className="question-footer">
@@ -167,7 +167,7 @@ export function Question({
   )
 }
 
-function Contents({html, glossary}: {html: string; glossary: Glossary}) {
+function Contents({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string => {
@@ -219,12 +219,14 @@ function Contents({html, glossary}: {html: string; glossary: Glossary}) {
 
     el.querySelectorAll('.glossary-entry').forEach((e) => {
       const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
-      // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
-      // if this entry is a subset of a bigger entry, remove it. Ditto for entries that are parts of
-      // external links, as that could get confusing
       if (
+        // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
+        // if this entry is a subset of a bigger entry, remove it.
         e.parentElement?.classList.contains('glossary-entry') ||
+        // Remove entries that are parts of external links, as that could get confusing
         e.parentElement?.tagName == 'A' ||
+        // Remove entries that point to the current question
+        pageid == (entry as GlossaryEntry)?.pageid ||
         !entry
       ) {
         e.outerHTML = e.textContent || ''
@@ -240,7 +242,7 @@ function Contents({html, glossary}: {html: string; glossary: Glossary}) {
     el.querySelectorAll('.footnote-ref a').forEach((e) =>
       addPopup(e as HTMLAnchorElement, footnoteHTML(el, e as HTMLAnchorElement))
     )
-  }, [processedHTML, glossary])
+  }, [processedHTML, glossary, pageid])
 
   return (
     <div
