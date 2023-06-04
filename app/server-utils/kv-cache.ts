@@ -1,16 +1,18 @@
 import type {DataFunctionArgs} from '@remix-run/cloudflare'
-
+type RequestForReload = DataFunctionArgs['request'] | 'NEVER_RELOAD'
 export function withCache<Fn extends (...args: string[]) => Promise<any>>(
   defaultKey: string,
   fn: Fn
 ): (
-  request?: DataFunctionArgs['request'],
+  // pass the real Request object when possible, 'NEVER_RELOAD' is an escape hatch for nested withCache(),
+  // it's used for detection of `?reload` in url, to invalidate cache in a background request
+  request: RequestForReload,
   ...args: Parameters<Fn>
 ) => Promise<{data: Awaited<ReturnType<Fn>>; timestamp: string}> {
-  return (async (request?: DataFunctionArgs['request'], ...args: Parameters<Fn>) => {
+  return (async (request: RequestForReload, ...args: Parameters<Fn>) => {
     const key = args[0] ?? defaultKey
 
-    const shouldReload = request?.url.match(/[?&]reload/)
+    const shouldReload = request === 'NEVER_RELOAD' ? false : request.url.match(/[?&]reload/)
     if (!shouldReload) {
       const cached = await STAMPY_KV.get(key)
 
@@ -34,27 +36,43 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
 
 export async function reloadInBackgroundIfNeeded(url: string, timestamp: string) {
   const ageInMilliseconds = new Date().getTime() - new Date(timestamp).getTime()
+  // TODO: #228 keep debug for a few day after fixing cache invalidation, can be deleted later
+  console.debug('Reload needed', ageInMilliseconds > 10 * 60 * 1000, url || '/', timestamp)
   if (ageInMilliseconds > 10 * 60 * 1000) {
-    fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)
+    const text = await(await fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)).text()
+    try {
+      const json = JSON.parse(text)
+      return json
+    } catch (e) {
+      return text
+    }
   }
 }
 
-export async function loadCache() {
-  const {keys} = await STAMPY_KV.list()
-  const all = []
-  for (const {name, metadata} of keys) {
-    const value = await STAMPY_KV.get(name)
-    if (!value) continue // KV list can be outdated few seconds after cleaning cache
-    all.push({name, metadata, value})
-  }
-
-  return all
+const byNoNumberOnTop = (a: string, b: string) => {
+  const aNoNumber = !a.match(/\d/)
+  const bNoNumber = !b.match(/\d/)
+  if (aNoNumber === bNoNumber) return 0
+  return aNoNumber ? -1 : 1
+}
+export async function loadCacheKeys() {
+  const keys = (await STAMPY_KV.list()).keys.map(({name}) => name).sort(byNoNumberOnTop)
+  return keys
 }
 
-export async function cleanCache() {
-  const {keys} = await STAMPY_KV.list()
-  for (const {name} of keys) {
-    await STAMPY_KV.delete(name)
+export async function loadCacheValue(key: string) {
+  const value = await STAMPY_KV.get(key)
+  return value
+}
+
+export async function cleanCache(keys?: string[] | string) {
+  if (!keys) {
+    keys = (await STAMPY_KV.list()).keys.map(({name}) => name)
+  } else if (typeof keys === 'string') {
+    keys = [keys]
+  }
+  for (const key of keys) {
+    await STAMPY_KV.delete(key)
   }
 
   return null

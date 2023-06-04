@@ -1,6 +1,6 @@
 import {useEffect, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {ShouldReloadFunction, useOutletContext, useLoaderData} from '@remix-run/react'
+import {ShouldRevalidateFunction, useOutletContext, useLoaderData} from '@remix-run/react'
 import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
@@ -25,7 +25,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   }
 }
 
-export const unstable_shouldReload: ShouldReloadFunction = () => false
+export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
   const minLogo = useOutletContext<boolean>()
@@ -40,7 +40,7 @@ export default function App() {
 
   const {
     questions,
-    onSiteAnswersRef,
+    onSiteQuestionsRef: onSiteAnswersRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,

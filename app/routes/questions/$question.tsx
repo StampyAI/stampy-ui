@@ -1,4 +1,4 @@
-import type {LoaderFunction} from '@remix-run/cloudflare'
+import type {LoaderArgs} from '@remix-run/cloudflare'
 import {GlossaryEntry, loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
@@ -12,7 +12,7 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 
-export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
+export const loader = async ({request, params}: LoaderArgs) => {
   const {question} = params
   if (!question) {
     throw Error('missing question title')

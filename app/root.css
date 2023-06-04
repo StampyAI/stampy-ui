@@ -698,6 +698,10 @@ a.see-more.visible:after {
   padding-right: 10px;
 }
 
+.cache button {
+  margin: 0 5px;
+}
+
 /* Smaller screen stuff */
 
 @media (max-width: 740px) {

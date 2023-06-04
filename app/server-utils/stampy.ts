@@ -324,7 +324,7 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
 export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> => {
   const rows = await getCodaRows(TAGS_TABLE, 'Tag name', tagName)
 
-  const questions = await loadAllQuestions()
+  const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
     questions.data
       .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
@@ -336,7 +336,7 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
 export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
   const rows = await getCodaRows(TAGS_TABLE, 'Internal?', 'false')
 
-  const questions = await loadAllQuestions()
+  const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
     questions.data
       .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
