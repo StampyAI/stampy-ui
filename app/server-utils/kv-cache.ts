@@ -39,22 +39,30 @@ export async function reloadInBackgroundIfNeeded(url: string, timestamp: string)
   }
 }
 
-export async function loadCache() {
-  const {keys} = await STAMPY_KV.list()
-  const all = []
-  for (const {name, metadata} of keys) {
-    const value = await STAMPY_KV.get(name)
-    if (!value) continue // KV list can be outdated few seconds after cleaning cache
-    all.push({name, metadata, value})
-  }
-
-  return all
+const byNoNumberOnTop = (a: string, b: string) => {
+  const aNoNumber = !a.match(/\d/)
+  const bNoNumber = !b.match(/\d/)
+  if (aNoNumber === bNoNumber) return 0
+  return aNoNumber ? -1 : 1
+}
+export async function loadCacheKeys() {
+  const keys = (await STAMPY_KV.list()).keys.map(({name}) => name).sort(byNoNumberOnTop)
+  return keys
 }
 
-export async function cleanCache() {
-  const {keys} = await STAMPY_KV.list()
-  for (const {name} of keys) {
-    await STAMPY_KV.delete(name)
+export async function loadCacheValue(key: string) {
+  const value = await STAMPY_KV.get(key)
+  return value
+}
+
+export async function cleanCache(keys?: string[] | string) {
+  if (!keys) {
+    keys = (await STAMPY_KV.list()).keys.map(({name}) => name)
+  } else if (typeof keys === 'string') {
+    keys = [keys]
+  }
+  for (const key of keys) {
+    await STAMPY_KV.delete(key)
   }
 
   return null
