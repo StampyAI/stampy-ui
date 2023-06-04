@@ -40,7 +40,7 @@ export default function App() {
 
   const {
     questions,
-    onSiteAnswersRef,
+    onSiteQuestionsRef: onSiteAnswersRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,

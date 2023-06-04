@@ -54,22 +54,27 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     }
     return initialMap
   })
+  const [glossary, setGlossary] = useState({} as Glossary)
 
-  const onSiteAnswersRef = useRef(emptyQuestionArray)
+  const onSiteQuestionsRef = useRef(emptyQuestionArray)
+  const setOnSiteQuestionsFromAll = (questions: Question[]) =>
+    (onSiteQuestionsRef.current = questions.filter((q) => q.status === QuestionStatus.LIVE_ON_SITE))
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
-    fetchAllQuestionsOnSite().then((questions) => {
-      const liveQuestions = questions.filter((q) => q.status === QuestionStatus.LIVE_ON_SITE)
-      onSiteAnswersRef.current = liveQuestions
+    fetchAllQuestionsOnSite().then(({data, backgroundPromiseIfReloaded}) => {
+      setOnSiteQuestionsFromAll(data)
+      backgroundPromiseIfReloaded.then((x) => {
+        if (x) setOnSiteQuestionsFromAll(x.data)
+      })
+    })
+    fetchGlossary().then(({data, backgroundPromiseIfReloaded}) => {
+      setGlossary(data)
+      backgroundPromiseIfReloaded.then((x) => {
+        if (x) setGlossary(x.data)
+      })
     })
   }, [])
-
-  const [glossary, setGlossary] = useState({} as Glossary)
-  useEffect(() => {
-    // not needed for initial screen => lazy load on client
-    fetchGlossary().then((glossary) => setGlossary(glossary))
-  }, [setGlossary])
 
   useEffect(() => {
     if (transition.location) {
@@ -135,8 +140,8 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   ): RelatedQuestions => {
     const {relatedQuestions} = questionProps
 
-    const onSiteAnswers = onSiteAnswersRef.current
-    const onSiteSet = new Set(onSiteAnswers.map(({pageid}) => pageid))
+    const onSiteQuestions = onSiteQuestionsRef.current
+    const onSiteSet = new Set(onSiteQuestions.map(({pageid}) => pageid))
 
     return relatedQuestions.filter((question) => {
       const isOnSite = onSiteSet.has(question.pageid)
@@ -199,8 +204,8 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         currentState = moveToTop(currentState, questionProps)
       }
 
-      const onSiteAnswers = onSiteAnswersRef.current
-      if (onSiteAnswers.length === 0 && relatedQuestions.length > 0) {
+      const onSiteQuestions = onSiteQuestionsRef.current
+      if (onSiteQuestions.length === 0 && relatedQuestions.length > 0) {
         // if onSiteAnswers (needed for relatedQuestions) are not loaded yet, wait a moment to re-run
         setTimeout(() => toggleQuestion(questionProps, options), 200)
         return
@@ -258,7 +263,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   useEffect(() => {
     if (questions.length === 1) {
       const insertAfterOnSiteStatusIsKnown = () => {
-        if (onSiteAnswersRef.current.length === 0) {
+        if (onSiteQuestionsRef.current.length === 0) {
           setTimeout(insertAfterOnSiteStatusIsKnown, 200)
           return
         }
@@ -278,7 +283,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
   return {
     questions,
-    onSiteAnswersRef,
+    onSiteQuestionsRef,
     reset,
     toggleQuestion,
     onLazyLoadQuestion,

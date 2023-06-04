@@ -39,7 +39,13 @@ export async function reloadInBackgroundIfNeeded(url: string, timestamp: string)
   // TODO: #228 keep debug for a few day after fixing cache invalidation, can be deleted later
   console.debug('Reload needed', ageInMilliseconds > 10 * 60 * 1000, url || '/', timestamp)
   if (ageInMilliseconds > 10 * 60 * 1000) {
-    fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)
+    const text = await(await fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)).text()
+    try {
+      const json = JSON.parse(text)
+      return json
+    } catch (e) {
+      return text
+    }
   }
 }
 
