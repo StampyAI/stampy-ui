@@ -1,8 +1,9 @@
+import {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadGlossary} from '~/server-utils/stampy'
 
-export const loader = async () => {
-  return await loadGlossary()
+export const loader: LoaderFunction = async ({request}) => {
+  return await loadGlossary(request)
 }
 
 export function fetchGlossary() {

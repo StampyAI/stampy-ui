@@ -1,16 +1,18 @@
 import type {DataFunctionArgs} from '@remix-run/cloudflare'
-
+type RequestForReload = DataFunctionArgs['request'] | 'NEVER_RELOAD'
 export function withCache<Fn extends (...args: string[]) => Promise<any>>(
   defaultKey: string,
   fn: Fn
 ): (
-  request?: DataFunctionArgs['request'],
+  // pass the real Request object when possible, 'NEVER_RELOAD' is an escape hatch for nested withCache(),
+  // it's used for detection of `?reload` in url, to invalidate cache in a background request
+  request: RequestForReload,
   ...args: Parameters<Fn>
 ) => Promise<{data: Awaited<ReturnType<Fn>>; timestamp: string}> {
-  return (async (request?: DataFunctionArgs['request'], ...args: Parameters<Fn>) => {
+  return (async (request: RequestForReload, ...args: Parameters<Fn>) => {
     const key = args[0] ?? defaultKey
 
-    const shouldReload = request?.url.match(/[?&]reload/)
+    const shouldReload = request === 'NEVER_RELOAD' ? false : request.url.match(/[?&]reload/)
     if (!shouldReload) {
       const cached = await STAMPY_KV.get(key)
 
@@ -34,6 +36,8 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
 
 export async function reloadInBackgroundIfNeeded(url: string, timestamp: string) {
   const ageInMilliseconds = new Date().getTime() - new Date(timestamp).getTime()
+  // TODO: #228 keep debug for a few day after fixing cache invalidation, can be deleted later
+  console.debug('Reload needed', ageInMilliseconds > 10 * 60 * 1000, url || '/', timestamp)
   if (ageInMilliseconds > 10 * 60 * 1000) {
     fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)
   }

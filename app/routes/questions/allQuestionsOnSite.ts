@@ -1,8 +1,9 @@
+import {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadAllQuestions} from '~/server-utils/stampy'
 
-export const loader = async () => {
-  return await loadAllQuestions()
+export const loader: LoaderFunction = async ({request}) => {
+  return await loadAllQuestions(request)
 }
 
 export function fetchAllQuestionsOnSite() {
