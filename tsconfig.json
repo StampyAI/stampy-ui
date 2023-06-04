@@ -16,6 +16,7 @@
     },
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true
+    "allowJs": true,
+    "types": ["jest", "jest-environment-miniflare/globals"]
   }
 }
