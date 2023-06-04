@@ -1,8 +1,8 @@
-import type {LoaderFunction} from '@remix-run/cloudflare'
+import type {LoaderArgs} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadOnSiteAnswers, loadMoreAnswerDetails} from '~/server-utils/stampy'
 
-export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
+export const loader = async ({request}: LoaderArgs) => {
   const searchParams = new URL(request.url).searchParams
   const nextPage = searchParams.get('nextPage')
   if (nextPage !== null) {

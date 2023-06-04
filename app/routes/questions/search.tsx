@@ -1,6 +1,6 @@
-import type {LoaderFunction} from '@remix-run/cloudflare'
+import type {LoaderArgs} from '@remix-run/cloudflare'
 
-export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
+export const loader = async ({request}: LoaderArgs) => {
   const url = new URL(request.url)
   const question = url.searchParams.get('question')
   const onlyLive = url.searchParams.get('onlyLive') == 'true'
