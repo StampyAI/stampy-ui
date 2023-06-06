@@ -167,6 +167,19 @@ export function Question({
   )
 }
 
+/*
+ * Recursively go through the child nodes of the provided node, and replace all text nodes
+ * with the result of calling `textProcessor(textNode)`
+ */
+const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
+  Array.from(el.childNodes).forEach((child) => updateTextNodes(child, textProcessor))
+
+  if (el.nodeType == Node.TEXT_NODE && el.textContent && el?.parentElement?.tagName != 'A') {
+    const node = textProcessor(el)
+    el?.parentNode?.replaceChild(node, el)
+  }
+}
+
 function Contents({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) {
   const elementRef = useRef<HTMLDivElement>(null)
 
@@ -199,55 +212,85 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
     return popup
   }
 
-  // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
-  // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
-  // of longer definitions don't override them.
-  const processedHTML = Object.keys(glossary)
-    .sort((a, b) => b.length - a.length)
-    .reduce(
-      (html, entry) =>
-        html.replace(
-          new RegExp(`(^|\\W)(${entry})($|\\W)`, 'gi'),
-          '$1<span class="glossary-entry">$2</span>$3'
-        ),
-      html
-    )
-
   useEffect(() => {
     const el = elementRef.current
     if (!el) return
 
-    el.querySelectorAll('.glossary-entry').forEach((e) => {
-      const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
-      if (
-        // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
-        // if this entry is a subset of a bigger entry, remove it.
-        e.parentElement?.classList.contains('glossary-entry') ||
-        // Remove entries that are parts of external links, as that could get confusing
-        e.parentElement?.tagName == 'A' ||
-        // Remove entries that point to the current question
-        pageid == (entry as GlossaryEntry)?.pageid ||
-        !entry
-      ) {
-        e.outerHTML = e.textContent || ''
-      } else {
-        addPopup(
-          e as HTMLSpanElement,
-          `<div>${entry.contents}</div><br><a href="/?state=${entry.pageid}_">See more...</a>`
+    /*
+     * Replace all known glossary words in the given `textNode` with:
+     *  - a span to mark it as a glossary item
+     *  - an on hover popup with a short explaination of the glossary item
+     */
+    const insertGlossary = (textNode: Node) => {
+      const html = textNode.textContent || ''
+      // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
+      // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
+      // of longer definitions don't override them.
+      const updated = Object.keys(glossary)
+        .sort((a, b) => b.length - a.length)
+        .reduce(
+          (html, entry) =>
+            html.replace(
+              new RegExp(`(^|[^\\w-])(${entry})($|[^\\w-])`, 'gi'),
+              '$1<span class="glossary-entry">$2</span>$3'
+            ),
+          html
         )
+      if (updated == html) {
+        return textNode
       }
-    })
+
+      const range = document.createRange()
+      const fragment = range.createContextualFragment(updated)
+
+      /*
+       * If the provided element is a word in the glossary, return its data.
+       * This is used to filter out invalid glossary elements
+       */
+      const glossaryEntry = (e: Element) => {
+        const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
+        if (
+          // If the contents of this item aren't simply a glossary item word, then
+          // something has gone wrong and the glossary-entry should be removed
+          !entry ||
+          // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
+          // if this entry is a subset of a bigger entry, remove it.
+          e.parentElement?.classList.contains('glossary-entry') ||
+          // Remove entries that point to the current question
+          pageid == (entry as GlossaryEntry)?.pageid
+        ) {
+          return null
+        }
+        return entry
+      }
+
+      /*
+       * Add a popup to all real glossary words in this text node
+       */
+      fragment.querySelectorAll('.glossary-entry').forEach((e) => {
+        const entry = glossaryEntry(e)
+        entry &&
+          addPopup(
+            e as HTMLSpanElement,
+            `<div>${entry.contents}</div><br><a href="/?state=${entry.pageid}_">See more...</a>`
+          )
+      })
+
+      return fragment
+    }
+
+    updateTextNodes(el, insertGlossary)
 
     // In theory this could be extended to all links
-    el.querySelectorAll('.footnote-ref a').forEach((e) =>
+    el.querySelectorAll('.footnote-ref > a').forEach((e) =>
       addPopup(e as HTMLAnchorElement, footnoteHTML(el, e as HTMLAnchorElement))
     )
-  }, [processedHTML, glossary, pageid])
+  }, [html, glossary, pageid])
 
   return (
     <div
       dangerouslySetInnerHTML={{
-        __html: processedHTML,
+        __html: html,
       }}
       ref={elementRef}
     />
