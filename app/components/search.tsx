@@ -1,75 +1,28 @@
 import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
-import {Question} from '~/routes/questions/$question'
 import {AddQuestion} from '~/routes/questions/add'
 import {Action, ActionType} from '~/routes/questions/actions'
 import {MagnifyingGlass, Edit} from '~/components/icons-generated'
+import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 
 type Props = {
-  onSiteAnswersRef: MutableRefObject<Question[]>
+  onSiteAnswersRef: MutableRefObject<QuestionType[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
 }
 
-type Question = {
-  pageid: string
-  title: string
-}
-
-type SearchResult = Question & {
-  score: number
-  url?: string
-}
-
-// type of postMessage() values from tfWorker.js (manually synchronized)
-export type WorkerMessage =
-  | {
-      status: 'ready'
-      numQs: number
-    }
-  | {
-      searchResults: {title: string; pageid: string; score: number}[]
-      userQuery?: string
-    }
-
 const empty: [] = []
 
 export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}: Props) {
-  const [baselineSearchResults, setBaselineSearchResults] = useState<SearchResult[]>(empty)
-  const [searchResults, setSearchResults] = useState<SearchResult[]>(empty)
+  const [results, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const [loading, setLoading] = useState(false)
   const searchInputRef = useRef('')
-  const modelRef = useRef<'tensorflow' | 'plaintext'>('plaintext')
-  const tfWorkerRef = useRef<Worker>()
-  const tfFinishedLoadingRef = useRef(false)
 
-  useEffect(() => {
-    const handleWorker = (event: MessageEvent<WorkerMessage>) => {
-      const {data} = event
-      console.debug('onmessage from tfWorker:', data)
-      if ('status' in data) {
-        tfFinishedLoadingRef.current = data.status === 'ready'
-        return
-      }
-      if (data.searchResults) {
-        setSearchResults(data.searchResults)
-      }
-      setLoading(false)
-    }
-    const initWorker = () => {
-      if (self.Worker && !tfWorkerRef.current) {
-        tfWorkerRef.current = new Worker('/tfWorker.js')
-        tfWorkerRef.current.addEventListener('message', handleWorker)
-      } else {
-        console.log('Sorry! No Web Worker support.')
-      }
-    }
-    initWorker()
-  }, [])
+  const {search} = useSearch(onSiteAnswersRef)
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
@@ -78,27 +31,14 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     setLoading(true)
     searchInputRef.current = value
 
-    const wordCount = value.split(' ').length
-    const useBaseline = wordCount <= 2 || !tfFinishedLoadingRef.current || !tfWorkerRef.current
-
-    if (useBaseline) {
-      modelRef.current = 'plaintext'
-      console.debug('plaintext search:', value)
-      runBaselineSearch(value, onSiteAnswersRef.current).then((results) => {
-        setBaselineSearchResults(results)
-        setLoading(false)
-      })
-    } else {
-      modelRef.current = 'tensorflow'
-      console.debug('postMessage to tfWorker:', value)
-      tfWorkerRef.current?.postMessage(value)
-    }
+    search(value).then((res) => {
+      setSearchResults(res)
+      setLoading(false)
+    })
     logSearch(value)
   }
 
   const handleChange = debounce(searchFn, 100)
-
-  const results = modelRef.current === 'tensorflow' ? searchResults : baselineSearchResults
 
   const hideSearchResults = () => setShowResults(false)
   const [hideEnabled, setHide] = useState(true)
@@ -146,14 +86,14 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           >
             <div>
               {showResults &&
-                results.map(({pageid, title, score}) => (
+                results.map(({pageid, title, score, model}) => (
                   <ResultItem
                     key={pageid}
                     {...{
                       pageid,
                       title,
                       score,
-                      model: modelRef.current,
+                      model,
                       onSelect: handleSelect,
                       isAlreadyOpen: openQuestionTitles.includes(title),
                       setHide,
@@ -300,85 +240,6 @@ const RequestQuestion = ({pageid, title, url}: SearchResult) => {
     </div>
   )
 }
-
-/** Baseline full-text search matching the query with each question as strings, weighting down:
- *  short words,
- *  wh* questions,
- *  distance,
- *  partial (prefix) match without full match
- *  normalized to ignore a/an/the, punctuation, and case
- */
-export const runBaselineSearch = async (
-  searchQueryRaw: string,
-  questions: Question[],
-  numResults = 5
-): Promise<SearchResult[]> => {
-  if (!searchQueryRaw) {
-    return []
-  }
-
-  const searchQueryTokens = normalize(searchQueryRaw).split(' ')
-  const matchers = searchQueryTokens.map((token) => ({
-    weight: token.match(/^(?:\w|\w\w|wh.*|how)$/) ? 0.2 : token.length,
-    fullRe: new RegExp(`\\b${token}\\b`),
-    prefixRe: new RegExp(`\\b${token}`),
-  }))
-  const totalWeight = matchers.reduce((acc, {weight}) => acc + weight, 0.1) // extra total to only approach 100%
-
-  const scoringFn = (questionNormalized: string) => {
-    let score = 0
-    let prevPosition = -1
-    for (const {weight, fullRe, prefixRe} of matchers) {
-      const fullMatch = fullRe.exec(questionNormalized)
-      const prefixMatch = prefixRe.exec(questionNormalized)
-      const currPosition = fullMatch?.index ?? prefixMatch?.index ?? prevPosition
-      const distanceMultiplier =
-        questionNormalized.slice(prevPosition, currPosition).split(' ').length === 2 ? 1 : 0.9
-
-      if (fullMatch) {
-        score += weight * distanceMultiplier
-      } else {
-        if (prefixMatch) {
-          score += 0.9 * weight * distanceMultiplier
-        } else {
-          score -= 0.2 * weight
-        }
-      }
-      prevPosition = currPosition
-    }
-
-    return score / totalWeight
-  }
-
-  const questionsScored: SearchResult[] = questions.map(({pageid, title}) => {
-    const normalized = normalize(title)
-    return {
-      pageid,
-      title,
-      normalized,
-      score: scoringFn(normalized),
-    }
-  })
-  questionsScored.sort(byScore)
-
-  return questionsScored.slice(0, numResults).filter(({score}) => score > 0)
-}
-
-/**
- * Ignore unimportant details for similarity comparison
- */
-const normalize = (question: string) =>
-  question
-    .toLowerCase()
-    .replace(/[^\w ]|\b(?:an?|the?)\b/g, '')
-    .replace(/(\w{2})s\b/g, '$1') // cannot use lookbehind (?<=...) because not supported on Safari
-    .replace(/\s+|_|&\s*/g, ' ')
-    .trim()
-
-/**
- * Sort function for the highest score on top
- */
-const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
 
 /**
  * Handle flushing searched phrases to the NLP logger endpoint
