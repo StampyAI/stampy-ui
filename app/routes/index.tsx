@@ -1,6 +1,11 @@
-import {useEffect, MouseEvent, useRef} from 'react'
+import {useEffect, useState, useCallback, MouseEvent, useRef} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {ShouldRevalidateFunction, useOutletContext, useLoaderData} from '@remix-run/react'
+import {
+  ShouldRevalidateFunction,
+  useOutletContext,
+  useLoaderData,
+  useSearchParams,
+} from '@remix-run/react'
 import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
@@ -25,7 +30,71 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   }
 }
 
+enum LoadMoreType {
+  disabled = 'disabled',
+  infini = 'infini',
+  button = 'button',
+  buttonInfini = 'buttonInfini',
+}
+
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
+
+const Bottom = ({
+  isSingleQuestion,
+  fetchMore,
+}: {
+  isSingleQuestion: boolean
+  fetchMore: () => Promise<any>
+}) => {
+  const [remixSearchParams] = useSearchParams()
+  const urlLoadType = useCallback(() => {
+    const more = remixSearchParams.get('more')
+    if (more) return LoadMoreType[remixSearchParams.get('more') as keyof typeof LoadMoreType]
+  }, [remixSearchParams])
+
+  const [loadMore, setLoadMore] = useState(
+    urlLoadType() || (isSingleQuestion ? LoadMoreType.disabled : LoadMoreType.buttonInfini)
+  )
+
+  useEffect(() => {
+    const more = urlLoadType()
+    if (more) {
+      setLoadMore(more)
+    }
+  }, [setLoadMore, urlLoadType])
+
+  const buttonHandler = () => {
+    fetchMore()
+    if (loadMore == LoadMoreType.buttonInfini) {
+      setLoadMore(LoadMoreType.infini)
+    }
+  }
+
+  switch (loadMore) {
+    case LoadMoreType.infini:
+      return (
+        <InfiniteScroll fetchMore={fetchMore}>
+          <Footer />
+        </InfiniteScroll>
+      )
+    case LoadMoreType.button:
+    case LoadMoreType.buttonInfini:
+      return (
+        <>
+          <div>
+            <br />
+            <button className="result-item-box" onClick={buttonHandler}>
+              Show me even more more questions about AI Safety...
+            </button>
+          </div>
+          <Footer />
+        </>
+      )
+    case LoadMoreType.disabled:
+    default:
+      return <Footer />
+  }
+}
 
 export default function App() {
   const minLogo = useOutletContext<boolean>()
@@ -88,12 +157,8 @@ export default function App() {
     }
   }
 
-  const useInfiniscroll =
-    questions.filter((i) => i.questionState != QuestionState.RELATED).length != 1
   const nextPageLinkRef = useRef<null | string>(null)
   const fetchMoreQuestions = async () => {
-    if (!useInfiniscroll) return null
-
     const result = await fetchAnswerDetailsOnSite(nextPageLinkRef.current)
     nextPageLinkRef.current = result.nextPageLink
     if (result.questions) {
@@ -143,9 +208,12 @@ export default function App() {
         <Discord />
       </a>
 
-      <InfiniteScroll fetchMore={fetchMoreQuestions}>
-        <Footer />
-      </InfiniteScroll>
+      <Bottom
+        fetchMore={fetchMoreQuestions}
+        isSingleQuestion={
+          questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
+        }
+      />
     </>
   )
 }
