@@ -1,12 +1,4 @@
-import {useState, useEffect, MutableRefObject} from 'react'
-import * as tf from '@tensorflow/tfjs'
-import {load} from '@tensorflow-models/universal-sentence-encoder'
-import {Tensor2D, TensorLike} from '@tensorflow/tfjs'
-
-// optimization removes model validation, NaN checks, and other correctness checks in favor of performance
-tf.enableProdMode()
-
-const ENCODINGS_URL = 'https://storage.googleapis.com/stampy-nlp-resources/stampy-encodings.json'
+import {useState, useEffect, useRef, MutableRefObject} from 'react'
 
 export type Question = {
   pageid: string
@@ -17,6 +9,16 @@ export type SearchResult = Question & {
   model: string
   url?: string
 }
+
+export type WorkerMessage =
+  | {
+      status: 'ready'
+      numQs: number
+    }
+  | {
+      searchResults: SearchResult[]
+      userQuery?: string
+    }
 
 /**
  * Sort function for the highest score on top
@@ -30,61 +32,63 @@ const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
  *  partial (prefix) match without full match
  *  normalized to ignore a/an/the, punctuation, and case
  */
-export const makeBaselineSearcher =
-  (questions: MutableRefObject<Question[]>, numResults = 5) =>
-  async (searchQueryRaw: string): Promise<SearchResult[]> => {
-    if (!searchQueryRaw) {
-      return []
-    }
-
-    const searchQueryTokens = normalize(searchQueryRaw).split(' ')
-    const matchers = searchQueryTokens.map((token) => ({
-      weight: token.match(/^(?:\w|\w\w|wh.*|how)$/) ? 0.2 : token.length,
-      fullRe: new RegExp(`\\b${token}\\b`),
-      prefixRe: new RegExp(`\\b${token}`),
-    }))
-    const totalWeight = matchers.reduce((acc, {weight}) => acc + weight, 0.1) // extra total to only approach 100%
-
-    const scoringFn = (questionNormalized: string) => {
-      let score = 0
-      let prevPosition = -1
-      for (const {weight, fullRe, prefixRe} of matchers) {
-        const fullMatch = fullRe.exec(questionNormalized)
-        const prefixMatch = prefixRe.exec(questionNormalized)
-        const currPosition = fullMatch?.index ?? prefixMatch?.index ?? prevPosition
-        const distanceMultiplier =
-          questionNormalized.slice(prevPosition, currPosition).split(' ').length === 2 ? 1 : 0.9
-
-        if (fullMatch) {
-          score += weight * distanceMultiplier
-        } else {
-          if (prefixMatch) {
-            score += 0.9 * weight * distanceMultiplier
-          } else {
-            score -= 0.2 * weight
-          }
-        }
-        prevPosition = currPosition
-      }
-
-      return score / totalWeight
-    }
-
-    return questions.current
-      .map(({pageid, title}) => {
-        const normalized = normalize(title)
-        return {
-          pageid,
-          title,
-          normalized,
-          model: 'plaintext',
-          score: scoringFn(normalized),
-        }
-      })
-      .sort(byScore)
-      .slice(0, numResults)
-      .filter(({score}) => score > 0)
+export const baselineSearch = async (
+  searchQueryRaw: string,
+  questions: Question[],
+  numResults = 5
+): Promise<SearchResult[]> => {
+  if (!searchQueryRaw) {
+    return []
   }
+
+  const searchQueryTokens = normalize(searchQueryRaw).split(' ')
+  const matchers = searchQueryTokens.map((token) => ({
+    weight: token.match(/^(?:\w|\w\w|wh.*|how)$/) ? 0.2 : token.length,
+    fullRe: new RegExp(`\\b${token}\\b`),
+    prefixRe: new RegExp(`\\b${token}`),
+  }))
+  const totalWeight = matchers.reduce((acc, {weight}) => acc + weight, 0.1) // extra total to only approach 100%
+
+  const scoringFn = (questionNormalized: string) => {
+    let score = 0
+    let prevPosition = -1
+    for (const {weight, fullRe, prefixRe} of matchers) {
+      const fullMatch = fullRe.exec(questionNormalized)
+      const prefixMatch = prefixRe.exec(questionNormalized)
+      const currPosition = fullMatch?.index ?? prefixMatch?.index ?? prevPosition
+      const distanceMultiplier =
+        questionNormalized.slice(prevPosition, currPosition).split(' ').length === 2 ? 1 : 0.9
+
+      if (fullMatch) {
+        score += weight * distanceMultiplier
+      } else {
+        if (prefixMatch) {
+          score += 0.9 * weight * distanceMultiplier
+        } else {
+          score -= 0.2 * weight
+        }
+      }
+      prevPosition = currPosition
+    }
+
+    return score / totalWeight
+  }
+
+  return questions
+    .map(({pageid, title}) => {
+      const normalized = normalize(title)
+      return {
+        pageid,
+        title,
+        normalized,
+        model: 'plaintext',
+        score: scoringFn(normalized),
+      }
+    })
+    .sort(byScore)
+    .slice(0, numResults)
+    .filter(({score}) => score > 0)
+}
 
 /**
  * Ignore unimportant details for similarity comparison
@@ -97,35 +101,24 @@ const normalize = (question: string) =>
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
-/**
- * Construct a semantic search function, that will search over the provided questions
- */
-const semanticSearcher = async (questions: Question[], encodings: Tensor2D, numResults: number) => {
-  const model = await load()
-
-  return async (userQuery: string): Promise<SearchResult[]> => {
-    const searchQuery = userQuery.toLowerCase().trim().replace(/\s+/g, ' ')
-
-    // encodings is 2D tensor of 512-dims embeddings for each sentence
-    const encoding = await model.embed(searchQuery)
-    // numerator of cosine similar is dot prod since vectors normalized
-    const scores = tf.matMul(encoding as unknown as TensorLike, encodings, false, true).dataSync()
-
-    // tensorflow requires explicit memory management to avoid memory leaks
-    encoding.dispose()
-
-    const seen = new Set()
-    return questions
-      .map((question, index) => ({
-        score: scores[index],
-        model: 'tensorflow',
-        ...question,
-      }))
-      .sort(byScore)
-      .filter(({pageid}) => !seen.has(pageid) && seen.add(pageid))
-      .slice(0, numResults)
+const updateQueue = (item: string) => (queue: string[]) => {
+  if (item == queue[queue.length - 1]) {
+    // the lastest search is the same a this one - ignore all other searches
+    // as this is what was desired
+    return []
   }
+  const pos = queue.indexOf(item)
+  if (pos < 0) {
+    // If the item isn't in the queue, then do nothing - it was cleared by previous results
+    return queue
+  }
+  // Remove the first occurance of the item, i.e. the oldest search. It's possible for there
+  // to be multiple such values, but they weren't the most recent searches, so who cares. They
+  // might as well be left in though, for bookkeeping reasons
+  queue.splice(pos, 1)
+  return queue
 }
+
 /**
  * Configure the search engine.
  *
@@ -134,38 +127,53 @@ const semanticSearcher = async (questions: Question[], encodings: Tensor2D, numR
  * Searches containing only one or two words will also use the baseline search
  */
 export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResults = 5) => {
-  const baselineSearch = makeBaselineSearcher(onSiteQuestions, numResults)
-  const [searchFn, setSearchFn] = useState(() => baselineSearch)
+  const resultsProcessor = useRef((data: any): void => {
+    data // This is here just to get typescript to stop complaining...
+  })
+  const tfWorkerRef = useRef<Worker>()
+  const [queue, setQueue] = useState([] as string[])
+  const [results, setResults] = useState([] as SearchResult[])
 
   useEffect(() => {
-    const loadModel = async () => {
-      // initialize search properties
-      const {questions, pageids, encodings} = await fetch(ENCODINGS_URL).then((response) =>
-        response.json()
-      )
-
-      const searcher = await semanticSearcher(
-        pageids.map((pageid: string, i: number) => ({pageid, title: questions[i]})),
-        tf.tensor2d(encodings),
-        numResults
-      )
-      // warm up model for faster response later
-      await searcher('What is AGI Safety?')
-      setSearchFn(() => searcher)
+    const makeWorker = async () => {
+      const worker = new Worker('/tfWorker.js')
+      worker.addEventListener('message', ({data}) => {
+        if (data.status == 'ready') {
+          tfWorkerRef.current = worker
+        } else if (data.searchResults) {
+          resultsProcessor.current(data)
+        }
+      })
     }
-    loadModel()
-  }, [numResults, onSiteQuestions])
+    makeWorker()
+  }, [resultsProcessor, tfWorkerRef])
 
-  const search = async (value: string) => {
-    const wordCount = value.split(' ').length
-    if (wordCount <= 2) {
-      return baselineSearch(value)
+  resultsProcessor.current = ({searchResults, userQuery}) => {
+    if (!searchResults) return
+
+    if (queue[queue.length - 1] == userQuery) {
+      setResults(searchResults)
+    }
+    setQueue(updateQueue(userQuery))
+  }
+
+  // Each search query gets added to the queue of searched items - the idea
+  // is that only the last item is important - all other searches can be ignored.
+  const search = (userQuery: string) => {
+    const wordCount = userQuery.split(' ').length
+    if (wordCount > 2 && tfWorkerRef.current) {
+      tfWorkerRef.current.postMessage(userQuery)
     } else {
-      return searchFn(value)
+      baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) =>
+        resultsProcessor.current({searchResults, userQuery})
+      )
     }
+    setQueue([...queue, userQuery])
   }
 
   return {
     search,
+    results,
+    arePendingSearches: queue?.length > 0,
   }
 }

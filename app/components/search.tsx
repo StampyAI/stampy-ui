@@ -16,25 +16,19 @@ type Props = {
 const empty: [] = []
 
 export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}: Props) {
-  const [results, setSearchResults] = useState<SearchResult[]>(empty)
   const [showResults, setShowResults] = useState(false)
   const [showMore, setShowMore] = useState(false)
-  const [loading, setLoading] = useState(false)
   const searchInputRef = useRef('')
 
-  const {search} = useSearch(onSiteAnswersRef)
+  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef)
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
-    setLoading(true)
     searchInputRef.current = value
 
-    search(value).then((res) => {
-      setSearchResults(res)
-      setLoading(false)
-    })
+    search(value)
     logSearch(value)
   }
 
@@ -74,8 +68,8 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           />
           <MagnifyingGlass />
         </label>
-        <div className={`search-loader ${loading ? 'loader' : ''}`}> </div>
-        {loading && results.length == 0 && (
+        <div className={`search-loader ${arePendingSearches ? 'loader' : ''}`}> </div>
+        {arePendingSearches && results.length == 0 && (
           <div className="result-item-box no-questions">Searching for questions...</div>
         )}
         <AutoHeight>
