@@ -22,9 +22,9 @@ use.load().then(function (model) {
       encodings = tf.tensor2d(data.encodings)
       // successfully loaded model & downloaded encodings
       isReady = true
-      self.postMessage({status: 'ready', numQs: questions.length})
       // warm up model for faster response later
       runSemanticSearch('What is AGI Safety?', 1)
+      self.postMessage({status: 'ready', numQs: questions.length})
     })
 })
 
