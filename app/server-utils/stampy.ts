@@ -46,6 +46,7 @@ export type Question = {
   questionState?: QuestionState
   tags: string[]
   status?: QuestionStatus
+  updatedAt?: string
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -232,20 +233,21 @@ const head = (item: any) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = (title: string, v: CodaRow['values']): Question => ({
-  title,
-  pageid: extractText(v['UI ID']),
-  text: renderText(v['Rich Text']),
-  answerEditLink: extractLink(v['Edit Answer']).replace(/\?.*$/, ''),
-  tags: ((v['Tags'] || []) as Entity[]).map((e) => e.name),
+const convertToQuestion = ({name, values, updatedAt}: CodaRow): Question => ({
+  title: name,
+  pageid: extractText(values['UI ID']),
+  text: renderText(values['Rich Text']),
+  answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
+  tags: ((values['Tags'] || []) as Entity[]).map((e) => e.name),
   relatedQuestions:
-    v['Related Answers'] && v['Related IDs']
-      ? v['Related Answers'].map(({name}, i) => ({
+    values['Related Answers'] && values['Related IDs']
+      ? values['Related Answers'].map(({name}, i) => ({
           title: name,
-          pageid: extractText(v['Related IDs'][i]),
+          pageid: extractText(values['Related IDs'][i]),
         }))
       : [],
-  status: v['Status']?.name as QuestionStatus,
+  status: values['Status']?.name as QuestionStatus,
+  updatedAt,
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
@@ -256,12 +258,12 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
     question.length <= 6 ? 'UI ID' : 'Name',
     question
   )
-  return convertToQuestion(rows[0].name, rows[0].values)
+  return convertToQuestion(rows[0])
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
   const rows = await getCodaRows(INITIAL_QUESTIONS_TABLE)
-  const data = rows.map(({name, values}) => convertToQuestion(name, values))
+  const data = rows.map(convertToQuestion)
   return data
 })
 
@@ -278,7 +280,7 @@ export const loadGlossary = withCache('loadGlossary', async () => {
   }
 
   const gloss = rows
-    .map(({name, values}) => convertToQuestion(name, values))
+    .map(convertToQuestion)
     .filter((q) => q.tags.includes('Glossary'))
     .map((q) => ({
       term: q.title.replace(/^What is ((a|an|the) )?('|")?(.*?)('|")?\?$/, '$4'),
@@ -290,13 +292,13 @@ export const loadGlossary = withCache('loadGlossary', async () => {
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = await getCodaRows(ON_SITE_TABLE)
-  const questions = rows.map(({name, values}) => convertToQuestion(name, values))
+  const questions = rows.map(convertToQuestion)
   return {questions, nextPageLink: null}
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
   const rows = await getCodaRows(ALL_ANSWERS_TABLE)
-  return rows.map((r) => convertToQuestion(r.name, r.values))
+  return rows.map(convertToQuestion)
 })
 
 const extractMainQuestion = (question: string | Entity | null): string | null => {
@@ -352,7 +354,7 @@ export const loadMoreAnswerDetails = withCache(
   ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
     const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
     const result = await fetchRows(url)
-    const questions = result.items.map(({name, values}) => convertToQuestion(name, values))
+    const questions = result.items.map(convertToQuestion)
     return {nextPageLink: result.nextPageLink, questions}
   }
 )
