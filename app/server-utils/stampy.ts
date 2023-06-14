@@ -195,7 +195,7 @@ const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 /*
  * Transform the Coda markdown into HTML
  */
-const renderText = (text: string | null): string | null => {
+const renderText = (pageid: PageId, text: string | null): string | null => {
   if (!text) return null
 
   let contents = extractText(text)
@@ -219,6 +219,22 @@ const renderText = (text: string | null): string | null => {
   contents = contents.replaceAll(/\[[Ss]ee more\W*?\]/g, seeMoreToken)
   contents = md.render(contents)
   contents = wrapInDetails(contents.split(seeMoreToken))
+
+  // Make sure the footnotes point to unique ids. This is very ugly and would be better handled
+  // with a proper parser, but should do the trick so is fine? Maybe?
+  contents = contents.replace(
+    /<a href="#(fn\d+)" id="(fnref\d+)">/g,
+    `<a href="#$1-${pageid}" id="$2-${pageid}">`
+  )
+  contents = contents.replace(
+    /<a href="#(fnref?\d+)" class="footnote-backref">/g,
+    `<a href="#$1-${pageid}" class="footnote-backref">`
+  )
+  contents = contents.replace(
+    /<li id="(fn\d+)" class="footnote-item">/g,
+    `<li id="$1-${pageid}" class="footnote-item">`
+  )
+
   // The parser sometimes generates chunks of bolded or italicised texts next to
   // each other, e.g. `**this is bolded****, but so is this**`. The renderer doesn't
   // know what to do with this, so it results in something like `<b>this is bolded****, but so is this</b>`.
@@ -236,7 +252,7 @@ const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const convertToQuestion = ({name, values, updatedAt}: CodaRow): Question => ({
   title: name,
   pageid: extractText(values['UI ID']),
-  text: renderText(values['Rich Text']),
+  text: renderText(extractText(values['UI ID']), values['Rich Text']),
   answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
   tags: ((values['Tags'] || []) as Entity[]).map((e) => e.name),
   relatedQuestions:

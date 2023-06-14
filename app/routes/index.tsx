@@ -125,22 +125,31 @@ export default function App() {
     .filter(({questionState}) => questionState === '_')
     .map(({title}) => title)
 
-  const showMore = (el: HTMLElement) => {
+  const showMore = (el: HTMLElement, toggle = false) => {
     const container = el.closest('.react-auto-height') as HTMLElement
     const button = container.getElementsByClassName('see-more')[0]
-    button.classList.toggle('visible')
+    if (toggle) {
+      button?.classList.toggle('visible')
+    } else {
+      button?.classList.add('visible')
+    }
     container.style.removeProperty('height')
   }
 
   const handleSpecialLinks = (e: MouseEvent) => {
     const el = e.target as HTMLAnchorElement
-    if (el.tagName !== 'A' || el.closest('.question-footer')) return
+    if (
+      el.tagName !== 'A' ||
+      el.closest('.question-footer') ||
+      el.classList.contains('footnote-backref')
+    )
+      return
 
     // The AutoHeight component doesn't notice when a HTML details is opened.
     // Manually removing the height from the style fixes this, but can potentially
     // break something else...
     if (el.classList.contains('see-more')) {
-      showMore(el)
+      showMore(el, true)
       e.preventDefault()
       return
     }
