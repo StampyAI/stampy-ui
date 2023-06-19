@@ -20,7 +20,7 @@ describe('loadQuestionDetail', () => {
       })
       .reply(200, {items: [question2400]})
 
-    const questionDetail = await loadQuestionDetail(undefined, question2400.values['UI ID'])
+    const questionDetail = await loadQuestionDetail('NEVER_RELOAD', question2400.values['UI ID'])
     expect(questionDetail).toBeDefined
   })
 })
