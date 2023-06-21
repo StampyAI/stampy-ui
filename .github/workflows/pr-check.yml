@@ -13,4 +13,6 @@ jobs:
         run: |
           npm ci
           npm run lint
+          npm run build
+          cp wrangler.toml.ci wrangler.toml
           npm run test

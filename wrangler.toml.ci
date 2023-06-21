@@ -1,0 +1,12 @@
+name = "stampy-ui CI"
+main = "build/index.js"
+
+kv_namespaces = [
+  { binding = "STAMPY_KV" }
+]
+
+[vars]
+CODA_TOKEN = "invalid value. placeholder for CI"
+CODA_INCOMING_TOKEN = "invalid value. placeholder for CI"
+CODA_WRITES_TOKEN = "invalid value. placeholder for CI"
+NLP_SEARCH_ENDPOINT = "invalid value. placeholder for CI"
