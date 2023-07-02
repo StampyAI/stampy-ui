@@ -63,7 +63,8 @@
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "tsc": "tsc",
     "deploy": "npm run build && wrangler publish",
-    "test": "jest"
+    "test": "jest",
+    "generate-test-data": "tsc scripts/refresh-mock-return-data.ts && node scripts/refresh-mock-return-data.js"
   },
   "main": "build/index.js"
 }

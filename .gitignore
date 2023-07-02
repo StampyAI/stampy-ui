@@ -9,3 +9,4 @@ node_modules
 
 .DS_store
 wrangler.toml
+/scripts/*.js
