@@ -17,7 +17,6 @@
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "types": ["jest", "jest-environment-miniflare/globals"]
-  },
-  "references": [{"path": "scripts/tsconfig.json"}]
+    "types": ["jest", "jest-environment-miniflare/globals", "node"]
+  }
 }

@@ -23,6 +23,7 @@
     "@types/lodash": "^4.14.191",
     "@types/markdown-it": "^12.2.3",
     "@types/markdown-it-footnote": "^3.0.0",
+    "@types/node": "^20.3.3",
     "@types/react": "^17.0.53",
     "@types/react-dom": "^17.0.19",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
@@ -38,6 +39,7 @@
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.0.5",
+    "tsc-alias": "^1.8.6",
     "typescript": "^4.9.5",
     "wrangler": "^2.10.0"
   },
