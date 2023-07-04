@@ -1,28 +1,37 @@
-import {loadQuestionDetail} from '~/server-utils/stampy'
-import {question2400} from '~/mocks/question-data/question-2400'
+import {CodaRow, loadQuestionDetail} from '~/server-utils/stampy'
+import question8486 from '~/mocks/question-data/question-8486.json'
 
 describe('loadQuestionDetail', () => {
-  it('can load question', async () => {
-    const fetchMock = getMiniflareFetchMock()
-    // Throw when no matching mocked request is found
-    // (see https://undici.nodejs.org/#/docs/api/MockAgent?id=mockagentdisablenetconnect)
-    fetchMock.disableNetConnect()
+  type ChangeFields<T, R> = Omit<T, keyof R> & R
+  type CodaRowTrimmed = ChangeFields<
+    CodaRow,
+    {
+      values: Omit<
+        CodaRow['values'],
+        'Tag ID' | 'Internal?' | 'Questions tagged with this' | 'Main question' | 'Tags'
+      >
+    }
+  >
+  type TestCase = [number, {items: CodaRowTrimmed[]}]
+  it.each<TestCase>([[8486, question8486]])(
+    'can load question %i',
+    async (questionId, questionData) => {
+      const fetchMock = getMiniflareFetchMock()
+      fetchMock.disableNetConnect()
 
-    // (see https://undici.nodejs.org/#/docs/api/MockAgent?id=mockagentgetorigin)
-    const mockedUrl = new URL(question2400.href)
-    const origin = fetchMock.get(mockedUrl.origin)
-    // (see https://undici.nodejs.org/#/docs/api/MockPool?id=mockpoolinterceptoptions)
-    origin.intercept({method: 'GET', path: mockedUrl.pathname}).reply(200, question2400)
-    origin
-      .intercept({
-        method: 'GET',
-        path: '/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22Name%22:%22%60%60%602400%60%60%60%22',
-      })
-      .reply(200, {items: [question2400]})
+      const origin = fetchMock.get('https://coda.io')
+      origin
+        .intercept({
+          method: 'GET',
+          path: `/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22UI%20ID%22:%22${questionId}%22`,
+        })
+        .reply(200, questionData)
 
-    const questionDetail = await loadQuestionDetail('NEVER_RELOAD', question2400.values['UI ID'])
-    expect(questionDetail.data.status).toBe(question2400.values.Status.name)
-    const linkUrl = new URL(question2400.values.Link.url)
-    expect(questionDetail.data.answerEditLink).toBe(linkUrl.origin + linkUrl.pathname)
-  })
+      const questionDetail = await loadQuestionDetail('NEVER_RELOAD', questionId.toString())
+      const firstItem = questionData.items[0]
+      expect(questionDetail.data.status).toBe(firstItem.values.Status.name)
+      const linkUrl = new URL(firstItem.values.Link.url)
+      expect(questionDetail.data.answerEditLink).toBe(linkUrl.origin + linkUrl.pathname)
+    }
+  )
 })

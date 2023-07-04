@@ -64,7 +64,7 @@ type Entity = {
   rowId: string
   tableUrl: string
 }
-type CodaRow = {
+export type CodaRow = {
   id: string
   type: string
   href: string
