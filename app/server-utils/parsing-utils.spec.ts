@@ -1,4 +1,4 @@
-import {urlToIframe} from './url-to-iframe'
+import {urlToIframe} from './parsing-utils'
 
 describe('urlToIframe', () => {
   describe('should not convert a markdown link', () => {

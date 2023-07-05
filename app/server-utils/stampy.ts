@@ -1,5 +1,11 @@
 import {withCache} from '~/server-utils/kv-cache'
-import {urlToIframe} from '~/server-utils/url-to-iframe'
+import {
+  cleanUpDoubleBold,
+  externalLinksOnNewTab,
+  uniqueFootnotes,
+  urlToIframe,
+  wrapInDetails,
+} from '~/server-utils/parsing-utils'
 import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 
@@ -201,47 +207,12 @@ const renderText = (pageid: PageId, text: string | null): string | null => {
   if (!text) return null
 
   let contents: string = extractText(text)
-
-  // transform known iframes links to iframes
   contents = urlToIframe(contents)
+  contents = wrapInDetails(contents, md)
+  contents = uniqueFootnotes(contents, pageid)
+  contents = cleanUpDoubleBold(contents)
 
-  // Recursively wrap any [See more...] segments in HTML Details
-  const seeMoreToken = 'SEE-MORE-BUTTON'
-  const wrapInDetails = ([chunk, ...rest]: string[]): string => {
-    if (!rest || rest.length == 0) return chunk
-    return `<div>${chunk}<div>
-           <a href="" class="see-more"></a>
-           <div class="see-more-contents">${wrapInDetails(rest)}</div>`
-  }
-  // Add magic to handle markdown shortcomings.
-  // The [See more...] button will be transformed into an empty link if processed.
-  // On the other hand, if the whole text isn't rendered as one, footnotes will break.
-  // To get round this, replace the [See more...] button with a magic string, render the
-  // markdown, then mangle the resulting HTML to add an appropriate button link
-  contents = contents.replaceAll(/\[[Ss]ee more\W*?\]/g, seeMoreToken)
-  contents = md.render(contents)
-  contents = wrapInDetails(contents.split(seeMoreToken))
-
-  // Make sure the footnotes point to unique ids. This is very ugly and would be better handled
-  // with a proper parser, but should do the trick so is fine? Maybe?
-  contents = contents.replace(
-    /<a href="#(fn\d+)" id="(fnref\d+)">/g,
-    `<a href="#$1-${pageid}" id="$2-${pageid}">`
-  )
-  contents = contents.replace(
-    /<a href="#(fnref?\d+)" class="footnote-backref">/g,
-    `<a href="#$1-${pageid}" class="footnote-backref">`
-  )
-  contents = contents.replace(
-    /<li id="(fn\d+)" class="footnote-item">/g,
-    `<li id="$1-${pageid}" class="footnote-item">`
-  )
-
-  // The parser sometimes generates chunks of bolded or italicised texts next to
-  // each other, e.g. `**this is bolded****, but so is this**`. The renderer doesn't
-  // know what to do with this, so it results in something like `<b>this is bolded****, but so is this</b>`.
-  // For lack of a better solution, just remove any '**'
-  return contents.replaceAll('**', '')
+  return contents
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
