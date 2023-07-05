@@ -4,10 +4,8 @@ import {
   externalLinksOnNewTab,
   uniqueFootnotes,
   urlToIframe,
-  wrapInDetails,
+  convertToHtmlAndWrapInDetails,
 } from '~/server-utils/parsing-utils'
-import MarkdownIt from 'markdown-it'
-import MarkdownItFootnote from 'markdown-it-footnote'
 
 export enum QuestionState {
   OPEN = '_',
@@ -199,20 +197,21 @@ const getCodaRows = async (
   queryValue?: string
 ): Promise<CodaRow[]> => paginateCoda(makeCodaRequest({table, queryColumn, queryValue}))
 
-const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 /*
  * Transform the Coda markdown into HTML
  */
-const renderText = (pageid: PageId, text: string | null): string | null => {
-  if (!text) return null
+const renderText = (pageid: PageId, markdown: string | null): string | null => {
+  if (!markdown) return null
 
-  let contents: string = extractText(text)
-  contents = urlToIframe(contents)
-  contents = wrapInDetails(contents, md)
-  contents = uniqueFootnotes(contents, pageid)
-  contents = cleanUpDoubleBold(contents)
+  markdown = extractText(markdown)
+  markdown = urlToIframe(markdown)
 
-  return contents
+  let html = convertToHtmlAndWrapInDetails(markdown)
+  html = uniqueFootnotes(html, pageid)
+  html = cleanUpDoubleBold(html)
+  html = externalLinksOnNewTab(html)
+
+  return html
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
