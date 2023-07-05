@@ -1,9 +1,9 @@
 import {useCallback, useRef} from 'react'
 
 type Props = {
-  children: any
-  onClose: (e: any) => void
-  [k: string]: any
+  children: unknown
+  onClose: (e: unknown) => void
+  [k: string]: unknown
 }
 
 export default function Dialog({children, onClose}: Props) {

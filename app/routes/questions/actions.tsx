@@ -83,7 +83,7 @@ type Props = {
   pageid: string
   actionType: ActionType
   children?: ReactNode | ReactNode[]
-  [k: string]: any
+  [k: string]: unknown
 }
 export const Action = ({pageid, actionType, children, ...props}: Props) => {
   const [remixSearchParams] = useSearchParams()

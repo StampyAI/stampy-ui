@@ -115,7 +115,7 @@ const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 
 const sendToCoda = async (
   url: string,
-  payload: any,
+  payload: unknown,
   method = 'POST',
   token = `${CODA_WRITES_TOKEN}`
 ) => {
@@ -133,10 +133,12 @@ const sendToCoda = async (
 export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
-    json = await (await fetch(url, params)).json()
-  } catch (e: any) {
+    json = await(await fetch(url, params)).json()
+  } catch (e: unknown) {
     // forward debug message to HTTP Response
-    e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    if (e && typeof e === 'object' && 'message' in e) {
+      e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    }
     throw e
   }
   return json
@@ -243,7 +245,7 @@ const renderText = (pageid: PageId, text: string | null): string | null => {
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
-const head = (item: any) => {
+const head = (item: string | string[]) => {
   if (Array.isArray(item)) return item[0]
   return item
 }

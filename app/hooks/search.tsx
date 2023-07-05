@@ -127,7 +127,7 @@ const updateQueue = (item: string) => (queue: string[]) => {
  * Searches containing only one or two words will also use the baseline search
  */
 export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResults = 5) => {
-  const resultsProcessor = useRef((data: any): void => {
+  const resultsProcessor = useRef((data: WorkerMessage): void => {
     data // This is here just to get typescript to stop complaining...
   })
   const tfWorkerRef = useRef<Worker>()
@@ -148,13 +148,14 @@ export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResu
     makeWorker()
   }, [resultsProcessor, tfWorkerRef])
 
-  resultsProcessor.current = ({searchResults, userQuery}) => {
-    if (!searchResults) return
+  resultsProcessor.current = (data) => {
+    if (!('searchResults' in data)) return
+    const {searchResults, userQuery} = data
 
     if (queue[queue.length - 1] == userQuery) {
       setResults(searchResults)
     }
-    setQueue(updateQueue(userQuery))
+    setQueue(updateQueue(userQuery ?? ''))
   }
 
   // Each search query gets added to the queue of searched items - the idea

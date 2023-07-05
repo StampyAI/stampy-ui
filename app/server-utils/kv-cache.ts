@@ -9,7 +9,7 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
   request: RequestForReload,
   ...args: Parameters<Fn>
 ) => Promise<{data: Awaited<ReturnType<Fn>>; timestamp: string}> {
-  return (async (request: RequestForReload, ...args: Parameters<Fn>) => {
+  return async (request: RequestForReload, ...args: Parameters<Fn>) => {
     const key = args[0] ?? defaultKey
 
     const shouldReload = request === 'NEVER_RELOAD' ? false : request.url.match(/[?&]reload/)
@@ -31,7 +31,7 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
     if (data) await STAMPY_KV.put(key, JSON.stringify(dataWithTimestamp))
 
     return dataWithTimestamp
-  }) as any
+  }
 }
 
 export async function reloadInBackgroundIfNeeded(url: string, timestamp: string) {
