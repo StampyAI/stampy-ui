@@ -133,7 +133,7 @@ const sendToCoda = async (
 export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
-    json = await(await fetch(url, params)).json()
+    json = await (await fetch(url, params)).json()
   } catch (e: unknown) {
     // forward debug message to HTTP Response
     if (e && typeof e === 'object' && 'message' in e) {
@@ -251,7 +251,7 @@ const head = (item: string | string[]) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = ({name, values, updatedAt}: CodaRow): Question => ({
+const convertToQuestion = ({name, values, updatedAt} = {} as CodaRow): Question => ({
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),

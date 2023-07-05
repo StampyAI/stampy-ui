@@ -76,8 +76,13 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const isFunLogoForcedOn = request.url.match(/funLogo/)
   const minLogo = isDomainWithFunLogo ? !!isFunLogoForcedOff : !isFunLogoForcedOn
 
+  const question = await fetchQuestion(request).catch((e) => {
+    console.error('\n\nUnexpected error in loader\n', e)
+    return null
+  })
+
   return {
-    question: await fetchQuestion(request),
+    question,
     url: request.url,
     minLogo,
   }
