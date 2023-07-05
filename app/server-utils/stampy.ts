@@ -198,7 +198,7 @@ const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 const renderText = (pageid: PageId, text: string | null): string | null => {
   if (!text) return null
 
-  let contents = extractText(text)
+  let contents: string = extractText(text)
 
   // transform known iframes links to iframes
   contents = urlToIframe(contents)
