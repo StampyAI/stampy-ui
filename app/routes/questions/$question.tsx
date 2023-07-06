@@ -1,5 +1,10 @@
 import type {LoaderArgs} from '@remix-run/cloudflare'
-import {GlossaryEntry, loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
+import {
+  GlossaryEntry,
+  loadQuestionDetail,
+  QuestionState,
+  QuestionStatus,
+} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question, Glossary, PageId} from '~/server-utils/stampy'
@@ -77,7 +82,15 @@ export function Question({
   const title =
     codaStatus && codaStatus !== QuestionStatus.LIVE_ON_SITE ? `WIP - ${codaTitle}` : codaTitle
   const isLoading = useRef(false)
-  const refreshOnToggleAfterLoading = useRef(false)
+
+  const isExpanded = questionState === QuestionState.OPEN
+  const isRelated = questionState === QuestionState.RELATED
+  const clsExpanded = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
+
+  const [isLinkHovered, setLinkHovered] = useState(false)
+  const clsLinkHovered = isLinkHovered ? 'link-hovered' : ''
+  const cls = `${clsExpanded} ${clsLinkHovered}`
+
   useEffect(() => {
     if (text == null && !isLoading.current) {
       isLoading.current = true
@@ -85,27 +98,13 @@ export function Question({
       fetchQuestion(pageid).then((newQuestionProps) => {
         if (!newQuestionProps) return
         onLazyLoadQuestion(newQuestionProps)
-        if (refreshOnToggleAfterLoading.current) {
-          onToggle(newQuestionProps)
-          refreshOnToggleAfterLoading.current = false
-        }
+        if (isExpanded) onToggle(newQuestionProps, {onlyRelated: true})
       })
     }
-  }, [pageid, text, onLazyLoadQuestion, onToggle])
-
-  const isExpanded = questionState === '_'
-  const isRelated = questionState === 'r'
-  const clsExpanded = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
-
-  const [isLinkHovered, setLinkHovered] = useState(false)
-  const clsLinkHovered = isLinkHovered ? 'link-hovered' : ''
-  const cls = `${clsExpanded} ${clsLinkHovered}`
+  }, [pageid, text, onLazyLoadQuestion, onToggle, isExpanded])
 
   const handleToggle = () => {
     onToggle(questionProps)
-    if (text == null) {
-      refreshOnToggleAfterLoading.current = true
-    }
   }
 
   let html
@@ -183,9 +182,11 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
 function Contents({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) {
   const elementRef = useRef<HTMLDivElement>(null)
 
-  const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string => {
+  const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
     const id = e.getAttribute('href') || ''
-    const footnote = el.querySelector(id) as HTMLLabelElement
+    const footnote = el.querySelector(id)
+
+    if (!footnote) return null
 
     const elem = document.createElement('div')
     elem.innerHTML = footnote.innerHTML
@@ -282,9 +283,10 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
     updateTextNodes(el, insertGlossary)
 
     // In theory this could be extended to all links
-    el.querySelectorAll('.footnote-ref > a').forEach((e) =>
-      addPopup(e as HTMLAnchorElement, footnoteHTML(el, e as HTMLAnchorElement))
-    )
+    el.querySelectorAll('.footnote-ref > a').forEach((e) => {
+      const footnote = footnoteHTML(el, e as HTMLAnchorElement)
+      if (footnote) addPopup(e as HTMLAnchorElement, footnote)
+    })
   }, [html, glossary, pageid])
 
   return (

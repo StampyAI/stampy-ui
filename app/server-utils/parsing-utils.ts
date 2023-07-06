@@ -67,11 +67,11 @@ export const uniqueFootnotes = (html: string, pageid: string): string => {
   // Make sure the footnotes point to unique ids. This is very ugly and would be better handled
   // with a proper parser, but should do the trick so is fine? Maybe?
   html = html.replace(
-    /<a href="#(fn\d+)" id="(fnref\d+)">/g,
+    /<a href="#(fn\d+)" id="(fnref[\d:]+)">/g,
     `<a href="#$1-${pageid}" id="$2-${pageid}">`
   )
   html = html.replace(
-    /<a href="#(fnref?\d+)" class="footnote-backref">/g,
+    /<a href="#(fnref?[\d:]+)" class="footnote-backref">/g,
     `<a href="#$1-${pageid}" class="footnote-backref">`
   )
   html = html.replace(

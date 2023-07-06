@@ -660,7 +660,7 @@ a.see-more.visible:after {
   content: 'See less';
 }
 
-a[target="_blank"]:not(.icon-link):after {
+a[target='_blank']:not(.icon-link):after {
   content: ' ';
   display: inline-block;
   vertical-align: top;

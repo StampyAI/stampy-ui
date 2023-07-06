@@ -53,7 +53,7 @@
     "eslint:fix": "eslint --fix --ignore-pattern .gitignore \"**/*.ts*\"",
     "prettier:fix": "prettier --write --ignore-path .gitignore \"**/*.{ts*,js,css,md}\"",
     "lint:fix": "tsc && npm run prettier:fix && npm run eslint:fix",
-    "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build",
+    "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build --sourcemap",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:miniflare": "cross-env NODE_ENV=development miniflare ./build/index.js --watch",
     "start": "npm run generate-icons && cross-env NODE_ENV=development remix build && run-p dev:*",
