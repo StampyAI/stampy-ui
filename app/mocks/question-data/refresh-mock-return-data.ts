@@ -7,10 +7,30 @@ import * as fs from 'fs'
 import * as https from 'https'
 import * as path from 'path'
 import {URL} from 'url'
+import {questions} from './question-list'
 
 async function main(): Promise<void> {
-  const data = await getData()
-  await writeFile(data)
+  await Promise.all(
+    questions.map(async (question) => {
+      const data = await getData(question[0])
+      await writeFile(data)
+    })
+  )
+}
+
+const getData = async (questionId: number) => {
+  const token = 'GET FROM ENV'
+  const options = {
+    hostname: 'coda.io',
+    port: 443,
+    path: `/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22UI%20ID%22:%22${questionId}%22`,
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  return await httpGet(options)
 }
 
 const httpGet = (options: string | https.RequestOptions | URL): Promise<string> =>
@@ -35,21 +55,6 @@ const httpGet = (options: string | https.RequestOptions | URL): Promise<string> 
 
     req.end()
   })
-
-const getData = async () => {
-  const token = 'GET FROM ENV'
-  const options = {
-    hostname: 'coda.io',
-    port: 443,
-    path: '/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22UI%20ID%22:%228486%22',
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-
-  return await httpGet(options)
-}
 
 const writeFile = async (data: string) => {
   const filename = 'myfile.json'
