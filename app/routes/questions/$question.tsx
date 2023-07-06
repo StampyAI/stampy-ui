@@ -1,5 +1,10 @@
 import type {LoaderArgs} from '@remix-run/cloudflare'
-import {GlossaryEntry, loadQuestionDetail, QuestionStatus} from '~/server-utils/stampy'
+import {
+  GlossaryEntry,
+  loadQuestionDetail,
+  QuestionState,
+  QuestionStatus,
+} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question, Glossary, PageId} from '~/server-utils/stampy'
@@ -78,8 +83,8 @@ export function Question({
     codaStatus && codaStatus !== QuestionStatus.LIVE_ON_SITE ? `WIP - ${codaTitle}` : codaTitle
   const isLoading = useRef(false)
 
-  const isExpanded = questionState === '_'
-  const isRelated = questionState === 'r'
+  const isExpanded = questionState === QuestionState.OPEN
+  const isRelated = questionState === QuestionState.RELATED
   const clsExpanded = isExpanded ? 'expanded' : isRelated ? 'related' : 'collapsed'
 
   const [isLinkHovered, setLinkHovered] = useState(false)
