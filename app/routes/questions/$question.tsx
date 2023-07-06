@@ -284,12 +284,10 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
     updateTextNodes(el, insertGlossary)
 
     // In theory this could be extended to all links
-    el.querySelectorAll('.footnote-ref > a').forEach((e) =>
-      {
-        const footnote = footnoteHTML(el, e as HTMLAnchorElement)
-        if (footnote) addPopup(e as HTMLAnchorElement, footnote)
-      }
-    )
+    el.querySelectorAll('.footnote-ref > a').forEach((e) => {
+      const footnote = footnoteHTML(el, e as HTMLAnchorElement)
+      if (footnote) addPopup(e as HTMLAnchorElement, footnote)
+    })
   }, [html, glossary, pageid])
 
   return (
