@@ -1,8 +1,8 @@
-import {urlToIframe} from './url-to-iframe'
+import {urlToIframe, externalLinksOnNewTab} from './parsing-utils'
 
 describe('urlToIframe', () => {
   describe('should not convert a markdown link', () => {
-    it.each([
+    test.each([
       {text: 'this map', url: 'https://aisafety.world/'},
       {text: 'https://aisafety.world/', url: 'https://aisafety.world/?bla=bla'},
       {text: 'https://aisafety.world/?bla=bla', url: 'https://aisafety.world/'},
@@ -12,13 +12,13 @@ describe('urlToIframe', () => {
       expect(urlToIframe(input)).toBe(input)
     })
 
-    it('whose text matches url but is not whitelisted', () => {
+    test('whose text matches url but is not whitelisted', () => {
       const url = 'https://example.com/'
       const input = `[${url}](${url})`
       expect(urlToIframe(input)).toBe(input)
     })
 
-    it('whose text matches url but url is not valid', () => {
+    test('whose text matches url but url is not valid', () => {
       const url = 'aisafety.world/'
       const input = `[${url}](${url})`
       expect(urlToIframe(input)).toBe(input)
@@ -26,7 +26,7 @@ describe('urlToIframe', () => {
   })
 
   describe('should convert a markdown link', () => {
-    it.each([
+    test.each([
       {url: 'https://aisafety.world/'},
       {url: 'http://aisafety.world/'},
       {url: 'https://aisafety.world/?bla=bla'},
@@ -35,5 +35,21 @@ describe('urlToIframe', () => {
       const output = `<iframe src="${url}" sandbox="allow-scripts allow-same-origin"></iframe>`
       expect(urlToIframe(input)).toBe(output)
     })
+  })
+})
+
+describe('externalLinksOnNewTab', () => {
+  test('no link', () => {
+    expect(externalLinksOnNewTab('gg')).toBe('gg')
+  })
+
+  test('text with internal and external links', () => {
+    expect(
+      externalLinksOnNewTab(
+        'x <a href="/?state=3">gg</a> and <a href="https://example.com">hh</a> y'
+      )
+    ).toBe(
+      'x <a href="/?state=3">gg</a> and <a href="https://example.com" target="_blank" rel="noreferrer">hh</a> y'
+    )
   })
 })

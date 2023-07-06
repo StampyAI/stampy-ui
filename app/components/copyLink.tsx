@@ -4,7 +4,7 @@ import copy from 'copy-to-clipboard'
 type Props = {
   to?: string
   children: ReactNode
-  [k: string]: any
+  [k: string]: unknown
 }
 
 export default function CopyLink({to, children, ...props}: Props) {

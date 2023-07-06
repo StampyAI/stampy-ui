@@ -20,7 +20,7 @@ export const loader = async ({request, params}: LoaderArgs) => {
 
   try {
     return await loadQuestionDetail(request, question)
-  } catch (error: any) {
+  } catch (error: unknown) {
     const data: Question = {
       pageid: question,
       title: UNKNOWN_QUESTION_TITLE,
@@ -31,7 +31,7 @@ export const loader = async ({request, params}: LoaderArgs) => {
       tags: [],
     }
     return {
-      error: error.toString(),
+      error: error?.toString(),
       timestamp: new Date().toISOString(),
       data,
     }
