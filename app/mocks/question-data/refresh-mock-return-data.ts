@@ -1,6 +1,5 @@
 /**
  * This is a script to refresh the mock return data for tests.
- * This script only needs to make CODA REQUESTS because THIS IS THE DATA THAT IS MOCKED!
  */
 
 import * as fs from 'fs'
@@ -12,8 +11,9 @@ import {questions} from './question-list'
 async function main(): Promise<void> {
   await Promise.all(
     questions.map(async (question) => {
-      const data = await getData(question[0])
-      await writeFile(data)
+      const questionId = question[0]
+      const data = await getData(questionId)
+      await writeFile(questionId, data)
     })
   )
 }
@@ -56,8 +56,8 @@ const httpGet = (options: string | https.RequestOptions | URL): Promise<string> 
     req.end()
   })
 
-const writeFile = async (data: string) => {
-  const filename = 'myfile.json'
+const writeFile = async (questionId: number, data: string) => {
+  const filename = `question-${questionId}.json`
   const filePath = path.join(__dirname, filename)
   fs.writeFile(filePath, data, (err) => {
     if (err) {
