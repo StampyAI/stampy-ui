@@ -183,9 +183,11 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
 function Contents({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) {
   const elementRef = useRef<HTMLDivElement>(null)
 
-  const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string => {
+  const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
     const id = e.getAttribute('href') || ''
-    const footnote = el.querySelector(id) as HTMLLabelElement
+    const footnote = el.querySelector(id)
+
+    if (!footnote) return null
 
     const elem = document.createElement('div')
     elem.innerHTML = footnote.innerHTML
@@ -283,7 +285,10 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) =>
-      addPopup(e as HTMLAnchorElement, footnoteHTML(el, e as HTMLAnchorElement))
+      {
+        const footnote = footnoteHTML(el, e as HTMLAnchorElement)
+        if (footnote) addPopup(e as HTMLAnchorElement, footnote)
+      }
     )
   }, [html, glossary, pageid])
 
