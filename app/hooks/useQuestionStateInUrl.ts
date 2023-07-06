@@ -124,9 +124,12 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   }
 
   const moveToTop = (currentState: string, {pageid}: Question) => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+    setTimeout(() => {
+      // scroll to top after the state is updated
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
     })
     return moveQuestionToTop(currentState, pageid)
   }
