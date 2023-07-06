@@ -9,7 +9,6 @@ import {
 import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
-import useRerenderOnResize from '~/hooks/useRerenderOnResize'
 import useDraggable from '~/hooks/useDraggable'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import Search from '~/components/search'
@@ -119,21 +118,20 @@ export default function App() {
     glossary,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
-  useRerenderOnResize() // recalculate AutoHeight
-
   const openQuestionTitles = questions
     .filter(({questionState}) => questionState === '_')
     .map(({title}) => title)
 
   const showMore = (el: HTMLElement, toggle = false) => {
-    const container = el.closest('.react-auto-height') as HTMLElement
-    const button = container.getElementsByClassName('see-more')[0]
+    const button = el.closest('.answer')?.querySelector('.see-more')
     if (toggle) {
       button?.classList.toggle('visible')
     } else {
       button?.classList.add('visible')
     }
-    container.style.removeProperty('height')
+    // The AutoHeight component doesn't notice when a random <div> changes CSS class,
+    // so manually triggering toggle event (as if this was a <details> element).
+    dispatchEvent(new Event('toggle'))
   }
 
   const handleSpecialLinks = (e: MouseEvent) => {
@@ -145,9 +143,6 @@ export default function App() {
     )
       return
 
-    // The AutoHeight component doesn't notice when a HTML details is opened.
-    // Manually removing the height from the style fixes this, but can potentially
-    // break something else...
     if (el.classList.contains('see-more')) {
       showMore(el, true)
       e.preventDefault()
