@@ -77,21 +77,6 @@ export function Question({
   const title =
     codaStatus && codaStatus !== QuestionStatus.LIVE_ON_SITE ? `WIP - ${codaTitle}` : codaTitle
   const isLoading = useRef(false)
-  const refreshOnToggleAfterLoading = useRef(false)
-  useEffect(() => {
-    if (text == null && !isLoading.current) {
-      isLoading.current = true
-      // This is where the actual contents of the question get fetched from the backend
-      fetchQuestion(pageid).then((newQuestionProps) => {
-        if (!newQuestionProps) return
-        onLazyLoadQuestion(newQuestionProps)
-        if (refreshOnToggleAfterLoading.current) {
-          onToggle(newQuestionProps)
-          refreshOnToggleAfterLoading.current = false
-        }
-      })
-    }
-  }, [pageid, text, onLazyLoadQuestion, onToggle])
 
   const isExpanded = questionState === '_'
   const isRelated = questionState === 'r'
@@ -101,11 +86,20 @@ export function Question({
   const clsLinkHovered = isLinkHovered ? 'link-hovered' : ''
   const cls = `${clsExpanded} ${clsLinkHovered}`
 
+  useEffect(() => {
+    if (text == null && !isLoading.current) {
+      isLoading.current = true
+      // This is where the actual contents of the question get fetched from the backend
+      fetchQuestion(pageid).then((newQuestionProps) => {
+        if (!newQuestionProps) return
+        onLazyLoadQuestion(newQuestionProps)
+        if (isExpanded) onToggle(newQuestionProps, {onlyRelated: true})
+      })
+    }
+  }, [pageid, text, onLazyLoadQuestion, onToggle, isExpanded])
+
   const handleToggle = () => {
     onToggle(questionProps)
-    if (text == null) {
-      refreshOnToggleAfterLoading.current = true
-    }
   }
 
   let html

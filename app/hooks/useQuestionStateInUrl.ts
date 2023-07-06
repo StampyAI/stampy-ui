@@ -196,7 +196,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
    * are on the page
    */
   const toggleQuestion = useCallback(
-    (questionProps: Question, options?: {moveToTop?: boolean}) => {
+    (questionProps: Question, options?: {moveToTop?: boolean; onlyRelated?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
       let currentState = stateString ?? initialCollapsedState
 
@@ -212,7 +212,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       }
 
       const newRelatedQuestions = unshownRelatedQuestions(questions, questionProps)
-      const newState = insertIntoState(currentState, pageid, newRelatedQuestions)
+      const newState = insertIntoState(currentState, pageid, newRelatedQuestions, {
+        toggle: !options?.onlyRelated,
+      })
 
       updateStateString(newState)
     },
