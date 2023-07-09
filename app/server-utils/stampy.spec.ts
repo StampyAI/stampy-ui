@@ -1,5 +1,5 @@
 import {CodaRow, loadQuestionDetail} from '~/server-utils/stampy'
-import question8486 from '~/mocks/question-data/question-8486.json'
+import question8486 from '~/mocks/coda-responses/question-8486.json'
 
 type ChangeFields<T, R> = Omit<T, keyof R> & R
 type CodaRowTrimmed = ChangeFields<
