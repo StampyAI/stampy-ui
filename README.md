@@ -78,6 +78,12 @@ $ npm run lint
 $ npm run test
 ```
 
+Tests may rely on cached data from coda.
+This data can be refreshed by running:
+```sh
+$ npm run refresh-test-data
+```
+
 ## Deployment to your CF Worker
 
 ```sh
