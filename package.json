@@ -11,7 +11,7 @@
     "markdown-it-footnote": "^3.0.3",
     "node-html-parser": "^5.4.2",
     "react": "^17.0.2",
-    "react-auto-height": "^1.1.6",
+    "react-auto-height": "^1.2.1",
     "react-dom": "^17.0.2",
     "remix": "^1.13.0"
   },
@@ -55,7 +55,7 @@
     "eslint:fix": "eslint --fix --ignore-pattern .gitignore \"**/*.ts*\"",
     "prettier:fix": "prettier --write --ignore-path .gitignore \"**/*.{ts*,js,css,md}\"",
     "lint:fix": "tsc && npm run prettier:fix && npm run eslint:fix",
-    "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build",
+    "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build --sourcemap",
     "dev:build": "npm run generate-icons && cross-env NODE_ENV=development remix build",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:miniflare": "cross-env NODE_ENV=development miniflare ./build/index.js --watch",

@@ -7,7 +7,7 @@ import Dialog from '~/components/dialog'
 type Props = {
   tags: string[]
   selectQuestion: (pageid: string, title: string) => void
-  [k: string]: any
+  [k: string]: unknown
 }
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
@@ -18,10 +18,10 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 
   try {
     return await loadTag(request, tag)
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`error fetching tag "${tag}":`, error)
     return {
-      error: error.toString(),
+      error: error?.toString(),
       timestamp: new Date().toISOString(),
       data: [],
     }

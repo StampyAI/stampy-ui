@@ -13,7 +13,7 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
    - [Install Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
    - [Create Cloudflare account](https://dash.cloudflare.com/)
    - [Install Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
-  and [authenticate the CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
+     and [authenticate the CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
 
 2. Clone the [Repo](https://github.com/StampyAI/stampy-ui)
 
@@ -31,23 +31,24 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
 4. Setup in [Coda.io](https://coda.io/account)
 
    - **4.1 (Required)** Setup read access to the API view in Coda
-     > *Note*:
+
+     > _Note_:
      > Content in Coda comes from parsing Google Docs (so that site visitors can make suggestions that
      > will be reviewed by our editors). The parser lives in the
      > [GDocsRelatedThings](https://github.com/StampyAI/GDocsRelatedThings/#readme) repo.
 
    - When logged in to Coda, `Generate API token` in your Account settigns
    - Add restrictions: `Doc or table`, `Read only`, for the doc with url `https://coda.io/d/_dfau7sl2hmG`
-    (you need access to the doc of course, which you can request on the Discord)
+     (you need access to the doc of course, which you can request on the Discord)
    - Replace the value for `{CODA_TOKEN}` in `wrangler.toml`
 
    - **4.2 (Optional)** Setup write access to the API write view in Coda
 
-      > Note: This step is only needed for incrementing counters (helpful, etc.). There isn't a test environment, so any changes there will also effect the live site, so think twice before using them.
+     > Note: This step is only needed for incrementing counters (helpful, etc.). There isn't a test environment, so any changes there will also effect the live site, so think twice before using them.
 
-      - When logged in to Coda, `Generate API token` in your Account settings
-      - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tutable-eEhx2YPsBE`
-      - Replace the value for `{CODA_WRITES_TOKEN}` in `wrangler.toml`
+     - When logged in to Coda, `Generate API token` in your Account settings
+     - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tutable-eEhx2YPsBE`
+     - Replace the value for `{CODA_WRITES_TOKEN}` in `wrangler.toml`
 
    - **4.3 (Optional)** Setup write access to the "Incoming questions" table in Coda
 

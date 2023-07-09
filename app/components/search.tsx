@@ -164,7 +164,7 @@ const ShowMoreSuggestions = ({
 }: {
   question: string
   relatedQuestions: string[]
-  onClose: (e: any) => void
+  onClose: (e: unknown) => void
 }) => {
   const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
   const [error, setError] = useState<string>()

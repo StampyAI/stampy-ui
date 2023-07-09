@@ -124,9 +124,12 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   }
 
   const moveToTop = (currentState: string, {pageid}: Question) => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+    setTimeout(() => {
+      // scroll to top after the state is updated
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
     })
     return moveQuestionToTop(currentState, pageid)
   }
@@ -196,7 +199,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
    * are on the page
    */
   const toggleQuestion = useCallback(
-    (questionProps: Question, options?: {moveToTop?: boolean}) => {
+    (questionProps: Question, options?: {moveToTop?: boolean; onlyRelated?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
       let currentState = stateString ?? initialCollapsedState
 
@@ -212,7 +215,9 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       }
 
       const newRelatedQuestions = unshownRelatedQuestions(questions, questionProps)
-      const newState = insertIntoState(currentState, pageid, newRelatedQuestions)
+      const newState = insertIntoState(currentState, pageid, newRelatedQuestions, {
+        toggle: !options?.onlyRelated,
+      })
 
       updateStateString(newState)
     },

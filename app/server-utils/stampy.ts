@@ -1,7 +1,11 @@
 import {withCache} from '~/server-utils/kv-cache'
-import {urlToIframe} from '~/server-utils/url-to-iframe'
-import MarkdownIt from 'markdown-it'
-import MarkdownItFootnote from 'markdown-it-footnote'
+import {
+  cleanUpDoubleBold,
+  externalLinksOnNewTab,
+  uniqueFootnotes,
+  urlToIframe,
+  convertToHtmlAndWrapInDetails,
+} from '~/server-utils/parsing-utils'
 
 export enum QuestionState {
   OPEN = '_',
@@ -115,7 +119,7 @@ const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 
 const sendToCoda = async (
   url: string,
-  payload: any,
+  payload: unknown,
   method = 'POST',
   token = `${CODA_WRITES_TOKEN}`
 ) => {
@@ -134,9 +138,11 @@ export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
     json = await (await fetch(url, params)).json()
-  } catch (e: any) {
+  } catch (e: unknown) {
     // forward debug message to HTTP Response
-    e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    if (e && typeof e === 'object' && 'message' in e) {
+      e.message = `\n>>> Error fetching ${url}:\n${JSON.stringify(json, null, 2)}\n<<< ${e.message}`
+    }
     throw e
   }
   return json
@@ -191,65 +197,31 @@ const getCodaRows = async (
   queryValue?: string
 ): Promise<CodaRow[]> => paginateCoda(makeCodaRequest({table, queryColumn, queryValue}))
 
-const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
 /*
  * Transform the Coda markdown into HTML
  */
-const renderText = (pageid: PageId, text: string | null): string | null => {
-  if (!text) return null
+const renderText = (pageid: PageId, markdown: string | null): string | null => {
+  if (!markdown) return null
 
-  let contents = extractText(text)
+  markdown = extractText(markdown)
+  markdown = urlToIframe(markdown)
 
-  // transform known iframes links to iframes
-  contents = urlToIframe(contents)
+  let html = convertToHtmlAndWrapInDetails(markdown)
+  html = uniqueFootnotes(html, pageid)
+  html = cleanUpDoubleBold(html)
+  html = externalLinksOnNewTab(html)
 
-  // Recursively wrap any [See more...] segments in HTML Details
-  const seeMoreToken = 'SEE-MORE-BUTTON'
-  const wrapInDetails = ([chunk, ...rest]: string[]): string => {
-    if (!rest || rest.length == 0) return chunk
-    return `<div>${chunk}<div>
-           <a href="" class="see-more"></a>
-           <div class="see-more-contents">${wrapInDetails(rest)}</div>`
-  }
-  // Add magic to handle markdown shortcomings.
-  // The [See more...] button will be transformed into an empty link if processed.
-  // On the other hand, if the whole text isn't rendered as one, footnotes will break.
-  // To get round this, replace the [See more...] button with a magic string, render the
-  // markdown, then mangle the resulting HTML to add an appropriate button link
-  contents = contents.replaceAll(/\[[Ss]ee more\W*?\]/g, seeMoreToken)
-  contents = md.render(contents)
-  contents = wrapInDetails(contents.split(seeMoreToken))
-
-  // Make sure the footnotes point to unique ids. This is very ugly and would be better handled
-  // with a proper parser, but should do the trick so is fine? Maybe?
-  contents = contents.replace(
-    /<a href="#(fn\d+)" id="(fnref\d+)">/g,
-    `<a href="#$1-${pageid}" id="$2-${pageid}">`
-  )
-  contents = contents.replace(
-    /<a href="#(fnref?\d+)" class="footnote-backref">/g,
-    `<a href="#$1-${pageid}" class="footnote-backref">`
-  )
-  contents = contents.replace(
-    /<li id="(fn\d+)" class="footnote-item">/g,
-    `<li id="$1-${pageid}" class="footnote-item">`
-  )
-
-  // The parser sometimes generates chunks of bolded or italicised texts next to
-  // each other, e.g. `**this is bolded****, but so is this**`. The renderer doesn't
-  // know what to do with this, so it results in something like `<b>this is bolded****, but so is this</b>`.
-  // For lack of a better solution, just remove any '**'
-  return contents.replaceAll('**', '')
+  return html
 }
 
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
-const head = (item: any) => {
+const head = (item: string | string[]) => {
   if (Array.isArray(item)) return item[0]
   return item
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = ({name, values, updatedAt}: CodaRow): Question => ({
+const convertToQuestion = ({name, values, updatedAt} = {} as CodaRow): Question => ({
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
