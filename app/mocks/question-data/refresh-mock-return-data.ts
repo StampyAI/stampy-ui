@@ -39,8 +39,6 @@ const httpGet = (options: string | https.RequestOptions | URL): Promise<string> 
     const req = https.request(options, (res) => {
       let data = ''
 
-      console.log(`StatusCode: ${res.statusCode}`)
-
       res.on('data', (chunk) => {
         data += chunk
       })
@@ -57,16 +55,20 @@ const httpGet = (options: string | https.RequestOptions | URL): Promise<string> 
     req.end()
   })
 
-// needs to be converted to promise
-const writeFile = async (questionId: number, data: string) => {
+const writeFile = (questionId: number, data: string): Promise<void> => {
   const filename = `question-${questionId}.json`
   const filePath = path.join(__dirname, filename)
-  fs.writeFile(filePath, data, (err) => {
-    if (err) {
-      console.error('An error occurred:', err)
-      return
-    }
-    console.log('File has been written successfully.')
+
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, data, (err) => {
+      if (err) {
+        console.error('An error occurred:', err)
+        reject(err)
+      } else {
+        console.log('File has been written successfully.')
+        resolve()
+      }
+    })
   })
 }
 
