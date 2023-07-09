@@ -39,6 +39,7 @@
     "prettier": "^2.8.4",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5",
     "wrangler": "^2.10.0"
   },
@@ -65,7 +66,7 @@
     "tsc": "tsc",
     "deploy": "npm run build && wrangler publish",
     "test": "jest",
-    "refresh-test-data": "tsc app/mocks/coda-responses/refresh-coda-data-for-tests.ts && node app/mocks/coda-responses/refresh-coda-data-for-tests.js"
+    "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts"
   },
   "main": "build/index.js"
 }
