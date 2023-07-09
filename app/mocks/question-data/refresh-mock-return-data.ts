@@ -7,13 +7,13 @@ import * as https from 'https'
 import * as path from 'path'
 import * as toml from 'toml'
 import {URL} from 'url'
-import {questions} from './question-list'
+
+export const questionIds = [8486]
 
 async function main(): Promise<void> {
   const codaToken = readCodaToken()
   await Promise.all(
-    questions.map(async (question) => {
-      const questionId = question[0]
+    questionIds.map(async (questionId) => {
       const data = await getData(questionId, codaToken)
       await writeFile(questionId, data)
     })
