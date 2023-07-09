@@ -65,7 +65,7 @@
     "tsc": "tsc",
     "deploy": "npm run build && wrangler publish",
     "test": "jest",
-    "generate-test-data": "tsc app/mocks/question-data/refresh-mock-return-data.ts && node app/mocks/question-data/refresh-mock-return-data.js"
+    "refresh-test-data": "tsc app/mocks/question-data/refresh-mock-return-data.ts && node app/mocks/question-data/refresh-mock-return-data.js"
   },
   "main": "build/index.js"
 }
