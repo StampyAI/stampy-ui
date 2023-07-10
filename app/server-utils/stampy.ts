@@ -96,6 +96,12 @@ type CodaRow = {
     'Internal?': boolean
     'Questions tagged with this': Entity[]
     'Main question': string | Entity | null
+
+    // Glossary entries
+    definition: string
+    phrase: string
+    aliases: string
+    'question ID': string
   }
 }
 type CodaResponse = {
@@ -113,6 +119,7 @@ const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
 const WRITES_TABLE = 'table-eEhx2YPsBE'
+const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
@@ -256,26 +263,23 @@ export const loadInitialQuestions = withCache('initialQuestions', async () => {
 })
 
 export const loadGlossary = withCache('loadGlossary', async () => {
-  const rows = await getCodaRows(ON_SITE_TABLE)
-
-  const getContents = (q: Question): string => {
-    if (!q.text) return ''
-
-    // The contents are HTML paragraphs with random stuff in them. This function
-    // should return the first paragraph
-    const contents = q.text.split('</p>')[0]
-    return contents && contents + '</p>'
-  }
-
-  const gloss = rows
-    .map(convertToQuestion)
-    .filter((q) => q.tags.includes('Glossary'))
-    .map((q) => ({
-      term: q.title.replace(/^What is ((a|an|the) )?('|")?(.*?)('|")?\?$/, '$4'),
-      pageid: q.pageid,
-      contents: getContents(q),
-    }))
-  return Object.fromEntries(gloss.map((e) => [e.term.toLowerCase(), e]))
+  const rows = await getCodaRows(GLOSSARY_TABLE)
+  return Object.fromEntries(
+    rows
+      .map(({values}) => {
+        const pageid = extractText(values['question ID'])
+        const phrases = [values.phrase, ...values.aliases.split('\n')]
+        const item = {
+          pageid,
+          contents: renderText(pageid, extractText(values.definition)),
+        }
+        return phrases
+          .map((i) => extractText(i.toLowerCase()))
+          .filter(Boolean)
+          .map((phrase) => [phrase, {term: phrase, ...item}])
+      })
+      .flat()
+  )
 })
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
