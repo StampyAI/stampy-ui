@@ -270,7 +270,6 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
        */
       fragment.querySelectorAll('.glossary-entry').forEach((e) => {
         const entry = glossaryEntry(e)
-        console.log(entry)
         entry &&
           addPopup(
             e as HTMLSpanElement,
