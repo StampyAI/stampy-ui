@@ -68,7 +68,7 @@ type Entity = {
   rowId: string
   tableUrl: string
 }
-export type CodaRowCommon = {
+type CodaRowCommon = {
   id: string
   type: string
   href: string
@@ -79,7 +79,7 @@ export type CodaRowCommon = {
   browserLink: string
 }
 
-type AnswersRow = CodaRowCommon & {
+export type AnswersRow = CodaRowCommon & {
   values: {
     'Edit Answer': string
     Link: {
