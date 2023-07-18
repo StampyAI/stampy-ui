@@ -132,6 +132,7 @@ const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
+let allTags = {} as Record<string, Tag>
 
 const sendToCoda = async (
   url: string,
@@ -242,7 +243,9 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
   answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
-  tags: ((values['Tags'] || []) as Entity[]).map((e) => e.name),
+  tags: ((values['Tags'] || []) as Entity[])
+    .map((e) => e.name)
+    .filter((name) => Object.prototype.hasOwnProperty.call(allTags, name)),
   relatedQuestions:
     values['Related Answers'] && values['Related IDs']
       ? values['Related Answers'].map(({name}, i) => ({
@@ -345,7 +348,9 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
       .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
       .map((q) => [q.title, q.pageid])
   )
-  return rows.map((r) => toTag(r, nameToId))
+  const tags = rows.map((r) => toTag(r, nameToId))
+  allTags = Object.fromEntries(tags.map((r) => [r.name, r])) as Record<string, Tag>
+  return tags
 })
 
 export const loadMoreAnswerDetails = withCache(
