@@ -44,7 +44,7 @@
     "wrangler": "^2.10.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "sideEffects": false,
   "scripts": {
