@@ -1,11 +1,11 @@
 import {LoaderArgs} from '@remix-run/cloudflare'
-import {loadAllQuestions, QuestionStatus, Question} from '~/server-utils/stampy'
+import {loadAllQuestions, QuestionStatus, Question, QuestionState} from '~/server-utils/stampy'
 
 export const loader = async ({request}: LoaderArgs) => {
   const origin = new URL(request.url).origin
   const formatQuestion = ({pageid, updatedAt}: Question) => `
     <url>
-      <loc>${origin}/?state=${pageid}</loc>
+      <loc>${origin}/?state=${pageid}${QuestionState.OPEN}</loc>
       <lastmod>${updatedAt}</lastmod>
       <priority>1.0</priority>
     </url>

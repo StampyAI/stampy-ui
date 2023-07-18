@@ -273,7 +273,8 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
         entry &&
           addPopup(
             e as HTMLSpanElement,
-            `<div>${entry.contents}</div><br><a href="/?state=${entry.pageid}_">See more...</a>`
+            `<div>${entry.contents}</div>` +
+              (entry.pageid ? `<br><a href="/?state=${entry.pageid}_">See more...</a>` : '')
           )
       })
 

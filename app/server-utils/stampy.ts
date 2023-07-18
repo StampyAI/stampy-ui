@@ -68,7 +68,7 @@ type Entity = {
   rowId: string
   tableUrl: string
 }
-export type CodaRow = {
+export type CodaRowCommon = {
   id: string
   type: string
   href: string
@@ -77,6 +77,9 @@ export type CodaRow = {
   createdAt: string
   updatedAt: string
   browserLink: string
+}
+
+type AnswersRow = CodaRowCommon & {
   values: {
     'Edit Answer': string
     Link: {
@@ -91,13 +94,25 @@ export type CodaRow = {
     'Related IDs': '' | string[]
     Tags: '' | Entity[]
     'Rich Text': string
-
+  }
+}
+type TagsRow = CodaRowCommon & {
+  values: {
     'Tag ID': number
     'Internal?': boolean
     'Questions tagged with this': Entity[]
     'Main question': string | Entity | null
   }
 }
+type GlossaryRow = CodaRowCommon & {
+  values: {
+    definition: string
+    phrase: string
+    aliases: string
+    'UI ID': string
+  }
+}
+type CodaRow = AnswersRow | TagsRow | GlossaryRow
 type CodaResponse = {
   items: CodaRow[]
   nextPageLink: string | null
@@ -113,6 +128,7 @@ const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
 const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
 const WRITES_TABLE = 'table-eEhx2YPsBE'
+const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
@@ -221,7 +237,7 @@ const head = (item: string | string[]) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
-const convertToQuestion = ({name, values, updatedAt} = {} as CodaRow): Question => ({
+const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => ({
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
@@ -239,53 +255,50 @@ const convertToQuestion = ({name, values, updatedAt} = {} as CodaRow): Question 
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
-  const rows = await getCodaRows(
+  const rows = (await getCodaRows(
     QUESTION_DETAILS_TABLE,
     // ids are now alphanumerical, so not possible to detect id by regex match for \d
     // let's detect ids by length, hopefully no one will make question name so short
     question.length <= 6 ? 'UI ID' : 'Name',
     question
-  )
+  )) as AnswersRow[]
   return convertToQuestion(rows[0])
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
-  const rows = await getCodaRows(INITIAL_QUESTIONS_TABLE)
+  const rows = (await getCodaRows(INITIAL_QUESTIONS_TABLE)) as AnswersRow[]
   const data = rows.map(convertToQuestion)
   return data
 })
 
 export const loadGlossary = withCache('loadGlossary', async () => {
-  const rows = await getCodaRows(ON_SITE_TABLE)
-
-  const getContents = (q: Question): string => {
-    if (!q.text) return ''
-
-    // The contents are HTML paragraphs with random stuff in them. This function
-    // should return the first paragraph
-    const contents = q.text.split('</p>')[0]
-    return contents && contents + '</p>'
-  }
-
-  const gloss = rows
-    .map(convertToQuestion)
-    .filter((q) => q.tags.includes('Glossary'))
-    .map((q) => ({
-      term: q.title.replace(/^What is ((a|an|the) )?('|")?(.*?)('|")?\?$/, '$4'),
-      pageid: q.pageid,
-      contents: getContents(q),
-    }))
-  return Object.fromEntries(gloss.map((e) => [e.term.toLowerCase(), e]))
+  const rows = (await getCodaRows(GLOSSARY_TABLE)) as GlossaryRow[]
+  return Object.fromEntries(
+    rows
+      .map(({values}) => {
+        const pageid = extractText(values['UI ID'])
+        const phrases = [values.phrase, ...values.aliases.split('\n')]
+        const item = {
+          pageid,
+          contents: renderText(pageid, extractText(values.definition)),
+        }
+        return phrases
+          .map((i) => extractText(i.toLowerCase()))
+          .filter(Boolean)
+          .map((phrase) => [phrase, {term: phrase, ...item}])
+      })
+      .flat()
+  )
 })
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
-  const rows = await getCodaRows(ON_SITE_TABLE)
+  const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
   const questions = rows.map(convertToQuestion)
   return {questions, nextPageLink: null}
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
-  const rows = await getCodaRows(ALL_ANSWERS_TABLE)
+  const rows = (await getCodaRows(ALL_ANSWERS_TABLE)) as AnswersRow[]
   return rows.map(convertToQuestion)
 })
 
@@ -299,7 +312,7 @@ const extractMainQuestion = (question: string | Entity | null): string | null =>
       return question
   }
 }
-const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
+const toTag = (r: TagsRow, nameToId: Record<string, string>): Tag => ({
   rowId: r.id,
   tagId: r.values['Tag ID'],
   name: r.name,
@@ -312,7 +325,7 @@ const toTag = (r: CodaRow, nameToId: Record<string, string>): Tag => ({
 })
 
 export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> => {
-  const rows = await getCodaRows(TAGS_TABLE, 'Tag name', tagName)
+  const rows = (await getCodaRows(TAGS_TABLE, 'Tag name', tagName)) as TagsRow[]
 
   const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
@@ -324,7 +337,7 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
 })
 
 export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
-  const rows = await getCodaRows(TAGS_TABLE, 'Internal?', 'false')
+  const rows = (await getCodaRows(TAGS_TABLE, 'Internal?', 'false')) as TagsRow[]
 
   const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
@@ -342,8 +355,8 @@ export const loadMoreAnswerDetails = withCache(
   ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
     const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
     const result = await fetchRows(url)
-    const questions = result.items.map(convertToQuestion)
-    return {nextPageLink: result.nextPageLink, questions}
+    const items = result.items as AnswersRow[]
+    return {nextPageLink: result.nextPageLink, questions: items.map(convertToQuestion)}
   }
 )
 
