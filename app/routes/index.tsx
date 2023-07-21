@@ -131,7 +131,7 @@ export default function App() {
     }
     // The AutoHeight component doesn't notice when a random <div> changes CSS class,
     // so manually triggering toggle event (as if this was a <details> element).
-    dispatchEvent(new Event('toggle'))
+    document.dispatchEvent(new Event('toggle'))
   }
 
   const handleSpecialLinks = (e: MouseEvent) => {
