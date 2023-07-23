@@ -6,7 +6,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from '@remix-run/react'
-import {loadInitialQuestions, QuestionState} from '~/server-utils/stampy'
+import {loadInitialQuestions, loadTags, QuestionState} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useDraggable from '~/hooks/useDraggable'
@@ -22,6 +22,7 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {
+    await loadTags(request)
     const initialQuestionsData = await loadInitialQuestions(request)
     return {initialQuestionsData}
   } catch (e) {
