@@ -6,7 +6,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as toml from 'toml'
 
-export const questionIds = [8486]
+export const questionIds = ['8486']
 
 async function main(): Promise<void> {
   const codaToken = readCodaToken()
@@ -18,7 +18,7 @@ async function main(): Promise<void> {
   )
 }
 
-const getData = async (questionId: number, codaToken: string) => {
+const getData = async (questionId: string, codaToken: string) => {
   const options = {
     headers: {
       Authorization: `Bearer ${codaToken}`,
@@ -30,7 +30,7 @@ const getData = async (questionId: number, codaToken: string) => {
   return JSON.stringify(body)
 }
 
-const writeFile = (questionId: number, data: string): Promise<void> => {
+const writeFile = (questionId: string, data: string): Promise<void> => {
   const filename = `question-${questionId}.json`
   const filePath = path.join(__dirname, filename)
 
