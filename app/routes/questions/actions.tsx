@@ -94,11 +94,22 @@ export const Action = ({pageid, actionType, children, ...props}: Props) => {
   // will result in each action only being allowed once per browser
   const actionId = `${pageid}-${actionType}`
   const [actionTaken, setActionTaken] = useState(false)
-  const loadActionTaken = useCallback(() => localStorage.getItem(actionId) === 'true', [actionId])
+  const loadActionTaken = useCallback(() => {
+    try {
+      return localStorage.getItem(actionId) === 'true'
+    } catch (e) {
+      // This will happen when local storage is disabled
+      return false
+    }
+  }, [actionId])
   useEffect(() => setActionTaken(loadActionTaken()), [loadActionTaken])
   useEffect(() => {
     if (loadActionTaken() || actionTaken) {
-      localStorage.setItem(actionId, actionTaken.toString())
+      try {
+        localStorage.setItem(actionId, actionTaken.toString())
+      } catch (e) {
+        // This will happen when local storage is disabled
+      }
     }
   }, [actionTaken, loadActionTaken, actionId])
 
