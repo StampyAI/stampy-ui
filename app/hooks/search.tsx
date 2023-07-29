@@ -47,10 +47,11 @@ export const baselineSearch = async (
     fullRe: new RegExp(`\\b${token}\\b`),
     prefixRe: new RegExp(`\\b${token}`),
   }))
-  const totalWeight = matchers.reduce((acc, {weight}) => acc + weight, 0.1) // extra total to only approach 100%
+  const isDefinitionRe = /^what (?:is|are)/
+  const totalWeight = matchers.reduce((acc, {weight}) => acc + weight, 0.1) // extra total to avoid division by 0
 
   const scoringFn = (questionNormalized: string) => {
-    let score = 0
+    let score = isDefinitionRe.exec(questionNormalized) ? 0.1 : 0 // small boost to "What is x?" questions if there are many search results
     let prevPosition = -1
     for (const {weight, fullRe, prefixRe} of matchers) {
       const fullMatch = fullRe.exec(questionNormalized)
