@@ -30,10 +30,6 @@ export const makeCodaRequest = ({table, queryColumn, queryValue, limit}: CodaReq
 }
 
 export const CODA_DOC_ID = 'fau7sl2hmG'
-const buildCodaBaseUrl = ({table, rowId}: {table: string; rowId?: string}) =>
-  `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows${
-    rowId ? `/${enc(rowId)}` : ''
-  }`
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
