@@ -5,33 +5,41 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as toml from 'toml'
+import {QUESTION_DETAILS_TABLE, makeCodaRequest} from '../../server-utils/coda-urls'
 
 export const questionIds = ['8486']
 
 async function main(): Promise<void> {
   const codaToken = readCodaToken()
-  await Promise.all(
+  const data = await Promise.all(
     questionIds.map(async (questionId) => {
-      const data = await getData(questionId, codaToken)
-      await writeFile(questionId, data)
+      const codaUrl = makeCodaRequest({
+        table: QUESTION_DETAILS_TABLE,
+        queryColumn: 'UI ID',
+        queryValue: questionId,
+      })
+      console.log(`Fetching ${codaUrl}`)
+      const responseData = await getData(codaUrl, codaToken)
+      return {url: codaUrl, httpMethod: 'GET', responseData: JSON.parse(responseData)}
     })
   )
+  const writeData = JSON.stringify(data, null, 2)
+  await writeFile(writeData)
 }
 
-const getData = async (questionId: string, codaToken: string) => {
+const getData = async (url: string, codaToken: string) => {
   const options = {
     headers: {
       Authorization: `Bearer ${codaToken}`,
     },
   }
-  const url = `https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22UI%20ID%22:%22${questionId}%22`
   const response = await fetch(url, options)
   const body = await response.json()
   return JSON.stringify(body)
 }
 
-const writeFile = (questionId: string, data: string): Promise<void> => {
-  const filename = `question-${questionId}.json`
+const writeFile = (data: string): Promise<void> => {
+  const filename = `cached-coda-responses.json`
   const filePath = path.join(__dirname, filename)
 
   return new Promise((resolve, reject) => {
