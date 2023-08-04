@@ -173,7 +173,7 @@ export function Question({
 const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
   Array.from(el.childNodes).forEach((child) => updateTextNodes(child, textProcessor))
 
-  if (el.nodeType == Node.TEXT_NODE && el.textContent && el?.parentElement?.tagName != 'A') {
+  if (el.nodeType == Node.TEXT_NODE && el.textContent) {
     const node = textProcessor(el)
     el?.parentNode?.replaceChild(node, el)
   }
@@ -223,11 +223,13 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
      *  - an on hover popup with a short explaination of the glossary item
      */
     const insertGlossary = (textNode: Node) => {
-      const html = textNode.textContent || ''
+      const html = (textNode.textContent || '').replace('’', "'").replace('—', '-')
       // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
       // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
       // of longer definitions don't override them.
-      const updated = Object.keys(glossary)
+      const updated = Object.values(glossary)
+        .filter((item) => item.pageid != pageid)
+        .map(({term}) => term)
         .sort((a, b) => b.length - a.length)
         .reduce(
           (html, entry) =>
