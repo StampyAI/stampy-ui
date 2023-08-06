@@ -8,7 +8,8 @@ export const loader = async ({request}: LoaderArgs) => {
   if (nextPage !== null) {
     return await loadMoreAnswerDetails(request, nextPage || null)
   }
-  return await loadOnSiteAnswers(request)
+  const {data, timestamp} = await loadOnSiteAnswers(request)
+  return {data: {questions: data, nextPageLink: null}, timestamp}
 }
 
 export function fetchAnswerDetailsOnSite(nextPage: string | null) {
