@@ -57,15 +57,13 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const [glossary, setGlossary] = useState({} as Glossary)
 
   const onSiteQuestionsRef = useRef(emptyQuestionArray)
-  const setOnSiteQuestionsFromAll = (questions: Question[]) =>
-    (onSiteQuestionsRef.current = questions.filter((q) => q.status === QuestionStatus.LIVE_ON_SITE))
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
     fetchAllQuestionsOnSite().then(({data, backgroundPromiseIfReloaded}) => {
-      setOnSiteQuestionsFromAll(data)
+      onSiteQuestionsRef.current = data
       backgroundPromiseIfReloaded.then((x) => {
-        if (x) setOnSiteQuestionsFromAll(x.data)
+        if (x) onSiteQuestionsRef.current = x.data
       })
     })
     fetchGlossary().then(({data, backgroundPromiseIfReloaded}) => {

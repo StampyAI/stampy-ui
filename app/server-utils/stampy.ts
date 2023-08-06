@@ -296,8 +296,7 @@ export const loadGlossary = withCache('loadGlossary', async () => {
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
-  const questions = rows.map(convertToQuestion)
-  return {questions, nextPageLink: null}
+  return rows.map(convertToQuestion)
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
