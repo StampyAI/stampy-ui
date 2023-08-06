@@ -1,14 +1,7 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
 import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
-import {
-  Question,
-  QuestionState,
-  RelatedQuestions,
-  PageId,
-  QuestionStatus,
-  Glossary,
-} from '~/server-utils/stampy'
+import {Question, QuestionState, RelatedQuestions, PageId, Glossary} from '~/server-utils/stampy'
 import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
 import {fetchGlossary} from '~/routes/questions/glossary'
 import {
@@ -32,6 +25,7 @@ function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<
       answerEditLink: null,
       relatedQuestions: [],
       tags: [],
+      banners: [],
     })
   }
   return map
@@ -94,6 +88,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       relatedQuestions: [],
       questionState,
       tags: [],
+      banners: [],
       ...questionMap.get(pageid),
     }))
   }, [stateString, initialCollapsedState, questionMap])
@@ -255,6 +250,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
         answerEditLink: null,
         relatedQuestions: [],
         tags: [],
+        banners: [],
       }
       onLazyLoadQuestion(tmpQuestion)
       toggleQuestion(tmpQuestion, {moveToTop: true})

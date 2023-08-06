@@ -24,6 +24,13 @@ export enum QuestionStatus {
   LIVE_ON_SITE = 'Live on site',
   UNKNOWN = 'Unknown',
 }
+export type Banner = {
+  title: string
+  text: string
+  icon: Record<string, string>
+  textColour: string
+  backgroundColour: string
+}
 export type GlossaryEntry = {
   term: string
   pageid: PageId
@@ -49,6 +56,7 @@ export type Question = {
   relatedQuestions: RelatedQuestions
   questionState?: QuestionState
   tags: string[]
+  banners: Banner[]
   status?: QuestionStatus
   updatedAt?: string
 }
@@ -93,6 +101,7 @@ type AnswersRow = CodaRowCommon & {
     'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
     Tags: '' | Entity[]
+    Banners: '' | Entity[]
     'Rich Text': string
   }
 }
@@ -112,7 +121,16 @@ type GlossaryRow = CodaRowCommon & {
     'UI ID': string
   }
 }
-type CodaRow = AnswersRow | TagsRow | GlossaryRow
+type BannersRow = CodaRowCommon & {
+  values: {
+    Title: string
+    Icon: any[]
+    Text: string
+    'Background colour': string
+    'Text colour': string
+  }
+}
+type CodaRow = AnswersRow | TagsRow | GlossaryRow | BannersRow
 type CodaResponse = {
   items: CodaRow[]
   nextPageLink: string | null
@@ -129,10 +147,12 @@ const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 const TAGS_TABLE = 'grid-4uOTjz1Rkz'
 const WRITES_TABLE = 'table-eEhx2YPsBE'
 const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
+const BANNERS_TABLE = 'grid-3WgZ9_NkvO'
 
 const enc = encodeURIComponent
 const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 let allTags = {} as Record<string, Tag>
+let allBanners = {} as Record<string, Banner>
 
 const sendToCoda = async (
   url: string,
@@ -238,14 +258,19 @@ const head = (item: string | string[]) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
+const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
+  values
+    .map((e) => e.name)
+    .filter((name) => Object.prototype.hasOwnProperty.call(mapper, name))
+    .map((name) => mapper[name])
+
 const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => ({
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
   answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
-  tags: ((values['Tags'] || []) as Entity[])
-    .map((e) => e.name)
-    .filter((name) => Object.prototype.hasOwnProperty.call(allTags, name)),
+  tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
+  banners: extractJoined(values['Banners'] || [], allBanners),
   relatedQuestions:
     values['Related Answers'] && values['Related IDs']
       ? values['Related Answers'].map(({name}, i) => ({
@@ -262,6 +287,10 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
   if (Object.keys(allTags).length === 0) {
     const {data} = await loadTags('NEVER_RELOAD')
     allTags = Object.fromEntries(data.map((r) => [r.name, r])) as Record<string, Tag>
+  }
+  if (Object.keys(allBanners).length === 0) {
+    const {data} = await loadBanners('NEVER_RELOAD')
+    allBanners = data
   }
   const rows = (await getCodaRows(
     QUESTION_DETAILS_TABLE,
@@ -296,6 +325,21 @@ export const loadGlossary = withCache('loadGlossary', async () => {
           .map((phrase) => [phrase, {term: phrase, ...item}])
       })
       .flat()
+  )
+})
+
+export const loadBanners = withCache('loadBanners', async (): Promise<Record<string, Banner>> => {
+  const rows = (await getCodaRows(BANNERS_TABLE)) as BannersRow[]
+  return Object.fromEntries(
+    rows
+      .map(({values}) => ({
+        title: extractText(values.Title),
+        text: renderText('', values.Text) || '',
+        icon: values.Icon[0],
+        backgroundColour: extractText(values['Background colour']),
+        textColour: extractText(values['Text colour']),
+      }))
+      .map((item) => [item.title, item])
   )
 })
 

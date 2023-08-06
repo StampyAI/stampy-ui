@@ -1,13 +1,8 @@
 import type {LoaderArgs} from '@remix-run/cloudflare'
-import {
-  GlossaryEntry,
-  loadQuestionDetail,
-  QuestionState,
-  QuestionStatus,
-} from '~/server-utils/stampy'
+import {GlossaryEntry, loadQuestionDetail, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question, Glossary, PageId} from '~/server-utils/stampy'
+import type {Question, Glossary, PageId, Banner as BannerType} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags/$tag'
@@ -34,6 +29,7 @@ export const loader = async ({request, params}: LoaderArgs) => {
       answerEditLink: null,
       relatedQuestions: [],
       tags: [],
+      banners: [],
     }
     return {
       error: error?.toString(),
@@ -70,17 +66,7 @@ export function Question({
   glossary: Glossary
   selectQuestion: (pageid: string, title: string) => void
 } & JSX.IntrinsicElements['div']) {
-  const {
-    pageid,
-    title: codaTitle,
-    status: codaStatus,
-    text,
-    answerEditLink,
-    questionState,
-    tags,
-  } = questionProps
-  const title =
-    codaStatus && codaStatus !== QuestionStatus.LIVE_ON_SITE ? `WIP - ${codaTitle}` : codaTitle
+  const {pageid, title, text, answerEditLink, questionState, tags, banners} = questionProps
   const isLoading = useRef(false)
 
   const isExpanded = questionState === QuestionState.OPEN
@@ -133,6 +119,7 @@ export function Question({
       </h2>
       <AutoHeight>
         <div className="answer" draggable="false">
+          <div className="banners">{banners && banners.map(Banner)}</div>
           {isExpanded && (
             <>
               <Contents pageid={pageid} html={html} glossary={glossary} />
@@ -163,6 +150,29 @@ export function Question({
         </div>
       </AutoHeight>
     </article>
+  )
+}
+
+const Banner = ({title, text, icon, backgroundColour, textColour}: BannerType) => {
+  return (
+    <div
+      className="banner"
+      style={{
+        backgroundColor: backgroundColour || 'inherit',
+        color: textColour || 'inherit',
+      }}
+    >
+      <h3>
+        <img src={icon?.url} alt={icon?.name} />
+        <span className="title">{title}</span>
+      </h3>
+      <div
+        className="banner-contents"
+        dangerouslySetInnerHTML={{
+          __html: text,
+        }}
+      ></div>
+    </div>
   )
 }
 
