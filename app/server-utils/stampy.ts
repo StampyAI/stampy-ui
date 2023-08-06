@@ -258,6 +258,11 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
+  // Make sure all tags are loaded. This shouldn't be needed often, as it's double cached
+  if (Object.keys(allTags).length === 0) {
+    const {data} = await loadTags('NEVER_RELOAD')
+    allTags = Object.fromEntries(data.map((r) => [r.name, r])) as Record<string, Tag>
+  }
   const rows = (await getCodaRows(
     QUESTION_DETAILS_TABLE,
     // ids are now alphanumerical, so not possible to detect id by regex match for \d
@@ -347,9 +352,7 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
       .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
       .map((q) => [q.title, q.pageid])
   )
-  const tags = rows.map((r) => toTag(r, nameToId))
-  allTags = Object.fromEntries(tags.map((r) => [r.name, r])) as Record<string, Tag>
-  return tags
+  return rows.map((r) => toTag(r, nameToId))
 })
 
 export const loadMoreAnswerDetails = withCache(
