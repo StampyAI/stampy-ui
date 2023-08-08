@@ -411,6 +411,21 @@ tr:nth-child(even) {
   margin: 0;
 }
 
+.answer .banner {
+  padding: 1px 10px 5px 10px;
+  margin: 10px;
+}
+.answer .banner h3 {
+  display: flex;
+  align-items: center;
+}
+.answer .banner h3 img {
+  width: 2em;
+}
+.answer .banner h3 .title {
+  padding-left: 10px;
+}
+
 .question-footer {
   display: grid;
   grid-template-columns: auto auto;
