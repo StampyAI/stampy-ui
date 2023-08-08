@@ -119,9 +119,9 @@ export function Question({
       </h2>
       <AutoHeight>
         <div className="answer" draggable="false">
-          <div className="banners">{banners && banners.map(Banner)}</div>
           {isExpanded && (
             <>
+              <div className="banners">{banners && banners.map(Banner)}</div>
               <Contents pageid={pageid} html={html} glossary={glossary} />
               {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
                 /* Any changes to this class should also be reflected in App.handleSpecialLinks */
