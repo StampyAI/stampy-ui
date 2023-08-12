@@ -1,13 +1,8 @@
 import type {LoaderArgs} from '@remix-run/cloudflare'
-import {
-  GlossaryEntry,
-  loadQuestionDetail,
-  QuestionState,
-  QuestionStatus,
-} from '~/server-utils/stampy'
+import {GlossaryEntry, loadQuestionDetail, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question, Glossary, PageId} from '~/server-utils/stampy'
+import type {Question, Glossary, PageId, Banner as BannerType} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags/$tag'
@@ -34,6 +29,7 @@ export const loader = async ({request, params}: LoaderArgs) => {
       answerEditLink: null,
       relatedQuestions: [],
       tags: [],
+      banners: [],
     }
     return {
       error: error?.toString(),
@@ -70,17 +66,7 @@ export function Question({
   glossary: Glossary
   selectQuestion: (pageid: string, title: string) => void
 } & JSX.IntrinsicElements['div']) {
-  const {
-    pageid,
-    title: codaTitle,
-    status: codaStatus,
-    text,
-    answerEditLink,
-    questionState,
-    tags,
-  } = questionProps
-  const title =
-    codaStatus && codaStatus !== QuestionStatus.LIVE_ON_SITE ? `WIP - ${codaTitle}` : codaTitle
+  const {pageid, title, text, answerEditLink, questionState, tags, banners} = questionProps
   const isLoading = useRef(false)
 
   const isExpanded = questionState === QuestionState.OPEN
@@ -135,6 +121,7 @@ export function Question({
         <div className="answer" draggable="false">
           {isExpanded && (
             <>
+              <div className="banners">{banners && banners.map(Banner)}</div>
               <Contents pageid={pageid} html={html} glossary={glossary} />
               {text !== null && text !== UNKNOWN_QUESTION_TITLE && (
                 /* Any changes to this class should also be reflected in App.handleSpecialLinks */
@@ -166,6 +153,29 @@ export function Question({
   )
 }
 
+const Banner = ({title, text, icon, backgroundColour, textColour}: BannerType) => {
+  return (
+    <div
+      className="banner"
+      style={{
+        backgroundColor: backgroundColour || 'inherit',
+        color: textColour || 'inherit',
+      }}
+    >
+      <h3>
+        <img src={icon?.url} alt={icon?.name} />
+        <span className="title">{title}</span>
+      </h3>
+      <div
+        className="banner-contents"
+        dangerouslySetInnerHTML={{
+          __html: text,
+        }}
+      ></div>
+    </div>
+  )
+}
+
 /*
  * Recursively go through the child nodes of the provided node, and replace all text nodes
  * with the result of calling `textProcessor(textNode)`
@@ -173,7 +183,7 @@ export function Question({
 const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
   Array.from(el.childNodes).forEach((child) => updateTextNodes(child, textProcessor))
 
-  if (el.nodeType == Node.TEXT_NODE && el.textContent && el?.parentElement?.tagName != 'A') {
+  if (el.nodeType == Node.TEXT_NODE && el.textContent) {
     const node = textProcessor(el)
     el?.parentNode?.replaceChild(node, el)
   }
@@ -223,11 +233,13 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
      *  - an on hover popup with a short explaination of the glossary item
      */
     const insertGlossary = (textNode: Node) => {
-      const html = textNode.textContent || ''
+      const html = (textNode.textContent || '').replace('’', "'").replace('—', '-')
       // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
       // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
       // of longer definitions don't override them.
-      const updated = Object.keys(glossary)
+      const updated = Object.values(glossary)
+        .filter((item) => item.pageid != pageid)
+        .map(({term}) => term)
         .sort((a, b) => b.length - a.length)
         .reduce(
           (html, entry) =>

@@ -1,9 +1,9 @@
 import {LoaderArgs} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {loadAllQuestions} from '~/server-utils/stampy'
+import {loadOnSiteAnswers} from '~/server-utils/stampy'
 
 export const loader = async ({request}: LoaderArgs) => {
-  return await loadAllQuestions(request)
+  return await loadOnSiteAnswers(request)
 }
 type Data = ReturnType<typeof loader>
 

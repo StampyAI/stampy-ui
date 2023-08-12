@@ -16,6 +16,7 @@ import {
   QUESTION_DETAILS_TABLE,
   TAGS_TABLE,
   WRITES_TABLE,
+  BANNERS_TABLE,
   makeCodaRequest,
 } from './coda-urls'
 
@@ -35,6 +36,13 @@ export enum QuestionStatus {
   IN_REVIEW = 'In review',
   LIVE_ON_SITE = 'Live on site',
   UNKNOWN = 'Unknown',
+}
+export type Banner = {
+  title: string
+  text: string
+  icon: Record<string, string>
+  textColour: string
+  backgroundColour: string
 }
 export type GlossaryEntry = {
   term: string
@@ -61,6 +69,7 @@ export type Question = {
   relatedQuestions: RelatedQuestions
   questionState?: QuestionState
   tags: string[]
+  banners: Banner[]
   status?: QuestionStatus
   updatedAt?: string
 }
@@ -105,6 +114,7 @@ export type AnswersRow = CodaRowCommon & {
     'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
     Tags: '' | Entity[]
+    Banners: '' | Entity[]
     'Rich Text': string
   }
 }
@@ -124,7 +134,16 @@ type GlossaryRow = CodaRowCommon & {
     'UI ID': string
   }
 }
-type CodaRow = AnswersRow | TagsRow | GlossaryRow
+type BannersRow = CodaRowCommon & {
+  values: {
+    Title: string
+    Icon: any[]
+    Text: string
+    'Background colour': string
+    'Text colour': string
+  }
+}
+type CodaRow = AnswersRow | TagsRow | GlossaryRow | BannersRow
 export type CodaResponse = {
   items: CodaRow[]
   nextPageLink: string | null
@@ -132,6 +151,7 @@ export type CodaResponse = {
 
 const enc = encodeURIComponent
 let allTags = {} as Record<string, Tag>
+let allBanners = {} as Record<string, Banner>
 
 const sendToCoda = async (
   url: string,
@@ -221,14 +241,19 @@ const head = (item: string | string[]) => {
 }
 const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
+const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
+  values
+    .map((e) => e.name)
+    .filter((name) => Object.prototype.hasOwnProperty.call(mapper, name))
+    .map((name) => mapper[name])
+
 const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => ({
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
   answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
-  tags: ((values['Tags'] || []) as Entity[])
-    .map((e) => e.name)
-    .filter((name) => Object.prototype.hasOwnProperty.call(allTags, name)),
+  tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
+  banners: extractJoined(values['Banners'] || [], allBanners),
   relatedQuestions:
     values['Related Answers'] && values['Related IDs']
       ? values['Related Answers'].map(({name}, i) => ({
@@ -241,6 +266,15 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
+  // Make sure all tags are loaded. This shouldn't be needed often, as it's double cached
+  if (Object.keys(allTags).length === 0) {
+    const {data} = await loadTags('NEVER_RELOAD')
+    allTags = Object.fromEntries(data.map((r) => [r.name, r])) as Record<string, Tag>
+  }
+  if (Object.keys(allBanners).length === 0) {
+    const {data} = await loadBanners('NEVER_RELOAD')
+    allBanners = data
+  }
   const rows = (await getCodaRows(
     QUESTION_DETAILS_TABLE,
     // ids are now alphanumerical, so not possible to detect id by regex match for \d
@@ -277,10 +311,24 @@ export const loadGlossary = withCache('loadGlossary', async () => {
   )
 })
 
+export const loadBanners = withCache('loadBanners', async (): Promise<Record<string, Banner>> => {
+  const rows = (await getCodaRows(BANNERS_TABLE)) as BannersRow[]
+  return Object.fromEntries(
+    rows
+      .map(({values}) => ({
+        title: extractText(values.Title),
+        text: renderText('', values.Text) || '',
+        icon: values.Icon[0],
+        backgroundColour: extractText(values['Background colour']),
+        textColour: extractText(values['Text colour']),
+      }))
+      .map((item) => [item.title, item])
+  )
+})
+
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
-  const questions = rows.map(convertToQuestion)
-  return {questions, nextPageLink: null}
+  return rows.map(convertToQuestion)
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
@@ -331,9 +379,7 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
       .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
       .map((q) => [q.title, q.pageid])
   )
-  const tags = rows.map((r) => toTag(r, nameToId))
-  allTags = Object.fromEntries(tags.map((r) => [r.name, r])) as Record<string, Tag>
-  return tags
+  return rows.map((r) => toTag(r, nameToId))
 })
 
 export const loadMoreAnswerDetails = withCache(
