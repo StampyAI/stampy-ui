@@ -7,7 +7,7 @@ import * as path from 'path'
 import * as toml from 'toml'
 import {QUESTION_DETAILS_TABLE, makeCodaRequest} from '../../server-utils/coda-urls'
 
-export const questionIds = ['8486']
+export const questionIds = ['0']
 
 async function main(): Promise<void> {
   const codaToken = readCodaToken()

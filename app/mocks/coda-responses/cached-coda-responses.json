@@ -1,20 +1,20 @@
 [
   {
-    "url": "https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22UI%20ID%22:%228486%22",
+    "url": "https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?useColumnNames=true&sortBy=natural&valueFormat=rich&query=%22UI%20ID%22:%220%22",
     "httpMethod": "GET",
     "responseData": {
       "items": [
         {
-          "id": "i-8899afafb469e7a7e3691f2b506fec68b4567eb11d991ce0f21e99ad1527f4ee",
+          "id": "i-94b6d980d29da08d2c47b14967d79713e1331d8c9dcbc6eab191b47b949d5bfc",
           "type": "row",
-          "href": "https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows/i-8899afafb469e7a7e3691f2b506fec68b4567eb11d991ce0f21e99ad1527f4ee",
-          "name": "What is AI safety?",
-          "index": 349,
-          "createdAt": "2023-01-14T14:46:14.123Z",
-          "updatedAt": "2023-07-29T03:07:48.464Z",
-          "browserLink": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-8899afafb469e7a7e3691f2b506fec68b4567eb11d991ce0f21e99ad1527f4ee",
+          "href": "https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows/i-94b6d980d29da08d2c47b14967d79713e1331d8c9dcbc6eab191b47b949d5bfc",
+          "name": "Example with all the formatting",
+          "index": 0,
+          "createdAt": "2023-01-05T18:11:30.618Z",
+          "updatedAt": "2023-08-12T15:16:28.865Z",
+          "browserLink": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-94b6d980d29da08d2c47b14967d79713e1331d8c9dcbc6eab191b47b949d5bfc",
           "values": {
-            "File": "What is AI safety?",
+            "File": "Example with all the formatting",
             "Synced": false,
             "Sync account": {
               "@context": "http://schema.org/",
@@ -26,41 +26,51 @@
               "rowId": "i-ea7cf442-cb87-44be-8cc5-d4b73cf608e0",
               "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tuGlobal-External-Connections"
             },
-            "Question": "```What is AI safety?```",
+            "Question": "```Example with all the formatting```",
             "Link": {
               "@context": "http://schema.org/",
               "@type": "WebPage",
-              "url": "https://docs.google.com/document/d/1zz1c6rRN8Y-CmO0-BGVKI9G6MMg2MUqD247dPcub144/edit?usp=drivesdk"
+              "url": "https://docs.google.com/document/d/10g6U9SL0CBy__wCBTib7_WhB3S3aaFt7Fx1vVgCzg2I/edit?usp=drivesdk"
             },
             "Thumbnail": {
               "@context": "http://schema.org/",
               "@type": "ImageObject",
               "name": "image.jpeg",
               "height": 220,
-              "width": 170,
-              "url": "https://codahosted.io/docs/fau7sl2hmG/blobs/bl-4_OLuliiY9/28f78d3dc11cb907a9e2d579ff81a56401b61b45973e6b28db154f0ffd7bb7d90a68bf483c431c84f1093036e4d635b78c7a12dd7a7cad4756446dbd4503e4d1af9013f31859a31b8bdae07984e864d1f584394864e13105331e59981ef61d91e3fbbb85",
+              "width": 169,
+              "url": "https://codahosted.io/docs/fau7sl2hmG/blobs/bl-kP3WlkrYyh/31c8a471575cd29e21ab5074b73d7af605e6ad8d4cf30460d9979a7f351750b50b0dfb131bec67c29ef347615d92f1c4f3117a2dfe5298c2de3dd945a7950128449940951955bb9d89c49afc164e591cf58cc9e9c2995d4fadc725c4e9f6eaff2d60d6a1",
               "status": "live"
             },
-            "Doc Created": "2023-01-14T14:48:30.226+01:00",
+            "Doc Created": "2022-12-05T17:51:52.902+01:00",
             "Related Answers DO NOT EDIT": [
               {
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "What is the difference between AI safety, AI alignment, AI control, friendly AI, AI ethics, AI existential safety, and AGI safety?",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-53897773ddbc2889ee036970bb572cffaef2ead71d29cfccecdcac6c51a181a2",
+                "name": "Do people seriously worry about existential risk from AI?",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-81448caf67cd3c0a8b3e5cc03336f375bc0a17f1d6202bf20a6cab3d13c00ba5",
                 "tableId": "grid-sync-1059-File",
-                "rowId": "i-53897773ddbc2889ee036970bb572cffaef2ead71d29cfccecdcac6c51a181a2",
+                "rowId": "i-81448caf67cd3c0a8b3e5cc03336f375bc0a17f1d6202bf20a6cab3d13c00ba5",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File"
               },
               {
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "What approaches are AI alignment organizations working on?",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-cd5b637d614c18e592dbee9c05adce59dc98163baba9ac36604b736fa76c76ab",
+                "name": "Can humans stay in control of the world if human- or superhuman-level AI is developed?",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-7768ec0b64623bfb7589586f843b1ee63b17ec946ee0e3e09ae9f46542274530",
                 "tableId": "grid-sync-1059-File",
-                "rowId": "i-cd5b637d614c18e592dbee9c05adce59dc98163baba9ac36604b736fa76c76ab",
+                "rowId": "i-7768ec0b64623bfb7589586f843b1ee63b17ec946ee0e3e09ae9f46542274530",
+                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File"
+              },
+              {
+                "@context": "http://schema.org/",
+                "@type": "StructuredValue",
+                "additionalType": "row",
+                "name": "How could poorly defined goals lead to such negative outcomes?",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-950dfc76d16189b02a6df906fd89cf75ce2bc28935756bf9ca56c1ea75f342d1",
+                "tableId": "grid-sync-1059-File",
+                "rowId": "i-950dfc76d16189b02a6df906fd89cf75ce2bc28935756bf9ca56c1ea75f342d1",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File"
               }
             ],
@@ -69,125 +79,153 @@
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "Glossary",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-a1P6U57i7N",
+                "name": "People",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-NZMjYinqn-",
                 "tableId": "grid-4uOTjz1Rkz",
-                "rowId": "i-a1P6U57i7N",
+                "rowId": "i-NZMjYinqn-",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz"
               },
               {
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "Alignment",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-xXHpShi_jW",
+                "name": "Exceptional",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-t4q1Bw6sND",
                 "tableId": "grid-4uOTjz1Rkz",
-                "rowId": "i-xXHpShi_jW",
+                "rowId": "i-t4q1Bw6sND",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz"
               },
               {
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "Outcomes",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-2M1ZSvaClL",
+                "name": "Stampy",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-8AtFvuH2Ay",
                 "tableId": "grid-4uOTjz1Rkz",
-                "rowId": "i-2M1ZSvaClL",
-                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz"
-              },
-              {
-                "@context": "http://schema.org/",
-                "@type": "StructuredValue",
-                "additionalType": "row",
-                "name": "Governance",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-t2kM_yD5UZ",
-                "tableId": "grid-4uOTjz1Rkz",
-                "rowId": "i-t2kM_yD5UZ",
-                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz"
-              },
-              {
-                "@context": "http://schema.org/",
-                "@type": "StructuredValue",
-                "additionalType": "row",
-                "name": "Research Agendas",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz/_rui-khpS0ybr3e",
-                "tableId": "grid-4uOTjz1Rkz",
-                "rowId": "i-khpS0ybr3e",
+                "rowId": "i-8AtFvuH2Ay",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-4uOTjz1Rkz"
               }
             ],
-            "Doc Last Edited": "2023-07-29T01:47:20.622+02:00",
+            "Doc Last Edited": "2023-08-05T00:42:53.753+02:00",
             "Status": {
               "@context": "http://schema.org/",
               "@type": "StructuredValue",
               "additionalType": "row",
-              "name": "Live on site",
-              "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-IWDInbu5n2/_rui-7EfvxV9G0N",
+              "name": "Dormant",
+              "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-IWDInbu5n2/_rui-xKdx-UiYA5",
               "tableId": "grid-IWDInbu5n2",
-              "rowId": "i-7EfvxV9G0N",
+              "rowId": "i-xKdx-UiYA5",
               "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-IWDInbu5n2"
             },
-            "Edit Answer": "**[What is AI safety?](https://docs.google.com/document/d/1zz1c6rRN8Y-CmO0-BGVKI9G6MMg2MUqD247dPcub144/edit?usp=drivesdk)**",
-            "Alternate Phrasings": "",
-            "UI ID DO NOT EDIT": "```8486```",
+            "Edit Answer": "**[Example with all the formatting](https://docs.google.com/document/d/10g6U9SL0CBy__wCBTib7_WhB3S3aaFt7Fx1vVgCzg2I/edit?usp=drivesdk)**",
+            "Alternate Phrasings": "```What formatting options are available?\nWhat kind of markdown does Stampy support?\nGlossaryaaa\nThis is used to define the text to be displayed as the glossary item for this question. It should only be used when theglossary tagis set, otherwise the first paragraph should be used.\nWhen defined here, multiple paragraphs can be used.\nHow do I format answers?```",
+            "UI ID DO NOT EDIT": "```0```",
             "Source Link": "",
-            "aisafety.info Link": "**[What is AI safety?](https://aisafety.info/?state=8486_)**",
-            "Source": "```Wiki```",
-            "All Phrasings": "```What is AI safety?\n```",
+            "aisafety.info Link": "**[Example with all the formatting](https://aisafety.info/?state=0_)**",
+            "Source": "",
+            "All Phrasings": "```Example with all the formatting\nWhat formatting options are available?\nWhat kind of markdown does Stampy support?\nGlossaryaaa\nThis is used to define the text to be displayed as the glossary item for this question. It should only be used when theglossary tagis set, otherwise the first paragraph should be used.\nWhen defined here, multiple paragraphs can be used.\nHow do I format answers?```",
             "Initial Order": "",
             "Related IDs": [
-              "```6714```",
-              "```6178```"
+              "```6953```",
+              "```6201```",
+              "```6212```"
             ],
-            "Rich Text DO NOT EDIT": "```<iframe src=\"https://www.youtube.com/embed/pYXy-A4siMw\" title=\"Intro to AI Safety, Remastered\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n\nIn the [coming decades](https://www.cold-takes.com/most-important-century/), AI systems could be invented that outperform humans on most tasks, including strategy, persuasion, economic productivity, scientific research and development, and AI design. We don&#39;t know how to [align such systems](https://www.cold-takes.com/why-ai-alignment-could-be-hard-with-modern-deep-learning/) with the intentions of their users, even when those intentions are good. This could lead to catastrophic outcomes.\n\nThe research field of AI safety was founded to prevent such disasters, and enable humanity to use the enormous potential of advanced AI to solve problems and improve the world. There are many kinds of AI risk, but the kind that this website focuses on, because it seems both plausible and extreme in scope, is [existential risk](https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence) from misaligned AI systems [disempowering or killing humanity](https://80000hours.org/problem-profiles/artificial-intelligence/#power-seeking-ai).\n\nExamples of work on AI existential safety are:\n\n- [Agent foundations](https://www.alignmentforum.org/posts/FWvzwCDRgcjb9sigb/why-agent-foundations-an-overly-abstract-explanation): Understanding what intelligence and agency are at a fundamental level\n\n- [Prosaic alignment](/?state=89LM): Developing methods like [debate](https://openai.com/research/debate) and [iterated distillation and amplification](/?state=897J) to align more powerful versions of current AI techniques\n\n- [AI policy and governance](https://80000hours.org/articles/ai-policy-guide/): Setting up institutions and mechanisms that cause the major actors to implement good AI safety practices\n\nExamples of work from the broader AI safety field are:\n\n- Getting content recommender systems to not radicalize their users\n\n- Ensuring autonomous cars don’t kill people\n\n- Advocating strict regulations for lethal autonomous weapons\n\nSome kinds of research are useful for addressing both existential risk and smaller-scale bad outcomes:\n\n- [Robustness to distribution shift](https://www.alignmentforum.org/tag/distributional-shifts): making AI systems more able to function reliably outside of the context they were trained in\n\n- [Interpretability](/?state=8241): giving humans insight into the inner workings of AI systems such as neural networks\n\nThis website is a single point of access where people can read summaries and find links to the best information on concepts related to AI existential safety. The goal is to help readers contribute to the effort to ensure that humanity avoids these risks and reaches a wonderful future.\n\n```",
-            "Tag Count": 5,
-            "Related Answer Count": 2,
-            "Rich Text": "```<iframe src=\"https://www.youtube.com/embed/pYXy-A4siMw\" title=\"Intro to AI Safety, Remastered\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n\nIn the [coming decades](https://www.cold-takes.com/most-important-century/), AI systems could be invented that outperform humans on most tasks, including strategy, persuasion, economic productivity, scientific research and development, and AI design. We don&#39;t know how to [align such systems](https://www.cold-takes.com/why-ai-alignment-could-be-hard-with-modern-deep-learning/) with the intentions of their users, even when those intentions are good. This could lead to catastrophic outcomes.\n\nThe research field of AI safety was founded to prevent such disasters, and enable humanity to use the enormous potential of advanced AI to solve problems and improve the world. There are many kinds of AI risk, but the kind that this website focuses on, because it seems both plausible and extreme in scope, is [existential risk](https://en.wikipedia.org/wiki/Existential_risk_from_artificial_general_intelligence) from misaligned AI systems [disempowering or killing humanity](https://80000hours.org/problem-profiles/artificial-intelligence/#power-seeking-ai).\n\nExamples of work on AI existential safety are:\n\n- [Agent foundations](https://www.alignmentforum.org/posts/FWvzwCDRgcjb9sigb/why-agent-foundations-an-overly-abstract-explanation): Understanding what intelligence and agency are at a fundamental level\n\n- [Prosaic alignment](/?state=89LM): Developing methods like [debate](https://openai.com/research/debate) and [iterated distillation and amplification](/?state=897J) to align more powerful versions of current AI techniques\n\n- [AI policy and governance](https://80000hours.org/articles/ai-policy-guide/): Setting up institutions and mechanisms that cause the major actors to implement good AI safety practices\n\nExamples of work from the broader AI safety field are:\n\n- Getting content recommender systems to not radicalize their users\n\n- Ensuring autonomous cars don’t kill people\n\n- Advocating strict regulations for lethal autonomous weapons\n\nSome kinds of research are useful for addressing both existential risk and smaller-scale bad outcomes:\n\n- [Robustness to distribution shift](https://www.alignmentforum.org/tag/distributional-shifts): making AI systems more able to function reliably outside of the context they were trained in\n\n- [Interpretability](/?state=8241): giving humans insight into the inner workings of AI systems such as neural networks\n\nThis website is a single point of access where people can read summaries and find links to the best information on concepts related to AI existential safety. The goal is to help readers contribute to the effort to ensure that humanity avoids these risks and reaches a wonderful future.\n\n```",
-            "Stamp Count": 0,
+            "Rich Text DO NOT EDIT": "```A fairly good representation of how we want this answer to render inside the UI can found [here](https://gist.github.com/ChrisRimmer/47699b065053060b5a67a1f2a968af98), rendered using Github’s Gist renderer. Note that the iframe video embed doesn’t work there, but (almost?) everything else does. Or rather, everything that’s actually been implemented in our own markdown generator is supported! Example to [another gdoc on the site](/?state=6194&question=Is%20AI%20safety%20about%20systems%20becoming%20malevolent%20or%20conscious%20and%20turning%20on%20us%3F).\n\n`some(inline).code`\n\n&lt;div class=”bla bla”&gt;HTML code gets escaped&lt;/div&gt;\n\nTest the glossary - words that are known, like “agent” should have definitions attached. This should work for like the control problem, s-risk and Goodhart&#39;s law. Link with glossary items, e.g. [what is an agent](https://aisafety.info/?state=7595_), should be glossarified. Agent-like should not count as agent. Nor should the actual [url of links](https://www.alignmentforum.org/posts/9pZtvjegYKBALFnLk/characterizing-real-world-agents-as-a-research-meta-strategy). Words should be case insensitive, like AgEnT should work. Aliases, like the big G should also work.\n\n      but this will be shown\n\n<iframe src=\"https://www.youtube.com/embed/JD_iA7imAPs\" title=\"There's No Rule That Says We'll Make It\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n\n &lt;- YouTube embed using [https://www.youtube-nocookie.com/embed/hEUO6pjwFOo](https://www.youtube-nocookie.com/embed/hEUO6pjwFOo)\n\n[$100,000 for Tasks Where Bigger AIs Do Worse Than Smaller Ones #short - YouTube](https://www.youtube.com/shorts/ecUodmQMlBs) &lt;- Short embed (no card is available) \n\nThis [link to youtube](https://www.youtube.com/watch?v=JD_iA7imAPs) should just be a link though.\n\nTesting a suggestion of a rich link\n\nThis needs a citation[^kix.s24b5bgp72jb]\n\n1. Numbered\n\n1. list\n\nAnd here’s another citation![^kix.e61q1oq9mvhq]\n\nThis footnote has loads of stuff in it to test how it renders[^kix.9u9bv86yem6h]\n\n![Example description](https://imagedelivery.net/iSzP-DWqFIthoMIqTB4Xog/1c918313-57cf-4433-eed0-226944fe5600/public \"Example title\")\n Images!\n\n![](https://imagedelivery.net/iSzP-DWqFIthoMIqTB4Xog/86173de4-f077-4433-42f7-96043320f000/public)\n Test image please do not accept\n\nSome links to other answers! Link to another answer as an [internalish link](https://aisafety.info?state=8486_) or [as a gdoc link](/?state=6194&question=Is%20AI%20safety%20about%20systems%20becoming%20malevolent%20or%20conscious%20and%20turning%20on%20us%3F). (only the last really needs to work as opening the relevant question as a UI element, but first is a nice bonus)[^kix.rhzhqiv1iuwo]\n\n[Is this about AI systems becoming malevolent or conscious and turning on us?](/?state=6194&question=Is%20AI%20safety%20about%20systems%20becoming%20malevolent%20or%20conscious%20and%20turning%20on%20us%3F) or alternatively this kind of link. Much less important, but if trivial may as well cover it.\n\n\\`\\`\\`\n\nHeading 1 | Heading 2 | Heading 3\n\n---------------------------------\n\nRow 1.1   | Row 1.2   | Row 1.3\n\nRow 2.1   | Row 2.2   | Row 2.3\n\n\\`\\`\\`\n\nSome bulletpoints\n\n- **bold**, plain *italic* [link](https://80000hours.org/problem-profiles/artificial-intelligence/#power-seeking-ai)\n\n    1. ### Level 2 nested bullet which is also a heading and contains a [link](https://www.alignmentforum.org/posts/FWvzwCDRgcjb9sigb/why-agent-foundations-an-overly-abstract-explanation)\n\n    1. WHY IS THIS ALSO PREFIXED AS a. IN THE DOC\n\n- testing\n\n## A heading with some **bold** bits and some *italic* bits and a [link](https://example.com) to something and a ***[bit that’s all three](https://example.com)***\n\n[Actually external link](https://www.lesswrong.com/posts/WKGZBCYAbZ6WGsKHc/love-in-a-simbox-is-all-you-need#comments)!\n\n[Consequent links that point to the same thing should be merged into one](https://www.lesswrong.com/posts/WKGZBCYAbZ6WGsKHc/love-in-a-simbox-is-all-you-need#comments)  \n\n**Bold**, *italic*\n\n> This is a quote\n\n>\n\n> This is a second line of the same quote.\n\n> This will be on the same line as “This is a second line” etc\n\n> This is a second, separate quote\n\n[See more…] &lt;- Marker for dividing the answer with a show more JS thing.\n\nPulling tags from LW/EAF:\n\n[https://www.lesswrong.com/tag/optimization](https://www.lesswrong.com/tag/optimization)\n\n-&gt; https://www.lesswrong.com/graphql?query={%20tag(input:%20{selector:%20{slug:%20%22**optimization**%22} })%20{%20result%20{%20description%20{%20html%20draftJS%20}%20}%20}%20} -&gt; extract the data “**html**”\n\n[https://forum.effectivealtruism.org/topics/existential-risk](https://forum.effectivealtruism.org/topics/existential-risk)\n\n-&gt; https://forum.effectivealtruism.org/graphql?query={%20tag(input:%20{selector:%20{slug:%20%22**existential-risk**%22} })%20{%20result%20{%20description%20{%20html%20draftJS%20}%20}%20}%20} -&gt; extract the data “**html**”\n\n___\n\n[^kix.s24b5bgp72jb]: Here it is\n[^kix.e61q1oq9mvhq]: Such cite, many authoritativeness, and a [link](https://www.lesswrong.com/posts/WKGZBCYAbZ6WGsKHc/love-in-a-simbox-is-all-you-need#comments)!\n[^kix.rhzhqiv1iuwo]: This is actually a multi-line footnote\n    Let’s see what this does!\n[^kix.9u9bv86yem6h]: ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.```",
+            "Tag Count": 3,
+            "Related Answer Count": 3,
+            "Rich Text": "```A fairly good representation of how we want this answer to render inside the UI can found [here](https://gist.github.com/ChrisRimmer/47699b065053060b5a67a1f2a968af98), rendered using Github’s Gist renderer. Note that the iframe video embed doesn’t work there, but (almost?) everything else does. Or rather, everything that’s actually been implemented in our own markdown generator is supported! Example to [another gdoc on the site](/?state=6194&question=Is%20AI%20safety%20about%20systems%20becoming%20malevolent%20or%20conscious%20and%20turning%20on%20us%3F).\n\n`some(inline).code`\n\n&lt;div class=”bla bla”&gt;HTML code gets escaped&lt;/div&gt;\n\nTest the glossary - words that are known, like “agent” should have definitions attached. This should work for like the control problem, s-risk and Goodhart&#39;s law. Link with glossary items, e.g. [what is an agent](https://aisafety.info/?state=7595_), should be glossarified. Agent-like should not count as agent. Nor should the actual [url of links](https://www.alignmentforum.org/posts/9pZtvjegYKBALFnLk/characterizing-real-world-agents-as-a-research-meta-strategy). Words should be case insensitive, like AgEnT should work. Aliases, like the big G should also work.\n\n      but this will be shown\n\n<iframe src=\"https://www.youtube.com/embed/JD_iA7imAPs\" title=\"There's No Rule That Says We'll Make It\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n\n &lt;- YouTube embed using [https://www.youtube-nocookie.com/embed/hEUO6pjwFOo](https://www.youtube-nocookie.com/embed/hEUO6pjwFOo)\n\n[$100,000 for Tasks Where Bigger AIs Do Worse Than Smaller Ones #short - YouTube](https://www.youtube.com/shorts/ecUodmQMlBs) &lt;- Short embed (no card is available) \n\nThis [link to youtube](https://www.youtube.com/watch?v=JD_iA7imAPs) should just be a link though.\n\nTesting a suggestion of a rich link\n\nThis needs a citation[^kix.s24b5bgp72jb]\n\n1. Numbered\n\n1. list\n\nAnd here’s another citation![^kix.e61q1oq9mvhq]\n\nThis footnote has loads of stuff in it to test how it renders[^kix.9u9bv86yem6h]\n\n![Example description](https://imagedelivery.net/iSzP-DWqFIthoMIqTB4Xog/1c918313-57cf-4433-eed0-226944fe5600/public \"Example title\")\n Images!\n\n![](https://imagedelivery.net/iSzP-DWqFIthoMIqTB4Xog/86173de4-f077-4433-42f7-96043320f000/public)\n Test image please do not accept\n\nSome links to other answers! Link to another answer as an [internalish link](https://aisafety.info?state=8486_) or [as a gdoc link](/?state=6194&question=Is%20AI%20safety%20about%20systems%20becoming%20malevolent%20or%20conscious%20and%20turning%20on%20us%3F). (only the last really needs to work as opening the relevant question as a UI element, but first is a nice bonus)[^kix.rhzhqiv1iuwo]\n\n[Is this about AI systems becoming malevolent or conscious and turning on us?](/?state=6194&question=Is%20AI%20safety%20about%20systems%20becoming%20malevolent%20or%20conscious%20and%20turning%20on%20us%3F) or alternatively this kind of link. Much less important, but if trivial may as well cover it.\n\n\\`\\`\\`\n\nHeading 1 | Heading 2 | Heading 3\n\n---------------------------------\n\nRow 1.1   | Row 1.2   | Row 1.3\n\nRow 2.1   | Row 2.2   | Row 2.3\n\n\\`\\`\\`\n\nSome bulletpoints\n\n- **bold**, plain *italic* [link](https://80000hours.org/problem-profiles/artificial-intelligence/#power-seeking-ai)\n\n    1. ### Level 2 nested bullet which is also a heading and contains a [link](https://www.alignmentforum.org/posts/FWvzwCDRgcjb9sigb/why-agent-foundations-an-overly-abstract-explanation)\n\n    1. WHY IS THIS ALSO PREFIXED AS a. IN THE DOC\n\n- testing\n\n## A heading with some **bold** bits and some *italic* bits and a [link](https://example.com) to something and a ***[bit that’s all three](https://example.com)***\n\n[Actually external link](https://www.lesswrong.com/posts/WKGZBCYAbZ6WGsKHc/love-in-a-simbox-is-all-you-need#comments)!\n\n[Consequent links that point to the same thing should be merged into one](https://www.lesswrong.com/posts/WKGZBCYAbZ6WGsKHc/love-in-a-simbox-is-all-you-need#comments)  \n\n**Bold**, *italic*\n\n> This is a quote\n\n>\n\n> This is a second line of the same quote.\n\n> This will be on the same line as “This is a second line” etc\n\n> This is a second, separate quote\n\n[See more…] &lt;- Marker for dividing the answer with a show more JS thing.\n\nPulling tags from LW/EAF:\n\n[https://www.lesswrong.com/tag/optimization](https://www.lesswrong.com/tag/optimization)\n\n-&gt; https://www.lesswrong.com/graphql?query={%20tag(input:%20{selector:%20{slug:%20%22**optimization**%22} })%20{%20result%20{%20description%20{%20html%20draftJS%20}%20}%20}%20} -&gt; extract the data “**html**”\n\n[https://forum.effectivealtruism.org/topics/existential-risk](https://forum.effectivealtruism.org/topics/existential-risk)\n\n-&gt; https://forum.effectivealtruism.org/graphql?query={%20tag(input:%20{selector:%20{slug:%20%22**existential-risk**%22} })%20{%20result%20{%20description%20{%20html%20draftJS%20}%20}%20}%20} -&gt; extract the data “**html**”\n\n___\n\n[^kix.s24b5bgp72jb]: Here it is\n[^kix.e61q1oq9mvhq]: Such cite, many authoritativeness, and a [link](https://www.lesswrong.com/posts/WKGZBCYAbZ6WGsKHc/love-in-a-simbox-is-all-you-need#comments)!\n[^kix.rhzhqiv1iuwo]: This is actually a multi-line footnote\n    Let’s see what this does!\n[^kix.9u9bv86yem6h]: ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.```",
+            "Stamp Count": "",
             "Stamped By": "",
-            "Priority": 6,
-            "Asker": "```Magdalena```",
+            "Priority": "",
+            "Asker": "",
             "External Source": "",
             "Last Asked On Discord": "",
-            "UI ID": "```8486```",
+            "UI ID": "```0```",
             "Related Answers": [
               {
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "What is the difference between AI safety, AI alignment, AI control, friendly AI, AI ethics, AI existential safety, and AGI safety?",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-53897773ddbc2889ee036970bb572cffaef2ead71d29cfccecdcac6c51a181a2",
+                "name": "Do people seriously worry about existential risk from AI?",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-81448caf67cd3c0a8b3e5cc03336f375bc0a17f1d6202bf20a6cab3d13c00ba5",
                 "tableId": "grid-sync-1059-File",
-                "rowId": "i-53897773ddbc2889ee036970bb572cffaef2ead71d29cfccecdcac6c51a181a2",
+                "rowId": "i-81448caf67cd3c0a8b3e5cc03336f375bc0a17f1d6202bf20a6cab3d13c00ba5",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File"
               },
               {
                 "@context": "http://schema.org/",
                 "@type": "StructuredValue",
                 "additionalType": "row",
-                "name": "What approaches are AI alignment organizations working on?",
-                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-cd5b637d614c18e592dbee9c05adce59dc98163baba9ac36604b736fa76c76ab",
+                "name": "Can humans stay in control of the world if human- or superhuman-level AI is developed?",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-7768ec0b64623bfb7589586f843b1ee63b17ec946ee0e3e09ae9f46542274530",
                 "tableId": "grid-sync-1059-File",
-                "rowId": "i-cd5b637d614c18e592dbee9c05adce59dc98163baba9ac36604b736fa76c76ab",
+                "rowId": "i-7768ec0b64623bfb7589586f843b1ee63b17ec946ee0e3e09ae9f46542274530",
+                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File"
+              },
+              {
+                "@context": "http://schema.org/",
+                "@type": "StructuredValue",
+                "additionalType": "row",
+                "name": "How could poorly defined goals lead to such negative outcomes?",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File/_rui-950dfc76d16189b02a6df906fd89cf75ce2bc28935756bf9ca56c1ea75f342d1",
+                "tableId": "grid-sync-1059-File",
+                "rowId": "i-950dfc76d16189b02a6df906fd89cf75ce2bc28935756bf9ca56c1ea75f342d1",
                 "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-sync-1059-File"
               }
             ],
-            "Doc Last Ingested": "2023-07-29T03:18:33.324+02:00",
+            "Doc Last Ingested": "2023-08-12T17:16:23.519+02:00",
             "Request Count": "",
-            "Number of suggestions on answer doc": 0,
-            "Total character count of suggestions on answer doc": 0,
-            "Helpful": 9,
-            "Number of pending comments": 19,
-            "Length": 2904,
-            "Length of alternate phrasings": 0,
+            "Number of suggestions on answer doc": 3,
+            "Total character count of suggestions on answer doc": 339,
+            "Helpful": "",
+            "Number of pending comments": 5,
+            "Length": 7068,
+            "Length of alternate phrasings": 355,
             "Column": "",
             "Refresh Possible Duplicates": "",
-            "Possible Duplicates": "",
-            "Question Length": 18
+            "Possible Duplicates": [
+              "```Editing Guide```"
+            ],
+            "Question Length": 31,
+            "Readiness": "",
+            "Column 10": "",
+            "Sort Formula": 0,
+            "Banners": [
+              {
+                "@context": "http://schema.org/",
+                "@type": "StructuredValue",
+                "additionalType": "row",
+                "name": "In progress",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-3WgZ9_NkvO/_rui-ox7bZx9CxF",
+                "tableId": "grid-3WgZ9_NkvO",
+                "rowId": "i-ox7bZx9CxF",
+                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-3WgZ9_NkvO"
+              },
+              {
+                "@context": "http://schema.org/",
+                "@type": "StructuredValue",
+                "additionalType": "row",
+                "name": "Controversial",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-3WgZ9_NkvO/_rui-i9YLO70SkN",
+                "tableId": "grid-3WgZ9_NkvO",
+                "rowId": "i-i9YLO70SkN",
+                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-3WgZ9_NkvO"
+              },
+              {
+                "@context": "http://schema.org/",
+                "@type": "StructuredValue",
+                "additionalType": "row",
+                "name": "Well established",
+                "url": "https://coda.io/d/_dfau7sl2hmG#_tugrid-3WgZ9_NkvO/_rui-_qQd8a_rDx",
+                "tableId": "grid-3WgZ9_NkvO",
+                "rowId": "i-_qQd8a_rDx",
+                "tableUrl": "https://coda.io/d/_dfau7sl2hmG#_tugrid-3WgZ9_NkvO"
+              }
+            ]
           }
         }
       ],
-      "href": "https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?pageToken=eyJsaW1pdCI6MjAwLCJvZmZzZXQiOjAsIm9wVmVyc2lvbiI6MTE1MzE3LCJxdWVyeSI6ImMtMjAzS3dTQzJOXzpcIjg0ODZcIiIsInNjaGVtYVZlcnNpb24iOjE3Miwic29ydEJ5IjoibmF0dXJhbCIsInVzZUNvbHVtbk5hbWVzIjp0cnVlLCJ2YWx1ZUZvcm1hdCI6InJpY2gifQ"
+      "href": "https://coda.io/apis/v1/docs/fau7sl2hmG/tables/grid-sync-1059-File/rows?pageToken=eyJsaW1pdCI6MjAwLCJvZmZzZXQiOjAsIm9wVmVyc2lvbiI6MTI3NDQ5LCJxdWVyeSI6ImMtMjAzS3dTQzJOXzpcIjBcIiIsInNjaGVtYVZlcnNpb24iOjE3Miwic29ydEJ5IjoibmF0dXJhbCIsInVzZUNvbHVtbk5hbWVzIjp0cnVlLCJ2YWx1ZUZvcm1hdCI6InJpY2gifQ"
     }
   }
 ]

@@ -2,7 +2,7 @@ import {AnswersRow, CodaResponse, loadQuestionDetail} from '~/server-utils/stamp
 import cachedCodaResponses from '~/mocks/coda-responses/cached-coda-responses.json'
 import {QUESTION_DETAILS_TABLE, makeCodaRequest} from './coda-urls'
 
-export const questions: Array<string> = ['8486']
+export const questions: Array<string> = ['0']
 
 describe('loadQuestionDetail', () => {
   it.each<string>(questions)('can load question %i', async (questionId) => {
@@ -27,7 +27,7 @@ describe('loadQuestionDetail', () => {
       (response) => response.url === urlString && response.httpMethod === method
     )
     if (!cachedResponse) {
-      throw new Error(`Cached response not found for ${urlString}`)
+      throw new Error(`Cached response not found for question ${questionId}`)
     }
     // TODO: the addition of nextPageLink is a kludge to make the test compile. The CodaResponse type should be fixed instead.
     const questionData = {...cachedResponse.responseData, ...{nextPageLink: null}} as CodaResponse
