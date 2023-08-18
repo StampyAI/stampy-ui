@@ -1,5 +1,3 @@
-import {useState, useEffect, useRef, MutableRefObject} from 'react'
-
 export type Question = {
   pageid: string
   title: string
@@ -9,15 +7,26 @@ export type SearchResult = Question & {
   model: string
   url?: string
 }
+type Search = {
+  resolve: (value: null | SearchResult[] | PromiseLike<null | SearchResult[]>) => void
+  reject: (reason?: any) => void
+  query: string
+} | null
+type SearchConfig = {
+  numResults?: number
+  getAllQuestions?: () => Question[]
+  searchEndpoint?: string
+}
 
+type WorkerResultMessage = {
+  searchResults: SearchResult[]
+  query?: string
+}
 export type WorkerMessage =
-  | {
-      status: 'ready'
-      numQs: number
-    }
+  | WorkerResultMessage
   | {
       searchResults: SearchResult[]
-      userQuery?: string
+      query?: string
     }
 
 /**
@@ -102,80 +111,89 @@ const normalize = (question: string) =>
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
-const updateQueue = (item: string) => (queue: string[]) => {
-  if (item == queue[queue.length - 1]) {
-    // the lastest search is the same a this one - ignore all other searches
-    // as this is what was desired
-    return []
+let currentSearch: Search = null
+let worker: Worker
+const defaultSearchConfig = {
+  getAllQuestions: () => [] as Question[],
+  numResults: 5,
+  searchEndpoint: '/questions/search',
+}
+let searchConfig = defaultSearchConfig
+
+const resolveSearch = ({searchResults, query}: WorkerResultMessage) => {
+  if (currentSearch) {
+    currentSearch.resolve(query === currentSearch.query ? searchResults : null)
+    currentSearch = null
   }
-  const pos = queue.indexOf(item)
-  if (pos < 0) {
-    // If the item isn't in the queue, then do nothing - it was cleared by previous results
-    return queue
-  }
-  // Remove the first occurance of the item, i.e. the oldest search. It's possible for there
-  // to be multiple such values, but they weren't the most recent searches, so who cares. They
-  // might as well be left in though, for bookkeeping reasons
-  queue.splice(pos, 1)
-  return queue
 }
 
-/**
- * Configure the search engine.
- *
- * This will download the embeddings for semantic search, but until that is set up, will
- * use baseline search over the list of questions already loaded on the site.
- * Searches containing only one or two words will also use the baseline search
- */
-export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResults = 5) => {
-  const resultsProcessor = useRef((data: WorkerMessage): void => {
-    data // This is here just to get typescript to stop complaining...
+const initialiseWorker = () => {
+  if (worker !== undefined) return
+
+  const workerInstance = new Worker('/tfWorker.js')
+  workerInstance.addEventListener('message', ({data}) => {
+    if (data.status == 'ready') {
+      worker = workerInstance
+    } else if (data.searchResults) {
+      resolveSearch(data)
+    }
   })
-  const tfWorkerRef = useRef<Worker>()
-  const [queue, setQueue] = useState([] as string[])
-  const [results, setResults] = useState([] as SearchResult[])
+}
 
-  useEffect(() => {
-    const makeWorker = async () => {
-      const worker = new Worker('/tfWorker.js')
-      worker.addEventListener('message', ({data}) => {
-        if (data.status == 'ready') {
-          tfWorkerRef.current = worker
-        } else if (data.searchResults) {
-          resultsProcessor.current(data)
-        }
-      })
-    }
-    makeWorker()
-  }, [resultsProcessor, tfWorkerRef])
+export const searchLive = (query: string, resultsNum?: number): Promise<SearchResult[] | null> => {
+  // Cancel any previous searches
+  resolveSearch({searchResults: []})
 
-  resultsProcessor.current = (data) => {
-    if (!('searchResults' in data)) return
-    const {searchResults, userQuery} = data
+  const runSearch = () => {
+    const numResults = resultsNum || searchConfig.numResults
+    const wordCount = query.split(' ').length
 
-    if (queue[queue.length - 1] == userQuery) {
-      setResults(searchResults)
-    }
-    setQueue(updateQueue(userQuery ?? ''))
-  }
-
-  // Each search query gets added to the queue of searched items - the idea
-  // is that only the last item is important - all other searches can be ignored.
-  const search = (userQuery: string) => {
-    const wordCount = userQuery.split(' ').length
-    if (wordCount > 2 && tfWorkerRef.current) {
-      tfWorkerRef.current.postMessage(userQuery)
+    if (wordCount > 2 && worker) {
+      worker.postMessage({query, numResults})
     } else {
-      baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) =>
-        resultsProcessor.current({searchResults, userQuery})
+      baselineSearch(query, searchConfig.getAllQuestions(), numResults).then((res) =>
+        resolveSearch({searchResults: res, query})
       )
     }
-    setQueue([...queue, userQuery])
   }
 
-  return {
-    search,
-    results,
-    arePendingSearches: queue?.length > 0,
+  const waitTillSearchReady = () => {
+    if (query != currentSearch?.query) {
+      return // this search has been superceeded with a newer one, so just give up
+    } else if (worker || searchConfig.getAllQuestions().length > 0) {
+      runSearch()
+    } else {
+      setTimeout(waitTillSearchReady, 100)
+    }
   }
+
+  return new Promise((resolve, reject) => {
+    currentSearch = {resolve, reject, query}
+    waitTillSearchReady()
+  })
+}
+
+export const searchUnpublished = async (
+  question: string,
+  resultsNum?: number
+): Promise<SearchResult[]> => {
+  const numResults = resultsNum || searchConfig.numResults
+  const result = await fetch(
+    `${searchConfig.searchEndpoint}?question=${encodeURIComponent(
+      question
+    )}&numResults=${numResults}`
+  )
+
+  if (result.status == 200) {
+    return await result.json()
+  }
+  throw new Error(await result.text())
+}
+
+export const setupSearch = (config: SearchConfig) => {
+  searchConfig = {
+    ...defaultSearchConfig,
+    ...config,
+  }
+  initialiseWorker()
 }

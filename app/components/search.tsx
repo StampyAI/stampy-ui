@@ -3,24 +3,43 @@ import debounce from 'lodash/debounce'
 import {AddQuestion} from '~/routes/questions/add'
 import {Action, ActionType} from '~/routes/questions/actions'
 import {MagnifyingGlass, Edit} from '~/components/icons-generated'
-import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
+import {
+  setupSearch,
+  searchLive,
+  searchUnpublished,
+  Question as QuestionType,
+  SearchResult,
+} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 
 type Props = {
   onSiteAnswersRef: MutableRefObject<QuestionType[]>
+  initialQuery?: string
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
 }
 
 const empty: [] = []
 
-export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}: Props) {
-  const [showResults, setShowResults] = useState(false)
+export default function Search({
+  onSiteAnswersRef,
+  initialQuery,
+  openQuestionTitles,
+  onSelect,
+}: Props) {
+  const [showResults, setShowResults] = useState(initialQuery !== undefined)
   const [showMore, setShowMore] = useState(false)
   const searchInputRef = useRef('')
 
-  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef)
+  const [arePendingSearches, setPendingSearches] = useState(false)
+  const [results, setResults] = useState([] as SearchResult[])
+
+  useEffect(() => {
+    setupSearch({
+      getAllQuestions: () => onSiteAnswersRef.current,
+    })
+  }, [onSiteAnswersRef])
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
@@ -28,9 +47,19 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
 
     searchInputRef.current = value
 
-    search(value)
+    setPendingSearches(true)
+    searchLive(value).then((res) => {
+      if (res) {
+        setPendingSearches(false)
+        setResults(res as SearchResult[])
+      }
+    })
     logSearch(value)
   }
+
+  useEffect(() => {
+    initialQuery && searchFn(initialQuery)
+  }, [initialQuery])
 
   const handleChange = debounce(searchFn, 100)
 
@@ -63,6 +92,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
             name="searchbar"
             placeholder="Search for more questions here..."
             autoComplete="off"
+            defaultValue={searchInputRef.current}
             onChange={(e) => handleChange(e.currentTarget.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
           />
@@ -170,23 +200,12 @@ const ShowMoreSuggestions = ({
   const [error, setError] = useState<string>()
 
   useEffect(() => {
-    const getResults = async (question: string) => {
-      try {
-        const result = await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
-
-        if (result.status == 200) {
-          const questions = await result.json()
-          setExtraQuestions(questions) // don't set on API errors
-        } else {
-          console.error(await result.text())
-          setError('Error while searching for similar questions')
-        }
-      } catch (e) {
+    searchUnpublished(question, 5)
+      .then(setExtraQuestions)
+      .catch((e) => {
         console.error(e)
-        setError(e instanceof Error ? e.message : '')
-      }
-    }
-    getResults(question)
+        setError(e)
+      })
   }, [question])
 
   if (extraQuestions === empty) {

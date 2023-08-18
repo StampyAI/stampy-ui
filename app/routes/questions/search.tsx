@@ -5,15 +5,16 @@ export const loader = async ({request}: LoaderArgs) => {
   const url = new URL(request.url)
   const question = url.searchParams.get('question')
   const onlyLive = url.searchParams.get('onlyLive') == 'true'
+  const numResults = parseInt(url.searchParams.get('numResults') || '5', 10)
 
   if (!question) return []
 
-  const results = await search(question, onlyLive)
+  const results = await search(question, onlyLive, numResults)
   return jsonCORS(results)
 }
 
-export function search(question: string, onlyLive: boolean) {
-  const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}&top=5&showLive=${
+export function search(question: string, onlyLive: boolean, numResults = 5) {
+  const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}&top=${numResults}&showLive=${
     onlyLive ? 1 : 0
   }`
   return fetch(url).then(async (response) => {

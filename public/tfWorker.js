@@ -34,21 +34,19 @@ self.onmessage = (e) => {
 }
 
 const maxAttempts = 10
-const runSemanticSearch = (userQuery, attempt = 1) => {
-  numResults = 5
-
-  if (!userQuery || attempt >= maxAttempts) {
+const runSemanticSearch = ({query, numResults = 5}, attempt = 1) => {
+  if (!query || attempt >= maxAttempts) {
     return
   }
 
   if (!isReady) {
     setTimeout(() => {
-      runSemanticSearch(userQuery, attempt + 1)
+      runSemanticSearch(query, attempt + 1)
     }, 1000)
     return
   }
 
-  const searchQuery = userQuery.toLowerCase().trim().replace(/\s+/g, ' ')
+  const searchQuery = query.toLowerCase().trim().replace(/\s+/g, ' ')
 
   // encodings is 2D tensor of 512-dims embeddings for each sentence
   langModel.embed(searchQuery).then((encoding) => {
@@ -69,7 +67,7 @@ const runSemanticSearch = (userQuery, attempt = 1) => {
       .filter(({pageid}) => !seen.has(pageid) && seen.add(pageid))
       .slice(0, numResults)
 
-    self.postMessage({searchResults, userQuery})
+    self.postMessage({searchResults, query})
   })
 }
 
