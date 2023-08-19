@@ -23,6 +23,7 @@ jobs:
             | sed s/{CODA_TOKEN}/${{ secrets.CODA_TOKEN }}/ \
             | sed s/{CODA_INCOMING_TOKEN}/${{ secrets.CODA_INCOMING_TOKEN }}/ \
             | sed s/{CODA_WRITES_TOKEN}/${{ secrets.CODA_WRITES_TOKEN }}/ \
+            | sed s/{ALLOW_ORIGINS}// \
             > wrangler.toml
           npm ci
           npm run deploy

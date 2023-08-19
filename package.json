@@ -13,7 +13,8 @@
     "react": "^17.0.2",
     "react-auto-height": "^1.2.1",
     "react-dom": "^17.0.2",
-    "remix": "^1.13.0"
+    "remix": "^1.13.0",
+    "stampy-search": "file:stampy-search"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^2.2.2",
@@ -57,7 +58,7 @@
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:miniflare": "cross-env NODE_ENV=development miniflare ./build/index.js --watch",
     "start": "npm run generate-icons && cross-env NODE_ENV=development remix build && run-p dev:*",
-    "dev": "npm start",
+    "dev": "npm run build --prefix stampy-search && npm start",
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "tsc": "tsc",
     "deploy": "npm run build && wrangler publish",

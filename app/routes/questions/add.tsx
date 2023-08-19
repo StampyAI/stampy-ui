@@ -49,7 +49,7 @@ export const action = async ({request}: ActionArgs) => {
   title = title[0].toUpperCase() + title.substring(1)
   title = title.trim()
 
-  const result = 123 //await addQuestion(title, relatedQuestions)
+  const result = await addQuestion(title, relatedQuestions)
   console.log('Added question "' + title + '", response:', result)
 
   return redirect(redirectTo)

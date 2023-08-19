@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test search</title>
+    </head>
+    <body>
+        <div>
+            <span>Search for questions:</span>
+            <input id="searchBar"/>
+            <button id="live">Live questions</button>
+            <button id="inProgress">In progress questions</button>
+        </div>
+        <ul id="results">
+        </ul>
+
+        <script src="stampySearch.min.js"></script>
+        <script>
+         console.log('Starting search')
+         stampySearch.setupSearch({
+             server: 'http://localhost:8787',
+         })
+
+         const searchBar = document.getElementById('searchBar');
+         document.getElementById('live').addEventListener("click", function(event) {
+             const val = searchBar.value;
+             console.log('Searching for:', val);
+             stampySearch.searchLive(val).catch((err) => alert(err)).then((res) => {
+                 if (!res) {
+                     console.log('canceled search for "' + val + '"');
+                 } else {
+                     updateResults(res)
+                 }
+             })
+         });
+
+         document.getElementById('inProgress').addEventListener("click", function(event) {
+             const val = searchBar.value;
+             console.log('Searching for:', val);
+             stampySearch.searchUnpublished(val).catch((err) => alert(err)).then((res) => {
+                 updateResults(res)
+             })
+         });
+
+         const searchResults = document.getElementById('results');
+         const updateResults = (results) => {
+             searchResults.innerHTML = '';
+             results.forEach((result) => {
+                 // Create a new list item element
+                 const listItem = document.createElement('li');
+                 listItem.textContent = result.title;
+
+                 // Add the new item to the list
+                 searchResults.appendChild(listItem);
+             });
+         }
+
+        </script>
+    </body>
+</html>

@@ -1,15 +1,15 @@
 import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
-import {AddQuestion} from '~/routes/questions/add'
-import {Action, ActionType} from '~/routes/questions/actions'
-import {MagnifyingGlass, Edit} from '~/components/icons-generated'
 import {
   setupSearch,
   searchLive,
   searchUnpublished,
   Question as QuestionType,
   SearchResult,
-} from '~/hooks/search'
+} from 'stampy-search'
+import {AddQuestion} from '~/routes/questions/add'
+import {Action, ActionType} from '~/routes/questions/actions'
+import {MagnifyingGlass, Edit} from '~/components/icons-generated'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 
