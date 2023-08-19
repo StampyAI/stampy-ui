@@ -1,9 +1,7 @@
 import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
 import {
-  setupSearch,
-  searchLive,
-  searchUnpublished,
+    Searcher,
   Question as QuestionType,
   SearchResult,
 } from 'stampy-search'
@@ -34,21 +32,22 @@ export default function Search({
 
   const [arePendingSearches, setPendingSearches] = useState(false)
   const [results, setResults] = useState([] as SearchResult[])
+    const [searcher, setSearcher] = useState()
 
-  useEffect(() => {
-    setupSearch({
-      getAllQuestions: () => onSiteAnswersRef.current,
-    })
-  }, [onSiteAnswersRef])
+    useEffect(() => {
+        setSearcher(new Searcher({
+            getAllQuestions: () => onSiteAnswersRef.current,
+        }))
+    }, [onSiteAnswersRef])
 
-  const searchFn = (rawValue: string) => {
+    const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
     searchInputRef.current = value
 
     setPendingSearches(true)
-    searchLive(value).then((res) => {
+    searcher.searchLive(value).then((res) => {
       if (res) {
         setPendingSearches(false)
         setResults(res as SearchResult[])
@@ -59,7 +58,7 @@ export default function Search({
 
   useEffect(() => {
     initialQuery && searchFn(initialQuery)
-  }, [initialQuery])
+  }, [initialQuery, searchFn])
 
   const handleChange = debounce(searchFn, 100)
 

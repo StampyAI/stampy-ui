@@ -16,15 +16,18 @@
         <script src="stampySearch.min.js"></script>
         <script>
          console.log('Starting search')
-         stampySearch.setupSearch({
+         const searcher = new stampySearch.Searcher({
              server: 'http://localhost:8787',
+             onResolveCallback: (query, res) => console.log('callback', query, res),
          })
+         console.log(searcher)
 
          const searchBar = document.getElementById('searchBar');
          document.getElementById('live').addEventListener("click", function(event) {
              const val = searchBar.value;
              console.log('Searching for:', val);
-             stampySearch.searchLive(val).catch((err) => alert(err)).then((res) => {
+             searcher.searchLive(val).catch((err) => alert(err)).then((res) => {
+                 console.log('got result', res)
                  if (!res) {
                      console.log('canceled search for "' + val + '"');
                  } else {
@@ -36,9 +39,9 @@
          document.getElementById('inProgress').addEventListener("click", function(event) {
              const val = searchBar.value;
              console.log('Searching for:', val);
-             stampySearch.searchUnpublished(val).catch((err) => alert(err)).then((res) => {
+             searcher.searchUnpublished(val).then((res) => {
                  updateResults(res)
-             })
+             }).catch((err) => alert(err))
          });
 
          const searchResults = document.getElementById('results');

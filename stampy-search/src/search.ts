@@ -15,6 +15,7 @@ type Search = {
 type SearchConfig = {
   numResults?: number
   getAllQuestions?: () => Question[]
+  onResolveCallback: (query: string, res: SearchResult[] | null) => void | null
   server?: string
   searchEndpoint?: string
   workerPath?: string
@@ -30,6 +31,10 @@ export type WorkerMessage =
       searchResults: SearchResult[]
       query?: string
     }
+export enum SearchType {
+    LiveOnSite,
+    Unpublished
+}
 
 /**
  * Sort function for the highest score on top
@@ -113,98 +118,118 @@ export const normalize = (question: string) =>
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
-let currentSearch: Search = null
-let worker: Worker
+// let currentSearch: Search = null
+// let worker: Worker
 const defaultSearchConfig = {
   getAllQuestions: () => [] as Question[],
+  onResolveCallback: null,
   numResults: 5,
   searchEndpoint: '/questions/search',
   workerPath: '/tfWorker.js',
   server: '',
 }
-let searchConfig = defaultSearchConfig
 
-const resolveSearch = ({searchResults, query}: WorkerResultMessage) => {
-  if (currentSearch) {
-    currentSearch.resolve(query === currentSearch.query ? searchResults : null)
-    currentSearch = null
+export class Searcher {
+  currentSearch: Search
+  worker: Worker
+  searchConfig = defaultSearchConfig
+
+  constructor(config: SearchConfig) {
+    this.searchConfig = {
+      ...defaultSearchConfig,
+      ...config,
+    }
+    this.initialiseWorker().then(console.log)
   }
-}
 
-const initialiseWorker = async () => {
-  if (worker !== undefined) return
+  initialiseWorker = async () => {
+    if (this.worker !== undefined) return
 
-  const workerInstance = await fetch(`${searchConfig.server}${searchConfig.workerPath}`)
-    .then((response) => response.text())
-    .then((code) => {
-      const blob = new Blob([code])
-      return new Worker(URL.createObjectURL(blob))
+    const workerInstance = await fetch(`${this.searchConfig.server}${this.searchConfig.workerPath}`)
+      .then((response) => response.text())
+      .then((code) => {
+        const blob = new Blob([code])
+        return new Worker(URL.createObjectURL(blob))
+      })
+
+    workerInstance.addEventListener('message', ({data}) => {
+      if (data.status == 'ready') {
+        this.worker = workerInstance
+      } else if (data.searchResults) {
+        this.resolveSearch(data)
+      }
     })
+  }
 
-  workerInstance.addEventListener('message', ({data}) => {
-    if (data.status == 'ready') {
-      worker = workerInstance
-    } else if (data.searchResults) {
-      resolveSearch(data)
-    }
-  })
-}
-
-export const searchLive = (query: string, resultsNum?: number): Promise<SearchResult[] | null> => {
-  // Cancel any previous searches
-  resolveSearch({searchResults: []})
-
-  const runSearch = () => {
-    const numResults = resultsNum || searchConfig.numResults
-    const wordCount = query.split(' ').length
-
-    if (wordCount > 2 && worker) {
-      worker.postMessage({query, numResults})
-    } else {
-      baselineSearch(query, searchConfig.getAllQuestions(), numResults).then((res) =>
-        resolveSearch({searchResults: res, query})
-      )
+  resolveSearch = ({searchResults, query}: WorkerResultMessage) => {
+    if (this.currentSearch) {
+      this.currentSearch.resolve(query === this.currentSearch.query ? searchResults : null)
+      this.currentSearch = null
+      if (this.searchConfig.onResolveCallback) {
+        this.searchConfig.onResolveCallback(query, searchResults)
+      }
     }
   }
 
-  const waitTillSearchReady = () => {
-    if (query != currentSearch?.query) {
+  rejectSearch = (query: string, reason: string) => {
+    if (this.currentSearch && this.currentSearch.query == query) {
+      this.currentSearch.reject(reason)
+      this.currentSearch = null
+    }
+  }
+
+  runLiveSearch = (query: string, resultsNum?: number) => {
+    if (query != this.currentSearch?.query) {
       return // this search has been superceeded with a newer one, so just give up
-    } else if (worker || searchConfig.getAllQuestions().length > 0) {
-      runSearch()
+    } else if (this.worker || this.searchConfig.getAllQuestions().length > 0) {
+      const numResults = resultsNum || this.searchConfig.numResults
+      const wordCount = query.split(' ').length
+
+      if (wordCount > 2 && this.worker) {
+        this.worker.postMessage({query, numResults})
+      } else {
+        baselineSearch(query, this.searchConfig.getAllQuestions(), numResults).then((res) =>
+          this.resolveSearch({searchResults: res, query})
+        )
+      }
     } else {
-      setTimeout(waitTillSearchReady, 100)
+      setTimeout(() => this.runLiveSearch(query, resultsNum), 100)
     }
   }
 
-  return new Promise((resolve, reject) => {
-    currentSearch = {resolve, reject, query}
-    waitTillSearchReady()
-  })
-}
+  runUnpublishedSearch = (query: string, resultsNum?: number) => {
+    const numResults = resultsNum || this.searchConfig.numResults
+    const url = `${this.searchConfig.server}${this.searchConfig.searchEndpoint}`
+    const params = `?question=${encodeURIComponent(query)}&numResults=${numResults}`
 
-export const searchUnpublished = async (
-  question: string,
-  resultsNum?: number
-): Promise<SearchResult[]> => {
-  const numResults = resultsNum || searchConfig.numResults
-  console.log(await fetch(searchConfig.workerPath))
-  const result = await fetch(
-    `${searchConfig.server}${searchConfig.searchEndpoint}?question=${encodeURIComponent(
-      question
-    )}&numResults=${numResults}`
-  )
-
-  if (result.status == 200) {
-    return await result.json()
+    return fetch(url + params)
+      .then(async (result) => {
+        if (result.status == 200) {
+          this.resolveSearch({searchResults: await result.json(), query})
+        } else {
+          this.rejectSearch(query, await result.text())
+        }
+      })
+      .catch((err) => this.rejectSearch(query, err))
   }
-  throw new Error(await result.text())
-}
 
-export const setupSearch = async (config: SearchConfig) => {
-  searchConfig = {
-    ...defaultSearchConfig,
-    ...config,
+  searchLive = (query: string, resultsNum?: number): Promise<SearchResult[] | null> => {
+    return this.search(SearchType.LiveOnSite, query, resultsNum)
   }
-  await initialiseWorker()
+
+  searchUnpublished = (query: string, resultsNum?: number): Promise<SearchResult[]> => {
+    return this.search(SearchType.Unpublished, query, resultsNum)
+  }
+
+  search = (type_: SearchType, query: string, numResults?: number): Promise<SearchResult[]> => {
+    // Cancel any previous searches
+    this.resolveSearch({searchResults: []})
+
+    const runSearch = type_ == SearchType.LiveOnSite ? this.runLiveSearch : this.runUnpublishedSearch
+
+    return new Promise((resolve, reject) => {
+      this.currentSearch = {resolve, reject, query}
+      runSearch(query, numResults)
+    })
+  }
 }

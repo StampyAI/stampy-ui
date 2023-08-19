@@ -24,6 +24,7 @@ Configuration is done by calling `stampySeach.setupSearch(<confing>)`, where `<c
 following optional keys:
 
 - getAllQuestions - a function that will return a list of questions to be used in the baseline search. The default is an empty array
+- onResolveCallback - an optional function that will be called with the query phrase and results once it has completed. This can be used as opposed to `await searcher.searchLive('bla')`
 - numResults - the number of results to be returned by default. Initially set to 5
 - server - where to look for stuff. The default is '', i.e. the current server
 - searchEndpoint - the endpoint to use for searching for in progress questions
@@ -32,3 +33,31 @@ following optional keys:
 ### CORS
 
 For the live questions query to work properly, it has to load a web worker. For the unpublished search to work, it needs to query an API endpoint. Both of these require CORS to be setup properly on the server that is to be queried. In the case of the basic Stampy sites, this can be configured via the `ALLOW_ORIGINS` environment setting - set it to the origin of the server that will be fetching stuff (so e.g. 'http://127.0.0.1:3123' for the example server) and everything should Just Work. Maybe. Hopefully...
+
+## Usage
+
+    import {Searcher, SearchType} from 'stampy-search'
+
+    const searcher = new Searcher({
+       getAllQuestions: () => <return an array of baseline questions>,
+       onResolveCallback: (query: string, res: SearchResult[] | null) => console.log(query, 'resolved to', res),
+       numResults: 12,
+       server: 'http://127.0.0.1:3123',
+    })
+
+    // search for live questions
+    console.log('got', await searcher.searchLive('bla bla bla'))
+
+    // search for live questions with a callback
+    searcher.searchConfig.onResolveCallback = (query, res) => {
+       // process the results
+    }
+    searcher.liveSearch('bla bla bla')
+
+    // search for unpublished questions
+    console.log(await searcher.searchUnpublished('bla bla bla'))
+
+    // Generic search function
+
+    console.log(searcher.search(SearchType.LiveOnSite, 'bla bla bla'))
+    console.log(searcher.search(SearchType.Unpublished, 'bla bla bla'))
