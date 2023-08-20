@@ -98,6 +98,7 @@ const Bottom = ({
 
 export default function App() {
   const minLogo = useOutletContext<boolean>()
+  const [remixSearchParams] = useSearchParams()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 
@@ -183,6 +184,7 @@ export default function App() {
           onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestion}
+          initialQuery={remixSearchParams.get('query') || ''}
         />
 
         {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}

@@ -12,5 +12,6 @@ jobs:
       - name: lint
         run: |
           npm ci
+          npm run build --prefix stampy-search
           npm run lint
           npm run test

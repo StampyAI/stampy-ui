@@ -1,10 +1,6 @@
-import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
+import {useState, useEffect, useCallback, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
-import {
-    Searcher,
-  Question as QuestionType,
-  SearchResult,
-} from 'stampy-search'
+import {Searcher, Question as QuestionType, SearchResult} from 'stampy-search'
 import {AddQuestion} from '~/routes/questions/add'
 import {Action, ActionType} from '~/routes/questions/actions'
 import {MagnifyingGlass, Edit} from '~/components/icons-generated'
@@ -32,33 +28,42 @@ export default function Search({
 
   const [arePendingSearches, setPendingSearches] = useState(false)
   const [results, setResults] = useState([] as SearchResult[])
-    const [searcher, setSearcher] = useState()
-
-    useEffect(() => {
-        setSearcher(new Searcher({
-            getAllQuestions: () => onSiteAnswersRef.current,
-        }))
-    }, [onSiteAnswersRef])
-
-    const searchFn = (rawValue: string) => {
-    const value = rawValue.trim()
-    if (value === searchInputRef.current) return
-
-    searchInputRef.current = value
-
-    setPendingSearches(true)
-    searcher.searchLive(value).then((res) => {
-      if (res) {
-        setPendingSearches(false)
-        setResults(res as SearchResult[])
-      }
-    })
-    logSearch(value)
-  }
+  const [searcher, setSearcher] = useState<Searcher>()
 
   useEffect(() => {
-    initialQuery && searchFn(initialQuery)
-  }, [initialQuery, searchFn])
+    setSearcher(
+      new Searcher({
+        getAllQuestions: () => onSiteAnswersRef.current,
+        onResolveCallback: (query?: string, res?: SearchResult[] | null) => {
+          if (res) {
+            setPendingSearches(false)
+            setResults(res)
+          }
+        },
+      })
+    )
+  }, [onSiteAnswersRef])
+
+  const searchFn = useCallback(
+    (rawValue: string) => {
+      const value = rawValue.trim()
+      if (value === searchInputRef.current) return
+
+      searchInputRef.current = value
+
+      setPendingSearches(true)
+      searcher && searcher.searchLive(value)
+      logSearch(value)
+    },
+    [searcher]
+  )
+
+  // Show the url query if defined
+  useEffect(() => {
+    if (initialQuery && searcher) {
+      initialQuery && searchFn(initialQuery)
+    }
+  }, [initialQuery, searcher, searchFn])
 
   const handleChange = debounce(searchFn, 100)
 
@@ -136,12 +141,13 @@ export default function Search({
           </div>
         </AutoHeight>
       </div>
-      {showMore && (
+      {showMore && searcher && (
         <ShowMoreSuggestions
           onClose={() => {
             setShowMore(false)
             setHide(true)
           }}
+          searcher={searcher}
           question={searchInputRef.current}
           relatedQuestions={results.map(({title}) => title)}
         />
@@ -190,22 +196,25 @@ const ShowMoreSuggestions = ({
   question,
   relatedQuestions,
   onClose,
+  searcher,
 }: {
   question: string
   relatedQuestions: string[]
   onClose: (e: unknown) => void
+  searcher: Searcher
 }) => {
   const [extraQuestions, setExtraQuestions] = useState<SearchResult[]>(empty)
   const [error, setError] = useState<string>()
 
   useEffect(() => {
-    searchUnpublished(question, 5)
-      .then(setExtraQuestions)
-      .catch((e) => {
+    searcher
+      .searchUnpublished(question, 5)
+      .then((res: SearchResult[] | null) => res && setExtraQuestions(res))
+      .catch((e: any) => {
         console.error(e)
         setError(e)
       })
-  }, [question])
+  }, [question, searcher])
 
   if (extraQuestions === empty) {
     return (

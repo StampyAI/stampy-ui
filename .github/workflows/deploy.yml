@@ -26,6 +26,7 @@ jobs:
             | sed s/{ALLOW_ORIGINS}// \
             > wrangler.toml
           npm ci
+          npm run build --prefix stampy-search
           npm run deploy
       - name: 'Debug: list files in build directory'
         run: ls -R build public/build

@@ -17,7 +17,7 @@
         <script>
          console.log('Starting search')
          const searcher = new stampySearch.Searcher({
-             server: 'http://localhost:8787',
+             server: 'https://stampy-ui.ai688.workers.dev',
              onResolveCallback: (query, res) => console.log('callback', query, res),
          })
          console.log(searcher)
@@ -40,7 +40,7 @@
              const val = searchBar.value;
              console.log('Searching for:', val);
              searcher.searchUnpublished(val).then((res) => {
-                 updateResults(res)
+                 res && updateResults(res)
              }).catch((err) => alert(err))
          });
 

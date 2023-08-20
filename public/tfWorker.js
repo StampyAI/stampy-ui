@@ -23,7 +23,7 @@ use.load().then(function (model) {
       // successfully loaded model & downloaded encodings
       isReady = true
       // warm up model for faster response later
-      runSemanticSearch('What is AGI Safety?', 1)
+      runSemanticSearch({query: 'What is AGI Safety?'}, 1)
       self.postMessage({status: 'ready', numQs: questions.length})
     })
 })

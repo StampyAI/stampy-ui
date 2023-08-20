@@ -15,7 +15,7 @@ type Search = {
 type SearchConfig = {
   numResults?: number
   getAllQuestions?: () => Question[]
-  onResolveCallback: (query: string, res: SearchResult[] | null) => void | null
+  onResolveCallback?: null | ((query: string | undefined, res: SearchResult[]) => void)
   server?: string
   searchEndpoint?: string
   workerPath?: string
@@ -32,8 +32,8 @@ export type WorkerMessage =
       query?: string
     }
 export enum SearchType {
-    LiveOnSite,
-    Unpublished
+  LiveOnSite,
+  Unpublished,
 }
 
 /**
@@ -118,8 +118,6 @@ export const normalize = (question: string) =>
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
-// let currentSearch: Search = null
-// let worker: Worker
 const defaultSearchConfig = {
   getAllQuestions: () => [] as Question[],
   onResolveCallback: null,
@@ -127,11 +125,11 @@ const defaultSearchConfig = {
   searchEndpoint: '/questions/search',
   workerPath: '/tfWorker.js',
   server: '',
-}
+} as SearchConfig
 
 export class Searcher {
-  currentSearch: Search
-  worker: Worker
+  currentSearch: Search = null
+  worker: Worker | undefined
   searchConfig = defaultSearchConfig
 
   constructor(config: SearchConfig) {
@@ -139,7 +137,7 @@ export class Searcher {
       ...defaultSearchConfig,
       ...config,
     }
-    this.initialiseWorker().then(console.log)
+    this.initialiseWorker()
   }
 
   initialiseWorker = async () => {
@@ -156,22 +154,22 @@ export class Searcher {
       if (data.status == 'ready') {
         this.worker = workerInstance
       } else if (data.searchResults) {
-        this.resolveSearch(data)
+        this.resolveSearch(data.query, data.searchResults)
       }
     })
   }
 
-  resolveSearch = ({searchResults, query}: WorkerResultMessage) => {
-    if (this.currentSearch) {
-      this.currentSearch.resolve(query === this.currentSearch.query ? searchResults : null)
+  resolveSearch = (query?: string, searchResults: SearchResult[] | null = null) => {
+    if (this.currentSearch && this.currentSearch.query == query) {
+      this.currentSearch.resolve(searchResults)
       this.currentSearch = null
-      if (this.searchConfig.onResolveCallback) {
-        this.searchConfig.onResolveCallback(query, searchResults)
-      }
+    }
+    if (this.searchConfig.onResolveCallback && searchResults) {
+      this.searchConfig.onResolveCallback(query, searchResults)
     }
   }
 
-  rejectSearch = (query: string, reason: string) => {
+  rejectSearch = (query?: string, reason?: string) => {
     if (this.currentSearch && this.currentSearch.query == query) {
       this.currentSearch.reject(reason)
       this.currentSearch = null
@@ -179,18 +177,17 @@ export class Searcher {
   }
 
   runLiveSearch = (query: string, resultsNum?: number) => {
+    const questions = this.searchConfig.getAllQuestions ? this.searchConfig.getAllQuestions() : []
     if (query != this.currentSearch?.query) {
       return // this search has been superceeded with a newer one, so just give up
-    } else if (this.worker || this.searchConfig.getAllQuestions().length > 0) {
+    } else if (this.worker || questions.length > 0) {
       const numResults = resultsNum || this.searchConfig.numResults
       const wordCount = query.split(' ').length
 
       if (wordCount > 2 && this.worker) {
         this.worker.postMessage({query, numResults})
       } else {
-        baselineSearch(query, this.searchConfig.getAllQuestions(), numResults).then((res) =>
-          this.resolveSearch({searchResults: res, query})
-        )
+        baselineSearch(query, questions, numResults).then((res) => this.resolveSearch(query, res))
       }
     } else {
       setTimeout(() => this.runLiveSearch(query, resultsNum), 100)
@@ -205,7 +202,7 @@ export class Searcher {
     return fetch(url + params)
       .then(async (result) => {
         if (result.status == 200) {
-          this.resolveSearch({searchResults: await result.json(), query})
+          this.resolveSearch(query, await result.json())
         } else {
           this.rejectSearch(query, await result.text())
         }
@@ -217,15 +214,20 @@ export class Searcher {
     return this.search(SearchType.LiveOnSite, query, resultsNum)
   }
 
-  searchUnpublished = (query: string, resultsNum?: number): Promise<SearchResult[]> => {
+  searchUnpublished = (query: string, resultsNum?: number): Promise<SearchResult[] | null> => {
     return this.search(SearchType.Unpublished, query, resultsNum)
   }
 
-  search = (type_: SearchType, query: string, numResults?: number): Promise<SearchResult[]> => {
+  search = (
+    type_: SearchType,
+    query: string,
+    numResults?: number
+  ): Promise<SearchResult[] | null> => {
     // Cancel any previous searches
-    this.resolveSearch({searchResults: []})
+    this.resolveSearch(this?.currentSearch?.query)
 
-    const runSearch = type_ == SearchType.LiveOnSite ? this.runLiveSearch : this.runUnpublishedSearch
+    const runSearch =
+      type_ == SearchType.LiveOnSite ? this.runLiveSearch : this.runUnpublishedSearch
 
     return new Promise((resolve, reject) => {
       this.currentSearch = {resolve, reject, query}
