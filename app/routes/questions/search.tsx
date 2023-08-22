@@ -1,4 +1,5 @@
 import type {LoaderArgs} from '@remix-run/cloudflare'
+import {jsonCORS} from '../../server-utils/responses'
 
 export const loader = async ({request}: LoaderArgs) => {
   const url = new URL(request.url)
@@ -7,7 +8,8 @@ export const loader = async ({request}: LoaderArgs) => {
 
   if (!question) return []
 
-  return await search(question, onlyLive)
+  const results = await search(question, onlyLive)
+  return jsonCORS(results)
 }
 
 export function search(question: string, onlyLive: boolean) {
