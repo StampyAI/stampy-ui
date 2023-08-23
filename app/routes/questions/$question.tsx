@@ -1,3 +1,4 @@
+import {wrapCORS} from '../../server-utils/responses'
 import type {LoaderArgs} from '@remix-run/cloudflare'
 import {GlossaryEntry, loadQuestionDetail, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
@@ -12,7 +13,7 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 
-export const loader = async ({request, params}: LoaderArgs) => {
+export const loader = wrapCORS(async ({request, params}: LoaderArgs) => {
   const {question} = params
   if (!question) {
     throw Error('missing question title')
@@ -37,12 +38,12 @@ export const loader = async ({request, params}: LoaderArgs) => {
       data,
     }
   }
-}
+})
 
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
   return fetch(url).then(async (response) => {
-    const json: Awaited<ReturnType<typeof loader>> = await response.json()
+    const json: Awaited<ReturnType<typeof loadQuestionDetail>> = await response.json()
     if ('error' in json) console.error(json.error)
     const {data, timestamp} = json
 
