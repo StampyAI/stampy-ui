@@ -5,41 +5,92 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as toml from 'toml'
-import {QUESTION_DETAILS_TABLE, makeCodaRequest} from '../../server-utils/coda-urls'
-
-export const questionIds = ['0']
+import {
+  ALL_ANSWERS_TABLE,
+  BANNERS_TABLE,
+  QUESTION_DETAILS_TABLE,
+  TAGS_TABLE,
+  makeCodaRequest,
+} from '../../server-utils/coda-urls'
 
 async function main(): Promise<void> {
-  const codaToken = readCodaToken()
-  const data = await Promise.all(
-    questionIds.map(async (questionId) => {
-      const codaUrl = makeCodaRequest({
-        table: QUESTION_DETAILS_TABLE,
-        queryColumn: 'UI ID',
-        queryValue: questionId,
-      })
-      console.log(`Fetching ${codaUrl}`)
-      const responseData = await getData(codaUrl, codaToken)
-      return {url: codaUrl, httpMethod: 'GET', responseData: JSON.parse(responseData)}
+  const codaRequestsToCache: CodaRequestParams[] = [
+    {
+      table: QUESTION_DETAILS_TABLE,
+      queryColumn: 'UI ID',
+      queryValue: '0',
+    },
+    {
+      table: ALL_ANSWERS_TABLE,
+    },
+    {
+      table: TAGS_TABLE,
+      queryColumn: 'Internal?',
+      queryValue: 'false',
+    },
+    {
+      table: BANNERS_TABLE,
+    },
+  ]
+
+  const cacheResults: CachedCodaQueries = await Promise.all(
+    codaRequestsToCache.map(async (codaParams) => {
+      const cachedRequests = await getCodaData(codaParams)
+      return {codaParams, cachedRequests}
     })
   )
-  const writeData = JSON.stringify(data, null, 2)
-  await writeFile(writeData)
+  const writeData = JSON.stringify(cacheResults, null, 2)
+  const filename = `cached-coda-responses.json`
+  await writeFile(writeData, filename)
 }
 
-const getData = async (url: string, codaToken: string) => {
+export type CachedCodaQueries = Array<CachedCodaQuery>
+type CachedCodaQuery = {
+  codaParams: CodaRequestParams
+  cachedRequests: CachedRequest[]
+}
+type CodaRequestParams = {
+  table: string
+  queryColumn?: string
+  queryValue?: string
+}
+type CachedRequest = {
+  url: string
+  httpMethod: string
+  responseData: any
+}
+
+const getCodaData = async (codaRequestParams: CodaRequestParams) => {
+  const codaUrl = makeCodaRequest(codaRequestParams)
+  console.log(`Fetching ${codaUrl}`)
+  const cachedRequests: CachedRequest[] = []
+  await paginatedGet(codaUrl, cachedRequests)
+  return cachedRequests
+}
+
+const paginatedGet = async (url: string, responses: any[]) => {
+  const responseData = await getData(url)
+  const data = {url, httpMethod: 'GET', responseData}
+  responses.push(data)
+
+  if (responseData.nextPageLink) {
+    await paginatedGet(responseData.nextPageLink, responses)
+  }
+  return
+}
+
+const getData = async (url: string) => {
+  const codaToken = readCodaToken()
   const options = {
     headers: {
       Authorization: `Bearer ${codaToken}`,
     },
   }
   const response = await fetch(url, options)
-  const body = await response.json()
-  return JSON.stringify(body)
+  return await response.json()
 }
 
-const writeFile = (data: string): Promise<void> => {
-  const filename = `cached-coda-responses.json`
+const writeFile = (data: string, filename: string): Promise<void> => {
   const filePath = path.join(__dirname, filename)
 
   return new Promise((resolve, reject) => {
