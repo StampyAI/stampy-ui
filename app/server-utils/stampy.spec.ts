@@ -11,10 +11,10 @@ describe('loadQuestionDetail', () => {
   it.each<string>(questions)('can load question %i', async (questionId) => {
     const fetchMock = getMiniflareFetchMock()
     fetchMock.disableNetConnect()
-    const mockCodaWithFetch = _.partial(mockCodaRequest, fetchMock)
+    const mockCodaRequest = _.partial(mockCodaRequestUsingMiniflareFetchMock, fetchMock)
     const allCachedRequests = cachedQueries.flatMap((codaQuery) => codaQuery.cachedRequests)
     for (const cachedRequest of allCachedRequests) {
-      mockCodaWithFetch(cachedRequest.url, cachedRequest.responseData)
+      mockCodaRequest(cachedRequest.url, cachedRequest.responseData)
     }
 
     const cachedQuery = cachedQueries.find((cachedQuery) =>
@@ -38,7 +38,7 @@ describe('loadQuestionDetail', () => {
   })
 })
 
-const mockCodaRequest = async (
+const mockCodaRequestUsingMiniflareFetchMock = async (
   fetchMock: ReturnType<typeof getMiniflareFetchMock>,
   urlString: string,
   responseData: any
