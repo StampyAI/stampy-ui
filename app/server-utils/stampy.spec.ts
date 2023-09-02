@@ -1,4 +1,4 @@
-import {AnswersRow, loadQuestionDetail} from '~/server-utils/stampy'
+import {loadQuestionDetail} from '~/server-utils/stampy'
 import cachedCodaQueriesJson from '~/mocks/coda-responses/cached-coda-responses.json'
 import {QUESTION_DETAILS_TABLE} from './coda-urls'
 import {CachedCodaQueries} from '~/mocks/coda-responses/refresh-coda-data-for-tests'
@@ -30,12 +30,8 @@ describe('loadQuestionDetail', () => {
 
     const questionDetail = await loadQuestionDetail('NEVER_RELOAD', questionId)
 
-    // TODO: the addition of nextPageLink is a kludge to make the test compile. The CodaResponse type should be fixed instead.
-    const questionData = {
-      ...cachedQuery.cachedRequests[0].responseData,
-      ...{nextPageLink: null},
-    }
-    const firstItem = questionData.items[0] as AnswersRow
+    const cachedQuestionData = cachedQuery.cachedRequests[0].responseData
+    const firstItem = cachedQuestionData.items[0]
     expect(questionDetail.data.status).toBe(firstItem.values.Status.name)
     const linkUrl = new URL(firstItem.values.Link.url)
     expect(questionDetail.data.answerEditLink).toBe(linkUrl.origin + linkUrl.pathname)
