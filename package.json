@@ -60,6 +60,7 @@
     "dev": "npm start",
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "tsc": "tsc",
+    "wrangler": "wrangler",
     "deploy": "npm run build && wrangler publish",
     "test": "jest"
   },

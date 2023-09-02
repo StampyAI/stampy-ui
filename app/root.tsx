@@ -5,6 +5,7 @@ import styles from '~/root.css'
 import {useLoaderData} from '@remix-run/react'
 import {questionsOnPage} from '~/hooks/stateModifiers'
 import {loadQuestionDetail} from '~/server-utils/stampy'
+import {useTheme} from './hooks/theme'
 
 /*
  * Transform the given text into a meta header format.
@@ -106,7 +107,9 @@ function Head({minLogo}: {minLogo?: boolean}) {
   )
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary({error}: {error: Error}) {
+  console.error(error)
+
   return (
     <html>
       <Head />
@@ -123,9 +126,10 @@ export function ErrorBoundary() {
 
 export default function App() {
   const {minLogo} = useLoaderData<ReturnType<typeof loader>>()
+  const {savedTheme} = useTheme()
 
   return (
-    <html lang="en">
+    <html lang="en" className={savedTheme}>
       <Head minLogo={minLogo} />
       <body>
         <Outlet context={minLogo} />
