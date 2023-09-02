@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-:root, :root.light {
+:root,
+:root.light {
   /* light theme: */
   --bgColorPage: #eee;
   --bgColorQuestionTitle: #bdf;
@@ -104,7 +105,9 @@ a:hover,
 }
 
 /* reset default styles if user prefers light/dark mode, but chooses dark/light mode in the toggle */
-input, textarea, select {
+input,
+textarea,
+select {
   background: var(--bgColorInput);
   color: var(--colorText);
   border: 1px solid var(--borderColorButton);
@@ -820,23 +823,23 @@ a[target='_blank']:not(.icon-link):after {
 @media (prefers-color-scheme: dark) {
   :root {
     /* duplicate to avoid flash of white background while JS loads, consider some CSS postprocessing solution if this needs to be maintainable */
-  --bgColorPage: #333;
-  --bgColorQuestionTitle: #30386e;
-  --bgColorQuestionAnswer: #171f29;
-  --bgColorCopied: #fed;
-  --colorText: #f7fff9;
-  --colorTitle: #f7fff9;
-  --colorTitleHighlight: #d86;
-  --colorQuestionTitle: #ccc;
-  --borderColor: #444;
-  --borderColorButton: #666;
-  --bgColorInput: #2b2b2b;
-  --bgColorButton: #222;
-  --bgColorHighlight: #354652;
-  --bgColorTableRows: #1d2436;
-  --colorLink: #89e3ff;
-  --colorLinkVisited: #79f;
-  --colorTooltip: #2e2e2e;
+    --bgColorPage: #333;
+    --bgColorQuestionTitle: #30386e;
+    --bgColorQuestionAnswer: #171f29;
+    --bgColorCopied: #fed;
+    --colorText: #f7fff9;
+    --colorTitle: #f7fff9;
+    --colorTitleHighlight: #d86;
+    --colorQuestionTitle: #ccc;
+    --borderColor: #444;
+    --borderColorButton: #666;
+    --bgColorInput: #2b2b2b;
+    --bgColorButton: #222;
+    --bgColorHighlight: #354652;
+    --bgColorTableRows: #1d2436;
+    --colorLink: #89e3ff;
+    --colorLinkVisited: #79f;
+    --colorTooltip: #2e2e2e;
   }
 }
 :root.dark {

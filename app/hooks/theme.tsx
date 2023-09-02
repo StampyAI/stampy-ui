@@ -7,7 +7,7 @@ const isSupported = (theme: string | null | undefined): theme is string | undefi
   theme !== null && supported.has(theme)
 
 export const useTheme = () => {
-  const [searchParams] = useSearchParams() // url parameter for iframe usage: ...?embedded&theme=dark
+  const [searchParams] = useSearchParams() // url parameter for iframe usage: ...?embed&theme=dark
   const [savedTheme, setSavedTheme] = useState(() => {
     const fromParams = searchParams.get(THEME)
     if (isSupported(fromParams)) return fromParams

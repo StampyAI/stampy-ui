@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<div>Some content before embedding aisafety.info search...</div>
+
+<iframe
+  src="/?embed&showInitial&placeholder=Search the AI Safety FAQ&theme=light"
+  width="100%"
+  height="330px"
+  frameborder="0"
+  id="ai-safety-search-iframe"
+  style="transition: height 0.3s; overflow: hidden;"
+></iframe>
+
+<div>Some content between...</div>
+
+<script>
+  'use strict'
+  const iframe = document.getElementById('ai-safety-search-iframe')
+  const iframeWindow = iframe.contentWindow
+  iframeWindow.addEventListener('focus', () => {
+    iframe.style.height = '100vh'
+  })
+</script>

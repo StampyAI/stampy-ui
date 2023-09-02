@@ -6,6 +6,7 @@ import {MagnifyingGlass, Edit} from '~/components/icons-generated'
 import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
+import {useSearchParams} from '@remix-run/react'
 
 type Props = {
   onSiteAnswersRef: MutableRefObject<QuestionType[]>
@@ -19,6 +20,9 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
   const [showResults, setShowResults] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const searchInputRef = useRef('')
+
+  const [urlSearchParams] = useSearchParams()
+  const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
 
   const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef)
 
@@ -61,7 +65,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           <input
             type="search"
             name="searchbar"
-            placeholder="Search for more questions here..."
+            placeholder={placeholder}
             autoComplete="off"
             onChange={(e) => handleChange(e.currentTarget.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}

@@ -4,11 +4,14 @@ import logoFunSvg from '../assets/stampy-logo.svg'
 import logoMinSvg from '../assets/stampy-logo-min.svg'
 import {Share, Users, Code, Tag} from './icons-generated'
 import CopyLink from './copyLink'
+import type {Context} from '~/root'
 
 const year = new Date().getFullYear()
 
 export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) => {
-  const minLogo = useOutletContext<boolean>()
+  const {minLogo, embed} = useOutletContext<Context>()
+
+  if (embed) return null
 
   return (
     <header className={minLogo ? 'min-logo' : 'fun-logo'}>
@@ -55,6 +58,10 @@ export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) 
 }
 
 export const Footer = () => {
+  const {embed} = useOutletContext<Context>()
+
+  if (embed) return null
+
   return (
     <footer>
       <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">
