@@ -36,6 +36,8 @@ const emptyQuestionArray: Question[] = []
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
+  const embedWithoutDetails =
+    remixSearchParams.has('embed') && !remixSearchParams.has('showDetails')
 
   const [stateString, setStateString] = useState(
     () =>
@@ -194,6 +196,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const toggleQuestion = useCallback(
     (questionProps: Question, options?: {moveToTop?: boolean; onlyRelated?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
+
       let currentState = stateString ?? initialCollapsedState
 
       if (options?.moveToTop) {
@@ -290,5 +293,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     addQuestions,
     moveQuestion,
     glossary,
+    embedWithoutDetails,
   }
 }

@@ -16,7 +16,9 @@
   'use strict'
   const iframe = document.getElementById('ai-safety-search-iframe')
   const iframeWindow = iframe.contentWindow
-  iframeWindow.addEventListener('focus', () => {
-    iframe.style.height = '100vh'
-  })
+  const expand = () => {
+    iframe.style.height = '600px'
+    iframeWindow.removeEventListener('keydown', expand)
+  }
+  iframeWindow.addEventListener('keydown', expand)
 </script>
