@@ -6,6 +6,7 @@ import {loadAllQuestions, QuestionState, QuestionStatus} from '~/server-utils/st
 import {Header, Footer} from '~/components/layouts'
 import {Question} from '~/routes/questions/$question'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
+import type {Context} from '~/root'
 
 function randomItem(arr: any[]) {
   return arr[Math.floor(Math.random() * arr.length)]
@@ -24,7 +25,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 }
 
 export default function App() {
-  const minLogo = useOutletContext<boolean>()
+  const {minLogo} = useOutletContext<Context>()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 

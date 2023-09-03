@@ -19,14 +19,21 @@ import {Discord} from '~/components/icons-generated'
 import InfiniteScroll from '~/components/infiniteScroll'
 import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
+import type {Context} from '~/root'
 
+const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
+  const embed = !!request.url.match(/embed/)
+  const showInitial = !!request.url.match(/showInitial/)
+  if (embed && !showInitial) return {initialQuestionsData: empty}
+
   try {
     await loadTags(request)
     const initialQuestionsData = await loadInitialQuestions(request)
     return {initialQuestionsData}
   } catch (e) {
     console.error(e)
+    return {initialQuestionsData: empty}
   }
 }
 
@@ -97,7 +104,7 @@ const Bottom = ({
 }
 
 export default function App() {
-  const minLogo = useOutletContext<boolean>()
+  const {minLogo, embed} = useOutletContext<Context>()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 
@@ -209,16 +216,20 @@ export default function App() {
           ))}
         </div>
       </main>
-      <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-        <Discord />
-      </a>
+      {!embed && (
+        <>
+          <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
+            <Discord />
+          </a>
 
-      <Bottom
-        fetchMore={fetchMoreQuestions}
-        isSingleQuestion={
-          questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
-        }
-      />
+          <Bottom
+            fetchMore={fetchMoreQuestions}
+            isSingleQuestion={
+              questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
+            }
+          />
+        </>
+      )}
     </>
   )
 }
