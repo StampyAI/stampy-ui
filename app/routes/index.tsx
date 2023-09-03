@@ -124,6 +124,7 @@ export default function App() {
     addQuestions,
     moveQuestion,
     glossary,
+    embedWithoutDetails,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   const openQuestionTitles = questions
@@ -190,6 +191,7 @@ export default function App() {
           onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestion}
+          embedWithoutDetails={embedWithoutDetails}
         />
 
         {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
@@ -210,6 +212,7 @@ export default function App() {
                 onDragEnd={handleDragEnd(question)}
                 onDragOver={handleDragOver(question)}
                 draggable
+                embedWithoutDetails={embedWithoutDetails}
               />
               <DragPlaceholder pageid={question.pageid} />
             </ErrorBoundary>

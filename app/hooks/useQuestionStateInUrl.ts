@@ -197,11 +197,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     (questionProps: Question, options?: {moveToTop?: boolean; onlyRelated?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
 
-      if (embedWithoutDetails) {
-        window.open(`https://aisafety.info/?state=${pageid}_`, '_blank')
-        return
-      }
-
       let currentState = stateString ?? initialCollapsedState
 
       if (options?.moveToTop) {
@@ -222,7 +217,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
       updateStateString(newState)
     },
-    [initialCollapsedState, questions, stateString, updateStateString, embedWithoutDetails]
+    [initialCollapsedState, questions, stateString, updateStateString]
   )
 
   const onLazyLoadQuestion = useCallback(
@@ -298,5 +293,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     addQuestions,
     moveQuestion,
     glossary,
+    embedWithoutDetails,
   }
 }

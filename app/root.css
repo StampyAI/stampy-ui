@@ -104,6 +104,11 @@ a:hover,
   cursor: pointer;
 }
 
+a.transparent-link {
+  width: 100%;
+  color: inherit;
+}
+
 /* reset default styles if user prefers light/dark mode, but chooses dark/light mode in the toggle */
 input,
 textarea,
@@ -297,11 +302,14 @@ article > h2 {
   font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 400;
   line-height: 1.2;
-  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 2px;
+}
+
+article > h2 > .chevron {
+  cursor: pointer;
 }
 
 article > h2 > .transparent-button {
@@ -319,7 +327,7 @@ article > h2:not(:hover) > .transparent-button svg {
   opacity: 0;
 }
 
-article > h2::after {
+article > h2.chevron::after {
   content: url('/assets/chevron-right.svg');
   width: 12px;
   height: 12px;
@@ -331,7 +339,7 @@ article:not(.link-hovered) > h2:hover::after {
   transform: rotate(20deg);
 }
 
-article.expanded h2::after {
+article.expanded h2.chevron::after {
   transform: translateY(3px) rotate(90deg);
 }
 
@@ -696,7 +704,7 @@ a:focus-visible,
   border-radius: 2px;
 }
 
-a.see-more:not(.visible) + div.see-more-contents {
+transparent-buttonsee-more:not(.visible) + div.see-more-contents {
   display: none;
 }
 a.see-more:after {
@@ -706,7 +714,7 @@ a.see-more.visible:after {
   content: 'See less';
 }
 
-a[target='_blank']:not(.icon-link):after {
+a[target='_blank']:not(.icon-link, .transparent-link):after {
   content: ' ';
   display: inline-block;
   vertical-align: top;

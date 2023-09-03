@@ -12,11 +12,17 @@ type Props = {
   onSiteAnswersRef: MutableRefObject<QuestionType[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
+  embedWithoutDetails?: boolean
 }
 
 const empty: [] = []
 
-export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}: Props) {
+export default function Search({
+  onSiteAnswersRef,
+  openQuestionTitles,
+  onSelect,
+  embedWithoutDetails,
+}: Props) {
   const [showResults, setShowResults] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const searchInputRef = useRef('')
@@ -95,6 +101,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                       onSelect: handleSelect,
                       isAlreadyOpen: openQuestionTitles.includes(title),
                       setHide,
+                      embedWithoutDetails,
                     }}
                   />
                 ))}
@@ -133,6 +140,7 @@ const ResultItem = ({
   onSelect,
   isAlreadyOpen,
   setHide,
+  embedWithoutDetails,
 }: {
   pageid: string
   title: string
@@ -141,7 +149,21 @@ const ResultItem = ({
   onSelect: Props['onSelect']
   isAlreadyOpen: boolean
   setHide?: (b: boolean) => void
+  embedWithoutDetails?: boolean
 }) => {
+  if (embedWithoutDetails) {
+    return (
+      <a
+        href={`https://aisafety.info/?state=${pageid}_`}
+        className="transparent-link result-item result-item-box"
+        target="_blank"
+        rel="noreferrer"
+      >
+        {title}
+      </a>
+    )
+  }
+
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
   }`
