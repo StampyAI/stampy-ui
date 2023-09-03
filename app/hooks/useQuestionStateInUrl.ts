@@ -36,6 +36,8 @@ const emptyQuestionArray: Question[] = []
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams] = useSearchParams()
   const transition = useTransition()
+  const embedWithoutDetails =
+    remixSearchParams.has('embed') && !remixSearchParams.has('showDetails')
 
   const [stateString, setStateString] = useState(
     () =>
@@ -194,6 +196,12 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const toggleQuestion = useCallback(
     (questionProps: Question, options?: {moveToTop?: boolean; onlyRelated?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
+
+      if (embedWithoutDetails) {
+        window.open(`https://aisafety.info/?state=${pageid}_`, '_blank')
+        return
+      }
+
       let currentState = stateString ?? initialCollapsedState
 
       if (options?.moveToTop) {
@@ -214,7 +222,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
 
       updateStateString(newState)
     },
-    [initialCollapsedState, questions, stateString, updateStateString]
+    [initialCollapsedState, questions, stateString, updateStateString, embedWithoutDetails]
   )
 
   const onLazyLoadQuestion = useCallback(

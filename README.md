@@ -13,6 +13,7 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
   - placeholder (string) - override `<input placeholder=...>` of the search box
   - theme (light|dark) - override CSS theme (if not provided, the embedded site will use `preferred-color-scheme` system setting)
   - showInitial - also show initial questions, not just search bar
+  - showDetails - open question details (answers) directly instead of just links to aisafety.info
 - more (disabled|infini|button|buttonInfini) - debug versions of load more / infinite scroll, e.g. `aisafety.info/?more=infini`
 
 ## Stampy UI Development Setup
