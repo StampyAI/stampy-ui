@@ -6,6 +6,7 @@ import {useLoaderData} from '@remix-run/react'
 import {questionsOnPage} from '~/hooks/stateModifiers'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 import {useTheme} from './hooks/theme'
+import {useEffect} from 'react'
 
 /*
  * Transform the given text into a meta header format.
@@ -136,6 +137,26 @@ export default function App() {
   const {minLogo, embed} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {minLogo, embed}
+
+  useEffect(() => {
+    if (embed) {
+      // send new height to the parent page of iframe
+      let lastHeight = 0
+      const observer = new MutationObserver(() => {
+        const height =
+          Math.floor(document.querySelector('main')?.getBoundingClientRect().height || 0) + 30
+
+        // avoid slowly increasing height due to rounding errors and 100% height
+        if (Math.abs(lastHeight - height) < 3) return
+
+        window.parent.postMessage({type: 'aisafety.info__height', height}, '*')
+        lastHeight = height
+      })
+      observer.observe(document.body, {attributes: true, subtree: true})
+
+      return () => observer.disconnect()
+    }
+  }, [embed])
 
   return (
     <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
