@@ -59,6 +59,8 @@ const Bottom = ({
   const urlLoadType = useCallback(() => {
     const more = remixSearchParams.get('more')
     if (more) return LoadMoreType[remixSearchParams.get('more') as keyof typeof LoadMoreType]
+    const queryFromUrl = remixSearchParams.get('q')
+    if (queryFromUrl) return LoadMoreType.disabled
   }, [remixSearchParams])
 
   const [loadMore, setLoadMore] = useState(
@@ -227,17 +229,17 @@ export default function App() {
         </div>
       </main>
       {!embed && (
-        <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-          <Discord />
-        </a>
-      )}
-      {!embed && !queryFromUrl && (
-        <Bottom
-          fetchMore={fetchMoreQuestions}
-          isSingleQuestion={
-            questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
-          }
-        />
+        <>
+          <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
+            <Discord />
+          </a>
+          <Bottom
+            fetchMore={fetchMoreQuestions}
+            isSingleQuestion={
+              questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
+            }
+          />
+        </>
       )}
     </>
   )
