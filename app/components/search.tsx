@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
+import {useState, useEffect, useRef, MutableRefObject, FocusEvent, useCallback} from 'react'
 import debounce from 'lodash/debounce'
 import {AddQuestion} from '~/routes/questions/add'
 import {Action, ActionType} from '~/routes/questions/actions'
@@ -38,7 +38,7 @@ export default function Search({
 
   const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
-  const searchFn = (rawValue: string, initialSearch = false) => {
+  const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
@@ -46,15 +46,30 @@ export default function Search({
 
     search(value)
     logSearch(value)
+  }
 
-    if (queryFromUrl && !initialSearch) {
-      removeQueryFromUrl()
+  // run search if queryFromUrl is provided initially or if it pops from browser history after it was removed,
+  // update url if searchInput changes,
+  // and use current version of functions without affecting deps
+  const searchInput = searchInputRef.current
+  const searchFnRef = useRef(searchFn)
+  searchFnRef.current = searchFn
+  const removeQueryFromUrlRef = useRef(removeQueryFromUrl)
+  removeQueryFromUrlRef.current = removeQueryFromUrl
+  const queryFromUrlWasRemoved = useRef(false)
+  useEffect(() => {
+    if (queryFromUrl) {
+      if (!searchInput || queryFromUrlWasRemoved.current) {
+        searchFnRef.current(queryFromUrl)
+        queryFromUrlWasRemoved.current = false
+        const inputEl = document.querySelector('input[name="searchbar"]') as HTMLInputElement
+        inputEl.value = queryFromUrl
+      } else if (queryFromUrl !== searchInput) {
+        removeQueryFromUrlRef.current()
+        queryFromUrlWasRemoved.current = true
+      }
     }
-  }
-
-  if (queryFromUrl && !searchInputRef.current) {
-    searchFn(queryFromUrl, true)
-  }
+  }, [queryFromUrl, searchInput])
 
   const handleChange = debounce(searchFn, 100)
 
@@ -87,7 +102,6 @@ export default function Search({
             name="searchbar"
             placeholder={placeholder}
             autoComplete="off"
-            defaultValue={queryFromUrl}
             onChange={(e) => handleChange(e.currentTarget.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
           />
