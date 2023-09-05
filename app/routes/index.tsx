@@ -23,11 +23,11 @@ import type {Context} from '~/root'
 
 const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  const embed = !!request.url.match(/embed/)
+  const showInitialFromUrl = !!request.url.match(/showInitial/)
+  const embedFromUrl = !!request.url.match(/embed/)
   const queryFromUrl = !!request.url.match(/[?&]q=/)
-  const showInitial = !!request.url.match(/showInitial/)
-  const hideInitial = (embed || queryFromUrl) && !showInitial
-  if (hideInitial) return {initialQuestionsData: empty}
+  const fetchInitial = showInitialFromUrl || (!embedFromUrl && !queryFromUrl)
+  if (!fetchInitial) return {initialQuestionsData: empty}
 
   try {
     await loadTags(request)
