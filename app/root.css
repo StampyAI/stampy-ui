@@ -157,12 +157,14 @@ header.fun-logo {
 .fun-logo .logo {
   height: clamp(100px, 20vw, 150px);
   width: auto;
+  aspect-ratio: 150 / 129;
   padding: clamp(1rem, 5vw, 2rem) 24px 0 16px;
 }
 
 .min-logo .logo {
   height: clamp(50px, 15vw, 100px);
   width: auto;
+  aspect-ratio: 79 / 68;
   padding: clamp(1rem, 5vw, 2rem) 12px 0 0;
 }
 

@@ -1,4 +1,3 @@
-import {MouseEvent} from 'react'
 import {useOutletContext, Link} from '@remix-run/react'
 import logoFunSvg from '../assets/stampy-logo.svg'
 import logoMinSvg from '../assets/stampy-logo-min.svg'
@@ -8,7 +7,7 @@ import type {Context} from '~/root'
 
 const year = new Date().getFullYear()
 
-export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) => {
+export const Header = () => {
   const {minLogo, embed} = useOutletContext<Context>()
 
   if (embed) return null
@@ -16,9 +15,9 @@ export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) 
   return (
     <header className={minLogo ? 'min-logo' : 'fun-logo'}>
       <div className="logo-intro-group">
-        <Link to="/" onClick={(e) => reset(e)}>
+        <a href="/">
           <img className="logo" alt="logo" src={minLogo ? logoMinSvg : logoFunSvg} />
-        </Link>
+        </a>
         <div className="intro">
           {minLogo ? (
             <>

@@ -24,8 +24,10 @@ import type {Context} from '~/root'
 const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const embed = !!request.url.match(/embed/)
+  const queryFromUrl = !!request.url.match(/[?&]q=/)
   const showInitial = !!request.url.match(/showInitial/)
-  if (embed && !showInitial) return {initialQuestionsData: empty}
+  const hideInitial = (embed || queryFromUrl) && !showInitial
+  if (hideInitial) return {initialQuestionsData: empty}
 
   try {
     await loadTags(request)
@@ -117,7 +119,6 @@ export default function App() {
   const {
     questions,
     onSiteQuestionsRef: onSiteAnswersRef,
-    reset,
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestion,
@@ -125,6 +126,9 @@ export default function App() {
     moveQuestion,
     glossary,
     embedWithoutDetails,
+    queryFromUrl,
+    limitFromUrl,
+    removeQueryFromUrl,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   const openQuestionTitles = questions
@@ -185,13 +189,16 @@ export default function App() {
 
   return (
     <>
-      <Header reset={reset} />
+      <Header />
       <main onClick={handleSpecialLinks}>
         <Search
           onSiteAnswersRef={onSiteAnswersRef}
           openQuestionTitles={openQuestionTitles}
           onSelect={selectQuestion}
           embedWithoutDetails={embedWithoutDetails}
+          queryFromUrl={queryFromUrl}
+          limitFromUrl={limitFromUrl}
+          removeQueryFromUrl={removeQueryFromUrl}
         />
 
         {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
@@ -220,18 +227,17 @@ export default function App() {
         </div>
       </main>
       {!embed && (
-        <>
-          <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-            <Discord />
-          </a>
-
-          <Bottom
-            fetchMore={fetchMoreQuestions}
-            isSingleQuestion={
-              questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
-            }
-          />
-        </>
+        <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
+          <Discord />
+        </a>
+      )}
+      {!embed && !queryFromUrl && (
+        <Bottom
+          fetchMore={fetchMoreQuestions}
+          isSingleQuestion={
+            questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
+          }
+        />
       )}
     </>
   )

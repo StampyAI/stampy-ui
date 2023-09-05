@@ -13,6 +13,9 @@ type Props = {
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
   embedWithoutDetails?: boolean
+  queryFromUrl: string
+  limitFromUrl?: number
+  removeQueryFromUrl: () => void
 }
 
 const empty: [] = []
@@ -22,17 +25,20 @@ export default function Search({
   openQuestionTitles,
   onSelect,
   embedWithoutDetails,
+  queryFromUrl,
+  limitFromUrl,
+  removeQueryFromUrl,
 }: Props) {
-  const [showResults, setShowResults] = useState(false)
+  const [showResults, setShowResults] = useState(!!queryFromUrl)
   const [showMore, setShowMore] = useState(false)
   const searchInputRef = useRef('')
 
   const [urlSearchParams] = useSearchParams()
   const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
 
-  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef)
+  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
-  const searchFn = (rawValue: string) => {
+  const searchFn = (rawValue: string, initialSearch = false) => {
     const value = rawValue.trim()
     if (value === searchInputRef.current) return
 
@@ -40,6 +46,14 @@ export default function Search({
 
     search(value)
     logSearch(value)
+
+    if (queryFromUrl && !initialSearch) {
+      removeQueryFromUrl()
+    }
+  }
+
+  if (queryFromUrl && !searchInputRef.current) {
+    searchFn(queryFromUrl, true)
   }
 
   const handleChange = debounce(searchFn, 100)
@@ -73,6 +87,7 @@ export default function Search({
             name="searchbar"
             placeholder={placeholder}
             autoComplete="off"
+            defaultValue={queryFromUrl}
             onChange={(e) => handleChange(e.currentTarget.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
           />
@@ -105,16 +120,18 @@ export default function Search({
                     }}
                   />
                 ))}
-              {showResults && results.length === 0 && <i>(no results)</i>}
+              {showResults && results.length === 0 && !arePendingSearches && <i>(no results)</i>}
             </div>
-            <button
-              className="result-item result-item-box none-of-the-above"
-              onClick={() => setShowMore(true)}
-              onMouseDown={() => setHide(false)}
-              onMouseUp={() => setHide(true)}
-            >
-              I&apos;m asking something else
-            </button>
+            {!queryFromUrl && (
+              <button
+                className="result-item result-item-box none-of-the-above"
+                onClick={() => setShowMore(true)}
+                onMouseDown={() => setHide(false)}
+                onMouseUp={() => setHide(true)}
+              >
+                I&apos;m asking something else
+              </button>
+            )}
           </div>
         </AutoHeight>
       </div>
@@ -285,7 +302,7 @@ const shouldFlushSearch = (value: string, prevSearch: string) => () => {
       body: JSON.stringify({
         name: 'search',
         query: value,
-        type: location.hostname,
+        type: location?.hostname,
       }),
     })
 

@@ -8,8 +8,10 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
 
 ## Supported URL parameters
 
-- state - controls which questions are displayed as collapsed / open / related, e.g. `aisafety.info/?state=6568_897Ir6220r`
-- embed - show site without header/footer for embedding on other sites, e.g. [embed-example.html](/public/embed-example.html)
+- state - controls which questions are displayed as collapsed / open / related, e.g. [aisafety.info/?state=6568\_](https://aisafety.info/?state=6568_)
+- q (string) - search query for sharing direct link to search results (and not just link to 1 question), e.g. [aisafety.info/?q=alignment&limit=10](https://aisafety.info/?q=alignment&limit=10)
+  - limit (number, default 5) - how many results to show
+- embed - show site without header/footer for embedding on other sites, se [embed-example.html](/public/embed-example.html)
   - placeholder (string) - override `<input placeholder=...>` of the search box
   - theme (light|dark) - override CSS theme (if not provided, the embedded site will use `preferred-color-scheme` system setting)
   - showInitial - also show initial questions, not just search bar
