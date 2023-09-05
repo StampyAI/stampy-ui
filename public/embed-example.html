@@ -2,23 +2,22 @@
 <div>Some content before embedding aisafety.info search...</div>
 
 <iframe
-  src="/?embed&showInitial&placeholder=Search the AI Safety FAQ&theme=light"
+  src="/?embed&showInitial&showDetails&placeholder=Search the AI Safety FAQ&theme=light"
   width="100%"
-  height="330px"
+  height="315px"
   frameborder="0"
   id="ai-safety-search-iframe"
   style="transition: height 0.3s; overflow: hidden;"
 ></iframe>
 
-<div>Some content between...</div>
+<div>Some content after...</div>
 
 <script>
   'use strict'
   const iframe = document.getElementById('ai-safety-search-iframe')
-  const iframeWindow = iframe.contentWindow
-  const expand = () => {
-    iframe.style.height = '600px'
-    iframeWindow.removeEventListener('keydown', expand)
-  }
-  iframeWindow.addEventListener('keydown', expand)
+  window.addEventListener('message', function (event) {
+    if (event.data.type === 'aisafety.info__height') {
+      iframe.style.height = event.data.height + 'px'
+    }
+  })
 </script>

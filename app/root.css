@@ -67,6 +67,7 @@ html {
 html.embed {
   background: transparent;
   padding: var(--paddingSides) 0;
+  overflow: hidden; /* change height of iframe to avoid nested scroll, see embed-example.html */
 }
 
 body {
@@ -308,7 +309,7 @@ article > h2 {
   border-radius: 2px;
 }
 
-article > h2 > .chevron {
+article > h2.chevron {
   cursor: pointer;
 }
 
