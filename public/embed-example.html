@@ -21,7 +21,7 @@
     id="ai-safety-search-iframe3"
     height="315px"
   ></iframe>
-  
+
   <script>
     'use strict'
     const iframes = [...document.querySelectorAll('iframe')]
@@ -34,7 +34,7 @@
       }
     })
   </script>
-  
+
   <style>
     body {
       font-family: sans-serif;
@@ -55,5 +55,8 @@
 <script>
   'use strict'
   const source = document.getElementById('source')
-  source.textContent = document.querySelector('main').innerHTML.replace(/&amp;/g, '&')
+  const main = document.querySelector('main').innerHTML
+  source.textContent = main
+    .replace(/&amp;/g, '&')
+    .replace(/src="\//g, 'src="https://aisafety.info/')
 </script>
