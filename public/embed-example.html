@@ -1,23 +1,59 @@
 <!DOCTYPE html>
-<div>Some content before embedding aisafety.info search...</div>
 
-<iframe
-  src="/?embed&showInitial&showDetails&placeholder=Search the AI Safety FAQ&theme=light"
-  width="100%"
-  height="315px"
-  frameborder="0"
-  id="ai-safety-search-iframe"
-  style="transition: height 0.3s; overflow: hidden;"
-></iframe>
+<main>
+  <h3>Search bar, using links, light theme</h3>
+  <iframe
+    src="/?embed&placeholder=Search the AI Safety FAQ&theme=light"
+    id="ai-safety-search-iframe1"
+    height="65px"
+  ></iframe>
 
-<div>Some content after...</div>
+  <h3>Only initial questions, using links, system default theme</h3>
+  <iframe
+    src="/?embed&onlyInitial&placeholder=Search the AI Safety FAQ"
+    id="ai-safety-search-iframe2"
+    height="250px"
+  ></iframe>
 
+  <h3>Both search and initial questions, opening inline, expanding iframe height, dark theme</h3>
+  <iframe
+    src="/?embed&showInitial&showDetails&placeholder=Search the AI Safety FAQ&theme=dark"
+    id="ai-safety-search-iframe3"
+    height="315px"
+  ></iframe>
+  
+  <script>
+    'use strict'
+    const iframes = [...document.querySelectorAll('iframe')]
+    window.addEventListener('message', function (event) {
+      if (event.data.type === 'aisafety.info__height') {
+        const iframe = iframes.find((iframe) => iframe.src === event.source.location.href)
+        if (iframe) {
+          iframe.style.height = event.data.height + 'px'
+        }
+      }
+    })
+  </script>
+  
+  <style>
+    body {
+      font-family: sans-serif;
+      overflow: scroll;
+    }
+
+    iframe {
+      transition: height 0.3s;
+      overflow: hidden;
+      width: 100%;
+      border: none;
+    }
+  </style>
+</main>
+
+<h3>Source code:</h3>
+<pre id="source"></pre>
 <script>
   'use strict'
-  const iframe = document.getElementById('ai-safety-search-iframe')
-  window.addEventListener('message', function (event) {
-    if (event.data.type === 'aisafety.info__height') {
-      iframe.style.height = event.data.height + 'px'
-    }
-  })
+  const source = document.getElementById('source')
+  source.textContent = document.querySelector('main').innerHTML
 </script>
