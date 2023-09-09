@@ -55,5 +55,5 @@
 <script>
   'use strict'
   const source = document.getElementById('source')
-  source.textContent = document.querySelector('main').innerHTML
+  source.textContent = document.querySelector('main').innerHTML.replace(/&amp;/g, '&')
 </script>
