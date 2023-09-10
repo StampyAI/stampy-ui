@@ -707,7 +707,7 @@ a:focus-visible,
   border-radius: 2px;
 }
 
-transparent-buttonsee-more:not(.visible) + div.see-more-contents {
+a.see-more:not(.visible) + div.see-more-contents {
   display: none;
 }
 a.see-more:after {
