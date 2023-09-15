@@ -1,4 +1,4 @@
-import {useOutletContext, Link} from '@remix-run/react'
+import {useOutletContext} from '@remix-run/react'
 import logoFunSvg from '../assets/stampy-logo.svg'
 import logoMinSvg from '../assets/stampy-logo-min.svg'
 import {Share, Users, Code, Tag} from './icons-generated'
