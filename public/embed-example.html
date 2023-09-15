@@ -27,7 +27,7 @@
     const iframes = [...document.querySelectorAll('iframe')]
     window.addEventListener('message', function (event) {
       if (event.data.type === 'aisafety.info__height') {
-        const iframe = iframes.find((iframe) => iframe.src === event.source.location.href)
+        const iframe = event.source.frameElement
         if (iframe) {
           iframe.style.height = event.data.height + 'px'
         }
