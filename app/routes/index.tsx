@@ -13,7 +13,7 @@ import useDraggable from '~/hooks/useDraggable'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import Search from '~/components/search'
 import {Header, Footer} from '~/components/layouts'
-import {Question} from '~/routes/questions/$question'
+import {LINK_WITHOUT_DETAILS_CLS, Question} from '~/routes/questions/$question'
 import {fetchAnswerDetailsOnSite} from '~/routes/questions/answerDetailsOnSite'
 import {Discord} from '~/components/icons-generated'
 import InfiniteScroll from '~/components/infiniteScroll'
@@ -155,7 +155,8 @@ export default function App() {
     if (
       el.tagName !== 'A' ||
       el.closest('.question-footer') ||
-      el.classList.contains('footnote-backref')
+      el.classList.contains('footnote-backref') ||
+      el.classList.contains(LINK_WITHOUT_DETAILS_CLS)
     )
       return
 
