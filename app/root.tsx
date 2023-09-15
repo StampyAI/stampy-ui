@@ -79,7 +79,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const minLogo = isDomainWithFunLogo ? !!isFunLogoForcedOff : !isFunLogoForcedOn
 
   const embed = !!request.url.match(/embed/)
-  const showSearch = !request.url.match(/onlyInitial/)
 
   const question = await fetchQuestion(request).catch((e) => {
     console.error('\n\nUnexpected error in loader\n', e)
@@ -91,7 +90,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     url: request.url,
     minLogo,
     embed,
-    showSearch,
   }
 }
 
@@ -133,12 +131,12 @@ export function ErrorBoundary({error}: {error: Error}) {
 }
 
 type Loader = Awaited<ReturnType<typeof loader>>
-export type Context = Pick<Loader, 'minLogo' | 'embed' | 'showSearch'>
+export type Context = Pick<Loader, 'minLogo' | 'embed'>
 
 export default function App() {
-  const {minLogo, embed, showSearch} = useLoaderData<Loader>()
+  const {minLogo, embed} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
-  const context: Context = {minLogo, embed, showSearch}
+  const context: Context = {minLogo, embed}
 
   useEffect(() => {
     if (embed) {
