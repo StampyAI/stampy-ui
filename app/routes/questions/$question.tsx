@@ -12,6 +12,7 @@ import {Action, ActionType} from '~/routes/questions/actions'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
+export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
 export const loader = wrapCORS(async ({request, params}: LoaderArgs) => {
   const {question} = params
@@ -102,7 +103,7 @@ export function Question({
         <h2>
           <a
             href={`https://aisafety.info/?state=${pageid}_`}
-            className="transparent-link"
+            className={`transparent-link ${LINK_WITHOUT_DETAILS_CLS}`}
             target="_blank"
             rel="noreferrer"
           >
