@@ -24,10 +24,9 @@ import type {Context} from '~/root'
 const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const showInitialFromUrl = !!request.url.match(/showInitial/)
-  const onlyInitialFromUrl = !!request.url.match(/onlyInitial/)
   const embedFromUrl = !!request.url.match(/embed/)
   const queryFromUrl = !!request.url.match(/[?&]q=/)
-  const fetchInitial = showInitialFromUrl || onlyInitialFromUrl || (!embedFromUrl && !queryFromUrl)
+  const fetchInitial = showInitialFromUrl || (!embedFromUrl && !queryFromUrl)
   if (!fetchInitial) return {initialQuestionsData: empty}
 
   try {
@@ -109,7 +108,7 @@ const Bottom = ({
 }
 
 export default function App() {
-  const {minLogo, embed, showSearch} = useOutletContext<Context>()
+  const {minLogo, embed} = useOutletContext<Context>()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 
@@ -194,25 +193,21 @@ export default function App() {
     <>
       <Header />
       <main onClick={handleSpecialLinks}>
-        {showSearch && (
-          <>
-            <Search
-              onSiteAnswersRef={onSiteAnswersRef}
-              openQuestionTitles={openQuestionTitles}
-              onSelect={selectQuestion}
-              embedWithoutDetails={embedWithoutDetails}
-              queryFromUrl={queryFromUrl}
-              limitFromUrl={limitFromUrl}
-              removeQueryFromUrl={removeQueryFromUrl}
-            />
+        <Search
+          onSiteAnswersRef={onSiteAnswersRef}
+          openQuestionTitles={openQuestionTitles}
+          onSelect={selectQuestion}
+          embedWithoutDetails={embedWithoutDetails}
+          queryFromUrl={queryFromUrl}
+          limitFromUrl={limitFromUrl}
+          removeQueryFromUrl={removeQueryFromUrl}
+        />
 
-            {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
-            <div draggable onDragOver={handleDragOver({pageid: TOP})}>
-              &nbsp;
-            </div>
-            <DragPlaceholder pageid={TOP} />
-          </>
-        )}
+        {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
+        <div draggable onDragOver={handleDragOver({pageid: TOP})}>
+          &nbsp;
+        </div>
+        <DragPlaceholder pageid={TOP} />
         <div className="articles-container">
           {questions.map((question) => (
             <ErrorBoundary title={question.title} key={question.pageid}>
