@@ -7,6 +7,7 @@ import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 import {useSearchParams} from '@remix-run/react'
+import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions/$question'
 
 type Props = {
   onSiteAnswersRef: MutableRefObject<QuestionType[]>
@@ -186,7 +187,7 @@ const ResultItem = ({
     return (
       <a
         href={`https://aisafety.info/?state=${pageid}_`}
-        className="transparent-link result-item result-item-box"
+        className={`transparent-link result-item result-item-box ${LINK_WITHOUT_DETAILS_CLS}`}
         target="_blank"
         rel="noreferrer"
       >
