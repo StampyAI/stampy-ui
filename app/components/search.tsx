@@ -37,7 +37,7 @@ export default function Search({
   const [urlSearchParams] = useSearchParams()
   const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
 
-  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef, limitFromUrl)
+  const {search, isPendingSearch, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
@@ -108,8 +108,8 @@ export default function Search({
           />
           <MagnifyingGlass />
         </label>
-        <div className={`search-loader ${arePendingSearches ? 'loader' : ''}`}> </div>
-        {arePendingSearches && results.length == 0 && (
+        <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
+        {isPendingSearch && results.length == 0 && (
           <div className="result-item-box no-questions">Searching for questions...</div>
         )}
         <AutoHeight>
@@ -135,7 +135,7 @@ export default function Search({
                     }}
                   />
                 ))}
-              {showResults && results.length === 0 && !arePendingSearches && <i>(no results)</i>}
+              {showResults && results.length === 0 && !isPendingSearch && <i>(no results)</i>}
             </div>
             {!queryFromUrl && (
               <button
