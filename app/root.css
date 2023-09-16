@@ -29,7 +29,7 @@
   --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
   --marginTags: clamp(5px, 1vw, 10px);
-  --baseFont: normal 400 1rem "Open Sans", Arial, sans-serif;
+  --baseFont: normal 400 1rem 'Open Sans', Arial, sans-serif;
 
   /* dark theme at the end of file to overwrite all previous rules */
 }
@@ -437,7 +437,7 @@ tr:nth-child(even) {
   margin-left: 10px;
   max-width: 35%;
   z-index: 2;
-  transition: visibility 0s 300ms, opacity cubic-bezier(1,0,1,1) 300ms;
+  transition: visibility 0s 300ms, opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
 .answer .link-popup::after {
   content: '';
