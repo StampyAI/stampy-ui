@@ -34,9 +34,7 @@ self.onmessage = (e) => {
 }
 
 const maxAttempts = 10
-const runSemanticSearch = (userQuery, attempt = 1) => {
-  numResults = 5
-
+const runSemanticSearch = ({userQuery, numResults}, attempt = 1) => {
   if (!userQuery || attempt >= maxAttempts) {
     return
   }
@@ -62,6 +60,7 @@ const runSemanticSearch = (userQuery, attempt = 1) => {
       title,
       pageid: pageids[index],
       score: scores[index],
+      model: '@tensorflow-models/universal-sentence-encoder',
     }))
     questionsScored.sort(byScore)
     const seen = new Set()

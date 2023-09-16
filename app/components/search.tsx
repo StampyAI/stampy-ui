@@ -6,21 +6,38 @@ import {MagnifyingGlass, Edit} from '~/components/icons-generated'
 import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
+import {useSearchParams} from '@remix-run/react'
+import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions/$question'
 
 type Props = {
   onSiteAnswersRef: MutableRefObject<QuestionType[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
+  embedWithoutDetails?: boolean
+  queryFromUrl: string
+  limitFromUrl?: number
+  removeQueryFromUrl: () => void
 }
 
 const empty: [] = []
 
-export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}: Props) {
-  const [showResults, setShowResults] = useState(false)
+export default function Search({
+  onSiteAnswersRef,
+  openQuestionTitles,
+  onSelect,
+  embedWithoutDetails,
+  queryFromUrl,
+  limitFromUrl,
+  removeQueryFromUrl,
+}: Props) {
+  const [showResults, setShowResults] = useState(!!queryFromUrl)
   const [showMore, setShowMore] = useState(false)
   const searchInputRef = useRef('')
 
-  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef)
+  const [urlSearchParams] = useSearchParams()
+  const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
+
+  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
@@ -31,6 +48,29 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
     search(value)
     logSearch(value)
   }
+
+  // run search if queryFromUrl is provided initially or if it pops from browser history after it was removed,
+  // update url if searchInput changes,
+  // and use current version of functions without affecting deps
+  const searchInput = searchInputRef.current
+  const searchFnRef = useRef(searchFn)
+  searchFnRef.current = searchFn
+  const removeQueryFromUrlRef = useRef(removeQueryFromUrl)
+  removeQueryFromUrlRef.current = removeQueryFromUrl
+  const queryFromUrlWasRemoved = useRef(false)
+  useEffect(() => {
+    if (queryFromUrl) {
+      if (!searchInput || queryFromUrlWasRemoved.current) {
+        searchFnRef.current(queryFromUrl)
+        queryFromUrlWasRemoved.current = false
+        const inputEl = document.querySelector('input[name="searchbar"]') as HTMLInputElement
+        inputEl.value = queryFromUrl
+      } else if (queryFromUrl !== searchInput) {
+        removeQueryFromUrlRef.current()
+        queryFromUrlWasRemoved.current = true
+      }
+    }
+  }, [queryFromUrl, searchInput])
 
   const handleChange = debounce(searchFn, 100)
 
@@ -61,7 +101,7 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
           <input
             type="search"
             name="searchbar"
-            placeholder="Search for more questions here..."
+            placeholder={placeholder}
             autoComplete="off"
             onChange={(e) => handleChange(e.currentTarget.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchFn(e.currentTarget.value)}
@@ -91,19 +131,22 @@ export default function Search({onSiteAnswersRef, openQuestionTitles, onSelect}:
                       onSelect: handleSelect,
                       isAlreadyOpen: openQuestionTitles.includes(title),
                       setHide,
+                      embedWithoutDetails,
                     }}
                   />
                 ))}
-              {showResults && results.length === 0 && <i>(no results)</i>}
+              {showResults && results.length === 0 && !arePendingSearches && <i>(no results)</i>}
             </div>
-            <button
-              className="result-item result-item-box none-of-the-above"
-              onClick={() => setShowMore(true)}
-              onMouseDown={() => setHide(false)}
-              onMouseUp={() => setHide(true)}
-            >
-              I&apos;m asking something else
-            </button>
+            {!queryFromUrl && (
+              <button
+                className="result-item result-item-box none-of-the-above"
+                onClick={() => setShowMore(true)}
+                onMouseDown={() => setHide(false)}
+                onMouseUp={() => setHide(true)}
+              >
+                I&apos;m asking something else
+              </button>
+            )}
           </div>
         </AutoHeight>
       </div>
@@ -129,6 +172,7 @@ const ResultItem = ({
   onSelect,
   isAlreadyOpen,
   setHide,
+  embedWithoutDetails,
 }: {
   pageid: string
   title: string
@@ -137,7 +181,21 @@ const ResultItem = ({
   onSelect: Props['onSelect']
   isAlreadyOpen: boolean
   setHide?: (b: boolean) => void
+  embedWithoutDetails?: boolean
 }) => {
+  if (embedWithoutDetails) {
+    return (
+      <a
+        href={`https://aisafety.info/?state=${pageid}_`}
+        className={`transparent-link result-item result-item-box ${LINK_WITHOUT_DETAILS_CLS}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {title}
+      </a>
+    )
+  }
+
   const tooltip = `score: ${score.toFixed(2)}, engine: ${model} ${
     isAlreadyOpen ? '(already open)' : ''
   }`
@@ -259,7 +317,7 @@ const shouldFlushSearch = (value: string, prevSearch: string) => () => {
       body: JSON.stringify({
         name: 'search',
         query: value,
-        type: location.hostname,
+        type: location?.hostname,
       }),
     })
 

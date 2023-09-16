@@ -12,6 +12,7 @@ import {Action, ActionType} from '~/routes/questions/actions'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
+export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
 export const loader = wrapCORS(async ({request, params}: LoaderArgs) => {
   const {question} = params
@@ -59,6 +60,7 @@ export function Question({
   onToggle,
   selectQuestion,
   glossary,
+  embedWithoutDetails,
   ...dragProps
 }: {
   questionProps: Question
@@ -66,6 +68,7 @@ export function Question({
   onToggle: ReturnType<typeof useQuestionStateInUrl>['toggleQuestion']
   glossary: Glossary
   selectQuestion: (pageid: string, title: string) => void
+  embedWithoutDetails?: boolean
 } & JSX.IntrinsicElements['div']) {
   const {pageid, title, text, answerEditLink, questionState, tags, banners} = questionProps
   const isLoading = useRef(false)
@@ -94,6 +97,23 @@ export function Question({
     onToggle(questionProps)
   }
 
+  if (embedWithoutDetails) {
+    return (
+      <article className={cls}>
+        <h2>
+          <a
+            href={`https://aisafety.info/?state=${pageid}_`}
+            className={`transparent-link ${LINK_WITHOUT_DETAILS_CLS}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {title}
+          </a>
+        </h2>
+      </article>
+    )
+  }
+
   let html
   if (text == '') {
     html = `<i>We don't have an answer for this question yet. Would you like to <a href="${answerEditLink}">write one</a>?</a>`
@@ -105,7 +125,12 @@ export function Question({
 
   return (
     <article className={cls}>
-      <h2 onClick={handleToggle} title={isExpanded ? 'Hide answer' : 'Show answer'} {...dragProps}>
+      <h2
+        onClick={handleToggle}
+        className="chevron"
+        title={isExpanded ? 'Hide answer' : 'Show answer'}
+        {...dragProps}
+      >
         <button className="transparent-button">
           {title}
           <CopyLink

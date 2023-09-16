@@ -6,6 +6,19 @@ Stampy UI is an interface for [aisafety.info](https://aisafety.info), a question
 
 Contributions are welcome, the code is released under the MIT License. If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Dev-team_sulmV#_luYjG), drop by [our Discord](https://discord.com/invite/7wjJbFJnSN) and post in #stampy-dev!
 
+## Supported URL parameters
+
+- state - controls which questions are displayed as collapsed / open / related, e.g. [aisafety.info/?state=6568\_](https://aisafety.info/?state=6568_)
+- q (string) - search query for sharing direct link to search results (and not just link to 1 question), e.g. [aisafety.info/?q=alignment&limit=10](https://aisafety.info/?q=alignment&limit=10)
+  - limit (number, default 5) - how many results to show
+- embed - show site without header/footer for embedding on other sites, see [embed-example.html](https://aisafety.info/embed-example.html)
+  - placeholder (string) - override `<input placeholder=...>` of the search box
+  - theme (light|dark) - override CSS theme (if not provided, the embedded site will use `preferred-color-scheme` system setting)
+  - showInitial - show initial questions as well as the search bar
+  - onlyInitial - show only initial questions without the search bar
+  - showDetails - open question details (answers) directly instead of just links to aisafety.info
+- more (disabled|infini|button|buttonInfini) - debug versions of load more / infinite scroll, e.g. `aisafety.info/?more=infini`
+
 ## Stampy UI Development Setup
 
 1. Requirements
@@ -93,6 +106,8 @@ $ npm run deploy
 Production domains are deployed via GitHub Actions.
 
 ## Add a new domain
+
+If the same CF worker should be reachable from another domain:
 
 - log in to [Cloudflare Dashboard](https://dash.cloudflare.com/) owned by @plexish
 - use `Add a site` button on homepage, choose the Free plan

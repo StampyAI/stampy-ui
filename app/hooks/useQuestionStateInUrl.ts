@@ -1,5 +1,4 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
-import type {MouseEvent} from 'react'
 import {useSearchParams, useTransition} from '@remix-run/react'
 import {Question, QuestionState, RelatedQuestions, PageId, Glossary} from '~/server-utils/stampy'
 import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
@@ -34,8 +33,17 @@ function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<
 const emptyQuestionArray: Question[] = []
 
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
-  const [remixSearchParams] = useSearchParams()
+  const [remixSearchParams, setRemixParams] = useSearchParams()
   const transition = useTransition()
+  const embedWithoutDetails =
+    remixSearchParams.has('embed') && !remixSearchParams.has('showDetails')
+  const queryFromUrl = remixSearchParams.get('q') || ''
+  const limitFromUrl = parseInt(remixSearchParams.get('limit') ?? '', 10) || undefined
+
+  const removeQueryFromUrl = useCallback(() => {
+    remixSearchParams.delete('q')
+    setRemixParams(remixSearchParams)
+  }, [remixSearchParams, setRemixParams])
 
   const [stateString, setStateString] = useState(
     () =>
@@ -51,6 +59,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const [glossary, setGlossary] = useState({} as Glossary)
 
   const onSiteQuestionsRef = useRef(emptyQuestionArray)
+  const allowBrowserBackToInitialStateRef = useRef(true)
 
   useEffect(() => {
     // not needed for initial screen => lazy load on client
@@ -110,12 +119,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
     document.title = title
   }, [stateString, minLogo, questions])
 
-  const reset = (event: MouseEvent) => {
-    event.preventDefault()
-    history.replaceState('', '', '/')
-    setStateString(null)
-  }
-
   const moveToTop = (currentState: string, {pageid}: Question) => {
     setTimeout(() => {
       // scroll to top after the state is updated
@@ -156,7 +159,15 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       if (stateString == newState) return
       const newSearchParams = new URLSearchParams(remixSearchParams)
       newSearchParams.set('state', newState)
-      history.replaceState(newState, '', '?' + newSearchParams.toString())
+
+      const newUrl = '?' + newSearchParams.toString()
+      if (allowBrowserBackToInitialStateRef.current) {
+        history.pushState(newState, '', newUrl)
+        allowBrowserBackToInitialStateRef.current = false
+      } else {
+        history.replaceState(newState, '', newUrl)
+      }
+
       setStateString(newState)
     },
     [remixSearchParams, stateString]
@@ -194,6 +205,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const toggleQuestion = useCallback(
     (questionProps: Question, options?: {moveToTop?: boolean; onlyRelated?: boolean}) => {
       const {pageid, relatedQuestions} = questionProps
+
       let currentState = stateString ?? initialCollapsedState
 
       if (options?.moveToTop) {
@@ -283,12 +295,15 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   return {
     questions,
     onSiteQuestionsRef,
-    reset,
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestion,
     addQuestions,
     moveQuestion,
     glossary,
+    embedWithoutDetails,
+    queryFromUrl,
+    limitFromUrl,
+    removeQueryFromUrl,
   }
 }

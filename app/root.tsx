@@ -5,6 +5,8 @@ import styles from '~/root.css'
 import {useLoaderData} from '@remix-run/react'
 import {questionsOnPage} from '~/hooks/stateModifiers'
 import {loadQuestionDetail} from '~/server-utils/stampy'
+import {useTheme} from './hooks/theme'
+import {useEffect} from 'react'
 
 /*
  * Transform the given text into a meta header format.
@@ -76,6 +78,9 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const isFunLogoForcedOn = request.url.match(/funLogo/)
   const minLogo = isDomainWithFunLogo ? !!isFunLogoForcedOff : !isFunLogoForcedOn
 
+  const embed = !!request.url.match(/embed/)
+  const showSearch = !request.url.match(/onlyInitial/)
+
   const question = await fetchQuestion(request).catch((e) => {
     console.error('\n\nUnexpected error in loader\n', e)
     return null
@@ -85,6 +90,8 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     question,
     url: request.url,
     minLogo,
+    embed,
+    showSearch,
   }
 }
 
@@ -93,8 +100,10 @@ function Head({minLogo}: {minLogo?: boolean}) {
     <head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
-      {/* https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024 */}
-      <meta name="color-scheme" content="light dark" />
+      {/* don't use color-scheme because supporting transparent iframes https://fvsch.com/transparent-iframes
+          is more important than dark reader https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024
+          <meta name="color-scheme" content="light dark" /> 
+       */}
       <Meta />
       <Links />
       {minLogo ? (
@@ -106,7 +115,9 @@ function Head({minLogo}: {minLogo?: boolean}) {
   )
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary({error}: {error: Error}) {
+  console.error(error)
+
   return (
     <html>
       <Head />
@@ -121,14 +132,39 @@ export function ErrorBoundary() {
   )
 }
 
+type Loader = Awaited<ReturnType<typeof loader>>
+export type Context = Pick<Loader, 'minLogo' | 'embed' | 'showSearch'>
+
 export default function App() {
-  const {minLogo} = useLoaderData<ReturnType<typeof loader>>()
+  const {minLogo, embed, showSearch} = useLoaderData<Loader>()
+  const {savedTheme} = useTheme()
+  const context: Context = {minLogo, embed, showSearch}
+
+  useEffect(() => {
+    if (embed) {
+      // send new height to the parent page of iframe
+      let lastHeight = 0
+      const observer = new MutationObserver(() => {
+        const height =
+          Math.floor(document.querySelector('main')?.getBoundingClientRect().height || 0) + 30
+
+        // avoid slowly increasing height due to rounding errors and 100% height
+        if (Math.abs(lastHeight - height) < 3) return
+
+        window.parent.postMessage({type: 'aisafety.info__height', height}, '*')
+        lastHeight = height
+      })
+      observer.observe(document.body, {attributes: true, subtree: true})
+
+      return () => observer.disconnect()
+    }
+  }, [embed])
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
       <Head minLogo={minLogo} />
       <body>
-        <Outlet context={minLogo} />
+        <Outlet context={context} />
         {/* <ScrollRestoration /> wasn't doing anything useful */}
         <Scripts />
         <LiveReload />

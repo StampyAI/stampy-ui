@@ -1,21 +1,23 @@
-import {MouseEvent} from 'react'
-import {useOutletContext, Link} from '@remix-run/react'
+import {useOutletContext} from '@remix-run/react'
 import logoFunSvg from '../assets/stampy-logo.svg'
 import logoMinSvg from '../assets/stampy-logo-min.svg'
 import {Share, Users, Code, Tag} from './icons-generated'
 import CopyLink from './copyLink'
+import type {Context} from '~/root'
 
 const year = new Date().getFullYear()
 
-export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) => {
-  const minLogo = useOutletContext<boolean>()
+export const Header = () => {
+  const {minLogo, embed} = useOutletContext<Context>()
+
+  if (embed) return null
 
   return (
     <header className={minLogo ? 'min-logo' : 'fun-logo'}>
       <div className="logo-intro-group">
-        <Link to="/" onClick={(e) => reset(e)}>
+        <a href="/">
           <img className="logo" alt="logo" src={minLogo ? logoMinSvg : logoFunSvg} />
-        </Link>
+        </a>
         <div className="intro">
           {minLogo ? (
             <>
@@ -55,6 +57,10 @@ export const Header = ({reset = () => null}: {reset?: (e: MouseEvent) => void}) 
 }
 
 export const Footer = () => {
+  const {embed} = useOutletContext<Context>()
+
+  if (embed) return null
+
   return (
     <footer>
       <a href="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa">

@@ -13,20 +13,30 @@ import useDraggable from '~/hooks/useDraggable'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import Search from '~/components/search'
 import {Header, Footer} from '~/components/layouts'
-import {Question} from '~/routes/questions/$question'
+import {LINK_WITHOUT_DETAILS_CLS, Question} from '~/routes/questions/$question'
 import {fetchAnswerDetailsOnSite} from '~/routes/questions/answerDetailsOnSite'
 import {Discord} from '~/components/icons-generated'
 import InfiniteScroll from '~/components/infiniteScroll'
 import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
+import type {Context} from '~/root'
 
+const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
+  const showInitialFromUrl = !!request.url.match(/showInitial/)
+  const onlyInitialFromUrl = !!request.url.match(/onlyInitial/)
+  const embedFromUrl = !!request.url.match(/embed/)
+  const queryFromUrl = !!request.url.match(/[?&]q=/)
+  const fetchInitial = showInitialFromUrl || onlyInitialFromUrl || (!embedFromUrl && !queryFromUrl)
+  if (!fetchInitial) return {initialQuestionsData: empty}
+
   try {
     await loadTags(request)
     const initialQuestionsData = await loadInitialQuestions(request)
     return {initialQuestionsData}
   } catch (e) {
     console.error(e)
+    return {initialQuestionsData: empty}
   }
 }
 
@@ -50,6 +60,8 @@ const Bottom = ({
   const urlLoadType = useCallback(() => {
     const more = remixSearchParams.get('more')
     if (more) return LoadMoreType[remixSearchParams.get('more') as keyof typeof LoadMoreType]
+    const queryFromUrl = remixSearchParams.get('q')
+    if (queryFromUrl) return LoadMoreType.disabled
   }, [remixSearchParams])
 
   const [loadMore, setLoadMore] = useState(
@@ -97,7 +109,7 @@ const Bottom = ({
 }
 
 export default function App() {
-  const minLogo = useOutletContext<boolean>()
+  const {minLogo, embed, showSearch} = useOutletContext<Context>()
   const {initialQuestionsData} = useLoaderData<ReturnType<typeof loader>>()
   const {data: initialQuestions = [], timestamp} = initialQuestionsData ?? {}
 
@@ -110,13 +122,16 @@ export default function App() {
   const {
     questions,
     onSiteQuestionsRef: onSiteAnswersRef,
-    reset,
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestion,
     addQuestions,
     moveQuestion,
     glossary,
+    embedWithoutDetails,
+    queryFromUrl,
+    limitFromUrl,
+    removeQueryFromUrl,
   } = useQuestionStateInUrl(minLogo, initialQuestions)
 
   const openQuestionTitles = questions
@@ -140,7 +155,8 @@ export default function App() {
     if (
       el.tagName !== 'A' ||
       el.closest('.question-footer') ||
-      el.classList.contains('footnote-backref')
+      el.classList.contains('footnote-backref') ||
+      el.classList.contains(LINK_WITHOUT_DETAILS_CLS)
     )
       return
 
@@ -177,19 +193,27 @@ export default function App() {
 
   return (
     <>
-      <Header reset={reset} />
+      <Header />
       <main onClick={handleSpecialLinks}>
-        <Search
-          onSiteAnswersRef={onSiteAnswersRef}
-          openQuestionTitles={openQuestionTitles}
-          onSelect={selectQuestion}
-        />
+        {showSearch && (
+          <>
+            <Search
+              onSiteAnswersRef={onSiteAnswersRef}
+              openQuestionTitles={openQuestionTitles}
+              onSelect={selectQuestion}
+              embedWithoutDetails={embedWithoutDetails}
+              queryFromUrl={queryFromUrl}
+              limitFromUrl={limitFromUrl}
+              removeQueryFromUrl={removeQueryFromUrl}
+            />
 
-        {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
-        <div draggable onDragOver={handleDragOver({pageid: TOP})}>
-          &nbsp;
-        </div>
-        <DragPlaceholder pageid={TOP} />
+            {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
+            <div draggable onDragOver={handleDragOver({pageid: TOP})}>
+              &nbsp;
+            </div>
+            <DragPlaceholder pageid={TOP} />
+          </>
+        )}
         <div className="articles-container">
           {questions.map((question) => (
             <ErrorBoundary title={question.title} key={question.pageid}>
@@ -203,22 +227,26 @@ export default function App() {
                 onDragEnd={handleDragEnd(question)}
                 onDragOver={handleDragOver(question)}
                 draggable
+                embedWithoutDetails={embedWithoutDetails}
               />
               <DragPlaceholder pageid={question.pageid} />
             </ErrorBoundary>
           ))}
         </div>
       </main>
-      <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-        <Discord />
-      </a>
-
-      <Bottom
-        fetchMore={fetchMoreQuestions}
-        isSingleQuestion={
-          questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
-        }
-      />
+      {!embed && (
+        <>
+          <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
+            <Discord />
+          </a>
+          <Bottom
+            fetchMore={fetchMoreQuestions}
+            isSingleQuestion={
+              questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
+            }
+          />
+        </>
+      )}
     </>
   )
 }

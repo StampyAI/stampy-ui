@@ -159,18 +159,30 @@ export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResu
     setQueue(updateQueue(userQuery ?? ''))
   }
 
+  const searchLater = (userQuery: string) => {
+    if (typeof window !== 'undefined') setTimeout(() => search(userQuery), 100)
+  }
+
   // Each search query gets added to the queue of searched items - the idea
   // is that only the last item is important - all other searches can be ignored.
   const search = (userQuery: string) => {
+    setQueue([...queue, userQuery])
     const wordCount = userQuery.split(' ').length
-    if (wordCount > 2 && tfWorkerRef.current) {
-      tfWorkerRef.current.postMessage(userQuery)
+    if (wordCount > 2) {
+      if (!tfWorkerRef.current) {
+        searchLater(userQuery)
+        return
+      }
+      tfWorkerRef.current.postMessage({userQuery, numResults})
     } else {
+      if (onSiteQuestions.current.length == 0) {
+        searchLater(userQuery)
+        return
+      }
       baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) =>
         resultsProcessor.current({searchResults, userQuery})
       )
     }
-    setQueue([...queue, userQuery])
   }
 
   return {

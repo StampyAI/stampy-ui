@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
-import {Form, useSearchParams} from '@remix-run/react'
+import {Form} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
 import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
 
@@ -17,7 +17,7 @@ export const action = async ({request}: ActionArgs) => {
   const formData = await request.formData()
   let title = formData.get('title') as string
   const state = formData.get('stateString')
-  const redirectTo = '/' + (state ? '?state=' + state : '')
+  const redirectTo = '/' + state
 
   // Make sure that the question was provided
   if (!title) return redirect(redirectTo)
@@ -63,8 +63,6 @@ type Props = {
 
 export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Props) => {
   const url = '/questions/add'
-  const [remixSearchParams] = useSearchParams()
-  const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
   const [isSubmitted, setSubmitted] = useState(immediately)
 
   const handleSubmit = async () => {
@@ -75,13 +73,13 @@ export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Pr
     const addQuestion = async () => {
       const body = new FormData()
       body.append('title', title)
-      body.append('stateString', stateString)
+      body.append('stateString', location.search)
       await fetch(url, {method: 'POST', body})
     }
     if (immediately) {
       addQuestion()
     }
-  }, [title, stateString, immediately])
+  }, [title, immediately])
 
   if (isSubmitted) {
     return (
@@ -106,7 +104,7 @@ export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Pr
         {...props}
       >
         <input type="hidden" name="title" value={title} />
-        <input type="hidden" name="stateString" value={stateString} />
+        <input type="hidden" name="stateString" value={location.search} />
         {relatedQuestions.map((title) => (
           <input type="hidden" name="relatedQuestion" key={title} value={title} />
         ))}
