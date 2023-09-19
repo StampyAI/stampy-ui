@@ -17,4 +17,5 @@ jobs:
           npm run lint
           npm run build
           cp wrangler.toml.template wrangler.toml
+          npm run refresh-test-data
           npm run test
