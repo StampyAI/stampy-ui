@@ -107,10 +107,22 @@ const writeFile = (data: string, filename: string): Promise<void> => {
 }
 
 const readCodaToken = (): string => {
+  const tokenFromEnv = process.env.CODA_TOKEN
+  if (tokenFromEnv) {
+    console.log('found Coda token from environment')
+    return tokenFromEnv
+  }
   const wranglerToml = fs.readFileSync('wrangler.toml', 'utf8')
   const config = toml.parse(wranglerToml)
-  const codaToken: string = config.vars.CODA_TOKEN
-  return codaToken
+  const tokenFromToml: string = config.vars.CODA_TOKEN
+  if (tokenFromToml) {
+    console.log('found Coda token from wrangler config')
+    return tokenFromToml
+  }
+
+  throw Error('unable to get a Coda token')
+
+  return tokenFromToml
 }
 
 main()
