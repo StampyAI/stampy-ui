@@ -79,8 +79,16 @@ const paginatedGet = async (url: string, responses: any[]) => {
   return
 }
 
+let cachedCodaToken: string | undefined
+
 const getData = async (url: string) => {
-  const codaToken = readCodaToken()
+  let codaToken: string
+  if (cachedCodaToken) {
+    codaToken = cachedCodaToken
+  } else {
+    codaToken = readCodaToken()
+    cachedCodaToken = codaToken
+  }
   const options = {
     headers: {
       Authorization: `Bearer ${codaToken}`,
@@ -121,8 +129,6 @@ const readCodaToken = (): string => {
   }
 
   throw Error('unable to get a Coda token')
-
-  return tokenFromToml
 }
 
 main()
