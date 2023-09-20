@@ -3,6 +3,7 @@
  */
 
 import * as fs from 'fs'
+import _ from 'lodash'
 import * as path from 'path'
 import * as toml from 'toml'
 import {
@@ -79,24 +80,34 @@ const paginatedGet = async (url: string, responses: any[]) => {
   return
 }
 
-let cachedCodaToken: string | undefined
-
-const getData = async (url: string) => {
-  let codaToken: string
-  if (cachedCodaToken) {
-    codaToken = cachedCodaToken
-  } else {
-    codaToken = readCodaToken()
-    cachedCodaToken = codaToken
+const readCodaToken = (): string => {
+  const tokenFromEnv = process.env.CODA_TOKEN
+  if (tokenFromEnv) {
+    console.log('found Coda token from environment')
+    return tokenFromEnv
   }
+  const wranglerToml = fs.readFileSync('wrangler.toml', 'utf8')
+  const config = toml.parse(wranglerToml)
+  const tokenFromToml: string = config.vars.CODA_TOKEN
+  if (tokenFromToml) {
+    console.log('found Coda token from wrangler config')
+    return tokenFromToml
+  }
+
+  throw Error('unable to get a Coda token')
+}
+
+const getDataWithAuthz = async (url: string, authzToken: string) => {
   const options = {
     headers: {
-      Authorization: `Bearer ${codaToken}`,
+      Authorization: `Bearer ${authzToken}`,
     },
   }
   const response = await fetch(url, options)
   return await response.json()
 }
+
+const getData = _.partialRight(getDataWithAuthz, readCodaToken())
 
 const writeFile = (data: string, filename: string): Promise<void> => {
   const filePath = path.join(__dirname, filename)
@@ -114,21 +125,5 @@ const writeFile = (data: string, filename: string): Promise<void> => {
   })
 }
 
-const readCodaToken = (): string => {
-  const tokenFromEnv = process.env.CODA_TOKEN
-  if (tokenFromEnv) {
-    console.log('found Coda token from environment')
-    return tokenFromEnv
-  }
-  const wranglerToml = fs.readFileSync('wrangler.toml', 'utf8')
-  const config = toml.parse(wranglerToml)
-  const tokenFromToml: string = config.vars.CODA_TOKEN
-  if (tokenFromToml) {
-    console.log('found Coda token from wrangler config')
-    return tokenFromToml
-  }
-
-  throw Error('unable to get a Coda token')
-}
 
 main()
