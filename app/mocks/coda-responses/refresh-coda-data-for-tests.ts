@@ -125,5 +125,4 @@ const writeFile = (data: string, filename: string): Promise<void> => {
   })
 }
 
-
 main()
