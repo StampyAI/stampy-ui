@@ -102,24 +102,6 @@ const normalize = (question: string) =>
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()
 
-const updateQueue = (item: string) => (queue: string[]) => {
-  if (item == queue[queue.length - 1]) {
-    // the lastest search is the same a this one - ignore all other searches
-    // as this is what was desired
-    return []
-  }
-  const pos = queue.indexOf(item)
-  if (pos < 0) {
-    // If the item isn't in the queue, then do nothing - it was cleared by previous results
-    return queue
-  }
-  // Remove the first occurance of the item, i.e. the oldest search. It's possible for there
-  // to be multiple such values, but they weren't the most recent searches, so who cares. They
-  // might as well be left in though, for bookkeeping reasons
-  queue.splice(pos, 1)
-  return queue
-}
-
 /**
  * Configure the search engine.
  *
@@ -128,11 +110,10 @@ const updateQueue = (item: string) => (queue: string[]) => {
  * Searches containing only one or two words will also use the baseline search
  */
 export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResults = 5) => {
-  const resultsProcessor = useRef((data: WorkerMessage): void => {
-    data // This is here just to get typescript to stop complaining...
-  })
   const tfWorkerRef = useRef<Worker>()
-  const [queue, setQueue] = useState([] as string[])
+  const runningQueryRef = useRef<string>() // detect current query in search function from previous render => ref
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>() // cancel previous timeout => ref
+  const [isPendingSearch, setIsPendingSearch] = useState(false) // re-render loading indicator => state
   const [results, setResults] = useState([] as SearchResult[])
 
   useEffect(() => {
@@ -141,53 +122,56 @@ export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResu
       worker.addEventListener('message', ({data}) => {
         if (data.status == 'ready') {
           tfWorkerRef.current = worker
-        } else if (data.searchResults) {
-          resultsProcessor.current(data)
+        } else if (data.userQuery == runningQueryRef.current) {
+          runningQueryRef.current = undefined
+          if (data.searchResults) setResults(data.searchResults)
+          setIsPendingSearch(false)
+          // TODO: temporary debug, remove if search works well for some time
+          console.debug('tfWorker search results for:', data.userQuery, data.searchResults)
         }
       })
     }
     makeWorker()
-  }, [resultsProcessor, tfWorkerRef])
-
-  resultsProcessor.current = (data) => {
-    if (!('searchResults' in data)) return
-    const {searchResults, userQuery} = data
-
-    if (queue[queue.length - 1] == userQuery) {
-      setResults(searchResults)
-    }
-    setQueue(updateQueue(userQuery ?? ''))
-  }
+  }, [])
 
   const searchLater = (userQuery: string) => {
-    if (typeof window !== 'undefined') setTimeout(() => search(userQuery), 100)
+    if (typeof window === 'undefined') return
+
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      search(userQuery)
+    }, 100)
   }
 
-  // Each search query gets added to the queue of searched items - the idea
-  // is that only the last item is important - all other searches can be ignored.
   const search = (userQuery: string) => {
-    setQueue([...queue, userQuery])
+    setIsPendingSearch(true)
     const wordCount = userQuery.split(' ').length
     if (wordCount > 2) {
-      if (!tfWorkerRef.current) {
+      if (runningQueryRef.current || !tfWorkerRef.current) {
         searchLater(userQuery)
         return
       }
+      runningQueryRef.current = userQuery
       tfWorkerRef.current.postMessage({userQuery, numResults})
     } else {
-      if (onSiteQuestions.current.length == 0) {
+      if (runningQueryRef.current || onSiteQuestions.current.length == 0) {
         searchLater(userQuery)
         return
       }
-      baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) =>
-        resultsProcessor.current({searchResults, userQuery})
-      )
+      runningQueryRef.current = userQuery
+      baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) => {
+        runningQueryRef.current = undefined
+        setResults(searchResults)
+        setIsPendingSearch(false)
+        // TODO: temporary debug, remove if search works well for some time
+        console.debug('baseline search results for:', userQuery, searchResults)
+      })
     }
   }
 
   return {
     search,
     results,
-    arePendingSearches: queue?.length > 0,
+    isPendingSearch,
   }
 }
