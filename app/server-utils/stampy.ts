@@ -59,6 +59,7 @@ export type Question = {
   banners: Banner[]
   status?: QuestionStatus
   updatedAt?: string
+  alternatePhrasings?: string
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -280,6 +281,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
       : [],
   status: values['Status']?.name as QuestionStatus,
   updatedAt,
+  alternatePhrasings: extractText(values['Alternate Phrasings']),
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
