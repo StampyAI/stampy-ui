@@ -3,14 +3,15 @@ import debounce from 'lodash/debounce'
 import {AddQuestion} from '~/routes/questions/add'
 import {Action, ActionType} from '~/routes/questions/actions'
 import {MagnifyingGlass, Edit} from '~/components/icons-generated'
-import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
+import {useSearch, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 import {useSearchParams} from '@remix-run/react'
 import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions/$question'
+import {Question} from '~/server-utils/stampy'
 
 type Props = {
-  onSiteAnswersRef: MutableRefObject<QuestionType[]>
+  onSiteAnswersRef: MutableRefObject<Question[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
   embedWithoutDetails?: boolean

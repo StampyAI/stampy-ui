@@ -1,10 +1,9 @@
 import {useState, useEffect, useRef, MutableRefObject} from 'react'
+import {Question} from '~/server-utils/stampy'
 
-export type Question = {
+export type SearchResult = {
   pageid: string
   title: string
-}
-export type SearchResult = Question & {
   score: number
   model: string
   url?: string
@@ -76,8 +75,8 @@ export const baselineSearch = async (
   }
 
   return questions
-    .map(({pageid, title}) => {
-      const normalized = normalize(title)
+    .map(({pageid, title, alternatePhrasings = ''}) => {
+      const normalized = normalize(`${title}\n${alternatePhrasings}`)
       return {
         pageid,
         title,
@@ -97,7 +96,9 @@ export const baselineSearch = async (
 const normalize = (question: string) =>
   question
     .toLowerCase()
+    .replace(/\n/g, ' ')
     .replace(/[^\w ]|\b(?:an?|the?)\b/g, '')
+    .replace(/ies\b/g, 'y')
     .replace(/(\w{2})s\b/g, '$1') // cannot use lookbehind (?<=...) because not supported on Safari
     .replace(/\s+|_|&\s*/g, ' ')
     .trim()

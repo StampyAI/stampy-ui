@@ -610,6 +610,10 @@ footer > *:not(:last-child) {
   margin-top: 10px;
 }
 
+.dropdown {
+  min-height: 65px;
+}
+
 .dropdown div {
   color: var(--colorText);
   background-color: var(--bgColorQuestionAnswer);
