@@ -67,7 +67,7 @@ html {
 
 html.embed {
   background: transparent;
-  padding: var(--paddingSides) 0;
+  padding: 2px; /* search box outline */
   overflow: hidden; /* change height of iframe to avoid nested scroll, see embed-example.html */
 }
 
@@ -82,6 +82,11 @@ body {
   flex-direction: column;
   font: var(--baseFont);
   line-height: 1.5;
+}
+
+html.embed body {
+  max-width: unset;
+  padding: 0;
 }
 
 body > div:last-of-type {
