@@ -36,7 +36,7 @@ export default function Search({
   const searchInputRef = useRef('')
 
   const [urlSearchParams] = useSearchParams()
-  const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
+  const placeholder = urlSearchParams.get('placeholder') ?? 'Ask a question about AGI safety'
 
   const {search, isPendingSearch, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
