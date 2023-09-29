@@ -23,7 +23,7 @@
   --bgColorTableRows: #e8f7fe;
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
-  --colorTooltip: #d1d1d1;
+  --colorTooltip: rgba(48, 115, 183, 0.1);
 
   /* same in both themes: */
   --paddingSides: clamp(8px, 2vw, 16px);
@@ -491,6 +491,10 @@ tr:nth-child(even) {
   align-items: center;
   display: grid;
 }
+.tags-container button {
+  background-color: var(--colorTooltip);
+}
+
 .question-tag {
   margin: 5px 2px 0 0;
   padding: 5px;
@@ -732,6 +736,10 @@ div.dialog .close {
 
 .dialog-title {
   text-align: center;
+}
+
+.dialog-title-header {
+  font-weight: 700;
 }
 
 .no-stretch {

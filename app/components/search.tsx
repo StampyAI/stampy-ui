@@ -265,7 +265,7 @@ const ShowMoreSuggestions = ({
   return (
     <Dialog onClose={onClose}>
       <div className="dialog-title">
-        You searched for &quot;{question}&quot;.
+        <div className="dialog-title-header">You searched for &quot;{question}&quot;.</div>
         <br />
         Here are some questions we&apos;re still answering. Are any of these what you&apos;re
         looking for?
