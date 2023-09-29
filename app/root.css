@@ -786,6 +786,10 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   display: flex;
   flex-wrap: wrap;
 }
+.tag-controls a {
+  margin: var(--marginTags);
+}
+
 .tag-controls .searchbar {
   flex: 1;
   margin: var(--marginTags);

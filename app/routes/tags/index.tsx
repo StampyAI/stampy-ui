@@ -5,6 +5,7 @@ import {loadTags, Tag as TagType, QuestionState} from '~/server-utils/stampy'
 import {Header, Footer} from '~/components/layouts'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import {TagQuestions} from './$tag'
+import undoSvg from '../../assets/icons/undo.svg'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {
@@ -50,6 +51,10 @@ export default function App() {
       <Header />
       <main>
         <div className="tag-controls">
+          <a href="/" className="icon-link">
+            <img className="logo" alt="undo" src={undoSvg} />
+            Back
+          </a>
           <label className="searchbar">
             <input
               type="search"
