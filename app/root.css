@@ -904,6 +904,7 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
     --colorLink: #89e3ff;
     --colorLinkVisited: #79f;
     --colorTooltip: #212936;
+    --colorDialogOther: #ffffff;
   }
 }
 :root.dark {
@@ -924,6 +925,7 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   --colorLink: #89e3ff;
   --colorLinkVisited: #79f;
   --colorTooltip: #212936;
+  --colorDialogOther: #ffffff;
 }
 
 :root.dark svg *[class$='svg__gray'] {
