@@ -691,6 +691,7 @@ footer > *:not(:last-child) {
 }
 .possible-question .result-item {
   display: flex;
+  align-items: center;
   flex: auto;
   padding: 12px 0 12px 16px;
 }
