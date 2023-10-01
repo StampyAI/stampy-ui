@@ -2,8 +2,17 @@ import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
-import {makeColumnIncrementer} from '~/server-utils/stampy'
-import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
+import {makeColumnIncrementer, makeColumnDecrementer} from '~/server-utils/stampy'
+import {
+  DarkLight,
+  Edit,
+  Flag,
+  Followup,
+  Hide,
+  Like,
+  Search,
+  Dislike,
+} from '~/components/icons-generated'
 
 export enum ActionType {
   DARKLIGHT = 'darkLight',
@@ -11,6 +20,7 @@ export enum ActionType {
   FLAG = 'flag',
   FOLLOWUP = 'followup',
   HELPFUL = 'helpful',
+  UNHELPFUL = 'unhelpful',
   HIDE = 'hide',
   REQUEST = 'request',
   SEARCH = 'search',
@@ -49,6 +59,11 @@ const actions = {
     Icon: Like,
     title: 'Helpful',
     handler: makeColumnIncrementer('Helpful'),
+  },
+  unhelpful: {
+    Icon: Dislike,
+    title: 'Unhelpful',
+    handler: makeColumnDecrementer('Helpful'),
   },
   hide: {
     Icon: Hide,

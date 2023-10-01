@@ -452,3 +452,5 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
 
 export const makeColumnIncrementer = (column: string) => (pageid: PageId, subtract: boolean) =>
   incAnswerColumn(column, pageid, subtract)
+export const makeColumnDecrementer = (column: string) => (pageid: PageId, subtract: boolean) =>
+  incAnswerColumn(column, pageid, !subtract)
