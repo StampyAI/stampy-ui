@@ -15,7 +15,8 @@
   --colorTitleHighlight: #d86;
   --colorQuestionTitle: #333;
   --colorButtonText: #3073b7;
-  --colorTag: #3073b7;
+  --colorTagBorderAndText: #3073b7;
+  --colorTagBody: rgba(48, 115, 183, 0.1);
   --borderColor: #ddd;
   --borderColorButton: #999;
   --bgColorButton: #dcdcdc;
@@ -23,7 +24,7 @@
   --bgColorTableRows: #e8f7fe;
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
-  --colorTooltip: rgba(48, 115, 183, 0.1);
+  --colorTooltip: #d1d1d1;
 
   /* same in both themes: */
   --paddingSides: clamp(8px, 2vw, 16px);
@@ -492,7 +493,8 @@ tr:nth-child(even) {
   display: grid;
 }
 .tags-container button {
-  background-color: var(--colorTooltip);
+  background-color: var(--colorTagBody);
+  border-color: var(--colorTagBorderAndText);
 }
 
 .question-tag {
@@ -543,6 +545,7 @@ article.related {
 
   article > h2 > .transparent-button {
     transition: padding 400ms;
+    font-weight: 600;
   }
 
   article > h2::after {
@@ -673,6 +676,11 @@ footer > *:not(:last-child) {
   padding: 12px 16px;
   line-height: 1;
   display: block;
+}
+
+/*I am sure there is a more elegant way of doing this than a single use css class*/
+.transparent-result-item {
+  background: transparent;
 }
 
 .possible-question {
@@ -809,13 +817,13 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
 .all-tags-container .tag {
   display: inline-block;
   border-radius: 30px;
-  background: var(--colorTooltip);
+  background: var(--colorTagBody);
   /* visually consistent padding is numerically different due to line-height: 1.5 */
   padding: 10px 15px;
   margin: var(--marginTags);
   cursor: pointer;
-  border: 1px solid var(--colorTag);
-  color: var(--colorTag);
+  border: 1px solid var(--colorTagBorderAndText);
+  color: var(--colorTagBorderAndText);
 }
 .all-tags-container .tag .tag-name {
   font-size: 18px;
@@ -895,7 +903,8 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
     --colorTitleHighlight: #d86;
     --colorQuestionTitle: #f0f2f6;
     --colorButtonText: #3073b7;
-    --colorTag: #3073b7;
+    --colorTagBorderAndText: #3073b7;
+    --colorTagBody: #212936;
     --borderColor: #dcdcdc;
     --borderColorButton: #666;
     --bgColorButton: #212936;
@@ -916,7 +925,8 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   --colorTitleHighlight: #d86;
   --colorQuestionTitle: #f0f2f6;
   --colorButtonText: #3073b7;
-  --colorTag: #3073b7;
+  --colorTagBorderAndText: #3073b7;
+  --colorTagBody: #212936;
   --borderColor: #dcdcdc;
   --borderColorButton: #666;
   --bgColorButton: #212936;
