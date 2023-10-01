@@ -7,8 +7,9 @@
 :root,
 :root.light {
   /* light theme: */
-  --bgColorPage: #eee;
-  --bgColorQuestion: #f0f2f6;
+  --bgColorPage: #f9fafc;
+  --bgColorQuestion: #fff;
+  --bgColorQuestionSearch: #fff;
   --bgColorCopied: #fed;
   --colorText: #222;
   --colorTitle: #666;
@@ -19,12 +20,11 @@
   --colorTagBody: rgba(48, 115, 183, 0.1);
   --borderColor: #ddd;
   --borderColorButton: #999;
-  --bgColorButton: #dcdcdc;
-  --bgColorHighlight: #c0d3e4;
+  --bgColorButton: #f5f5f5;
+  --bgColorHighlight: #ebf1f8;
   --bgColorTableRows: #e8f7fe;
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
-  --colorTooltip: #d1d1d1;
 
   /* same in both themes: */
   --paddingSides: clamp(8px, 2vw, 16px);
@@ -439,7 +439,7 @@ tr:nth-child(even) {
   position: absolute;
   display: inline-block;
   border-radius: 5px;
-  background: var(--colorTooltip);
+  background: var(--bgColorHighlight);
   color: var(--colorText);
   font: var(--baseFont);
   padding: 5px 10px;
@@ -455,7 +455,7 @@ tr:nth-child(even) {
   right: 100%;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent var(--colorTooltip) transparent transparent;
+  border-color: transparent var(--bgColorHighlight) transparent transparent;
 }
 
 .answer .link-popup.shown {
@@ -633,7 +633,7 @@ footer > *:not(:last-child) {
 
 .dropdown div {
   color: var(--colorText);
-  background-color: var(--bgColorQuestion);
+  background-color: var(--bgColorQuestionSearch);
   overflow: auto;
   z-index: 1;
   border-radius: 10px;
@@ -897,6 +897,7 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
     /* duplicate to avoid flash of white background while JS loads, consider some CSS postprocessing solution if this needs to be maintainable */
     --bgColorPage: #121826;
     --bgColorQuestion: #212936;
+    --bgColorQuestionSearch: #121826;
     --bgColorCopied: #fed;
     --colorText: #ffffff;
     --colorTitle: #f7fff9;
@@ -908,17 +909,17 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
     --borderColor: #dcdcdc;
     --borderColorButton: #666;
     --bgColorButton: #212936;
-    --bgColorHighlight: #354652;
+    --bgColorHighlight: #182a43;
     --bgColorTableRows: #1d2436;
     --colorLink: #89e3ff;
     --colorLinkVisited: #79f;
-    --colorTooltip: #212936;
     --colorDialogOther: #ffffff;
   }
 }
 :root.dark {
   --bgColorPage: #121826;
   --bgColorQuestion: #212936;
+  --bgColorQuestionSearch: #121826;
   --bgColorCopied: #fed;
   --colorText: #ffffff;
   --colorTitle: #f7fff9;
@@ -930,11 +931,10 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   --borderColor: #dcdcdc;
   --borderColorButton: #666;
   --bgColorButton: #212936;
-  --bgColorHighlight: #354652;
+  --bgColorHighlight: #182a43;
   --bgColorTableRows: #1d2436;
   --colorLink: #89e3ff;
   --colorLinkVisited: #79f;
-  --colorTooltip: #212936;
   --colorDialogOther: #ffffff;
 }
 
