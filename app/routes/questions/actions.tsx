@@ -2,7 +2,7 @@ import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
 import type {ActionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
-import {makeColumnIncrementer, makeColumnDecrementer} from '~/server-utils/stampy'
+import {makeColumnIncrementer} from '~/server-utils/stampy'
 import {
   DarkLight,
   Edit,
@@ -63,7 +63,7 @@ const actions = {
   unhelpful: {
     Icon: Dislike,
     title: 'Unhelpful',
-    handler: makeColumnDecrementer('Helpful'),
+    handler: makeColumnIncrementer('Unhelpful'),
   },
   hide: {
     Icon: Hide,
