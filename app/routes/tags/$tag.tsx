@@ -53,7 +53,9 @@ export function TagQuestions({
   const TagDialog = ({children}: {children: ReactNode | ReactNode[]}) => (
     <Dialog onClose={() => clearTag()}>
       <div className="dialog-title">
-        Select a question from the <b>{tag.name}</b> tag...
+        <div className="dialog-title-header">
+          Select a question from the <b>{tag.name}</b> tag...
+        </div>
       </div>
       {children}
     </Dialog>

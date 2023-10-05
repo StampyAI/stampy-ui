@@ -36,7 +36,7 @@ export default function Search({
   const searchInputRef = useRef('')
 
   const [urlSearchParams] = useSearchParams()
-  const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
+  const placeholder = urlSearchParams.get('placeholder') ?? 'Ask a question about AGI safety'
 
   const {search, isPendingSearch, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
@@ -265,7 +265,7 @@ const ShowMoreSuggestions = ({
   return (
     <Dialog onClose={onClose}>
       <div className="dialog-title">
-        You searched for &quot;{question}&quot;.
+        <div className="dialog-title-header">You searched for &quot;{question}&quot;.</div>
         <br />
         Here are some questions we&apos;re still answering. Are any of these what you&apos;re
         looking for?
