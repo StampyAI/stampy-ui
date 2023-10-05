@@ -443,7 +443,7 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
   const incBy = subtract ? -1 : 1
   const payload = {
     row: {
-      cells: [{column, value: (row.values.Helpful || 0) + incBy}],
+      cells: [{column, value: (row.values[column] || 0) + incBy}],
     },
   }
   const result = await sendToCoda(url, payload, 'PUT')
