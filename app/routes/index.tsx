@@ -95,8 +95,11 @@ const Bottom = ({
         <>
           <div>
             <br />
-            <button className="result-item-box" onClick={buttonHandler}>
-              Show me even more more questions about AI Safety...
+            <button
+              className="result-item-box result-item transparent-result-item"
+              onClick={buttonHandler}
+            >
+              Show me even more questions about AI Safety...
             </button>
           </div>
           <Footer />

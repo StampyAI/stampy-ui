@@ -7,31 +7,36 @@
 :root,
 :root.light {
   /* light theme: */
-  --bgColorPage: #eee;
-  --bgColorQuestionTitle: #bdf;
-  --bgColorQuestionAnswer: #eff;
+  --bgColorPage: #f9fafc;
+  --bgColorQuestion: #fff;
+  --bgColorQuestionSearch: #fff;
   --bgColorCopied: #fed;
   --colorText: #222;
   --colorTitle: #666;
   --colorTitleHighlight: #d86;
   --colorQuestionTitle: #333;
+  --colorButtonText: #3073b7;
+  --colorTagBorderAndText: #3073b7;
+  --colorTagBody: rgba(48, 115, 183, 0.1);
   --borderColor: #ddd;
   --borderColorButton: #999;
-  --bgColorInput: #fff;
-  --bgColorButton: #ddd;
-  --bgColorHighlight: #c0d3e4;
+  --bgColorButton: #f5f5f5;
+  --bgColorHighlight: #ebf1f8;
   --bgColorTableRows: #e8f7fe;
   --colorLink: #79f;
   --colorLinkVisited: #8ac;
-  --colorTooltip: #d1d1d1;
 
   /* same in both themes: */
-  --colorButtonText: #c97;
   --paddingSides: clamp(8px, 2vw, 16px);
   --marginTags: clamp(5px, 1vw, 10px);
   --baseFont: normal 400 1rem 'Open Sans', Arial, sans-serif;
+  --colorDialogOther: #402a32;
 
   /* dark theme at the end of file to overwrite all previous rules */
+}
+
+.light article {
+  border: 1px solid var(--borderColor);
 }
 
 @keyframes spin {
@@ -67,7 +72,7 @@ html {
 
 html.embed {
   background: transparent;
-  padding: var(--paddingSides) 0;
+  padding: 2px; /* search box outline */
   overflow: hidden; /* change height of iframe to avoid nested scroll, see embed-example.html */
 }
 
@@ -82,6 +87,11 @@ body {
   flex-direction: column;
   font: var(--baseFont);
   line-height: 1.5;
+}
+
+html.embed body {
+  max-width: unset;
+  padding: 0;
 }
 
 body > div:last-of-type {
@@ -115,17 +125,17 @@ a.transparent-link {
 input,
 textarea,
 select {
-  background: var(--bgColorInput);
+  background: var(--bgColorPage);
   color: var(--colorText);
   border: 1px solid var(--borderColorButton);
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 button {
   background: var(--bgColorButton);
-  color: var(--colorText);
+  color: var(--colorButtonText);
   border: 1px solid var(--borderColorButton);
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -293,15 +303,14 @@ svg * {
 }
 
 article {
-  background-color: var(--bgColorQuestionAnswer);
-  border-radius: 2px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--bgColorQuestion);
+  border-radius: 10px;
 }
 
 article > h2 {
   margin: 0;
   padding: 9px var(--paddingSides) 10px;
-  background-color: var(--bgColorQuestionTitle);
+  background-color: var(--bgColorQuestion);
   color: var(--colorQuestionTitle);
   font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 400;
@@ -309,7 +318,7 @@ article > h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 2px;
+  border-radius: 10px;
 }
 
 article > h2.chevron {
@@ -383,13 +392,13 @@ article.expanded:not(.link-hovered) h2:hover::after {
   text-transform: uppercase;
   text-decoration: none;
   background-color: var(--bgColorHighlight);
-  border: 1px solid var(--bgColorQuestionTitle);
+  border: 1px solid var(--bgColorQuestion);
 }
 
 .answer table td {
   padding: 4px;
   vertical-align: top;
-  border: 1px solid var(--bgColorQuestionTitle);
+  border: 1px solid var(--bgColorQuestion);
 }
 
 tr:nth-child(even) {
@@ -430,7 +439,7 @@ tr:nth-child(even) {
   position: absolute;
   display: inline-block;
   border-radius: 5px;
-  background: var(--colorTooltip);
+  background: var(--bgColorHighlight);
   color: var(--colorText);
   font: var(--baseFont);
   padding: 5px 10px;
@@ -446,7 +455,7 @@ tr:nth-child(even) {
   right: 100%;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent var(--colorTooltip) transparent transparent;
+  border-color: transparent var(--bgColorHighlight) transparent transparent;
 }
 
 .answer .link-popup.shown {
@@ -483,6 +492,11 @@ tr:nth-child(even) {
   align-items: center;
   display: grid;
 }
+.tags-container button {
+  background-color: var(--colorTagBody);
+  border-color: var(--colorTagBorderAndText);
+}
+
 .question-tag {
   margin: 5px 2px 0 0;
   padding: 5px;
@@ -531,6 +545,7 @@ article.related {
 
   article > h2 > .transparent-button {
     transition: padding 400ms;
+    font-weight: 600;
   }
 
   article > h2::after {
@@ -588,8 +603,7 @@ footer > *:not(:last-child) {
   padding: 10px;
   border: none;
   outline: 1px solid var(--borderColor);
-  border-radius: 4px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .searchbar input::-webkit-search-cancel-button {
@@ -610,16 +624,27 @@ footer > *:not(:last-child) {
   margin-top: 10px;
 }
 
+.dropdown {
+  min-height: 65px;
+  border: 1px solid var(--borderColor);
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
 .dropdown div {
   color: var(--colorText);
-  background-color: var(--bgColorQuestionAnswer);
+  background-color: var(--bgColorQuestionSearch);
   overflow: auto;
-  border: 1px solid var(--borderColor);
   z-index: 1;
+  border-radius: 10px;
 }
 
 .dropdown.hidden {
   display: none;
+}
+
+.dropdown button {
+  border: none;
 }
 
 .result-item-box {
@@ -627,11 +652,11 @@ footer > *:not(:last-child) {
   line-height: 1;
   display: block;
   width: 100%;
+  border: none;
 }
 
 .result-item {
   cursor: pointer;
-  color: currentColor;
   text-decoration: none;
 }
 
@@ -648,11 +673,15 @@ footer > *:not(:last-child) {
 .result-item.none-of-the-above,
 .result-item.none-of-the-above:visited {
   text-decoration: none;
-  color: inherit;
   font-style: italic;
   padding: 12px 16px;
   line-height: 1;
   display: block;
+}
+
+/*I am sure there is a more elegant way of doing this than a single use css class*/
+.transparent-result-item {
+  background: transparent;
 }
 
 .possible-question {
@@ -663,11 +692,13 @@ footer > *:not(:last-child) {
 }
 .possible-question .result-item {
   display: flex;
+  align-items: center;
   flex: auto;
   padding: 12px 0 12px 16px;
 }
 .possible-question .title {
   flex: auto;
+  font-weight: 700;
 }
 .possible-question svg {
   width: 16px;
@@ -679,18 +710,29 @@ footer > *:not(:last-child) {
 .possible-question form.none-of-the-above {
   padding-left: 0;
   margin-bottom: 2.8em;
+  color: var(--colorDialogOther);
+  opacity: 0.7;
 }
 
 .dialog {
   width: 30em;
   background: var(--bgColorPage);
   color: var(--colorText);
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.light .dialog {
+  border: none;
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
 }
 /* Make sure older browsers work correctly */
 div.dialog {
   z-index: 100;
-  background-color: var(--bgColorQuestionAnswer);
-  border: 2px solid;
+  background-color: var(--bgColorQuestion);
   padding: 10px;
   left: 50%;
   max-width: 90%;
@@ -700,6 +742,14 @@ div.dialog {
 div.dialog .close {
   position: absolute;
   right: 10px;
+}
+
+.dialog-title {
+  text-align: center;
+}
+
+.dialog-title-header {
+  font-weight: 700;
 }
 
 .no-stretch {
@@ -712,7 +762,6 @@ button:focus-visible,
 a:focus-visible,
 .link:focus-visible {
   outline: 2px solid #bbb;
-  border-radius: 2px;
 }
 
 a.see-more:not(.visible) + div.see-more-contents {
@@ -747,6 +796,10 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   display: flex;
   flex-wrap: wrap;
 }
+.tag-controls a {
+  margin: var(--marginTags);
+}
+
 .tag-controls .searchbar {
   flex: 1;
   margin: var(--marginTags);
@@ -765,15 +818,17 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
 }
 .all-tags-container .tag {
   display: inline-block;
-  border-radius: 5px;
-  background: var(--colorTooltip);
+  border-radius: 30px;
+  background: var(--colorTagBody);
   /* visually consistent padding is numerically different due to line-height: 1.5 */
   padding: 10px 15px;
   margin: var(--marginTags);
   cursor: pointer;
+  border: 1px solid var(--colorTagBorderAndText);
+  color: var(--colorTagBorderAndText);
 }
 .all-tags-container .tag .tag-name {
-  font-size: clamp(0.9rem, 3vw, 1.56rem);
+  font-size: 18px;
   padding-right: 10px;
 }
 
@@ -842,43 +897,47 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
 @media (prefers-color-scheme: dark) {
   :root {
     /* duplicate to avoid flash of white background while JS loads, consider some CSS postprocessing solution if this needs to be maintainable */
-    --bgColorPage: #333;
-    --bgColorQuestionTitle: #30386e;
-    --bgColorQuestionAnswer: #171f29;
+    --bgColorPage: #121826;
+    --bgColorQuestion: #212936;
+    --bgColorQuestionSearch: #121826;
     --bgColorCopied: #fed;
-    --colorText: #f7fff9;
+    --colorText: #ffffff;
     --colorTitle: #f7fff9;
     --colorTitleHighlight: #d86;
-    --colorQuestionTitle: #ccc;
-    --borderColor: #444;
+    --colorQuestionTitle: #f0f2f6;
+    --colorButtonText: #3073b7;
+    --colorTagBorderAndText: #3073b7;
+    --colorTagBody: #212936;
+    --borderColor: #dcdcdc;
     --borderColorButton: #666;
-    --bgColorInput: #2b2b2b;
-    --bgColorButton: #222;
-    --bgColorHighlight: #354652;
+    --bgColorButton: #212936;
+    --bgColorHighlight: #182a43;
     --bgColorTableRows: #1d2436;
     --colorLink: #89e3ff;
     --colorLinkVisited: #79f;
-    --colorTooltip: #2e2e2e;
+    --colorDialogOther: #ffffff;
   }
 }
 :root.dark {
-  --bgColorPage: #333;
-  --bgColorQuestionTitle: #30386e;
-  --bgColorQuestionAnswer: #171f29;
+  --bgColorPage: #121826;
+  --bgColorQuestion: #212936;
+  --bgColorQuestionSearch: #121826;
   --bgColorCopied: #fed;
-  --colorText: #f7fff9;
+  --colorText: #ffffff;
   --colorTitle: #f7fff9;
   --colorTitleHighlight: #d86;
-  --colorQuestionTitle: #ccc;
-  --borderColor: #444;
+  --colorQuestionTitle: #f0f2f6;
+  --colorButtonText: #3073b7;
+  --colorTagBorderAndText: #3073b7;
+  --colorTagBody: #212936;
+  --borderColor: #dcdcdc;
   --borderColorButton: #666;
-  --bgColorInput: #2b2b2b;
-  --bgColorButton: #222;
-  --bgColorHighlight: #354652;
+  --bgColorButton: #212936;
+  --bgColorHighlight: #182a43;
   --bgColorTableRows: #1d2436;
   --colorLink: #89e3ff;
   --colorLinkVisited: #79f;
-  --colorTooltip: #2e2e2e;
+  --colorDialogOther: #ffffff;
 }
 
 :root.dark svg *[class$='svg__gray'] {

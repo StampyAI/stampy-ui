@@ -72,6 +72,7 @@ export type Question = {
   banners: Banner[]
   status?: QuestionStatus
   updatedAt?: string
+  alternatePhrasings?: string
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -263,6 +264,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
       : [],
   status: values['Status']?.name as QuestionStatus,
   updatedAt,
+  alternatePhrasings: extractText(values['Alternate Phrasings']),
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
@@ -424,7 +426,7 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
   const incBy = subtract ? -1 : 1
   const payload = {
     row: {
-      cells: [{column, value: (row.values.Helpful || 0) + incBy}],
+      cells: [{column, value: (row.values[column] || 0) + incBy}],
     },
   }
   const result = await sendToCoda(url, payload, 'PUT')

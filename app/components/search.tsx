@@ -3,14 +3,15 @@ import debounce from 'lodash/debounce'
 import {AddQuestion} from '~/routes/questions/add'
 import {Action, ActionType} from '~/routes/questions/actions'
 import {MagnifyingGlass, Edit} from '~/components/icons-generated'
-import {useSearch, Question as QuestionType, SearchResult} from '~/hooks/search'
+import {useSearch, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 import {useSearchParams} from '@remix-run/react'
 import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions/$question'
+import {Question} from '~/server-utils/stampy'
 
 type Props = {
-  onSiteAnswersRef: MutableRefObject<QuestionType[]>
+  onSiteAnswersRef: MutableRefObject<Question[]>
   openQuestionTitles: string[]
   onSelect: (pageid: string, title: string) => void
   embedWithoutDetails?: boolean
@@ -35,9 +36,9 @@ export default function Search({
   const searchInputRef = useRef('')
 
   const [urlSearchParams] = useSearchParams()
-  const placeholder = urlSearchParams.get('placeholder') ?? 'Search for more questions here...'
+  const placeholder = urlSearchParams.get('placeholder') ?? 'Ask a question about AGI safety'
 
-  const {search, arePendingSearches, results} = useSearch(onSiteAnswersRef, limitFromUrl)
+  const {search, isPendingSearch, results} = useSearch(onSiteAnswersRef, limitFromUrl)
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
@@ -108,8 +109,8 @@ export default function Search({
           />
           <MagnifyingGlass />
         </label>
-        <div className={`search-loader ${arePendingSearches ? 'loader' : ''}`}> </div>
-        {arePendingSearches && results.length == 0 && (
+        <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
+        {isPendingSearch && results.length == 0 && (
           <div className="result-item-box no-questions">Searching for questions...</div>
         )}
         <AutoHeight>
@@ -135,7 +136,7 @@ export default function Search({
                     }}
                   />
                 ))}
-              {showResults && results.length === 0 && !arePendingSearches && <i>(no results)</i>}
+              {showResults && results.length === 0 && !isPendingSearch && <i>(no results)</i>}
             </div>
             {!queryFromUrl && (
               <button
@@ -264,7 +265,7 @@ const ShowMoreSuggestions = ({
   return (
     <Dialog onClose={onClose}>
       <div className="dialog-title">
-        You searched for &quot;{question}&quot;.
+        <div className="dialog-title-header">You searched for &quot;{question}&quot;.</div>
         <br />
         Here are some questions we&apos;re still answering. Are any of these what you&apos;re
         looking for?

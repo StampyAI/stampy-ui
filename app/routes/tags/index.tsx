@@ -5,6 +5,7 @@ import {loadTags, Tag as TagType, QuestionState} from '~/server-utils/stampy'
 import {Header, Footer} from '~/components/layouts'
 import {MagnifyingGlass} from '~/components/icons-generated'
 import {TagQuestions} from './$tag'
+import {Undo} from '../../components/icons-generated'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {
@@ -50,6 +51,10 @@ export default function App() {
       <Header />
       <main>
         <div className="tag-controls">
+          <a href="/" className="icon-link">
+            <Undo />
+            Back
+          </a>
           <label className="searchbar">
             <input
               type="search"
