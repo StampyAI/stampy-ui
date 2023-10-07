@@ -6,6 +6,19 @@ import {
   urlToIframe,
   convertToHtmlAndWrapInDetails,
 } from '~/server-utils/parsing-utils'
+import {
+  ALL_ANSWERS_TABLE,
+  CODA_DOC_ID,
+  GLOSSARY_TABLE,
+  INCOMING_QUESTIONS_TABLE,
+  INITIAL_QUESTIONS_TABLE,
+  ON_SITE_TABLE,
+  QUESTION_DETAILS_TABLE,
+  TAGS_TABLE,
+  WRITES_TABLE,
+  BANNERS_TABLE,
+  makeCodaRequest,
+} from './coda-urls'
 
 export enum QuestionState {
   OPEN = '_',
@@ -88,7 +101,7 @@ type CodaRowCommon = {
   browserLink: string
 }
 
-type AnswersRow = CodaRowCommon & {
+export type AnswersRow = CodaRowCommon & {
   values: {
     'Edit Answer': string
     Link: {
@@ -132,26 +145,12 @@ type BannersRow = CodaRowCommon & {
   }
 }
 type CodaRow = AnswersRow | TagsRow | GlossaryRow | BannersRow
-type CodaResponse = {
+export type CodaResponse = {
   items: CodaRow[]
   nextPageLink: string | null
 }
 
-const CODA_DOC_ID = 'fau7sl2hmG'
-
-// Use table ide, rather than names, in case of renames
-const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File' // Answers
-const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4' // Initial questions
-const ON_SITE_TABLE = 'table-aOTSHIz_mN' // On-site answers
-const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
-const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
-const TAGS_TABLE = 'grid-4uOTjz1Rkz'
-const WRITES_TABLE = 'table-eEhx2YPsBE'
-const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
-const BANNERS_TABLE = 'grid-3WgZ9_NkvO'
-
 const enc = encodeURIComponent
-const quote = (x: string) => encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
 let allTags = {} as Record<string, Tag>
 let allBanners = {} as Record<string, Banner>
 
@@ -211,22 +210,6 @@ const paginateCoda = async (url: string): Promise<CodaRow[]> => {
     return items.concat(await paginateCoda(nextPageLink))
   }
   return items
-}
-
-type CodaRequest = {
-  table: string
-  queryColumn?: string
-  queryValue?: string
-  limit?: number
-}
-const makeCodaRequest = ({table, queryColumn, queryValue, limit}: CodaRequest): string => {
-  let params = `useColumnNames=true&sortBy=natural&valueFormat=rich${
-    queryColumn && queryValue ? `&query=${quote(queryColumn)}:${quote(queryValue)}` : ''
-  }`
-  if (limit) {
-    params = `${params}&limit=${limit}`
-  }
-  return `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
 }
 
 const getCodaRows = async (

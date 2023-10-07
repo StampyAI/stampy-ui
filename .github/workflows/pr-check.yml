@@ -7,10 +7,15 @@ on:
 jobs:
   pr-check:
     runs-on: ubuntu-latest
+    env:
+      CODA_TOKEN: ${{ secrets.CODA_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: lint
         run: |
           npm ci
           npm run lint
+          npm run build
+          cp wrangler.toml.template wrangler.toml
+          npm run refresh-test-data
           npm run test
