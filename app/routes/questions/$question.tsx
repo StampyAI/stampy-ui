@@ -258,24 +258,31 @@ function Contents({pageid, html, glossary}: {pageid: PageId; html: string; gloss
      * Replace all known glossary words in the given `textNode` with:
      *  - a span to mark it as a glossary item
      *  - an on hover popup with a short explaination of the glossary item
+     *  - use each glossary item only once
      */
+    const unusedGlossaryEntries = Object.values(glossary)
+      .filter((item) => item.pageid != pageid)
+      .map(({term}) => term)
+      .sort((a, b) => b.length - a.length)
+      .map(
+        (term) =>
+          [
+            new RegExp(`(^|[^\\w-])(${term})($|[^\\w-])`, 'i'),
+            '$1<span class="glossary-entry">$2</span>$3',
+          ] as const
+      )
     const insertGlossary = (textNode: Node) => {
       const html = (textNode.textContent || '').replace('’', "'").replace('—', '-')
       // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
       // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
       // of longer definitions don't override them.
-      const updated = Object.values(glossary)
-        .filter((item) => item.pageid != pageid)
-        .map(({term}) => term)
-        .sort((a, b) => b.length - a.length)
-        .reduce(
-          (html, entry) =>
-            html.replace(
-              new RegExp(`(^|[^\\w-])(${entry})($|[^\\w-])`, 'gi'),
-              '$1<span class="glossary-entry">$2</span>$3'
-            ),
-          html
-        )
+      const updated = unusedGlossaryEntries.reduce((html, [match, replacement], index) => {
+        if (html.match(match)) {
+          unusedGlossaryEntries.splice(index, 1)
+          return html.replace(match, replacement)
+        }
+        return html
+      }, html)
       if (updated == html) {
         return textNode
       }
