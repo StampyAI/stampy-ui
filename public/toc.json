@@ -1,0 +1,1588 @@
+[
+  {
+    "pageId" : "9OGZ",
+    "content" : "🆕 New to AI safety? Start here.",
+    "items" : [
+      {
+        "content" : "📘 Introduction to AI Safety",
+        "items" : [
+          {
+            "pageId" : "8486",
+            "content" : "What is AI safety?",
+            "items" : [
+              {
+                "pageId" : "8EL9",
+                "content" : "What is AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8AF4",
+                "content" : "What is AI governance?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6184",
+                "content" : "🙊What is the general nature of the concern about AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6205",
+                "content" : "🙊What is the \"control problem\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6714",
+                "content" : "What is the difference between AI safety, AI alignment, AI control, friendly AI, AI ethics, AI existential safety, and AGI safety?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "2400",
+            "content" : "Why would an AI do bad things?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7755",
+            "content" : "How powerful will a mature superintelligence be?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6297",
+            "content" : "Why is safety important for smarter-than-human AI?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7715",
+            "content" : "How likely is extinction from superintelligent AI?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🧠 Introduction to ML",
+        "items" : [
+          {
+            "pageId" : "8161",
+            "content" : "What are large language models?",
+            "items" : [
+              {
+                "pageId" : "6627",
+                "content" : "What is GPT-3?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6628",
+                "content" : "What are OpenAI Codex and GitHub Copilot?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8EL7",
+                "content" : "How does \"chain-of-thought\" prompting work?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6571",
+                "content" : "How can progress in GPT-style non-agentic AI lead to capable AI agents?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "9358",
+            "content" : "What is compute?",
+            "items" : [
+              {
+                "pageId" : "7750",
+                "content" : "What are scaling laws?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8C7T",
+                "content" : "What are the \"no free lunch\" theorems?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "94D9",
+                "content" : "What is the \"Bitter Lesson\"?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "🤖 Types of AI",
+        "items" : [
+          {
+            "pageId" : "8G1H",
+            "content" : "What is artificial intelligence (AI)?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6513",
+            "content" : "What is \"narrow AI\"? & What is artificial general intelligence (AGI)?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8QZF",
+            "content" : "What is tool AI? & What is an agent?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6347",
+            "content" : "What is \"transformative AI\"?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "5864",
+            "content" : "What are the differences between AGI, transformative AI, and superintelligence?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6207",
+            "content" : "What is \"superintelligence\"?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8PYV",
+            "content" : "What is a shoggoth?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6350",
+            "content" : "What is \"whole brain emulation\"?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🚀 Takeoff & Intelligence explosion",
+        "items" : [
+          {
+            "content" : "Takeoff",
+            "items" : [
+              {
+                "pageId" : "7071",
+                "content" : "What is \"AI takeoff\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6966",
+                "content" : "Why does AI takeoff speed matter?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6957",
+                "content" : "What are the different possible AI takeoff speeds?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "90PK",
+                "content" : "What is a singleton?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Intelligence explosion",
+            "items" : [
+              {
+                "pageId" : "6306",
+                "content" : "What is an intelligence explosion?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6586",
+                "content" : "🙊How likely is an intelligence explosion?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6605",
+                "content" : "How could an intelligence explosion be useful?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "📅 Timelines",
+        "items" : [
+          {
+            "content" : "Expert surveys",
+            "items" : [
+              {
+                "pageId" : "6478",
+                "content" : "What evidence do experts usually base their timeline predictions on?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5633",
+                "content" : "When do experts think human-level AI will be created?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5851",
+                "content" : "How quickly could an AI go from the first indications of problems to an unrecoverable disaster?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7647",
+                "content" : "Are expert surveys on AI safety available?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Is Compute and Scaling enough?",
+            "items" : [
+              {
+                "pageId" : "7727",
+                "content" : "Can we get AGI by scaling up architectures similar to current ones, or are we missing key insights?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7598",
+                "content" : "How much resources did the processes of biological evolution use to evolve intelligent creatures?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "From AGI to ASI",
+            "items" : [
+              {
+                "pageId" : "8158",
+                "content" : "How might we get from artificial general intelligence to a superintelligent system?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7565",
+                "content" : "Will we ever build a superintelligence?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7747",
+                "content" : "How long will it take to go from human-level AI to superintelligence?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6964",
+                "content" : "Is expecting large returns from AI self-improvement just following an exponential trend line off a cliff?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "❗ Types of Risks",
+        "items" : [
+          {
+            "pageId" : "3485",
+            "content" : "What are accident and misuse risks?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "89LL",
+            "content" : "What are existential risks (x-risks)",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8503",
+            "content" : "What are the main sources of AI existential risk?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7783",
+            "content" : "What are astronomical suffering risks (s-risks)?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "1001",
+            "content" : "What about other risks from AI?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7774",
+            "content" : "How might things go wrong with AI even without an agentic superintelligence?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6607",
+            "content" : "How might an \"intelligence explosion\" be dangerous?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7602",
+            "content" : "Is large-scale automated AI persuasion and propaganda a serious concern?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "9AKZ",
+            "content" : "What is a “treacherous turn”",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🔍 What would an AGI be able to do?",
+        "items" : [
+          {
+            "content" : "Basic capabilities",
+            "items" : [
+              {
+                "pageId" : "6974",
+                "content" : "How might AI socially manipulate humans?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5844",
+                "content" : "Is it possible to block an AI from doing certain things on the Internet?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5842",
+                "content" : "How likely is it that an AI would pretend to be a human to further its goals?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "6315",
+            "content" : "What is intelligence?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6603",
+            "content" : "Why would intelligence lead to power?",
+            "items" : [ ]
+          },
+          {
+            "content" : "Advanced capabilities ",
+            "items" : [
+              {
+                "pageId" : "5943",
+                "content" : "How might AGI kill people?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5849",
+                "content" : "Can you stop an advanced AI from upgrading itself?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8222",
+                "content" : "How could a superintelligent AI use the internet to take over the physical world?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7629",
+                "content" : "What could a superintelligent AI do, and what would be physically impossible even for it?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7491",
+                "content" : "What is a \"value handshake\"?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Strategic implications",
+            "items" : [
+              {
+                "pageId" : "6990",
+                "content" : "Can we test an AI to make sure that it’s not going to take over and do harmful things after it achieves superintelligence?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8157",
+                "content" : "Why would we only get one chance to align a superintelligence?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5611",
+                "content" : "Could we program an AI to automatically shut down if it starts doing things we don’t want it to?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "🌋 Technical source of unalignment",
+        "items" : [
+          {
+            "content" : "Orthogonality thesis",
+            "items" : [
+              {
+                "pageId" : "6568",
+                "content" : "What is the orthogonality thesis?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7594",
+                "content" : "What are \"human values\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6982",
+                "content" : "Why might we expect a superintelligence to be hostile by default?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6920",
+                "content" : "What can we expect the motivations of a superintelligent machine to be?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "95LE",
+                "content" : "Why would a misaligned superintelligence kill everyone in the world?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Specification Gaming",
+            "items" : [
+              {
+                "pageId" : "7523",
+                "content" : "Why might a maximizing AI cause bad outcomes?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "897I",
+                "content" : "What is instrumental convergence?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "87AG",
+                "content" : "What is corrigibility?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8EL5",
+                "content" : "What is perverse instantiation?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5853",
+                "content" : "Is it possible to code into an AI to avoid all the ways a given task could go wrong, and would it be dangerous to try that?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6992",
+                "content" : "Can we constrain a goal-directed AI using specified rules?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Goal Misgeneralization",
+            "items" : [
+              {
+                "pageId" : "8EL6",
+                "content" : "What is deceptive alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8359",
+                "content" : "What does Evan Hubinger think of Deception + Inner Alignment?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Outer and Inner alignment",
+            "items" : [
+              {
+                "pageId" : "8XV7",
+                "content" : "What is outer alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8160",
+                "content" : "What are \"mesa-optimizers\"? & What is inner alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8428",
+                "content" : "What is the difference between inner and outer alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8AF5",
+                "content" : "What are the differences between subagents and mesa-optimizers?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "🎉 Current prosaic solutions",
+        "items" : [
+          {
+            "pageId" : "8AER",
+            "content" : "What is imitation learning? & What is behavioral cloning?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "88FN",
+            "content" : "What is reinforcement learning from human feedback (RLHF) & \"Constitutional AI\"?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "89LK",
+            "content" : "How might interpretability be helpful?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🗺️ Strategy",
+        "items" : [
+          {
+            "content" : "Win conditions ",
+            "items" : [
+              {
+                "pageId" : "7762",
+                "content" : "What are the \"win conditions\" for AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7187",
+                "content" : "If we solve alignment, are we sure of a good future?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7580",
+                "content" : "What are \"pivotal acts\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7757",
+                "content" : "What is the \"long reflection\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7766",
+                "content" : "What would a good future with AGI look like?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7058",
+                "content" : "What would a good solution to AI alignment look like?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7060",
+                "content" : "At a high level, what is the challenge of alignment that we must meet to secure a good future?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "7736",
+            "content" : "How likely is it that governments will play a significant role? What role would be desirable, if any?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7748",
+            "content" : "What would a \"warning shot\" look like?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8AF1",
+            "content" : "What is an alignment tax?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7642",
+            "content" : "Might an aligned superintelligence force people to have better lives and change more quickly than they want?",
+            "items" : [ ]
+          },
+          {
+            "content" : "Race dynamics",
+            "items" : [
+              {
+                "pageId" : "6483",
+                "content" : "Why might people try to build AGI rather than stronger and stronger narrow AIs?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7772",
+                "content" : "What are some of the leading AI capabilities organizations?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "5950",
+                "content" : "Are Google, OpenAI, etc. aware of the risk?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7648",
+                "content" : "What is the \"windfall clause\"?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "All things considered",
+            "items" : [
+              {
+                "pageId" : "6275",
+                "content" : "How doomed is humanity?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "87O6",
+                "content" : "📌What are some arguments why AI safety might be less important?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Impact of AI Safety",
+            "items" : [
+              {
+                "pageId" : "3486",
+                "content" : "Could AI alignment research be bad? How?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6182",
+                "content" : "What are the potential benefits of AI as it grows increasingly sophisticated?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7794",
+                "content" : "What are some objections to the importance of AI alignment?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "💭 Consciousness",
+        "items" : [
+          {
+            "pageId" : "5642",
+            "content" : "Could AI have emotions?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8V5J",
+            "content" : "Are AIs conscious?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8390",
+            "content" : "Do AIs suffer?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7784",
+            "content" : "Could we tell the AI to do what's morally right?",
+            "items" : [ ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "pageId" : "9TDI",
+    "content" : "❓ Not convinced? Explore the arguments.",
+    "items" : [
+      {
+        "content" : "🤨 Superintelligence is unlikely?",
+        "items" : [
+          {
+            "pageId" : "6192",
+            "content" : "Why should we prepare for human-level AI technology now rather than decades down the line when it’s closer?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6601",
+            "content" : "Might an \"intelligence explosion\" never occur?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8H0O",
+            "content" : "Wouldn't a superintelligence be slowed down by the need to do experiments in the physical world?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "5952",
+            "content" : "Can an AI really be smarter than humans?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8E41",
+            "content" : "Will AI be able to think faster than humans?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "😌 Superintelligence won’t be a big change?",
+        "items" : [
+          {
+            "pageId" : "6218",
+            "content" : "Won’t AI be just like us?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6188",
+            "content" : "Isn’t AI just a tool like any other? Won’t it just do what we tell it to?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6953",
+            "content" : "Do people seriously worry about existential risk from AI?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8C7S",
+            "content" : "Are corporations superintelligent?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "⚠️ Superintelligence won’t be risky?",
+        "items" : [
+          {
+            "content" : "Wouldn't a superintelligence be wise?",
+            "items" : [
+              {
+                "pageId" : "6984",
+                "content" : "Wouldn't a superintelligence be smart enough not to make silly mistakes in its comprehension of our instructions?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6220",
+                "content" : "Wouldn't a superintelligence be smart enough to know right from wrong?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "89ZQ",
+            "content" : "Are there any detailed example stories of what unaligned AGI would look like?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6569",
+            "content" : "Any AI will be a computer program. Why wouldn't it just do what it's programmed to do?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6196",
+            "content" : "Aren't robots the real problem? How can AI cause harm if it has no ability to directly manipulate the physical world?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "A3MU",
+            "content" : "Wouldn't AIs need to have a power-seeking drive to pose a serious risk?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "86WT",
+            "content" : "Won't humans be able to beat an unaligned AI since we have a huge advantage in numbers?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🤔 Why not just?",
+        "items" : [
+          {
+            "pageId" : "3119",
+            "content" : "Why can't we just turn the AI off if it starts to misbehave?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6988",
+            "content" : "Once we notice that a superintelligence is trying to take over the world, can’t we turn it off, or reprogram it?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7148",
+            "content" : "Why don't we just not build AGI if it's so dangerous?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6174",
+            "content" : "Why can't we just make a \"child AI\" and raise it?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6224",
+            "content" : "Why can’t we just use Asimov’s Three Laws of Robotics?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6176",
+            "content" : "Why can’t we just “put the AI in a box” so that it can’t influence the outside world?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8E3Z",
+            "content" : "Can't we limit damage from AI systems in the same ways we limit damage from companies?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🧐 Isn't the real concern…",
+        "items" : [
+          {
+            "pageId" : "9B85",
+            "content" : "Isn't the real concern misuse?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6412",
+            "content" : "Isn't the real concern technological unemployment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8NYD",
+            "content" : "Isn't the real concern bias?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "📜 I have certain philosophical beliefs, so this is not an issue",
+        "items" : [
+          {
+            "pageId" : "7636",
+            "content" : "If I only care about helping people alive today, does AI safety still matter?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "9048",
+            "content" : "Why should someone who is religious worry about AI existential risk?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7638",
+            "content" : "Does the importance of AI risk depend on caring about transhumanist utopias?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7608",
+            "content" : "Wouldn't it be a good thing for humanity to die out?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6194",
+            "content" : "Is AI safety about systems becoming malevolent or conscious and turning on us?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6222",
+            "content" : "Isn’t it immoral to control and impose our values on AI?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6228",
+            "content" : "We’re going to merge with the machines so this will never be a problem, right?",
+            "items" : [ ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "pageId" : "9IDQ",
+    "content" : "🔍 Want to understand the research? Dive deeper.",
+    "items" : [
+      {
+        "content" : "💻 Prosaic alignment",
+        "items" : [
+          {
+            "content" : "Scalable oversight ",
+            "items" : [
+              {
+                "pageId" : "8201",
+                "content" : "What is AI Safety via Debate?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "935A",
+                "content" : "What is adversarial training?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8316",
+                "content" : "How is the Alignment Research Center (ARC) trying to solve Eliciting Latent Knowledge (ELK)?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7810",
+                "content" : "What is \"HCH\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "897J",
+                "content" : "What is Iterated Distillation and Amplification (IDA)?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "9049",
+                "content" : "What is Eliciting Latent Knowledge (ELK)?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8350",
+                "content" : "What does the scheme Externalized Reasoning Oversight involve?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "89LM",
+            "content" : "What is prosaic alignment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7333",
+            "content" : "Would AI alignment be hard with deep learning?",
+            "items" : [ ]
+          },
+          {
+            "content" : "Interpretability",
+            "items" : [
+              {
+                "pageId" : "8241",
+                "content" : "What is interpretability and what approaches are there?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "97FU",
+                "content" : "What is the difference between verifiability, interpretability, transparency, and explainability?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8KGQ",
+                "content" : "What are polysemantic neurons?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "9NRR",
+                "content" : "What is a \"polytope\" in a neural network?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8HIA",
+                "content" : "What is feature visualization?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8424",
+                "content" : "What is neural network modularity?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8426",
+                "content" : "What does generative visualization look like in reinforcement learning?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6822",
+                "content" : "Where can I learn about interpretability?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Conceptual advances",
+            "items" : [
+              {
+                "pageId" : "8G1G",
+                "content" : "What is shard theory?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "9FQK",
+                "content" : "How can LLMs be understood as “simulators”?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Brain like AGI",
+            "items" : [
+              {
+                "pageId" : "7605",
+                "content" : "What safety problems are associated with whole brain emulation?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8324",
+                "content" : "How would we align an AGI whose learning algorithms / cognition look like human brains?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6590",
+                "content" : "What is \"biological cognitive enhancement\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7820",
+                "content" : "What are the ethical challenges related to whole brain emulation?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "📝 Agent foundation",
+        "items" : [
+          {
+            "content" : "Important concepts",
+            "items" : [
+              {
+                "pageId" : "7853",
+                "content" : "Why do we expect that a superintelligence would closely approximate a utility maximizer?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8QZH",
+                "content" : "What is a subagent?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "87AH",
+                "content" : "What are “type signatures”?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "89ZU",
+                "content" : "What are \"true names\" in the context of AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8G1I",
+                "content" : "What is mutual information?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "7782",
+            "content" : "What is \"agent foundations\"?",
+            "items" : [ ]
+          },
+          {
+            "content" : "Decision theory",
+            "items" : [
+              {
+                "pageId" : "7777",
+                "content" : "What are the different versions of decision theory?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7781",
+                "content" : "What is \"functional decision theory\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7779",
+                "content" : "What is \"causal decision theory (CDT)\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7778",
+                "content" : "What is \"evidential decision theory\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6536",
+                "content" : "What should I read to learn about decision theory?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Research directions",
+            "items" : [
+              {
+                "pageId" : "7673",
+                "content" : "What is \"Do what I mean\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "92JB",
+                "content" : "What are the power-seeking theorems?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6119",
+                "content" : "Can you give an AI a goal which involves “minimally impacting the world”?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6380",
+                "content" : "What is a \"quantilizer\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6449",
+                "content" : "Would it improve the safety of quantilizers to cut off the top few percent of the distribution?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8365",
+                "content" : "What is Infra-Bayesianism?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6939",
+                "content" : "What is \"coherent extrapolated volition (CEV)\"?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7616",
+                "content" : "What are the leading theories in moral philosophy and which of them might be technically the easiest to encode into an AI?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "🏛️ Governance",
+        "items" : [
+          {
+            "pageId" : "8QH5",
+            "content" : "🤖 Would a slowdown in AI capabilities development decrease existential risk?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7626",
+            "content" : "🌍 Are there any AI alignment projects which governments could usefully put a very large amount of resources into?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7596",
+            "content" : "📊 What is everyone working on in AI governance?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8517",
+            "content" : "📜 What might an international treaty on the development of AGI look like?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🔬 Research Organisations",
+        "items" : [
+          {
+            "content" : "Overviews",
+            "items" : [
+              {
+                "pageId" : "6178",
+                "content" : "What approaches are AI alignment organizations working on?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8392",
+                "content" : "What is everyone working on in AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "9J1L",
+                "content" : "What are the main categories of technical alignment research?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6479",
+                "content" : "What are some AI alignment research agendas currently being pursued?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8KGR",
+                "content" : "What are the different AI Alignment / Safety organizations and academics researching?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8JYX",
+                "content" : "Briefly, what are the major AI safety organizations and academics working on?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "Prosaic",
+            "items" : [
+              {
+                "content" : "Big labs",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "8XBK",
+            "content" : "How does DeepMind do adversarial training?",
+            "items" : [
+              {
+                "content" : "Academic labs",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "8368",
+            "content" : "What is OpenAI's alignment research agenda?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8343",
+            "content" : "What is DeepMind's safety team working on?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8342",
+            "content" : "What is David Krueger working on?",
+            "items" : [
+              {
+                "content" : "Other Orgs",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "8469",
+            "content" : "What is Sam Bowman researching?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8326",
+            "content" : "What projects are CAIS working on?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7749",
+            "content" : "How does Redwood Research do adversarial training?",
+            "items" : [
+              {
+                "content" : "Agent Foundation",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "85EK",
+            "content" : "What is the Alignment Research Center (ARC)'s research agenda?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8374",
+            "content" : "What is Ought's research agenda?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "85E4",
+            "content" : "What is Redwood Research's agenda?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8314",
+            "content" : "What is Aligned AI / Stuart Armstrong working on?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8348",
+            "content" : "What is Dylan Hadfield-Menell's thesis on?",
+            "items" : [
+              {
+                "content" : "Other",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "8327",
+            "content" : "What is the Center for Human Compatible AI (CHAI)?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8364",
+            "content" : "What are Scott Garrabrant and Abram Demski working on?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6300",
+            "content" : "What technical problems is MIRI working on?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8378",
+            "content" : "What is John Wentworth's research agenda?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8357",
+            "content" : "What does MIRI think about technical alignment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8340",
+            "content" : "What was Refine?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "1250",
+            "content" : "What is Obelisk's research agenda?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8333",
+            "content" : "What is the Center on Long-Term Risk (CLR)'s research agenda?",
+            "items" : [ ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "pageId" : "8TJV",
+    "content" : "🤝 Want to help with AI safety? Get involved!",
+    "items" : [
+      {
+        "content" : "📌 General",
+        "items" : [
+          {
+            "pageId" : "7590",
+            "content" : "What actions can I take in under five minutes to contribute to the cause of AI safety?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "📢 Outreach",
+        "items" : [
+          {
+            "pageId" : "8U2Q",
+            "content" : "How can I work on public AI safety outreach?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8509",
+            "content" : "What links are especially valuable to share on social media or other contexts?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8U2R",
+            "content" : "How can I work on AGI safety outreach in academia and among experts?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🧪 Research",
+        "items" : [
+          {
+            "content" : "📚 Education and Career Path",
+            "items" : [
+              {
+                "pageId" : "8W8D",
+                "content" : "🎓 What master's thesis could I write about AI safety?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "7763",
+                "content" : "📖 What subjects should I study at university to prepare myself for alignment research?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U32",
+                "content" : "🚀 I want to take big steps to contribute to AI alignment (e.g. making it my career). What should I do?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U30",
+                "content" : "🤔 I would like to focus on AI alignment, but it might be best to prioritize improving my life situation first. What should I do?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U2J",
+                "content" : "💻 How can I work toward AI alignment as a software engineer?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "pageId" : "6703",
+            "content" : "🧪 I want to work on AI alignment.",
+            "items" : [ ]
+          },
+          {
+            "content" : "📋 Guidance and Mentorship",
+            "items" : [
+              {
+                "pageId" : "7651",
+                "content" : "🤝 Where can I find mentorship and advice for becoming a researcher?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U2K",
+                "content" : "💡 Who should I talk to about my non-research AI alignment coding project idea?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6703",
+                "content" : "💰 How can I get funding?",
+                "items" : [ ]
+              }
+            ]
+          },
+          {
+            "content" : "🧪 Projects and Involvement",
+            "items" : [
+              {
+                "pageId" : "8U2O",
+                "content" : "💡 I’d like to do experimental work (i.e. ML, coding) for AI alignment. What should I do?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "6474",
+                "content" : "👥 I want to help out AI alignment without necessarily making major life changes. What are some simple things I can do to contribute?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8UMA",
+                "content" : "🧠 How can I do conceptual, mathematical, or philosophical work on AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "85E0",
+                "content" : "💡 What are some exercises and projects I can try?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U2S",
+                "content" : "📚 How can I use a background in the social sciences to help with AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U2I",
+                "content" : "💻 How can I do machine learning programming work to help with AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U2M",
+                "content" : "🎯 What should I do with my machine learning research idea for AI alignment?",
+                "items" : [ ]
+              },
+              {
+                "pageId" : "8U2V",
+                "content" : "💡 What should I do with my idea for helping with AI alignment?",
+                "items" : [ ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "content" : "🏛️ Governance",
+        "items" : [
+          {
+            "pageId" : "8IZE",
+            "content" : "What are some AI governance exercises and projects I can try?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7754",
+            "content" : "What are some helpful AI policy resources?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "🛠️ Ops & Meta",
+        "items" : [
+          {
+            "pageId" : "6708",
+            "content" : "Where can I find people to talk to about AI alignment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8U2W",
+            "content" : "How can I work on helping AI alignment researchers be more effective, e.g. as a coach?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8U2X",
+            "content" : "How can I work on assessing AI alignment projects and distributing grants?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "💵 Help financially ",
+        "items" : [
+          {
+            "pageId" : "6481",
+            "content" : "Would donating small amounts to AI safety organizations make any significant difference?",
+            "items" : [ ]
+          }
+        ]
+      },
+      {
+        "content" : "📚 Other resources",
+        "items" : [
+          {
+            "pageId" : "2222",
+            "content" : "Where can I find videos about AI Safety?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8264",
+            "content" : "What training programs and courses are available for AGI safety?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "5635",
+            "content" : "Where can I learn more about AI alignment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "MEME",
+            "content" : "AI Safety Memes Wiki",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6470",
+            "content" : "📚 What are some good resources on AI alignment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "7619",
+            "content" : "What are some good podcasts about AI alignment?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "8159",
+            "content" : "What are some good books about AGI safety?",
+            "items" : [ ]
+          },
+          {
+            "pageId" : "6713",
+            "content" : "I’d like to get deeper into the AI alignment literature. Where should I look?",
+            "items" : [ ]
+          }
+        ]
+      }
+    ]
+  }
+]

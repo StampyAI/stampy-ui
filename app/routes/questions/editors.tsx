@@ -63,6 +63,9 @@ export default function App() {
             <a href="/random">Random question</a>
           </li>
           <li>
+            <a href="/toc">Table of Contents</a>
+          </li>
+          <li>
             <button onClick={downloadTwine}>Download questions for Twine</button>
           </li>
         </ul>

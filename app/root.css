@@ -836,6 +836,10 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   margin: 0 5px;
 }
 
+.toc-container {
+  display: flex;
+}
+
 /* Smaller screen stuff */
 
 @media (max-width: 740px) {
