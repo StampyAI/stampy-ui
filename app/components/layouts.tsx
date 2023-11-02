@@ -54,6 +54,9 @@ export const Header = () => {
       </div>
       {showMenu && (
         <div className="menu">
+          <a href="https://forms.gle/PT6BRrS6y1YwuwYDA" className="menu-link">
+            Feedback
+          </a>
           <a href="https://github.com/StampyAI/stampy-ui" className="menu-link">
             Code
           </a>
