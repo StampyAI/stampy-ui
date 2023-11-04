@@ -151,13 +151,17 @@ button {
 }
 
 header {
+  position: relative;
+}
+
+.header-bar {
   display: flex;
   align-items: flex-start;
   padding: 24px 0 48px;
   color: var(--colorTitle);
 }
 
-header.fun-logo {
+header-bar.fun-logo {
   background-image: url('/assets/coded-banner.svg');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -265,6 +269,46 @@ svg * {
 
 .icon-link:active {
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.menu {
+  border: 1px solid var(--borderColor);
+  border-radius: 5px;
+  overflow: hidden; /* needed to be able to round inner corner */
+  width: 11em;
+  position: absolute;
+  top: 9em;
+  right: -6em;
+  z-index: 10;
+}
+.fun-logo + .menu {
+  top: 14em;
+}
+
+.menu-link {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid var(--borderColor);
+  text-decoration: none;
+  background-color: var(--bgColorQuestion);
+  color: inherit; /* blue colors for links too */
+}
+/* Make menu links pretend to not be links */
+a.menu-link {
+  color: inherit;
+  text-decoration: inherit;
+}
+.menu-link:hover {
+  background-color: var(--bgColorPage);
+}
+
+.menu-link:first-child {
+  border-top: none;
+}
+
+.menu-link:last-child {
+  border-bottom: none;
 }
 
 .share::after {

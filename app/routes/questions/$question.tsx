@@ -154,8 +154,8 @@ export function Question({
                 <div className="question-footer">
                   <Tags tags={tags} selectQuestion={selectQuestion} />
                   <div className="actions">
-                    <Action pageid={pageid} actionType={ActionType.HELPFUL} />
-                    <Action pageid={pageid} actionType={ActionType.UNHELPFUL} />
+                    <Action pageid={pageid} showText={false} actionType={ActionType.HELPFUL} />
+                    <Action pageid={pageid} showText={false} actionType={ActionType.UNHELPFUL} />
                     {answerEditLink && (
                       // TODO: on the first click (remember in localstorage), display a disclaimer popup text from https://stampy.ai/wiki/Edit_popup
                       <a
@@ -166,7 +166,6 @@ export function Question({
                         title="edit answer"
                       >
                         <Edit />
-                        Edit
                       </a>
                     )}
                   </div>

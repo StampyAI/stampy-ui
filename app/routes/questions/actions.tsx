@@ -97,10 +97,11 @@ export const action = async ({request}: ActionArgs) => {
 type Props = {
   pageid: string
   actionType: ActionType
+  showText?: boolean
   children?: ReactNode | ReactNode[]
   [k: string]: unknown
 }
-export const Action = ({pageid, actionType, children, ...props}: Props) => {
+export const Action = ({pageid, actionType, showText = true, children, ...props}: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
   const {Icon, title} = actions[actionType]
@@ -164,7 +165,7 @@ export const Action = ({pageid, actionType, children, ...props}: Props) => {
       {children}
       <button className={className} title={title} type="button">
         <Icon />
-        {title}
+        {showText && title}
       </button>
     </Form>
   )
