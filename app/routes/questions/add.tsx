@@ -59,7 +59,7 @@ type Props = {
   title: string
   relatedQuestions: string[]
   immediately?: boolean
-} & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref'>
+} & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref' | 'encType'>
 
 export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Props) => {
   const url = '/questions/add'
