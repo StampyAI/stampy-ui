@@ -10,7 +10,6 @@ import {loadInitialQuestions, loadTags, QuestionState} from '~/server-utils/stam
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useDraggable from '~/hooks/useDraggable'
-import {getStateEntries} from '~/hooks/stateModifiers'
 import Search from '~/components/search'
 import {Header, Footer} from '~/components/layouts'
 import {LINK_WITHOUT_DETAILS_CLS, Question} from '~/routes/questions/$question'
@@ -171,13 +170,6 @@ export default function App() {
     if (el.parentElement?.classList.contains('footnote-ref')) {
       showMore(el)
       return
-    }
-
-    const url = new URL(el.href)
-    if (url.hostname === window.location.hostname) {
-      e.preventDefault()
-      const state = new URLSearchParams(url.search).get('state')
-      if (state) selectQuestion(getStateEntries(state)[0][0], '')
     }
   }
 

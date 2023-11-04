@@ -90,9 +90,9 @@ export const cleanUpDoubleBold = (html: string): string => {
   return html.replaceAll('**', '')
 }
 
-export const externalLinksOnNewTab = (html: string): string => {
+export const allLinksOnNewTab = (html: string): string => {
   // Open external links on new tab by using target="_blank",
   // pros&cons were extensively discussed in https://github.com/StampyAI/stampy-ui/issues/222
   // internal links look like <a href="/?state=1234">, so all absolute http links are treated as external
-  return html.replace(/(<a href="http[^"]+")/g, `$1 target="_blank" rel="noreferrer"`)
+  return html.replace(/(<a href="[^"]+")/g, `$1 target="_blank" rel="noreferrer"`)
 }

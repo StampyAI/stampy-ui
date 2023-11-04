@@ -1,4 +1,4 @@
-import {urlToIframe, uniqueFootnotes, externalLinksOnNewTab} from './parsing-utils'
+import {urlToIframe, uniqueFootnotes, allLinksOnNewTab} from './parsing-utils'
 
 describe('urlToIframe', () => {
   describe('should not convert a markdown link', () => {
@@ -79,16 +79,14 @@ describe('uniqueFootnotes', () => {
 
 describe('externalLinksOnNewTab', () => {
   test('no link', () => {
-    expect(externalLinksOnNewTab('gg')).toBe('gg')
+    expect(allLinksOnNewTab('gg')).toBe('gg')
   })
 
   test('text with internal and external links', () => {
     expect(
-      externalLinksOnNewTab(
-        'x <a href="/?state=3">gg</a> and <a href="https://example.com">hh</a> y'
-      )
+      allLinksOnNewTab('x <a href="/?state=3">gg</a> and <a href="https://example.com">hh</a> y')
     ).toBe(
-      'x <a href="/?state=3">gg</a> and <a href="https://example.com" target="_blank" rel="noreferrer">hh</a> y'
+      'x <a href="/?state=3" target="_blank" rel="noreferrer">gg</a> and <a href="https://example.com" target="_blank" rel="noreferrer">hh</a> y'
     )
   })
 })
