@@ -1,10 +1,10 @@
 import {useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {useLoaderData} from '@remix-run/react'
-import {loadTags, Tag as TagType, QuestionState} from '~/server-utils/stampy'
+import {loadTags, Tag as TagType} from '~/server-utils/stampy'
 import {Header, Footer} from '~/components/layouts'
 import {MagnifyingGlass} from '~/components/icons-generated'
-import {TagQuestions} from './$tag'
+import {TagQuestions, Tag} from './$tag'
 import {Undo} from '../../components/icons-generated'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -14,16 +14,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   } catch (e) {
     console.error(e)
   }
-}
-
-function Tag(tag: TagType) {
-  const pageIds = tag.questions.map((q) => q.pageid).join(QuestionState.COLLAPSED)
-  return (
-    <a className="tag" href={`/?state=${pageIds}${QuestionState.COLLAPSED}`} key={tag.tagId}>
-      <span className="tag-name">{tag.name}</span>
-      <span className="tag-stat">({tag.questions.length})</span>
-    </a>
-  )
 }
 
 interface SortFunc {
@@ -87,7 +77,9 @@ export default function App() {
             .filter((tag) => tag.questions.length > 0)
             .filter((tag) => tag.name.toLowerCase().includes(tagsFilter.toLowerCase()))
             .sort(sortFuncs[sortBy])
-            .map(Tag)}
+            .map(({name, questions}) => (
+              <Tag key={name} name={name} questions={questions} showCount />
+            ))}
         </div>
       </main>
 
