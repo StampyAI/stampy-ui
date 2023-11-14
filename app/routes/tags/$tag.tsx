@@ -1,7 +1,7 @@
-import {useState, ReactNode} from 'react'
+import {useState, useEffect, ReactNode} from 'react'
 import {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {loadTag, Tag as TagType} from '~/server-utils/stampy'
+import {loadTag, Tag as TagType, QuestionState, RelatedQuestions} from '~/server-utils/stampy'
 import Dialog from '~/components/dialog'
 
 type Props = {
@@ -39,6 +39,36 @@ export async function fetchTag(tagName: string): Promise<TagType | never[]> {
 
     return data
   })
+}
+
+export function Tag({
+  name,
+  questions: tqs,
+  showCount,
+}: {
+  name: string
+  questions?: RelatedQuestions
+  showCount?: boolean
+}) {
+  const [questions, setQuestions] = useState(tqs)
+  const pageIds = questions?.map((q) => q.pageid).join(QuestionState.COLLAPSED)
+
+  useEffect(() => {
+    const fetcher = async () => {
+      if (!questions) {
+        const tag = (await fetchTag(name)) as TagType
+        if (tag) setQuestions(tag.questions)
+      }
+    }
+    fetcher()
+  }, [questions, name])
+
+  return (
+    <a className="tag" href={`/?state=${pageIds}${QuestionState.COLLAPSED}`} key={name}>
+      <span className="tag-name">{name}</span>
+      {showCount && <span className="tag-stat">({questions?.length})</span>}
+    </a>
+  )
 }
 
 export function TagQuestions({
@@ -90,37 +120,10 @@ export function TagQuestions({
   )
 }
 
-export function Tags({tags, selectQuestion}: Props) {
-  const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
-
-  const setTag = async (tagName: string) => {
-    setSelectedTag({name: tagName} as TagType)
-
-    try {
-      const tag = (await fetchTag(tagName)) as TagType
-      setSelectedTag(tag)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
+export function Tags({tags}: Props) {
   return (
     <div className="tags-container">
-      {selectedTag && (
-        <TagQuestions
-          tag={selectedTag}
-          selectQuestion={selectQuestion}
-          clearTag={() => setSelectedTag(null)}
-        />
-      )}
-      <div>
-        {tags &&
-          tags.map((t) => (
-            <button className="question-tag" key={t} onClick={() => setTag(t)}>
-              {t}
-            </button>
-          ))}
-      </div>
+      <div>{tags && tags.map((name) => <Tag key={name} name={name} />)}</div>
     </div>
   )
 }

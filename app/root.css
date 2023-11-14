@@ -857,10 +857,10 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
   font-size: 15px;
 }
 
-.all-tags-container .tag {
+.tag {
   all: unset;
 }
-.all-tags-container .tag {
+.tag {
   display: inline-block;
   border-radius: 30px;
   background: var(--colorTagBody);
@@ -874,6 +874,13 @@ a[target='_blank']:not(.icon-link, .transparent-link):after {
 .all-tags-container .tag .tag-name {
   font-size: 18px;
   padding-right: 10px;
+}
+.tags-container .tag {
+  padding: 2px 1px;
+}
+.tags-container .tag .tag-name {
+  font-size: inherit;
+  padding: 2px 10px;
 }
 
 .cache button {
