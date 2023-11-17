@@ -818,19 +818,6 @@ a.see-more.visible:after {
   content: 'See less';
 }
 
-a[target='_blank']:not(.icon-link, .transparent-link):after {
-  content: ' ';
-  display: inline-block;
-  vertical-align: top;
-  width: 12px;
-  height: 12px;
-  margin-left: 2px;
-  /* Chrome doesn't suppot non-prefix mask yet and we don't use post-css */
-  -webkit-mask: url('/assets/Icon_External_Link.svg') no-repeat center center;
-  -webkit-mask-size: cover;
-  background-color: currentColor;
-}
-
 .error {
   color: red;
 }

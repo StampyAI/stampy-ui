@@ -1,7 +1,7 @@
 import {withCache} from '~/server-utils/kv-cache'
 import {
   cleanUpDoubleBold,
-  externalLinksOnNewTab,
+  allLinksOnNewTab,
   uniqueFootnotes,
   urlToIframe,
   convertToHtmlAndWrapInDetails,
@@ -230,7 +230,7 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   let html = convertToHtmlAndWrapInDetails(markdown)
   html = uniqueFootnotes(html, pageid)
   html = cleanUpDoubleBold(html)
-  html = externalLinksOnNewTab(html)
+  html = allLinksOnNewTab(html)
 
   return html
 }
