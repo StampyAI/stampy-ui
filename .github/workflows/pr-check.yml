@@ -18,5 +18,4 @@ jobs:
       - name: test
         run: |
           cp wrangler.toml.template wrangler.toml
-          npm run refresh-test-data
           npm run test
