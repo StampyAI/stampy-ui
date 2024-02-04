@@ -17,6 +17,7 @@ import {
   TAGS_TABLE,
   WRITES_TABLE,
   BANNERS_TABLE,
+  REDIRECTS_TABLE,
   makeCodaRequest,
 } from './coda-urls'
 
@@ -90,6 +91,11 @@ type Entity = {
   rowId: string
   tableUrl: string
 }
+
+type Redirects = {
+  [from: string]: string
+}
+
 type CodaRowCommon = {
   id: string
   type: string
@@ -144,7 +150,13 @@ type BannersRow = CodaRowCommon & {
     'Text colour': string
   }
 }
-type CodaRow = AnswersRow | TagsRow | GlossaryRow | BannersRow
+type RedirectsRow = CodaRowCommon & {
+  values: {
+    From: string
+    To: string
+  }
+}
+type CodaRow = AnswersRow | TagsRow | GlossaryRow | BannersRow | RedirectsRow
 export type CodaResponse = {
   items: CodaRow[]
   nextPageLink: string | null
@@ -435,3 +447,16 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
 
 export const makeColumnIncrementer = (column: string) => (pageid: PageId, subtract: boolean) =>
   incAnswerColumn(column, pageid, subtract)
+
+export const loadRedirects = withCache('redirects', async (): Promise<Redirects> => {
+  const rows = (await getCodaRows(REDIRECTS_TABLE)) as RedirectsRow[]
+  return rows
+    .filter((row) => !!row.values.To && !!row.values.From)
+    .reduce(
+      (acc, {values}) => ({
+        ...acc,
+        [extractText(values.From).replace(/^\/+/, '')]: extractText(values.To),
+      }),
+      {}
+    )
+})

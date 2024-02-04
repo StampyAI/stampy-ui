@@ -13,6 +13,7 @@ export const TAGS_TABLE = 'grid-4uOTjz1Rkz'
 export const WRITES_TABLE = 'table-eEhx2YPsBE'
 export const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
 export const BANNERS_TABLE = 'grid-3WgZ9_NkvO'
+export const REDIRECTS_TABLE = 'grid-3MRnDQLOm3'
 
 type CodaRequest = {
   table: string
