@@ -455,7 +455,7 @@ export const loadRedirects = withCache('redirects', async (): Promise<Redirects>
     .reduce(
       (acc, {values}) => ({
         ...acc,
-        [extractText(values.From).replace(/^\/+/, '')]: extractText(values.To),
+        [extractText(values.From).replace(/^\/+/, '')]: extractText(values.To).replace(/^\/+/, '/'),
       }),
       {}
     )

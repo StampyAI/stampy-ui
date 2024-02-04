@@ -6,7 +6,7 @@ export const loader = async ({request, params}: LoaderArgs) => {
   try {
     const {data: redirects} = await loadRedirects(request)
     const to = params['*'] && redirects[params['*'].replace(/^\/+/, '')]
-    if (to) return redirect(to.replace(/^\/+/, '/'))
+    if (to) return redirect(to)
   } catch (e) {
     console.error(e)
   }
