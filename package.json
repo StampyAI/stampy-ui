@@ -10,9 +10,9 @@
     "markdown-it": "^13.0.2",
     "markdown-it-footnote": "^3.0.3",
     "node-html-parser": "^5.4.2",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-auto-height": "^1.2.1",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.2.0",
     "remix": "^1.19.3"
   },
   "devDependencies": {
@@ -24,8 +24,8 @@
     "@types/markdown-it": "^12.2.3",
     "@types/markdown-it-footnote": "^3.0.3",
     "@types/node": "^20.11.16",
-    "@types/react": "^17.0.75",
-    "@types/react-dom": "^17.0.25",
+    "@types/react": "^18.2.53",
+    "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "cross-env": "^7.0.3",
@@ -40,8 +40,8 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^4.9.5",
-    "wrangler": "^2.21.0"
+    "typescript": "^5.3.3",
+    "wrangler": "^3.26.0"
   },
   "engines": {
     "node": ">=18"
@@ -64,7 +64,7 @@
     "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "tsc": "tsc",
     "wrangler": "wrangler",
-    "deploy": "npm run build && wrangler publish",
+    "deploy": "npm run build && wrangler deploy",
     "test": "npm run build && jest",
     "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts"
   },

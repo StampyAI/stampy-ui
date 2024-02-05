@@ -1,7 +1,7 @@
 import {useCallback, useRef} from 'react'
 
 type Props = {
-  children: unknown
+  children: React.ReactNode
   onClose: (e: unknown) => void
   [k: string]: unknown
 }
