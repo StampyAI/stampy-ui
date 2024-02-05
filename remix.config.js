@@ -1,10 +1,9 @@
-/** @type {import('@remix-run/dev').AppConfig} */
 const routes = (defineRoutes) => {
   return defineRoutes((route) => {
     route('/*', 'routes/$redirects.tsx')
   })
 }
-
+/** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   serverConditions: ['worker'],
   serverMainFields: ['browser', 'module', 'main'],
