@@ -1,0 +1,39 @@
+name: Refresh Coda Cache
+on:
+  workflow_dispatch
+jobs:
+  refresh-coda:
+    runs-on: ubuntu-latest
+    env:
+      CODA_TOKEN: ${{ secrets.CODA_TOKEN }}
+      filepath: app/mocks/coda-responses
+      filename: cached-coda-responses.json
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - id: download
+        name: Download updated data from Coda
+        run: |
+          npm ci
+          npm run refresh-test-data
+          OUTPUT=$(git diff --name-only | tail -1)
+          echo "::set-output name=gitdiff::$OUTPUT"
+      - id: check
+        name: Check for changes
+        run: |
+          echo "git diff --name-only | tail -1 >>> ${{ steps.download.outputs.gitdiff }}"
+          echo "cached data changed = ${{ contains( steps.download.outputs.gitdiff, env.filename ) }}"
+          echo "::set-output name=changed::${{ contains( steps.download.outputs.gitdiff, env.filename ) }}"
+      - if: steps.check.outputs.changed == 'true'
+        name: Commit files
+        run: |
+          git config --local user.name ${{ github.actor }}
+          git config --local user.email ${{ github.actor }}@users.noreply.github.com
+          git stage ${{ env.filepath }}/${{ env.filename }}
+          git commit -m "Update ${{ env.filename }}"
+      - if: steps.check.outputs.changed == 'true'
+        name: Push updated files on GitHub
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PUSH_AUTH_TOKEN }}
