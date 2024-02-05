@@ -1,21 +1,14 @@
-import {useEffect, useState, useCallback, MouseEvent, useRef} from 'react'
+import {useEffect, MouseEvent} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {
-  ShouldRevalidateFunction,
-  useOutletContext,
-  useLoaderData,
-  useSearchParams,
-} from '@remix-run/react'
-import {loadInitialQuestions, loadTags, QuestionState} from '~/server-utils/stampy'
+import {ShouldRevalidateFunction, useOutletContext, useLoaderData} from '@remix-run/react'
+import {loadInitialQuestions, loadTags} from '~/server-utils/stampy'
 import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useDraggable from '~/hooks/useDraggable'
 import Search from '~/components/search'
 import {Header, Footer} from '~/components/layouts'
 import {LINK_WITHOUT_DETAILS_CLS, Question} from '~/routes/questions/$question'
-import {fetchAnswerDetailsOnSite} from '~/routes/questions/answerDetailsOnSite'
 import {Discord} from '~/components/icons-generated'
-import InfiniteScroll from '~/components/infiniteScroll'
 import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import type {Context} from '~/root'
@@ -39,76 +32,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   }
 }
 
-enum LoadMoreType {
-  disabled = 'disabled',
-  infini = 'infini',
-  button = 'button',
-  buttonInfini = 'buttonInfini',
-}
-
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
-
-const Bottom = ({
-  isSingleQuestion,
-  fetchMore,
-}: {
-  isSingleQuestion: boolean
-  fetchMore: () => Promise<any>
-}) => {
-  const [remixSearchParams] = useSearchParams()
-  const urlLoadType = useCallback(() => {
-    const more = remixSearchParams.get('more')
-    if (more) return LoadMoreType[remixSearchParams.get('more') as keyof typeof LoadMoreType]
-    const queryFromUrl = remixSearchParams.get('q')
-    if (queryFromUrl) return LoadMoreType.disabled
-  }, [remixSearchParams])
-
-  const [loadMore, setLoadMore] = useState(
-    urlLoadType() || (isSingleQuestion ? LoadMoreType.disabled : LoadMoreType.buttonInfini)
-  )
-
-  useEffect(() => {
-    const more = urlLoadType()
-    if (more) {
-      setLoadMore(more)
-    }
-  }, [setLoadMore, urlLoadType])
-
-  const buttonHandler = () => {
-    fetchMore()
-    if (loadMore == LoadMoreType.buttonInfini) {
-      setLoadMore(LoadMoreType.infini)
-    }
-  }
-
-  switch (loadMore) {
-    case LoadMoreType.infini:
-      return (
-        <InfiniteScroll fetchMore={fetchMore}>
-          <Footer />
-        </InfiniteScroll>
-      )
-    case LoadMoreType.button:
-    case LoadMoreType.buttonInfini:
-      return (
-        <>
-          <div>
-            <br />
-            <button
-              className="result-item-box result-item transparent-result-item"
-              onClick={buttonHandler}
-            >
-              Show me even more questions about AI Safety...
-            </button>
-          </div>
-          <Footer />
-        </>
-      )
-    case LoadMoreType.disabled:
-    default:
-      return <Footer />
-  }
-}
 
 export default function App() {
   const {minLogo, embed, showSearch} = useOutletContext<Context>()
@@ -127,7 +51,6 @@ export default function App() {
     toggleQuestion,
     onLazyLoadQuestion,
     selectQuestion,
-    addQuestions,
     moveQuestion,
     glossary,
     embedWithoutDetails,
@@ -171,16 +94,6 @@ export default function App() {
       showMore(el)
       return
     }
-  }
-
-  const nextPageLinkRef = useRef<null | string>(null)
-  const fetchMoreQuestions = async () => {
-    const result = await fetchAnswerDetailsOnSite(nextPageLinkRef.current)
-    nextPageLinkRef.current = result.nextPageLink
-    if (result.questions) {
-      addQuestions(result.questions)
-    }
-    return result.nextPageLink
   }
 
   const {handleDragOver, handleDragStart, handleDragEnd, DragPlaceholder} =
@@ -234,12 +147,7 @@ export default function App() {
           <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
             <Discord />
           </a>
-          <Bottom
-            fetchMore={fetchMoreQuestions}
-            isSingleQuestion={
-              questions.filter((i) => i.questionState != QuestionState.RELATED).length == 1
-            }
-          />
+          <Footer />
         </>
       )}
     </>

@@ -77,7 +77,7 @@ html.embed {
 }
 
 body {
-  height: 101%; /* make sure infinite scroll trigger is below initial screen */
+  height: 100%;
   width: 100%;
   max-width: 1000px;
   margin: auto;
