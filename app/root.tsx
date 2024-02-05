@@ -1,6 +1,8 @@
 import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
-import styles from '~/root.css'
+import {cssBundleHref} from '@remix-run/css-bundle'
+import oldStyles from '~/root.css'
+import newStyles from '~/newRoot.css'
 
 import {useLoaderData} from '@remix-run/react'
 import {questionsOnPage} from '~/hooks/stateModifiers'
@@ -70,7 +72,11 @@ export const meta: MetaFunction<typeof loader> = ({data}) => {
     'twitter:url': data.url,
   }
 }
-export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
+
+export const links: LinksFunction = () =>
+  [oldStyles, newStyles, cssBundleHref]
+    .filter((i) => i)
+    .map((styles) => ({rel: 'stylesheet', href: styles as string}))
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const isDomainWithFunLogo = request.url.match(/stampy.ai|localhost/) // min logo by default on aisafety.info and 127.0.0.1
@@ -102,7 +108,7 @@ function Head({minLogo}: {minLogo?: boolean}) {
       <meta name="viewport" content="width=device-width,initial-scale=1" />
       {/* don't use color-scheme because supporting transparent iframes https://fvsch.com/transparent-iframes
           is more important than dark reader https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024
-          <meta name="color-scheme" content="light dark" /> 
+          <meta name="color-scheme" content="light dark" />
        */}
       <Meta />
       <Links />

@@ -6,7 +6,8 @@ import {TOP} from '~/hooks/stateModifiers'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import useDraggable from '~/hooks/useDraggable'
 import Search from '~/components/search'
-import {Header, Footer} from '~/components/layouts'
+import NavBar from '~/components/Nav'
+import {Footer} from '~/components/layouts'
 import {LINK_WITHOUT_DETAILS_CLS, Question} from '~/routes/questions/$question'
 import {Discord} from '~/components/icons-generated'
 import ErrorBoundary from '~/components/errorHandling'
@@ -101,7 +102,7 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <NavBar articles={{}} />
       <main onClick={handleSpecialLinks}>
         {showSearch && (
           <>
