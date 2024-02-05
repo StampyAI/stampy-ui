@@ -1,14 +1,13 @@
-import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
+import {useEffect} from 'react'
+import {Links, LiveReload, Meta, Outlet, Scripts, useLoaderData} from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import {cssBundleHref} from '@remix-run/css-bundle'
 import newStyles from '~/newRoot.css'
 
-import {useLoaderData} from '@remix-run/react'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {questionsOnPage} from '~/hooks/stateModifiers'
-import {loadQuestionDetail} from '~/server-utils/stampy'
 import {useTheme} from './hooks/theme'
-import {useEffect} from 'react'
+import {loadQuestionDetail} from '~/server-utils/stampy'
 
 /*
  * Transform the given text into a meta header format.
@@ -98,7 +97,32 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     minLogo,
     embed,
     showSearch,
+    gaTrackingId: GOOGLE_ANALYTICS_ID,
   }
+}
+
+const GoogleAnalytics = ({gaTrackingId}: {gaTrackingId?: string}) => {
+  if (!gaTrackingId) return null
+  return (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`} />
+      <script
+        async
+        id="gtag-init"
+        dangerouslySetInnerHTML={{
+          __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', '${gaTrackingId}', {
+                  page_path: window.location.pathname,
+                });
+        `,
+        }}
+      />
+    </>
+  )
 }
 
 function Head({minLogo}: {minLogo?: boolean}) {
@@ -123,7 +147,6 @@ function Head({minLogo}: {minLogo?: boolean}) {
 
 export function ErrorBoundary({error}: {error: Error}) {
   console.error(error)
-
   return (
     <html>
       <Head />
@@ -142,7 +165,7 @@ type Loader = Awaited<ReturnType<typeof loader>>
 export type Context = Pick<Loader, 'minLogo' | 'embed' | 'showSearch'>
 
 export default function App() {
-  const {minLogo, embed, showSearch} = useLoaderData<Loader>()
+  const {minLogo, embed, showSearch, gaTrackingId} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {minLogo, embed, showSearch}
 
@@ -171,6 +194,7 @@ export default function App() {
       <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
         <Head minLogo={minLogo} />
         <body>
+          <GoogleAnalytics gaTrackingId={gaTrackingId} />
           <Outlet context={context} />
           {/* <ScrollRestoration /> wasn't doing anything useful */}
           <Scripts />
