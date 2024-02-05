@@ -74,6 +74,10 @@ export type Question = {
   status?: QuestionStatus
   updatedAt?: string
   alternatePhrasings?: string
+  subtitle?: string
+  icon?: string
+  parents?: string[]
+  children?: Question[]
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -123,6 +127,9 @@ export type AnswersRow = CodaRowCommon & {
     Tags: '' | Entity[]
     Banners: '' | Entity[]
     'Rich Text': string
+    Subtitle?: string
+    Icon?: string
+    Parents?: Entity[]
   }
 }
 type TagsRow = CodaRowCommon & {
@@ -252,7 +259,8 @@ const head = (item: string | string[]) => {
   if (Array.isArray(item)) return item[0]
   return item
 }
-const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
+const extractText = (markdown: string | null | undefined) =>
+  head(markdown || '')?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
   values
@@ -277,6 +285,9 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   status: values['Status']?.name as QuestionStatus,
   updatedAt,
   alternatePhrasings: extractText(values['Alternate Phrasings']),
+  subtitle: extractText(values.Subtitle),
+  icon: extractText(values.Icon),
+  parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
