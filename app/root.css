@@ -331,12 +331,16 @@ a.menu-link {
 
 @media (prefers-reduced-motion: no-preference) {
   .share::after {
-    transition: opacity 2s, transform 0s 2s;
+    transition:
+      opacity 2s,
+      transform 0s 2s;
     will-change: opacity, transform;
   }
 
   .share.copied::after {
-    transition: opacity 200ms, transform 200ms;
+    transition:
+      opacity 200ms,
+      transform 200ms;
   }
 }
 
@@ -490,7 +494,9 @@ tr:nth-child(even) {
   margin-left: 10px;
   max-width: 35%;
   z-index: 2;
-  transition: visibility 0s 300ms, opacity cubic-bezier(1, 0, 1, 1) 300ms;
+  transition:
+    visibility 0s 300ms,
+    opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
 .answer .link-popup::after {
   content: '';
@@ -506,7 +512,9 @@ tr:nth-child(even) {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
-  transition: visibility 0s, opacity 100ms;
+  transition:
+    visibility 0s,
+    opacity 100ms;
 }
 .answer .link-popup p {
   margin: 0;
