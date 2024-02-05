@@ -1,5 +1,5 @@
 /node_modules
-/.wranler
+/.wrangler
 /.cache
 /build
 /dist
