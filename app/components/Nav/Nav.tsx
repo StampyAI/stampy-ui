@@ -42,7 +42,9 @@ export const NavBar = ({
   return (
     <header className="top-header">
       <nav className="top-nav">
-        <AISafetyIcon classname={"top-logo"} />
+        <a href="/">
+        <AISafetyIcon classname={"top-logo"}  />
+          </a>
         <ul className="top-menu">
           <MenuItem
             primary={true}

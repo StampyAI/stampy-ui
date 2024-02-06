@@ -1,9 +1,17 @@
 import React, { FunctionComponent } from "react";
 import "./menu.css";
 import { act } from "react-dom/test-utils";
-interface Category {
+interface Question {
   title: string;
-  id: number;
+  pageId: string;
+}
+interface Category {
+  name: string;
+  rowId: string;
+  tagId: number;
+  url: string;
+  internal: boolean;
+  questions: Question[];
 }
 interface CategoriesNavProps {
   /**
@@ -13,7 +21,7 @@ interface CategoriesNavProps {
   /**
    * Selected article
    */
-  active: 0;
+  active: number;
   /**
    * Callback function to handle click on article
    */
@@ -42,14 +50,14 @@ export const CategoriesNav = ({
       {categories.map((category) => {
         return (
           <div
-            key={`category-${category.id}`}
+            key={`category-${category.tagId}`}
             className={[
               "category-autoLayoutHorizontal",
-              selected == category.id ? ["active"].join(" ") : "",
+              selected == category.tagId ? ["active"].join(" ") : "",
             ].join(" ")}
-            onClick={() => handleClick(category.id)}
+            onClick={() => handleClick(category.tagId)}
           >
-            <div className={"category-title"}>{category.title}</div>
+            <div className={"category-title"}>{category.name} ({category.questions.length})</div>
           </div>
         );
       })}

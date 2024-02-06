@@ -10,3 +10,6 @@
   color: var(--colors-teal-500, #1d9089);
   margin-block-end: 0.05em;
 }
+.h1.main{
+  color: var(--text-black, #1b2b3e);
+}

@@ -203,7 +203,7 @@ body {
 .categories-group {
   width: 100%;
   position: relative;
-  height: 609px;
+  height: 100%;
   text-align: left;
   font-size: 16px;
   color: var(--text-black, #1b2b3e);
@@ -1318,4 +1318,10 @@ body {
   content: ' ';
   margin-top: 104px;
   border-top: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+}
+.group-elements{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10.9vw;
 }

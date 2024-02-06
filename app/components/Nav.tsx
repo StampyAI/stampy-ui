@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import {OpenBookIcon} from '~/components/icons/OpenBook'
 import {ChatBoxIcon} from '~/components/icons/ChatBox'
 import {AISafetyIcon} from '~/components/icons/AISafety'
@@ -24,7 +24,9 @@ export const NavBar = ({toc, categories}: NavBarProps) => {
   return (
     <header className="top-header">
       <nav className="top-nav">
-        <AISafetyIcon className="top-logo" />
+        <a href="/" style={{width:"175px"}}>
+          <AISafetyIcon classname={"top-logo"}  />
+        </a>
         <ul className="top-menu">
           <MenuItem
             primary={true}

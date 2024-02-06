@@ -9,12 +9,13 @@ export interface ListTableProps {
 }
 
 export const ListTable: FunctionComponent = ({ Elements }: ListTableProps) => {
+
   return (
     <div className={"table-list"}>
       {Object.keys(Elements).map((key, i) => {
         return (
-          <a key={`entry-${i}`} className={"table-entry"} href={Elements[key]}>
-            {key}
+          <a key={`entry-${i}`} className={"table-entry"} href={Elements[key].pageid}>
+            {Elements[key].title}
           </a>
         );
       })}

@@ -15,48 +15,29 @@ export const Default: Story = {
   args: {
     categories: [
       {
-        title: "Alignment",
+        name: "Alignment",
         id: 0,
+        questions: [
+            {
+                title: "What is instrumental convergence?",
+                pageId: 0,
+            },
+            ],
       },
       {
-        title: "Contributing",
+        name: "Contributing",
         id: 1,
+        questions: []
       },
       {
-        title: "Definitions",
+        name: "Definitions",
         id: 2,
+        questions: []
       },
       {
-        title: "Lorem",
+        name: "Lorem",
         id: 3,
-      },
-      {
-        title: "Lorem",
-        id: 5,
-      },
-      {
-        title: "Lorem",
-        id: 6,
-      },
-      {
-        title: "Lorem",
-        id: 7,
-      },
-      {
-        title: "Lorem",
-        id: 8,
-      },
-      {
-        title: "Lorem",
-        id: 9,
-      },
-      {
-        title: "Lorem",
-        id: 10,
-      },
-      {
-        title: "Lorem",
-        id: 11,
+        questions: []
       },
     ],
   },

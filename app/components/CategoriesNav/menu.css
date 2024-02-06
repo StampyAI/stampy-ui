@@ -47,7 +47,7 @@
 .categories-group {
   width: 100%;
   position: relative;
-  height: 609px;
+  height: 100%;
   text-align: left;
   font-size: 16px;
   color: var(--text-black, #1b2b3e);
