@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react'
 import './menu.css'
 import {act} from 'react-dom/test-utils'
-import {SearchInput} from '~/components/SearchInput/Input'
+import {SearchInput} from '../SearchInput/Input'
 interface Question {
   title: string
   pageId: string

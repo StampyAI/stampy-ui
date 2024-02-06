@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 .h2 {
-  max-width: 227px;
+  /*max-width: 227px;*/
   position: relative;
   font-size: 38px;
   letter-spacing: -0.01em;
@@ -12,4 +12,7 @@
   display: inline-block;
 
   color: var(--colors-grey-900, #1b2b3e);
+}
+.h2.teal{
+    color: var(--colors-teal-500, #1d9089);
 }

@@ -6,12 +6,16 @@ export interface h1Props {
    */
   children: string
 }
-export interface h1Props {
+export interface h2Props {
   /**
    * Children of the component
    */
   children: string
+  /**
+   * Is teal color?
+   */
+    teal?: boolean
 }
-export const H2 = ({children}: h1Props) => {
-  return <h2 className={'h2'}>{children}</h2>
+export const H2 = ({children,teal}: h2Props) => {
+  return <h2 className={['h2', teal?'teal':null].join(' ')}>{children}</h2>
 }
