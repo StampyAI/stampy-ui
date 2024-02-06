@@ -1,4 +1,5 @@
 import type {StorybookConfig} from '@storybook/react-vite'
+import path from 'path';
 
 const config: StorybookConfig = {
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -16,5 +17,9 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+    viteFinal: async (config, { configType }) => {
+        config.resolve.alias['~/'] = `${path.resolve(__dirname, '../app')}/`
+        return config
+    },
 }
 export default config

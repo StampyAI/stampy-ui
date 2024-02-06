@@ -1,36 +1,17 @@
-import React, {useEffect, useRef} from 'react'
-import './nav.css'
+import React from 'react'
 import {MenuItem} from '../Menu/MenuItem'
-import {OpenBookIcon} from '../../assets/OpenBook.tsx'
+import {OpenBookIcon} from '~/assets/OpenBook.tsx'
 import {ChatBoxIcon} from '../../assets/ChatBox.tsx'
 import {AISafetyIcon} from '../../assets/AISafety.tsx'
-import {ArticlesDropdown} from '../ArticlesDropdown/Dropdown'
+import ArticlesDropdown from '../ArticlesDropdown'
 import {SearchInput} from '../SearchInput/Input'
+import './nav.css'
 
 export interface NavBarProps {
-  /**
-   * Introductory sections
-   */
-  IntroductorySections: Record<string, string>
-  /**
-   * Advanced sections
-   */
-  AdvancedSections: Record<string, string>
-  /**
-   * Browse by category
-   */
-  BrowseByCategory: Record<string, string>
-  /**
-   * Browse all categories
-   */
-  BrowseAllCategories: string
+    toc: TOCItem[]
+    categories: Tag[]
 }
-export const NavBar = ({
-  IntroductorySections,
-  AdvancedSections,
-  BrowseByCategory,
-  BrowseAllCategories,
-}: NavBarProps) => {
+export const NavBar = ({toc, categories}: NavBarProps) => {
   const [isSticky, setSticky] = React.useState(false)
   const MouseEnter = () => {
     setSticky(true)
@@ -54,13 +35,11 @@ export const NavBar = ({
             onMouseEnter={MouseEnter}
           />
           <ArticlesDropdown
-            isSticky={isSticky}
-            MouseEnter={MouseEnter}
-            MouseLeave={MouseLeave}
-            IntroductorySections={IntroductorySections}
-            AdvancedSections={AdvancedSections}
-            BrowseByCategory={BrowseByCategory}
-            BrowseAllCategories={BrowseAllCategories}
+              isSticky={isSticky}
+              MouseEnter={MouseEnter}
+              MouseLeave={MouseLeave}
+              toc={toc}
+              categories={categories}
           />
           <MenuItem
             primary={true}
@@ -79,3 +58,4 @@ export const NavBar = ({
     </header>
   )
 }
+export default NavBar
