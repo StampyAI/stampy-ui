@@ -1,6 +1,6 @@
 import {Header, Footer} from '~/components/layouts'
-import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
-import type {Question} from '../../server-utils/stampy'
+import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
+import type {Question} from '../server-utils/stampy'
 
 const formatTwineQuestion = ({title, text, relatedQuestions, tags}: Question) => {
   const formattedTags = tags.map((t) => t.replaceAll(' ', '-')).join(' ')

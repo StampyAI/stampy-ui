@@ -1,7 +1,7 @@
-import {LoaderArgs} from '@remix-run/cloudflare'
+import {LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {loadAllQuestions, QuestionStatus, Question, QuestionState} from '~/server-utils/stampy'
 
-export const loader = async ({request}: LoaderArgs) => {
+export const loader = async ({request}: LoaderFunctionArgs) => {
   const origin = new URL(request.url).origin
   const formatQuestion = ({pageid, updatedAt}: Question) => `
     <url>

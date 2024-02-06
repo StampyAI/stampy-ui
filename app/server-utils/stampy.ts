@@ -205,7 +205,7 @@ export const fetchJson = async (url: string, params?: RequestInit) => {
 }
 
 export const fetchJsonList = async (url: string, params?: RequestInit) => {
-  const json = await fetchJson(url, params)
+  const json = await fetchJson(url, params) as any
   if (!json.items || json.items.length === 0) {
     throw Error(`Empty response for ${url}`)
   }
@@ -440,7 +440,7 @@ export const addQuestion = async (title: string, relatedQuestions: RelatedQuesti
 export const incAnswerColumn = async (column: string, pageid: PageId, subtract: boolean) => {
   const table = WRITES_TABLE
   const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
-  const current = await sendToCoda(currentRowUrl, '', 'GET')
+  const current = await sendToCoda(currentRowUrl, '', 'GET') as any
 
   const row = current?.items && current?.items[0]
   if (!row) return 'Nothing found'
@@ -452,7 +452,7 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
       cells: [{column, value: (row.values[column] || 0) + incBy}],
     },
   }
-  const result = await sendToCoda(url, payload, 'PUT')
+  const result = await sendToCoda(url, payload, 'PUT') as any
   return result.id ? 'ok' : result
 }
 

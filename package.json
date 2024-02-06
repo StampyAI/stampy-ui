@@ -3,10 +3,12 @@
   "description": "",
   "license": "MIT",
   "dependencies": {
-    "@remix-run/cloudflare-workers": "^1.19.3",
-    "@remix-run/react": "^1.19.3",
+    "@remix-run/cloudflare": "^2.6.0",
+    "@remix-run/cloudflare-workers": "^2.6.0",
+    "@remix-run/react": "^2.6.0",
     "@remix-run/css-bundle": "^1.19.3",
     "copy-to-clipboard": "^3.3.3",
+    "isbot": "^4",
     "lodash": "^4.17.21",
     "markdown-it": "^14.0.0",
     "markdown-it-footnote": "^4.0.0",
@@ -14,11 +16,11 @@
     "react": "^18.2.0",
     "react-auto-height": "^1.2.1",
     "react-dom": "^18.2.0",
-    "remix": "^1.19.3"
+    "remix": "^2.6.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^2.2.2",
-    "@remix-run/dev": "^1.19.3",
+    "@cloudflare/workers-types": "^4.20240129.0",
+    "@remix-run/dev": "^2.6.0",
     "@svgr/cli": "^8.1.0",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.14.202",
@@ -35,37 +37,19 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^29.7.0",
     "jest-environment-miniflare": "^2.14.2",
-    "miniflare": "^2.14.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "wrangler": "^3.26.0",
-
-    "@storybook/addon-designs": "^7.0.9",
-    "@storybook/addon-essentials": "^7.6.8",
-    "@storybook/addon-interactions": "^7.6.8",
-    "@storybook/addon-links": "^7.6.8",
-    "@storybook/addon-onboarding": "^1.0.10",
-    "@storybook/blocks": "^7.6.8",
-    "@storybook/react": "^7.6.8",
-    "@storybook/react-vite": "^7.6.8",
-    "@storybook/test": "^7.6.8",
-    "@vitejs/plugin-react": "^4.2.1",
-    "chromatic": "^10.2.2",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "eslint-plugin-storybook": "^0.6.15",
-    "storybook": "^7.6.8",
-    "vite": "^5.0.8"
+    "wrangler": "^3.24.0"
   },
   "engines": {
     "node": ">=18"
   },
   "sideEffects": false,
   "scripts": {
-    "postinstall": "remix setup cloudflare",
     "generate-icons": "npx @svgr/cli --out-dir app/components/icons-generated -- app/assets/icons",
     "eslint": "eslint --ignore-pattern .gitignore \"**/*.ts*\"",
     "prettier": "prettier --check --ignore-path .gitignore \"**/*.{ts*,js,css,md,html}\"",
@@ -74,19 +58,13 @@
     "prettier:fix": "prettier --write --ignore-path .gitignore \"**/*.{ts*,js,css,md,html}\"",
     "lint:fix": "tsc && npm run prettier:fix && npm run eslint:fix",
     "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build --sourcemap",
-    "dev:remix": "cross-env NODE_ENV=development remix watch",
-    "dev:miniflare": "cross-env NODE_ENV=development miniflare ./build/index.js --watch",
-    "start": "cross-env NODE_ENV=development remix build && run-p dev:*",
+    "start": "remix dev --manual -c 'wrangler dev ./build/index.js'",
     "dev": "npm run generate-icons && npm start",
-    "prod": "cross-env NODE_ENV=production miniflare ./build/index.js",
     "tsc": "tsc",
     "wrangler": "wrangler",
     "deploy": "npm run build && wrangler deploy",
     "test": "npm run build && jest",
-    "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts",
-
-
-    "storybook": "storybook dev -p 6006"
+    "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts"
   },
   "main": "build/index.js"
 }

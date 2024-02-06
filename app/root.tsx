@@ -47,29 +47,29 @@ const fetchQuestion = async (request: Request) => {
 const TITLE = 'Stampy'
 const DESCRIPTION = 'AI Safety FAQ'
 const twitterCreator = '@stampyai'
-export const meta: MetaFunction<typeof loader> = ({data}) => {
+export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
   const url = new URL(data.url)
   const logo = `${url.origin}/${data.minLogo ? 'favicon-min-512.png' : 'favicon-512.png'}`
-  return {
-    title,
-    description,
-    'og:url': data.url,
-    'og:type': 'article',
-    'og:title': title,
-    'og:description': description,
-    'og:image': logo,
-    'og:image:type': 'image/png',
-    'og:image:width': '512',
-    'og:image:height': '512',
-    'twitter:card': 'summary',
-    'twitter:title': title,
-    'twitter:description': description,
-    'twitter:image': logo,
-    'twitter:creator': twitterCreator,
-    'twitter:url': data.url,
-  }
+  return [
+    {title},
+    {name: 'description', content: description},
+    {property: 'og:url', content: data.url},
+    {property: 'og:type', content: 'article'},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:image', content: logo},
+    {property: 'og:image:type', content: 'image/png'},
+    {property: 'og:image:width', content: '512'},
+    {property: 'og:image:height', content: '512'},
+    {property: 'twitter:card', content: 'summary'},
+    {property: 'twitter:title', content: title},
+    {property: 'twitter:description', content: description},
+    {property: 'twitter:image', content: logo},
+    {property: 'twitter:creator', content: twitterCreator},
+    {property: 'twitter:url', content: data.url},
+  ]
 }
 
 export const links: LinksFunction = () =>
