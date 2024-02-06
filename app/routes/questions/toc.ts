@@ -28,7 +28,7 @@ const formatQuestion =
     children: level < MAX_LEVELS ? children?.map(formatQuestion(level + 1)) : undefined,
   })
 
-export const loader = async ({request}: LoaderArgs): Promise<LoaderResp> => {
+export const loadToC = async (request: any): Promise<LoaderResp> => {
   const {data, timestamp} = await loadAllQuestions(request)
   const items = data.reduce((acc, item) => ({...acc, [item.title]: item}), {}) as {
     [k: string]: Question
@@ -51,6 +51,7 @@ export const loader = async ({request}: LoaderArgs): Promise<LoaderResp> => {
     timestamp,
   }
 }
+export const loader = async ({request}: LoaderArgs): Promise<LoaderResp> => loadToC(request)
 
 export function fetchTOC() {
   const url = `/questions/toc`

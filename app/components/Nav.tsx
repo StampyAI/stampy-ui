@@ -5,45 +5,14 @@ import {AISafetyIcon} from '~/components/icons/AISafety'
 import {MagnifyingIcon} from '~/components/icons/Magnifying'
 import MenuItem from '~/components/MenuItem'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
-
-const IntroductorySections = {
-  'Introduction to AI Safety': '/introduction-to-ai-safety',
-  'Frequent questions guide': '/frequent-questions-guide',
-  'Get involved with AI Safety': '/get-involved-with-ai-safety',
-}
-const AdvancedSections = {
-  Governance: '/governance',
-  'Predictions on advanced AI': '/predictions-on-advanced-ai',
-  'Technical alignment research categories': '/technical-alignment-research-categories',
-  'Existential risk concepts': '/existential-risk-concepts',
-  'Prominent research organizations': '/prominent-research-organizations',
-}
-const BrowseByCategory = {
-  Definitions: '/definitions',
-  Objections: '/objections',
-  Superintelligence: '/superintelligence',
-  Contributing: '/contributing',
-  'Existential risk': '/existential-risk',
-  Catastrophe: '/catastrophe',
-  'Research agendas': '/research-agendas',
-  Governance: '/governance',
-  Resources: '/resources',
-  Capabilities: '/capabilities',
-  'Machine learning': '/machine-learning',
-  AGI: '/agi',
-}
-const BrowseAllCategories = '/browse-all-categories'
-type ArticlesTree = {
-  IntroductorySections?: Record<string, string>
-  AdvancedSections?: Record<string, string>
-  BrowseByCategory?: Record<string, string>
-  BrowseAllCategories?: string
-}
+import type {Tag} from '~/server-utils/stampy'
+import type {TOCItem} from '~/routes/questions/toc'
 
 export interface NavBarProps {
-  articles: ArticlesTree
+  toc: TOCItem[]
+  categories: Tag[]
 }
-export const NavBar = ({articles}: NavBarProps) => {
+export const NavBar = ({toc, categories}: NavBarProps) => {
   const [isSticky, setSticky] = useState(false)
   const MouseEnter = () => {
     setSticky(true)
@@ -68,10 +37,8 @@ export const NavBar = ({articles}: NavBarProps) => {
             isSticky={isSticky}
             MouseEnter={MouseEnter}
             MouseLeave={MouseLeave}
-            IntroductorySections={articles.IntroductorySections || IntroductorySections}
-            AdvancedSections={articles.AdvancedSections || AdvancedSections}
-            BrowseByCategory={articles.BrowseByCategory || BrowseByCategory}
-            BrowseAllCategories={articles.BrowseAllCategories || BrowseAllCategories}
+            toc={toc}
+            categories={categories}
           />
           <MenuItem
             primary={true}

@@ -32,7 +32,6 @@ Stampy
 export default function App() {
   const downloadTwine = async () => {
     const {data} = await fetchAllQuestionsOnSite()
-    console.log(data)
 
     const blob = new Blob([generateTwine(data)], {type: 'text/plain'})
 

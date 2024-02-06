@@ -1,84 +1,58 @@
+import type {Tag} from '~/server-utils/stampy'
+import type {TOCItem} from '~/routes/questions/toc'
+
+const ArticlesSection = ({title, pageid, children}: TOCItem) => (
+  <div key={pageid}>
+    <div className="articles-dropdown-title">{title}</div>
+    {children?.map(({pageid, title}: TOCItem) => (
+      <a key={pageid} className="articles-dropdown-entry" href={`?state=${pageid}`}>
+        {title}
+      </a>
+    ))}
+  </div>
+)
+
 export type ArticlesDropdownProps = {
-  IntroductorySections: Record<string, string>
-  AdvancedSections: Record<string, string>
-  BrowseByCategory: Record<string, string>
-  BrowseAllCategories: string
+  toc: TOCItem[]
+  categories: Tag[]
   isSticky: boolean
   MouseEnter: () => void
   MouseLeave: () => void
 }
 export const ArticlesDropdown = ({
-  IntroductorySections,
-  AdvancedSections,
-  BrowseByCategory,
-  BrowseAllCategories,
+  toc,
+  categories,
   isSticky,
   MouseEnter,
   MouseLeave,
-}: ArticlesDropdownProps) => {
-  return (
-    <div
-      className={'articles-dropdown-container'}
-      onMouseEnter={MouseEnter}
-      onMouseLeave={MouseLeave}
-      style={{display: isSticky ? 'flex' : 'none'}}
-    >
-      <div className={'articles-dropdown-grid'}>
-        <div className={'articles-dropdown-title'}>Introductory sections</div>
+}: ArticlesDropdownProps) => (
+  <div
+    className="articles-dropdown-container"
+    onMouseEnter={MouseEnter}
+    onMouseLeave={MouseLeave}
+    style={{display: isSticky ? 'flex' : 'none'}}
+  >
+    <div className="articles-dropdown-grid">{toc.map(ArticlesSection)}</div>
 
-        {Object.keys(IntroductorySections).map((key, i) => {
-          return (
-            <a
-              key={`article-${i}`}
-              className={'articles-dropdown-entry'}
-              href={IntroductorySections[key]}
-            >
-              {key}
-            </a>
-          )
-        })}
+    <div className={'articles-dropdown-grid'}>
+      {/*sorted right side*/}
+      <div className={'articles-dropdown-title'}>Browse by category</div>
 
-        <div className={['articles-dropdown-title', 'top-margin-large'].join(' ')}>
-          Advanced sections
-        </div>
-
-        {Object.keys(AdvancedSections).map((key, i) => {
-          return (
-            <a
-              key={`article-${i}`}
-              className={'articles-dropdown-entry'}
-              href={AdvancedSections[key]}
-            >
-              {key}
-            </a>
-          )
-        })}
-      </div>
-
-      <div className={'articles-dropdown-grid'}>
-        {/*sorted right side*/}
-        <div className={'articles-dropdown-title'}>Browse by category</div>
-
-        {Object.keys(BrowseByCategory).map((key, i) => {
-          return (
-            <a
-              key={`article-${i}`}
-              className={'articles-dropdown-teal-entry'}
-              href={BrowseByCategory[key]}
-            >
-              {key}
-            </a>
-          )
-        })}
-
-        <div className={'dropdown-button'}>
-          <a href={BrowseAllCategories} className={'dropdown-button-label'}>
-            Browse all categories
+      {categories?.map(({rowId, name}) => {
+        return (
+          <a key={rowId} className={'articles-dropdown-teal-entry'} href={`/tags/${name}`}>
+            {name}
           </a>
-        </div>
+        )
+      })}
+
+      <div className={'dropdown-button'}>
+        <a href="/tags" className={'dropdown-button-label'}>
+          Browse all categories
+        </a>
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 export default ArticlesDropdown
