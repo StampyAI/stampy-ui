@@ -1,0 +1,30 @@
+.top-menu-item {
+  font-family:
+    "Poppins",
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  list-style: none;
+  line-height: normal;
+}
+.top-menu-link {
+  text-decoration: none;
+  display: flex;
+}
+.top-menu-icon {
+  width: 24px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+}
+.top-menu-text {
+  margin-left: 8px;
+  color: var(--text-black, #1b2b3e);
+}
+.top-menu-text.secondary {
+  color: var(--colors-teal-500, #1d9089);
+}

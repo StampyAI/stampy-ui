@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+.container-page-title {
+  position: relative;
+  font-size: 64px;
+  letter-spacing: -0.02em;
+  line-height: 125%;
+  font-weight: 600;
+  font-family: Poppins;
+  color: var(--text-black, #1b2b3e);
+  text-align: left;
+  display: inline-block;
+  width: 770px;
+  margin-top: 40px;
+}
+.container-page-title p {
+  margin: 0;
+}

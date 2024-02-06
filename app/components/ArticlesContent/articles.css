@@ -1,0 +1,9 @@
+.article-meta {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.interactive-option {
+  cursor: pointer;
+}
