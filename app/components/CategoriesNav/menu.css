@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .category-title {
   position: relative;
@@ -37,12 +37,7 @@
   position: relative;
 }
 .category-autoLayoutHorizontal.active {
-  background-color: rgba(
-    237.0000010728836,
-    250.00000029802322,
-    249.00000035762787,
-    1
-  );
+  background-color: rgba(237.0000010728836, 250.00000029802322, 249.00000035762787, 1);
 }
 .categories-group {
   width: 100%;

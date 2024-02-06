@@ -70,7 +70,7 @@ const getCodaData = async (codaRequestParams: CodaRequestParams) => {
 }
 
 const paginatedGet = async (url: string, responses: any[]) => {
-  const responseData = await getData(url) as any
+  const responseData = (await getData(url)) as any
   const data = {url, httpMethod: 'GET', responseData}
   responses.push(data)
 

@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Tag } from "../app/components/Tags/Tag";
+import type {Meta, StoryObj} from '@storybook/react'
+import {Tag} from '../app/components/Tags/Tag'
 const meta = {
-  title: "Components/Tag",
+  title: 'Components/Tag',
   component: Tag,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
-} satisfies Meta<typeof Tag>;
+  tags: ['autodocs'],
+} satisfies Meta<typeof Tag>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    children: "Alignment",
+    children: 'Alignment',
   },
-};
+}

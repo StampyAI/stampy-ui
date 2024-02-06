@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-export const MaskGroup = ({ icon }) => {
+export const MaskGroup = ({icon}) => {
   return (
     <img
       loading="lazy"
@@ -8,5 +8,5 @@ export const MaskGroup = ({ icon }) => {
       className="content-box-right-icon"
       alt="AI Safety Image"
     />
-  );
-};
+  )
+}

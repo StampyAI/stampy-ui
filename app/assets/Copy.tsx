@@ -1,13 +1,6 @@
-
 const Copy = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="50"
-      width="72"
-      viewBox="0 0 90 90"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" height="50" width="72" viewBox="0 0 90 90" fill="none">
       <g filter="url(#a)">
         <rect
           x="44"
@@ -38,15 +31,7 @@ const Copy = () => {
           stroke="#788492"
           stroke-linecap="round"
         />
-        <rect
-          x="64"
-          y="37"
-          width="8"
-          height="3"
-          rx="1.5"
-          stroke="#788492"
-          stroke-linecap="round"
-        />
+        <rect x="64" y="37" width="8" height="3" rx="1.5" stroke="#788492" stroke-linecap="round" />
         <path
           d="M60 39C60 38.4477 60.4477 38 61 38H64V39H61V57H63C63.2761 57 63.5 57.2239 63.5 57.5C63.5 57.7761 63.2761 58 63 58H61C60.4477 58 60 57.5523 60 57V39Z"
           fill="#788492"
@@ -80,11 +65,7 @@ const Copy = () => {
             type="matrix"
             values="0 0 0 0 0.686275 0 0 0 0 0.717647 0 0 0 0 0.760784 0 0 0 0.2 0"
           />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_1156_12852"
-          />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1156_12852" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -94,6 +75,6 @@ const Copy = () => {
         </filter>
       </defs>
     </svg>
-  );
-};
-export const CopyIcon = Copy;
+  )
+}
+export const CopyIcon = Copy

@@ -1,29 +1,29 @@
-import React, { useEffect, useRef } from "react";
-import "./nav.css";
-import { MenuItem } from "../Menu/MenuItem";
-import { OpenBookIcon } from "../../assets/OpenBook.tsx";
-import { ChatBoxIcon } from "../../assets/ChatBox.tsx";
-import { AISafetyIcon } from "../../assets/AISafety.tsx";
-import { MagnifyingIcon } from "../../assets/Magnifying.tsx";
-import { ArticlesDropdown } from "../ArticlesDropdown/Dropdown";
+import React, {useEffect, useRef} from 'react'
+import './nav.css'
+import {MenuItem} from '../Menu/MenuItem'
+import {OpenBookIcon} from '../../assets/OpenBook.tsx'
+import {ChatBoxIcon} from '../../assets/ChatBox.tsx'
+import {AISafetyIcon} from '../../assets/AISafety.tsx'
+import {ArticlesDropdown} from '../ArticlesDropdown/Dropdown'
+import {SearchInput} from '../SearchInput/Input'
 
 export interface NavBarProps {
   /**
    * Introductory sections
    */
-  IntroductorySections: Record<string, string>;
+  IntroductorySections: Record<string, string>
   /**
    * Advanced sections
    */
-  AdvancedSections: Record<string, string>;
+  AdvancedSections: Record<string, string>
   /**
    * Browse by category
    */
-  BrowseByCategory: Record<string, string>;
+  BrowseByCategory: Record<string, string>
   /**
    * Browse all categories
    */
-  BrowseAllCategories: string;
+  BrowseAllCategories: string
 }
 export const NavBar = ({
   IntroductorySections,
@@ -31,25 +31,25 @@ export const NavBar = ({
   BrowseByCategory,
   BrowseAllCategories,
 }: NavBarProps) => {
-  const [isSticky, setSticky] = React.useState(false);
+  const [isSticky, setSticky] = React.useState(false)
   const MouseEnter = () => {
-    setSticky(true);
-  };
+    setSticky(true)
+  }
   const MouseLeave = () => {
-    setSticky(false);
-  };
+    setSticky(false)
+  }
 
   return (
     <header className="top-header">
       <nav className="top-nav">
         <a href="/">
-        <AISafetyIcon classname={"top-logo"}  />
-          </a>
+          <AISafetyIcon classname={'top-logo'} />
+        </a>
         <ul className="top-menu">
           <MenuItem
             primary={true}
             link="#"
-            icon={<OpenBookIcon classname={"top-menu-icon"} />}
+            icon={<OpenBookIcon classname={'top-menu-icon'} />}
             text="Articles"
             onMouseEnter={MouseEnter}
           />
@@ -65,7 +65,7 @@ export const NavBar = ({
           <MenuItem
             primary={true}
             link="#"
-            icon={<ChatBoxIcon classname={"top-menu-icon"} />}
+            icon={<ChatBoxIcon classname={'top-menu-icon'} />}
             text="Stampy chatbot"
           />
           <li className="top-menu-item">
@@ -73,18 +73,9 @@ export const NavBar = ({
           </li>
         </ul>
 
-        <div style={{ flexGrow: 12 }}></div>
-        <div className={"search-box"}>
-          <div className={"search-inputChild"} />
-          <div className={"search-content"}>
-            <MagnifyingIcon classnamme={"iconsMagnifyingGlass"} />
-            <input
-              placeholder={"Search articles"}
-              className={"search-input"}
-            ></input>
-          </div>
-        </div>
+        <div style={{flexGrow: 12}}></div>
+        <SearchInput />
       </nav>
     </header>
-  );
-};
+  )
+}

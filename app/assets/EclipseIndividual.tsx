@@ -1,11 +1,10 @@
-
 interface EclipseIndividualProps {
-    /**
-     * Classname
-     */
-    classname: string;
+  /**
+   * Classname
+   */
+  classname: string
 }
-const EclipseIndividual = ({ classname }:EclipseIndividualProps) => {
+const EclipseIndividual = ({classname}: EclipseIndividualProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -66,11 +65,7 @@ const EclipseIndividual = ({ classname }:EclipseIndividualProps) => {
             type="matrix"
             values="0 0 0 0 0.12549 0 0 0 0 0.172549 0 0 0 0 0.34902 0 0 0 0.2 0"
           />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_1264_4864"
-          />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1264_4864" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -80,6 +75,6 @@ const EclipseIndividual = ({ classname }:EclipseIndividualProps) => {
         </filter>
       </defs>
     </svg>
-  );
-};
-export const EclipseIndividualIcon = EclipseIndividual;
+  )
+}
+export const EclipseIndividualIcon = EclipseIndividual

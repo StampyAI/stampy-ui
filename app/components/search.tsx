@@ -234,7 +234,7 @@ const ShowMoreSuggestions = ({
         const result = await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
 
         if (result.status == 200) {
-          const questions = await result.json() as any
+          const questions = (await result.json()) as any
           setExtraQuestions(questions) // don't set on API errors
         } else {
           console.error(await result.text())

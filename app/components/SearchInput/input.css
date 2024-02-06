@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
+.iconsMagnifyingGlass {
+  width: 16px;
+  position: relative;
+  height: 16px;
+}
+
+.search-box:focus-within {
+  border: 1px solid var(--colors-teal-500, #1d9089);
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+.search-box {
+  flex-grow: 1;
+  /*width: 100%;*/
+  position: relative;
+  height: 48px;
+  text-align: left;
+  font-size: 16px;
+  color: var(--colors-cool-grey-600, #788492);
+  font-family: Poppins;
+}
+.search-inputChild {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  left: 0%;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  box-sizing: border-box;
+}
+.search-content {
+  position: relative;
+  top: calc(50% - 13px);
+  left: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+.search-input {
+  position: relative;
+  letter-spacing: -0.01em;
+  line-height: 170%;
+  width: calc(100% - 62px);
+  border: 0;
+  text-align: left;
+  font-size: 16px;
+  color: var(--text-black, #1b2b3e);
+  font-family: Poppins;
+}
+.search-input:focus-visible {
+  border: 0;
+  outline: none;
+}
+.x-icon {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  right: 10px;
+}

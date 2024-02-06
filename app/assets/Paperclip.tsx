@@ -1,18 +1,13 @@
 interface PaperclipProps {
-    /**
-     * Classname
-     */
-    classname?: string;
+  /**
+   * Classname
+   */
+  classname?: string
 }
 
-const Paperclip = ({ classname }:PaperclipProps) => {
+const Paperclip = ({classname}: PaperclipProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 16 16"
-      className={classname}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" className={classname}>
       <g fill="#1D9089">
         <path
           fillRule="evenodd"
@@ -27,6 +22,6 @@ const Paperclip = ({ classname }:PaperclipProps) => {
         <path d="M5 6.50003c0-.27614.22386-.5.5-.5h5c.2761 0 .5.22386.5.5s-.2239.5-.5.5h-5c-.27614 0-.5-.22386-.5-.5Zm0 2c0-.27614.22386-.5.5-.5h5c.2761 0 .5.22386.5.5s-.2239.5-.5.5h-5c-.27614 0-.5-.22386-.5-.5ZM5 10.5c0-.2761.22386-.5.5-.5h5c.2761 0 .5.2239.5.5 0 .2762-.2239.5-.5.5h-5c-.27614 0-.5-.2238-.5-.5Zm0 2c0-.2761.22386-.5.5-.5h5c.2761 0 .5.2239.5.5 0 .2762-.2239.5-.5.5h-5c-.27614 0-.5-.2238-.5-.5Z" />
       </g>
     </svg>
-  );
-};
-export const PaperclipIcon = Paperclip;
+  )
+}
+export const PaperclipIcon = Paperclip

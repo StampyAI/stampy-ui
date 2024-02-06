@@ -1,29 +1,23 @@
-import React from "react";
-import "./box.css";
+import React from 'react'
+import './box.css'
 
 interface ContentBoxProps {
   /**
    * Is this the primary ContentBox of the page?
    */
-  primary?: boolean;
+  primary?: boolean
   /**
    * Element
    */
   // RightSide
 }
-export const ContentBox = ({ primary, rightSide }: ContentBoxProps) => {
+export const ContentBox = ({primary, rightSide}: ContentBoxProps) => {
   return (
-    <div className={["main-container", primary ? "primary" : ""].join(" ")}>
-      <div
-        className={["content-box-description", primary ? "primary" : ""].join(
-          " ",
-        )}
-      >
+    <div className={['main-container', primary ? 'primary' : ''].join(' ')}>
+      <div className={['content-box-description', primary ? 'primary' : ''].join(' ')}>
         <p>New to AI Safety?</p>
-        <span className="content-box-quick-read">
-          Something about reading and quick
-        </span>
-        <div className={"content-box-button"}>
+        <span className="content-box-quick-read">Something about reading and quick</span>
+        <div className={'content-box-button'}>
           <button>Start here</button>
           <img
             loading="lazy"
@@ -35,5 +29,5 @@ export const ContentBox = ({ primary, rightSide }: ContentBoxProps) => {
       </div>
       {rightSide ? rightSide : null}
     </div>
-  );
-};
+  )
+}

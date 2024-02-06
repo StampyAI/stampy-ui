@@ -1,44 +1,44 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CategoriesNav } from "../app/components/CategoriesNav/Menu.tsx";
+import type {Meta, StoryObj} from '@storybook/react'
+import {CategoriesNav} from '../app/components/CategoriesNav/Menu.tsx'
 
 const meta = {
-  title: "Components/CategoriesNav",
+  title: 'Components/CategoriesNav',
   component: CategoriesNav,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
-} satisfies Meta<typeof CategoriesNav>;
-export default meta;
-type Story = StoryObj<typeof CategoriesNav>;
+  tags: ['autodocs'],
+} satisfies Meta<typeof CategoriesNav>
+export default meta
+type Story = StoryObj<typeof CategoriesNav>
 export const Default: Story = {
   args: {
     categories: [
       {
-        name: "Alignment",
+        name: 'Alignment',
         id: 0,
         questions: [
-            {
-                title: "What is instrumental convergence?",
-                pageId: 0,
-            },
-            ],
+          {
+            title: 'What is instrumental convergence?',
+            pageId: 0,
+          },
+        ],
       },
       {
-        name: "Contributing",
+        name: 'Contributing',
         id: 1,
-        questions: []
+        questions: [],
       },
       {
-        name: "Definitions",
+        name: 'Definitions',
         id: 2,
-        questions: []
+        questions: [],
       },
       {
-        name: "Lorem",
+        name: 'Lorem',
         id: 3,
-        questions: []
+        questions: [],
       },
     ],
   },
-};
+}

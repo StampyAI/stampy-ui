@@ -24,8 +24,8 @@ export const NavBar = ({toc, categories}: NavBarProps) => {
   return (
     <header className="top-header">
       <nav className="top-nav">
-        <a href="/" style={{width:"175px"}}>
-          <AISafetyIcon classname={"top-logo"}  />
+        <a href="/" style={{width: '175px'}}>
+          <AISafetyIcon classname={'top-logo'} />
         </a>
         <ul className="top-menu">
           <MenuItem

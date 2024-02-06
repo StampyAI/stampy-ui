@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react'
 
-import "./tag.css";
+import './tag.css'
 
 export interface TagProps {
   /**
    * Children of the component
    */
-  children: string;
+  children: string
 }
-export const Tag = ({ children }: TagProps) => {
+export const Tag = ({children}: TagProps) => {
   return (
-    <div className={"tags-tag"}>
-      <div className={"tags-label"}>{children}</div>
+    <div className={'tags-tag'}>
+      <div className={'tags-label'}>{children}</div>
     </div>
-  );
-};
+  )
+}

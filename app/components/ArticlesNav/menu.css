@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .articles-vectorIcon {
   position: absolute;
@@ -63,12 +63,7 @@
   cursor: pointer;
 }
 .articles-autoLayoutHorizontal.active {
-  background-color: rgba(
-    237.0000010728836,
-    250.00000029802322,
-    249.00000035762787,
-    1
-  );
+  background-color: rgba(237.0000010728836, 250.00000029802322, 249.00000035762787, 1);
 }
 .articles-line {
   position: absolute;
@@ -122,7 +117,7 @@
 }
 
 .article-hasdot::after {
-  content: " ";
+  content: ' ';
   background-image: url(https://cdn.builder.io/api/v1/image/assets/TEMP/8b3b87af0a97a2778dbdc11f33a22e6c9b6a02a262bc2f698e343eefe3912ef2?apiKey=f1073757e44b4ccd8d59791af6c41a77&);
   background-repeat: no-repeat;
   width: 31px;

@@ -1,18 +1,12 @@
-
 interface EclipseTeamProps {
-    /**
-     * Classname
-     */
-    classname: string;
+  /**
+   * Classname
+   */
+  classname: string
 }
-const EclipseTeam = ({ classname }:EclipseTeamProps) => {
+const EclipseTeam = ({classname}: EclipseTeamProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 320 289"
-      className={classname}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 320 289" className={classname}>
       <g filter="url(#a)">
         <ellipse cx="160" cy="161.266" fill="#1A817C" rx="40" ry="40.2312" />
       </g>
@@ -54,18 +48,11 @@ const EclipseTeam = ({ classname }:EclipseTeamProps) => {
           <feGaussianBlur stdDeviation="12" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix values="0 0 0 0 0.12549 0 0 0 0 0.172549 0 0 0 0 0.34902 0 0 0 0.2 0" />
-          <feBlend
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_1264_4858"
-          />
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_1264_4858"
-            result="shape"
-          />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_1264_4858" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_1264_4858" result="shape" />
         </filter>
       </defs>
     </svg>
-  );
-};
-export const EclipseTeamIcon = EclipseTeam;
+  )
+}
+export const EclipseTeamIcon = EclipseTeam

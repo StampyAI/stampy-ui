@@ -5,9 +5,9 @@ const routes = (defineRoutes) =>
 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
-  ignoredRouteFiles: ["**/.*"],
+  ignoredRouteFiles: ['**/.*'],
   routes,
-  serverConditions: ["workerd", "worker", "browser"],
+  serverConditions: ['workerd', 'worker', 'browser'],
   serverMainFields: ['browser', 'module', 'main'],
   serverModuleFormat: 'esm',
   serverPlatform: 'neutral',

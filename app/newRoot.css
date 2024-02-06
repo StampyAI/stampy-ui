@@ -1319,9 +1319,9 @@ body {
   margin-top: 104px;
   border-top: 1px solid var(--colors-cool-grey-200, #dfe3e9);
 }
-.group-elements{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 10.9vw;
+.group-elements {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10.9vw;
 }

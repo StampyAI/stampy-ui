@@ -1,122 +1,116 @@
-import React, { FunctionComponent } from "react";
-import "./menu.css";
-import { act } from "react-dom/test-utils";
+import React, {FunctionComponent} from 'react'
+import './menu.css'
+import {act} from 'react-dom/test-utils'
 interface Article {
-  title: string;
-  id: number;
-  dropdown: Article[];
-  isHeader?: boolean;
+  title: string
+  id: number
+  dropdown: Article[]
+  isHeader?: boolean
 }
 interface ArticlesNavProps {
   /**
    * Articles List
    */
-  articles: Article[];
+  articles: Article[]
   /**
    * Selected article
    */
-  active: 0;
+  active: 0
   /**
    * Callback function to handle click on article
    */
-  onClick?: () => void;
+  onClick?: () => void
 }
 
-export const ArticlesNav = ({
-  articles,
-  active,
-  onclick,
-}: ArticlesNavProps) => {
-  const [selected, setSelected] = React.useState(active || 0);
+export const ArticlesNav = ({articles, active, onclick}: ArticlesNavProps) => {
+  const [selected, setSelected] = React.useState(active || 0)
   // function to open dropdown on click of article
-  const [dropdowns, setDropdowns] = React.useState([]);
+  const [dropdowns, setDropdowns] = React.useState([])
   const handleDropdown = (index) => {
-    const newDropdowns = [...dropdowns];
+    const newDropdowns = [...dropdowns]
     if (newDropdowns.includes(index)) {
-      const indexToRemove = newDropdowns.indexOf(index);
-      newDropdowns.splice(indexToRemove, 1);
+      const indexToRemove = newDropdowns.indexOf(index)
+      newDropdowns.splice(indexToRemove, 1)
     } else {
-      newDropdowns.push(index);
+      newDropdowns.push(index)
     }
-    setDropdowns(newDropdowns);
-  };
+    setDropdowns(newDropdowns)
+  }
   const handleClick = (index) => {
-    setSelected(index);
+    setSelected(index)
     if (onclick) {
-      onclick(index);
+      onclick(index)
     }
-  };
+  }
 
   return (
-    <div className={"articles-group"}>
+    <div className={'articles-group'}>
       {articles.map((article) => {
         if (article.isHeader) {
           return (
             <div
               key={`article-${article.id}`}
               className={[
-                "articles-autoLayoutHorizontal",
-                selected == article.id
-                  ? ["active", "article-hasdot"].join(" ")
-                  : "",
-              ].join(" ")}
+                'articles-autoLayoutHorizontal',
+                selected == article.id ? ['active', 'article-hasdot'].join(' ') : '',
+              ].join(' ')}
               onClick={() => handleClick(article.id)}
             >
-              <div className={["articles-headerLine"]}>{article.title}</div>
+              <div className={['articles-headerLine']}>{article.title}</div>
 
-              <div className={"articles-line"} />
+              <div className={'articles-line'} />
               {/*<div className={"articles-rectangle"} />*/}
             </div>
-          );
+          )
         } else {
           return (
             <div
               key={`article-${article.id}`}
               className={[
-                "articles-autoLayoutHorizontal",
-                selected == article.id ? ["active"].join(" ") : "",
-              ].join(" ")}
+                'articles-autoLayoutHorizontal',
+                selected == article.id ? ['active'].join(' ') : '',
+              ].join(' ')}
               onClick={() => handleClick(article.id)}
             >
               <div
                 className={[
-                  "articles-title",
-                  selected == article.id ? ["article-hasdot"].join(" ") : "",
-                ].join(" ")}
+                  'articles-title',
+                  selected == article.id ? ['article-hasdot'].join(' ') : '',
+                ].join(' ')}
               >
                 {article.title}
                 {article?.dropdown && article.dropdown.length !== 0 ? (
                   <div
                     onClick={() => handleDropdown(article.id)}
                     className={[
-                      "articles-dropdownIcon",
-                      dropdowns.includes(article.id) ? "active" : "",
-                    ].join(" ")}
+                      'articles-dropdownIcon',
+                      dropdowns.includes(article.id) ? 'active' : '',
+                    ].join(' ')}
                   />
                 ) : null}
               </div>
 
               <div
                 className={[
-                  "articles-dropdown",
-                  dropdowns.includes(article.id) ? "active" : "",
-                ].join(" ")}
+                  'articles-dropdown',
+                  dropdowns.includes(article.id) ? 'active' : '',
+                ].join(' ')}
               >
                 {article.dropdown?.map((dropdownArticle) => {
                   return (
                     <div
                       key={`dropdown-article-${dropdownArticle.id}`}
-                      className={"articles-dropdown-item"}
+                      className={'articles-dropdown-item'}
                     >
                       {dropdownArticle.title}
                     </div>
-                  );
+                  )
                 })}
               </div>
             </div>
-          );
+          )
         }
       })}
     </div>
-  );
-};
+  )
+}

@@ -1,18 +1,12 @@
-
 interface OpenBookProps {
-    /**
-     * Classname for the icon
-     */
-    classname: string;
+  /**
+   * Classname for the icon
+   */
+  classname: string
 }
-const OpenBook = ({ classname }:OpenBookProps) => {
+const OpenBook = ({classname}: OpenBookProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      className={classname}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className={classname}>
       <path
         stroke="#1D9089"
         strokeLinecap="round"
@@ -27,6 +21,6 @@ const OpenBook = ({ classname }:OpenBookProps) => {
         clipRule="evenodd"
       />
     </svg>
-  );
-};
-export const OpenBookIcon = OpenBook;
+  )
+}
+export const OpenBookIcon = OpenBook

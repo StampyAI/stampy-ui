@@ -1,19 +1,13 @@
-
 interface MagnifyingProps {
-    /**
-     * Classname
-     */
-    classnamme: string;
+  /**
+   * Classname
+   */
+  classnamme: string
 }
 
-const Magnifying = ({ classnamme }:MagnifyingProps) => {
+const Magnifying = ({classnamme}: MagnifyingProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 16 17"
-      className={classnamme}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 17" className={classnamme}>
       <path
         fill="#AFB7C2"
         fillRule="evenodd"
@@ -21,6 +15,6 @@ const Magnifying = ({ classnamme }:MagnifyingProps) => {
         clipRule="evenodd"
       />
     </svg>
-  );
-};
-export const MagnifyingIcon = Magnifying;
+  )
+}
+export const MagnifyingIcon = Magnifying

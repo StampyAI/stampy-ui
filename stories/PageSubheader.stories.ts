@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { PageSubheaderText } from "../app/components/PageSubheaderText.tsx";
+import type {Meta, StoryObj} from '@storybook/react'
+import {PageSubheaderText} from '../app/components/PageSubheaderText.tsx'
 
 const meta = {
-  title: "Components/SubHeader",
+  title: 'Components/SubHeader',
   component: PageSubheaderText,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
-} satisfies Meta<typeof PageSubheaderText>;
-export default meta;
-type Story = StoryObj<typeof PageSubheaderText>;
+  tags: ['autodocs'],
+} satisfies Meta<typeof PageSubheaderText>
+export default meta
+type Story = StoryObj<typeof PageSubheaderText>
 export const Default: Story = {
   args: {
-    text: "Introductory content",
+    text: 'Introductory content',
   },
-};
+}
