@@ -79,7 +79,6 @@ html.embed {
 body {
   height: 100%;
   width: 100%;
-  max-width: 1000px;
   margin: auto;
   padding: 0 var(--paddingSides);
   color: var(--colorText);
@@ -87,6 +86,7 @@ body {
   flex-direction: column;
   font: var(--baseFont);
   line-height: 1.5;
+  padding: 0px 5.556vw;
 }
 
 html.embed body {
@@ -947,7 +947,7 @@ a.see-more.visible:after {
 @media (prefers-color-scheme: dark) {
   :root {
     /* duplicate to avoid flash of white background while JS loads, consider some CSS postprocessing solution if this needs to be maintainable */
-    --bgColorPage: #121826;
+    --bgColorPage: #fff;
     --bgColorQuestion: #212936;
     --bgColorQuestionSearch: #121826;
     --bgColorCopied: #fed;
@@ -969,7 +969,7 @@ a.see-more.visible:after {
   }
 }
 :root.dark {
-  --bgColorPage: #121826;
+  --bgColorPage: #fff;
   --bgColorQuestion: #212936;
   --bgColorQuestionSearch: #121826;
   --bgColorCopied: #fed;

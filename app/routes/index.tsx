@@ -12,6 +12,13 @@ import {Discord} from '~/components/icons-generated'
 import ErrorBoundary from '~/components/errorHandling'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import type {Context} from '~/root'
+import {PageHeaderText} from '~/components/PageHeader'
+import {ContentBoxMain} from '~/components/ContentBoxMain'
+import {ContentBoxSecond} from '~/components/ContentBoxSecond'
+import {ContentBoxThird} from '~/components/ContentBoxThird'
+import {WidgetStampy} from '~/components/WidgetStampy'
+import {PageSubheaderText} from '~/components/PageSubHeader'
+import {GridSystem} from '~/components/GridSystem'
 
 const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -102,54 +109,73 @@ export default function App() {
   return (
     <>
       <Header />
-      <main onClick={handleSpecialLinks}>
-        {showSearch && (
-          <>
-            <Search
-              onSiteAnswersRef={onSiteAnswersRef}
-              openQuestionTitles={openQuestionTitles}
-              onSelect={selectQuestion}
-              embedWithoutDetails={embedWithoutDetails}
-              queryFromUrl={queryFromUrl}
-              limitFromUrl={limitFromUrl}
-              removeQueryFromUrl={removeQueryFromUrl}
-            />
+      <div className={'page-body'}>
+        <PageHeaderText
+          children={
+            <>
+              <p>Educational content</p>
+              <p>on all things AI Safety</p>
+            </>
+          }
+        />
+        <ContentBoxMain />
+        <ContentBoxSecond
+          Elements={{
+            'What are the main sources of AI existential risk?':
+              '/what-are-the-main-sources-of-ai-existential-risk',
+            'Do people seriously worry about existential risk from AI?':
+              '/do-people-seriously-worry-about-existential-risk-from-ai',
+            'Why would an AI do bad things?': '/why-would-an-ai-do-bad-things',
+          }}
+        />
+        <ContentBoxThird />
+        <WidgetStampy />
+        <div className={'top-margin-large'} />
+        <PageSubheaderText text={'Advanced Content'} />
+        <GridSystem
+          GridBoxes={[
+            {
+              title: 'Technical alignment research categories',
+              description: 'Lorem ipsum dolor sit amet consectetur',
+              icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9769202bfb08a9b87ab3d7e55cff70586447e8f76a8c076fff6f0d4e8902c5da?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+              url: 'https://google.com',
+            },
+            {
+              title: 'Governance',
+              description: 'Lorem ipsum dolor sit amet consectetur',
+              icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/7b7d22b33dd958b157082b2ca8a77eef6ad552d10764d38f8035285bc1f7be11?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+              url: 'https://google.com',
+            },
+            {
+              title: 'Existential risk concepts',
+              description: 'Lorem ipsum dolor sit amet consectetur',
+              icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/11cfe00a2459aad8521abe570fe704c47a982a1d7686ea916cc318010eaa7a32?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+              url: 'https://google.com',
+            },
+            {
+              title: 'Predictions on advanced AI',
+              description: 'Lorem ipsum dolor sit amet consectetur',
+              icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/fd10e7106c3d8988b4046afc200b9224122ac8051c52aae1ce0debcf3f04f3cd?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+              url: 'https://google.com',
+            },
+            {
+              title: 'Prominent research organizations',
+              description: 'Lorem ipsum dolor sit amet consectetur',
+              icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/0de85958d44d9176c2dd4eb584ec22c23e7200150932ebc110a86bdf52f595d9?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+              url: 'https://google.com',
+            },
+          ]}
+        />
 
-            {/* Add an extra, draggable div here, so that questions can be moved to the top of the list */}
-            <div draggable onDragOver={handleDragOver({pageid: TOP})}>
-              &nbsp;
-            </div>
-            <DragPlaceholder pageid={TOP} />
+        {!embed && (
+          <>
+            <div className={'top-margin-large-with-border'} />
+
+            <div className={'top-margin-large'} />
+            <Footer />
           </>
         )}
-        <div className="articles-container">
-          {questions.map((question) => (
-            <ErrorBoundary title={question.title} key={question.pageid}>
-              <Question
-                questionProps={question}
-                onLazyLoadQuestion={onLazyLoadQuestion}
-                onToggle={toggleQuestion}
-                selectQuestion={selectQuestion}
-                glossary={glossary}
-                onDragStart={handleDragStart(question)}
-                onDragEnd={handleDragEnd(question)}
-                onDragOver={handleDragOver(question)}
-                draggable
-                embedWithoutDetails={embedWithoutDetails}
-              />
-              <DragPlaceholder pageid={question.pageid} />
-            </ErrorBoundary>
-          ))}
-        </div>
-      </main>
-      {!embed && (
-        <>
-          <a id="discordChatBtn" href="https://discord.com/invite/Bt8PaRTDQC">
-            <Discord />
-          </a>
-          <Footer />
-        </>
-      )}
+      </div>
     </>
   )
 }

@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+body {
+  padding: 0px 5.556vw;
+}
+.page-body {
+  padding: 0px 13.333vw;
+}
+.img-2 {
+  width: 16px;
+  height: 16px;
+}
 .article-meta {
   display: flex;
   align-items: center;
@@ -204,7 +215,7 @@
 .main-container-box-table {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   border-radius: 6px;
   align-items: stretch;
@@ -212,6 +223,7 @@
   position: relative;
   box-shadow: 0 16px 40px #afb7c233;
   border: 1px solid #dfe3e9;
+  margin-top: 80px;
 }
 
 .content-box-description {
@@ -230,7 +242,7 @@
 
 .content-box-description {
   font-size: 35px;
-  max-width: 340px;
+  max-width: 30.486vw;
   margin-right: 100px;
   font-family: Poppins;
   padding-right: 200px;
@@ -278,22 +290,24 @@
 
 .eclipse-team-bottom {
   position: absolute;
-  width: 250px;
+  width: 325px;
   bottom: 0;
-  right: 72px;
+  right: 14vw;
+  height: 83%;
 }
 
 .eclipse-individual-top {
-  width: 250px;
+  height: 100%;
+  width: 325px;
   position: absolute;
   top: 0;
-  right: 2px;
+  right: 4.236vw;
 }
 
 .main-container-box-table {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   border-radius: 6px;
   align-items: stretch;
@@ -319,7 +333,7 @@
 
 .content-box-description {
   font-size: 35px;
-  max-width: 340px;
+  max-width: 30.486vw;
   margin-right: 100px;
   font-family: Poppins;
   padding-right: 200px;
@@ -376,10 +390,12 @@
   justify-content: center;
   width: 100%;
   display: block;
-  padding: 50px 80px 50px 57px;
+  padding: 50px 0px 50px 0px;
   align-items: stretch;
   flex-wrap: nowrap;
   position: relative;
+  margin-top: 80px;
+  border-radius: 6px;
 }
 
 .content-box-description {
@@ -402,7 +418,7 @@
 
 .content-box-description {
   font-size: 35px;
-  max-width: 340px;
+  max-width: 30.486vw;
   margin-right: 100px;
   font-family: Poppins;
   padding-right: 200px;
@@ -557,6 +573,9 @@
   text-align: center;
   width: 100%;
 }
+.footer-copyright a {
+  color: inherit;
+}
 
 .footer-brand {
   top: 104px;
@@ -694,7 +713,6 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
 }
 
 .h1 {
@@ -811,6 +829,8 @@ body {
   font-weight: 600;
   max-height: 91px;
   max-width: 174px;
+  width: 100%;
+  height: 100%;
 }
 
 .top-menu {
@@ -992,6 +1012,7 @@ body {
   text-align: left;
   display: inline-block;
   width: 770px;
+  margin-top: 40px;
 }
 
 .container-page-title p {
@@ -1138,7 +1159,7 @@ body {
 
 .widget-input {
   height: 100%;
-  width: 100%;
+  width: calc(100% + 45px);
   top: 0%;
   right: 0%;
   bottom: 0%;
@@ -1177,7 +1198,7 @@ body {
 .widget-textbox {
   top: calc(50% - 32px);
   left: calc(50% - 435px);
-  width: 870px;
+  width: 100%;
   height: 64px;
 }
 
@@ -1192,11 +1213,8 @@ body {
 }
 
 .send-button-icon {
-  position: sticky;
-  top: 25%;
-  right: 25%;
-  bottom: 25%;
-  left: 25%;
+  position: absolute;
+  inset: 0%;
   max-width: 100%;
   overflow: hidden;
   max-height: 100%;
@@ -1207,13 +1225,13 @@ body {
   width: 48px;
   height: 48px;
   z-index: 2;
-  left: -53px;
+  left: -18px;
 }
 
 .widget-ask {
   top: calc(50% + 233px);
   left: calc(50% - 435px);
-  width: 870px;
+  width: 100%;
   height: 64px;
   color: var(--colors-cool-grey-600, #788492);
   display: inline-flex;
@@ -1258,7 +1276,7 @@ body {
 .widget-chat-group {
   top: 187px;
   left: 56px;
-  width: 814px;
+  width: 100%;
   height: 319px;
 }
 
@@ -1270,7 +1288,8 @@ body {
 }
 
 .widget-group {
-  width: 100%;
+  margin-top: 108px;
+  width: 60vw;
   position: relative;
   height: 594px;
   text-align: left;
@@ -1288,4 +1307,14 @@ body {
   background: #f9fafc;
   width: 100%;
   border-radius: 6px;
+}
+
+.top-margin-large {
+  content: ' ';
+  margin-top: 108px;
+}
+.top-margin-large-with-border {
+  content: ' ';
+  margin-top: 104px;
+  border-top: 1px solid var(--colors-cool-grey-200, #dfe3e9);
 }

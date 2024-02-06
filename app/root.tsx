@@ -1,7 +1,6 @@
 import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import {cssBundleHref} from '@remix-run/css-bundle'
-import oldStyles from '~/root.css'
 import newStyles from '~/newRoot.css'
 
 import {useLoaderData} from '@remix-run/react'
@@ -74,7 +73,7 @@ export const meta: MetaFunction<typeof loader> = ({data}) => {
 }
 
 export const links: LinksFunction = () =>
-  [oldStyles, newStyles, cssBundleHref]
+  [newStyles, cssBundleHref]
     .filter((i) => i)
     .map((styles) => ({rel: 'stylesheet', href: styles as string}))
 
