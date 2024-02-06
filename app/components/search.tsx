@@ -7,7 +7,7 @@ import {useSearch, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 import {useSearchParams} from '@remix-run/react'
-import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions.$question'
+import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions.$questionId'
 import {Question} from '~/server-utils/stampy'
 
 type Props = {

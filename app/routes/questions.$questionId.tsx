@@ -15,18 +15,18 @@ const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
 export const loader = wrapCORS(async ({request, params}: LoaderFunctionArgs) => {
-  const {question} = params
-  if (!question) {
+  const {questionId} = params
+  if (!questionId) {
     throw Error('missing question title')
   }
 
   try {
-    return await loadQuestionDetail(request, question)
+    return await loadQuestionDetail(request, questionId)
   } catch (error: unknown) {
     const data: Question = {
-      pageid: question,
+      pageid: questionId,
       title: UNKNOWN_QUESTION_TITLE,
-      text: `No question found with ID ${question}. Please go to the Discord in the lower right
+      text: `No question found with ID ${questionId}. Please go to the Discord in the lower right
 (or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
       answerEditLink: null,
       relatedQuestions: [],
