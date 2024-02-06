@@ -4,8 +4,8 @@ import {useLoaderData} from '@remix-run/react'
 import {loadTags, Tag as TagType} from '~/server-utils/stampy'
 import {Header, Footer} from '~/components/layouts'
 import {MagnifyingGlass} from '~/components/icons-generated'
-import {TagQuestions, Tag} from './$tag'
-import {Undo} from '../../components/icons-generated'
+import {TagQuestions, Tag} from './tags.$tag'
+import {Undo} from '../components/icons-generated'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {

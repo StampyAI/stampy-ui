@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import type {ActionArgs} from '@remix-run/cloudflare'
+import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
 import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
@@ -13,7 +13,7 @@ const getRelated = async (question: string): Promise<RelatedQuestions> => {
   }
 }
 
-export const action = async ({request}: ActionArgs) => {
+export const action = async ({request}: ActionFunctionArgs) => {
   const formData = await request.formData()
   let title = formData.get('title') as string
   const state = formData.get('stateString')

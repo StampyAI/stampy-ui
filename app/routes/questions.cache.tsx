@@ -1,5 +1,5 @@
-import {ActionArgs, json} from '@remix-run/cloudflare'
-import {useLoaderData, useActionData, useTransition, Form} from '@remix-run/react'
+import {ActionFunctionArgs, json} from '@remix-run/cloudflare'
+import {useLoaderData, useActionData, useNavigation, Form} from '@remix-run/react'
 import {useEffect, useState} from 'react'
 import {loadCacheKeys, loadCacheValue, cleanCache} from '~/server-utils/kv-cache'
 
@@ -11,7 +11,7 @@ enum Actions {
 
 export const loader = async () => await loadCacheKeys()
 
-export const action = async ({request}: ActionArgs) => {
+export const action = async ({request}: ActionFunctionArgs) => {
   const data = Array.from(await request.formData()) as [Actions, string][]
   if (data.length !== 1) {
     return json(
@@ -34,7 +34,7 @@ export const action = async ({request}: ActionArgs) => {
 export default function Cache() {
   const keys = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
-  const transition = useTransition()
+  const transition = useNavigation()
   // @ts-expect-error inferred type kinda looks OK, but TS is unhappy anyway
   const {error, cacheKey, cacheValue} = actionData ?? {}
   const [cacheValues, setCacheValues] = useState(() =>
@@ -54,7 +54,7 @@ export default function Cache() {
       <h1>Cached data</h1>
       <button name={Actions.delete}>Clean cache</button>
       <button name={Actions.reload}>Reload keys</button>
-      {transition.type !== 'idle' && transition.type}
+      {transition.state !== 'idle' && transition.state}
       {error && <div className="error">{error}</div>}
       <h2>Keys:</h2>
       <ul>

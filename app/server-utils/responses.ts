@@ -1,4 +1,4 @@
-import {LoaderArgs, json} from '@remix-run/cloudflare'
+import {LoaderFunctionArgs, json} from '@remix-run/cloudflare'
 
 export const jsonCORS = <T>(data: T) =>
   json(data, {
@@ -37,8 +37,8 @@ export const CORSOptions = (request: Request) => {
   )
 }
 
-type Handler = (args: LoaderArgs) => any
-export const wrapCORS = (fn: Handler) => async (args: LoaderArgs) => {
+type Handler = (args: LoaderFunctionArgs) => any
+export const wrapCORS = (fn: Handler) => async (args: LoaderFunctionArgs) => {
   if (args.request.method == 'OPTIONS') {
     return CORSOptions(args.request)
   }

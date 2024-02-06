@@ -7,7 +7,7 @@ kv_namespaces = [
   { binding = "STAMPY_KV", id = "{STAMPY_KV_ID}" }
 ]
 compatibility_date = "2022-02-19"
-compatibility_flags = ["url_standard"]
+compatibility_flags = ["url_standard", "streams_enable_constructors"]
 
 [site]
 bucket = "./public"

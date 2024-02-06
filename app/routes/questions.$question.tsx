@@ -1,20 +1,20 @@
-import {wrapCORS} from '../../server-utils/responses'
-import type {LoaderArgs} from '@remix-run/cloudflare'
+import {wrapCORS} from '../server-utils/responses'
+import type {LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {GlossaryEntry, loadQuestionDetail, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
 import type {Question, Glossary, PageId, Banner as BannerType} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
-import {Tags} from '~/routes/tags/$tag'
+import {Tags} from '~/routes/tags.$tag'
 import CopyLink from '~/components/copyLink'
-import {Action, ActionType} from '~/routes/questions/actions'
+import {Action, ActionType} from '~/routes/questions.actions'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
-export const loader = wrapCORS(async ({request, params}: LoaderArgs) => {
+export const loader = wrapCORS(async ({request, params}: LoaderFunctionArgs) => {
   const {question} = params
   if (!question) {
     throw Error('missing question title')

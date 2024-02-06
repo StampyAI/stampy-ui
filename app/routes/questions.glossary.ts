@@ -1,9 +1,9 @@
-import {wrapCORS} from '../../server-utils/responses'
-import {LoaderArgs} from '@remix-run/cloudflare'
+import {wrapCORS} from '../server-utils/responses'
+import {LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadGlossary} from '~/server-utils/stampy'
 
-export const loader = wrapCORS(async ({request}: LoaderArgs) => {
+export const loader = wrapCORS(async ({request}: LoaderFunctionArgs) => {
   return await loadGlossary(request)
 })
 type Data = ReturnType<typeof loadGlossary>

@@ -1,13 +1,13 @@
 import {useState, useEffect, useRef, MutableRefObject, FocusEvent} from 'react'
 import debounce from 'lodash/debounce'
-import {AddQuestion} from '~/routes/questions/add'
-import {Action, ActionType} from '~/routes/questions/actions'
+import {AddQuestion} from '~/routes/questions.add'
+import {Action, ActionType} from '~/routes/questions.actions'
 import {MagnifyingGlass, Edit} from '~/components/icons-generated'
 import {useSearch, SearchResult} from '~/hooks/search'
 import AutoHeight from 'react-auto-height'
 import Dialog from '~/components/dialog'
 import {useSearchParams} from '@remix-run/react'
-import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions/$question'
+import {LINK_WITHOUT_DETAILS_CLS} from '~/routes/questions.$question'
 import {Question} from '~/server-utils/stampy'
 
 type Props = {
@@ -234,7 +234,7 @@ const ShowMoreSuggestions = ({
         const result = await fetch(`/questions/search?question=${encodeURIComponent(question)}`)
 
         if (result.status == 200) {
-          const questions = await result.json()
+          const questions = await result.json() as any
           setExtraQuestions(questions) // don't set on API errors
         } else {
           console.error(await result.text())

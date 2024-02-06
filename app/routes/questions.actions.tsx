@@ -1,5 +1,5 @@
 import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
-import type {ActionArgs} from '@remix-run/cloudflare'
+import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
@@ -75,7 +75,7 @@ const actions = {
   },
 } as ActionsDict
 
-export const action = async ({request}: ActionArgs) => {
+export const action = async ({request}: ActionFunctionArgs) => {
   const formData = await request.formData()
   const pageid = formData.get('pageid') as string
   const actionType = formData.get('action') as ActionType
