@@ -43,7 +43,24 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "wrangler": "^3.24.0"
+    "wrangler": "^3.24.0",
+
+
+    "@storybook/addon-designs": "^7.0.9",
+    "@storybook/addon-essentials": "^7.6.8",
+    "@storybook/addon-interactions": "^7.6.8",
+    "@storybook/addon-links": "^7.6.8",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.8",
+    "@storybook/react": "^7.6.8",
+    "@storybook/react-vite": "^7.6.8",
+    "@storybook/test": "^7.6.8",
+    "@vitejs/plugin-react": "^4.2.1",
+    "chromatic": "^10.2.2",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-storybook": "^0.6.15",
+    "storybook": "^7.6.8",
+    "vite": "^5.0.8"
   },
   "engines": {
     "node": ">=18"
@@ -64,7 +81,9 @@
     "wrangler": "wrangler",
     "deploy": "npm run build && wrangler deploy",
     "test": "npm run build && jest",
-    "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts"
+    "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts",
+
+    "storybook": "storybook dev -p 6006"
   },
   "main": "build/index.js"
 }
