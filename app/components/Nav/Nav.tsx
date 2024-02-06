@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import "./nav.css";
 import { MenuItem } from "../Menu/MenuItem";
-import { OpenBookIcon } from "../../../../stampyReact/stampy-ui/src/assets/OpenBook.tsx";
-import { ChatBoxIcon } from "../../../../stampyReact/stampy-ui/src/assets/ChatBox.tsx";
-import { AISafetyIcon } from "../../../../stampyReact/stampy-ui/src/assets/AISafety.tsx";
-import { MagnifyingIcon } from "../../../../stampyReact/stampy-ui/src/assets/Magnifying.tsx";
+import { OpenBookIcon } from "../../assets/OpenBook.tsx";
+import { ChatBoxIcon } from "../../assets/ChatBox.tsx";
+import { AISafetyIcon } from "../../assets/AISafety.tsx";
+import { MagnifyingIcon } from "../../assets/Magnifying.tsx";
 import { ArticlesDropdown } from "../ArticlesDropdown/Dropdown";
 
 export interface NavBarProps {
