@@ -1,5 +1,6 @@
 import {useLoaderData} from '@remix-run/react'
-import {Header, Footer} from '~/components/layouts'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 import {loader} from '~/routes/questions.$questionId'
 export {loader}
 import {Tag} from '~/components/Tags/Tag'
@@ -11,7 +12,7 @@ import useToC from '~/hooks/useToC'
 const Bla = ({title, tags, text}: {title: string; text: string; tags: any[]}) => {
   const ttr = (text: string, rate = 160) => {
     const time = text.split(' ')
-    return Math.ceil(time.length / rate)
+    return Math.round(time.length / rate)
   }
 
   return (
@@ -32,13 +33,13 @@ export default function Article() {
   const {
     data: {title, text, tags, pageid},
   } = useLoaderData<any>()
-  const {findSection, getPath} = useToC()
+  const {toc, findSection, getPath} = useToC()
   const section = findSection(pageid)
   const path = getPath(pageid)
 
   return (
     <>
-      <Header />
+      <Header toc={toc} categories={[]} />
       <div className="flex-container">
         {section && <ArticlesNav current={pageid} article={section} path={path} />}
         <Bla text={text} title={title} tags={tags} />

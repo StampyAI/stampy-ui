@@ -265,8 +265,8 @@ const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
   values
     .map((e) => e.name)
-    .filter((name) => Object.prototype.hasOwnProperty.call(mapper, name))
-    .map((name) => mapper[name])
+    .map((name) => (mapper && mapper[name]) || {name})
+    .filter((i) => i)
 
 const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => ({
   title: name,

@@ -9,6 +9,7 @@ const useToC = () => {
   useEffect(() => {
     const getToc = async () => {
       const {data} = await fetchTOC()
+      console.log(data)
       setToC(data)
     }
     getToc()

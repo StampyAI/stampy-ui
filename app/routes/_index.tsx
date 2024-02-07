@@ -1,7 +1,8 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {ShouldRevalidateFunction, useOutletContext} from '@remix-run/react'
-import {loadInitialQuestions, loadTags} from '~/server-utils/stampy'
-import {Header, Footer} from '~/components/layouts'
+import {ShouldRevalidateFunction, useOutletContext, useLoaderData} from '@remix-run/react'
+import {loadTags} from '~/server-utils/stampy'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 import type {Context} from '~/root'
 import {PageHeaderText} from '~/components/PageHeader'
 import {ContentBoxMain} from '~/components/ContentBoxMain'
@@ -10,34 +11,29 @@ import {ContentBoxThird} from '~/components/ContentBoxThird'
 import {WidgetStampy} from '~/components/WidgetStampy'
 import {PageSubheaderText} from '~/components/PageSubHeader'
 import {GridSystem} from '~/components/Grid/GridSystem'
+import useToC from '~/hooks/useToC'
 
-const empty: Awaited<ReturnType<typeof loadInitialQuestions>> = {data: [], timestamp: ''}
+const empty: Awaited<ReturnType<typeof loadTags>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  const showInitialFromUrl = !!request.url.match(/showInitial/)
-  const onlyInitialFromUrl = !!request.url.match(/onlyInitial/)
-  const embedFromUrl = !!request.url.match(/embed/)
-  const queryFromUrl = !!request.url.match(/[?&]q=/)
-  const fetchInitial = showInitialFromUrl || onlyInitialFromUrl || (!embedFromUrl && !queryFromUrl)
-  if (!fetchInitial) return {initialQuestionsData: empty}
-
   try {
-    await loadTags(request)
-    const initialQuestionsData = await loadInitialQuestions(request)
-    return {initialQuestionsData}
+    const tags = await loadTags(request)
+    return {tags}
   } catch (e) {
     console.error(e)
-    return {initialQuestionsData: empty}
+    return {tags: empty}
   }
 }
 
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
+  const {tags} = useLoaderData<ReturnType<typeof loader>>()
   const {embed} = useOutletContext<Context>()
+  const {toc} = useToC()
 
   return (
     <>
-      <Header />
+      <Header toc={toc} categories={tags.data} />
       <div className={'page-body'}>
         <PageHeaderText>
           <p>Educational content</p>

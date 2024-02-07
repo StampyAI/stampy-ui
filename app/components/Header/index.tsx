@@ -9,11 +9,11 @@ import type {Tag} from '~/server-utils/stampy'
 import './nav.css'
 import Search from '../search'
 
-export interface NavBarProps {
+export interface HeaderProps {
   toc: TOCItem[]
   categories: Tag[]
 }
-export const NavBar = ({toc, categories}: NavBarProps) => {
+export const Header = ({toc, categories}: HeaderProps) => {
   const [isSticky, setSticky] = React.useState(false)
   const MouseEnter = () => {
     setSticky(true)
@@ -60,4 +60,4 @@ export const NavBar = ({toc, categories}: NavBarProps) => {
     </header>
   )
 }
-export default NavBar
+export default Header

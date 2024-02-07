@@ -1,4 +1,5 @@
-import {Header, Footer} from '~/components/layouts'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import type {Question} from '../server-utils/stampy'
 
@@ -52,7 +53,7 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <Header categories={[]} toc={[]} />
       <main>
         <ul className="urls">
           <li>

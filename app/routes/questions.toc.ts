@@ -3,6 +3,10 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadAllQuestions, Question, PageId} from '~/server-utils/stampy'
 
 const MAX_LEVELS = 3
+export const INTRODUCTORY = 'Introductory'
+export const ADVANCED = 'Advanced'
+
+export type Category = typeof INTRODUCTORY | typeof ADVANCED | undefined
 
 export type TOCItem = {
   title: string
@@ -11,21 +15,30 @@ export type TOCItem = {
   icon?: string
   hasText: boolean
   children?: TOCItem[]
+  category?: Category
 }
 type LoaderResp = {
   data: TOCItem[]
   timestamp: string
 }
 
+const getCategory = (tags: string[]): Category => {
+  if (!tags) return undefined
+  if (tags.includes(INTRODUCTORY)) return INTRODUCTORY
+  if (tags.includes(ADVANCED)) return ADVANCED
+  return undefined
+}
+
 const formatQuestion =
   (level: number) =>
-  ({title, pageid, subtitle, icon, children, text}: Question): TOCItem => ({
+  ({title, pageid, subtitle, icon, children, text, tags}: Question): TOCItem => ({
     title,
     subtitle: subtitle ? subtitle : undefined,
     pageid,
     icon: icon ? icon : undefined,
     hasText: !!text,
     children: level < MAX_LEVELS ? children?.map(formatQuestion(level + 1)) : undefined,
+    category: getCategory(tags),
   })
 
 export const loadToC = async (request: any): Promise<LoaderResp> => {

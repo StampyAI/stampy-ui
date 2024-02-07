@@ -1,6 +1,7 @@
 import {useEffect, useState, MouseEvent} from 'react'
 import {useOutletContext} from '@remix-run/react'
-import {Header, Footer} from '~/components/layouts'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 import useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {LINK_WITHOUT_DETAILS_CLS, fetchQuestion, Question} from '~/routes/questions.$questionId'
 import {QuestionState} from '~/server-utils/stampy'
@@ -147,7 +148,7 @@ export default function App() {
       <style>{`
         body { max-width: 1400px; }
             `}</style>
-      <Header />
+      <Header toc={[]} categories={[]} />
       <main className="toc-container" onClick={handleSpecialLinks}>
         <ToC toc={toc} selectItem={selectItem} />
         <div style={{flex: '5 3 auto'}}>

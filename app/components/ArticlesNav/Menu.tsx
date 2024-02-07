@@ -15,27 +15,28 @@ const DropdownIcon = ({article, path}: Article) => {
 }
 
 const Title = ({article, path, current}: Article) => {
-    const selectedClass = article?.pageid === current ? ' selected' : ''
-    if (article.pageid === (path && path[0])) {
-        return (
-            <a href={`/${article.pageid}`}>
-                <div className={'article' + selectedClass}>
-                    <div className="articles-headerLine">{article?.title}</div>
-                </div>
-            </a>
-        )
-    }
+  const selectedClass = article?.pageid === current ? ' selected' : ''
+  if (article.pageid === (path && path[0])) {
     return (
-        <summary className={'articles-title' + selectedClass}>
-            {!article.hasText ? article.title : <a href={`/${article.pageid}`}>{article.title}</a>}
-            <DropdownIcon article={article} path={path} />
-        </summary>
+      <a href={`/${article.pageid}`}>
+        <div className={'article' + selectedClass}>
+          <div className="articles-headerLine">{article?.title}</div>
+        </div>
+      </a>
     )
+  }
+  return (
+    <summary className={'articles-title' + selectedClass}>
+      {!article.hasText ? article.title : <a href={`/${article.pageid}`}>{article.title}</a>}
+      <DropdownIcon article={article} path={path} />
+    </summary>
+  )
 }
 
 const ArticleLevel = ({article, path, current}: Article) => {
   if (!article.hasText && (!article.children || article.children.length === 0)) return null
-    const isParentClass = article.pageid !== current && (path || []).includes(article.pageid) ? ' parent' : ''
+  const isParentClass =
+    article.pageid !== current && (path || []).includes(article.pageid) ? ' parent' : ''
   return (
     <details
       key={article.pageid}

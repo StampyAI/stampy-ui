@@ -2,11 +2,13 @@ import {useEffect, useState} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {useLoaderData} from '@remix-run/react'
 import {loadTags, Tag as TagType} from '~/server-utils/stampy'
-import {Header, Footer} from '~/components/layouts'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
 import {CategoriesNav} from '../components/CategoriesNav/Menu'
 import {ListTable} from '~/components/Table/ListTable'
 import {H1} from '~/components/Typography/H1'
 import {Paragraph} from '~/components/Typography/Paragraph'
+import useToC from '~/hooks/useToC'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {
@@ -26,6 +28,7 @@ export default function App() {
   const {data = []} = tags ?? {}
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
   const [tagsFilter, setTagsFilter] = useState<string>('')
+  const {toc} = useToC()
 
   const [sortBy, setSortBy] = useState<string>('alphabetically')
   const sortFuncs: SortFunc = {
@@ -49,7 +52,7 @@ export default function App() {
   }
   return (
     <>
-      <Header />
+      <Header toc={toc} categories={data} />
       <div className={'top-margin-large'} />
       <main>
         <div className={'group-elements'}>

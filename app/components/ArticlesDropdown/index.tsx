@@ -1,15 +1,17 @@
 import type {Tag} from '~/server-utils/stampy'
-import type {TOCItem} from '~/routes/questions.toc'
+import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
 import './dropdown.css'
 
-const ArticlesSection = ({title, pageid, children}: TOCItem) => (
-  <div key={`${pageid}-${title}`}>
-    <div className="articles-dropdown-title">{title}</div>
-    {children?.map(({pageid, title}: TOCItem) => (
-      <a key={`${pageid}-${title}`} className="articles-dropdown-entry" href={`/${pageid}`}>
-        {title}
-      </a>
-    ))}
+const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) => (
+  <div>
+    <div className="articles-dropdown-title">{category}</div>
+    {toc
+      .filter((item) => item.category === category)
+      .map(({pageid, title}: TOCItem) => (
+        <a key={`${pageid}-${title}`} className="articles-dropdown-entry" href={`/${pageid}`}>
+          {title}
+        </a>
+      ))}
   </div>
 )
 
@@ -33,22 +35,25 @@ export const ArticlesDropdown = ({
     onMouseLeave={onMouseLeave}
     style={{display: isSticky ? 'flex' : 'none'}}
   >
-    <div className="articles-dropdown-grid">{toc.map(ArticlesSection)}</div>
+    <div className="articles-dropdown-grid">
+      <ArticlesSection category={INTRODUCTORY} toc={toc} />
+      <ArticlesSection category={ADVANCED} toc={toc} />
+    </div>
 
-    <div className={'articles-dropdown-grid'}>
+    <div className="articles-dropdown-grid">
       {/*sorted right side*/}
-      <div className={'articles-dropdown-title'}>Browse by category</div>
+      <div className="articles-dropdown-title">Browse by category</div>
 
       {categories?.map(({rowId, name}) => {
         return (
-          <a key={rowId} className={'articles-dropdown-teal-entry'} href={`/tags/${name}`}>
+          <a key={rowId} className="articles-dropdown-teal-entry" href={`/tags/${name}`}>
             {name}
           </a>
         )
       })}
 
-      <div className={'dropdown-button'}>
-        <a href="/tags" className={'dropdown-button-label'}>
+      <div className="dropdown-button">
+        <a href="/tags" className="dropdown-button-label">
           Browse all categories
         </a>
       </div>
