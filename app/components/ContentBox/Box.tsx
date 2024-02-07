@@ -1,4 +1,3 @@
-import React from 'react'
 import './box.css'
 
 interface ContentBoxProps {
@@ -6,12 +5,8 @@ interface ContentBoxProps {
    * Is this the primary ContentBox of the page?
    */
   primary?: boolean
-  /**
-   * Element
-   */
-  // RightSide
 }
-export const ContentBox = ({primary, rightSide}: ContentBoxProps) => {
+export const ContentBox = ({primary}: ContentBoxProps) => {
   return (
     <div className={['main-container', primary ? 'primary' : ''].join(' ')}>
       <div className={['content-box-description', primary ? 'primary' : ''].join(' ')}>
@@ -27,7 +22,6 @@ export const ContentBox = ({primary, rightSide}: ContentBoxProps) => {
           />
         </div>
       </div>
-      {rightSide ? rightSide : null}
     </div>
   )
 }

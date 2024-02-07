@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {ContentBoxTable} from '../app/components/ContentBoxTable/BoxWithTable.tsx'
+import {ContentBoxTable} from '../app/components/ContentBoxTable/BoxWithTable'
 
 const meta = {
   title: 'Components/ContentBoxTable',
@@ -15,12 +15,10 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    Elements: {
-      'What are the main sources of AI existential risk?':
-        '/what-are-the-main-sources-of-ai-existential-risk',
-      'Do people seriously worry about existential risk from AI?':
-        '/do-people-seriously-worry-about-existential-risk-from-ai',
-      'Why would an AI do bad things?': '/why-would-an-ai-do-bad-things',
-    },
+    elements: [
+        {title: 'What are the main sources of AI existential risk?', pageid: '123'},
+        {title: 'Do people seriously worry about existential risk from AI?', pageid: '123'},
+        {title: 'Why would an AI do bad things?', pageid: '123'},
+    ],
   },
 }

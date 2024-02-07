@@ -1,6 +1,4 @@
-import React from 'react'
-
-export const MaskGroup = ({icon}) => {
+export const MaskGroup = () => {
   return (
     <img
       loading="lazy"

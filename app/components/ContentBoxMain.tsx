@@ -1,6 +1,4 @@
-import React from 'react'
 import {ArrowRight} from '~/components/icons-generated'
-import {EclipseBook} from '~/components/icons-generated'
 
 export const ContentBoxMain = () => {
   return (

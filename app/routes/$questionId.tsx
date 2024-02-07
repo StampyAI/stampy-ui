@@ -5,15 +5,15 @@ export {loader}
 import {Tag} from '~/components/Tags/Tag'
 import {H2} from '~/components/Typography/H2'
 import {Paragraph} from "~/components/Typography/Paragraph";
+
+
 export default function Article() {
-  const {
-    data: {title, text,tags},
-  } = useLoaderData<any>()
-    const ttr = (strings,rate=160) => {
-        const time = strings.split(" ")
+  const {data: {title, text, tags}} = useLoaderData<any>()
+    const ttr = (text: string, rate=160) => {
+        const time = text.split(" ")
         return Math.round(time.length/rate)
     }
-    console.log(useLoaderData<any>())
+
   return (
     <>
       <Header />

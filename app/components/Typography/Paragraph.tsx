@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import './paragraph.css'
 export interface ParagraphProps {
   /**
    * Children of the component
    */
-  children: string
+  children: ReactNode
   /**
    * Style of the component
    */

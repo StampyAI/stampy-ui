@@ -1,10 +1,12 @@
 import React from 'react'
-import {MenuItem} from '../Menu/MenuItem'
-import {OpenBookIcon} from '~/assets/OpenBook.tsx'
-import {ChatBoxIcon} from '../../assets/ChatBox.tsx'
-import {AISafetyIcon} from '../../assets/AISafety.tsx'
-import ArticlesDropdown from '../ArticlesDropdown'
-import {SearchInput} from '../SearchInput/Input'
+import {MenuItem} from '~/components/Menu'
+import {OpenBookIcon} from '~/assets/OpenBook'
+import {ChatBoxIcon} from '~/assets/ChatBox'
+import {AISafetyIcon} from '~/assets/AISafety'
+import ArticlesDropdown from '~/components/ArticlesDropdown'
+import {SearchInput} from '~/components/SearchInput/Input'
+import type {TOCItem} from '~/routes/questions/toc'
+import type {Tag} from '~/server-utils/stampy'
 import './nav.css'
 
 export interface NavBarProps {
@@ -36,8 +38,8 @@ export const NavBar = ({toc, categories}: NavBarProps) => {
           />
           <ArticlesDropdown
               isSticky={isSticky}
-              MouseEnter={MouseEnter}
-              MouseLeave={MouseLeave}
+              onMouseEnter={MouseEnter}
+              onMouseLeave={MouseLeave}
               toc={toc}
               categories={categories}
           />

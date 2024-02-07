@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {MagnifyingIcon} from '~/assets/Magnifying'
+import {XIcon} from '~/assets/X'
 import './input.css'
-import {MagnifyingIcon} from '../../assets/Magnifying.tsx'
-import {XIcon} from '../../assets/X'
 
 interface SearchInputProps {
   /**
@@ -13,9 +13,9 @@ interface SearchInputProps {
    */
   style?: React.CSSProperties
 }
-export const SearchInput = ({onChange, style}) => {
-  const [search, setSearch] = React.useState('')
-  const handleSearch = (search) => {
+export const SearchInput = ({onChange, style}: SearchInputProps) => {
+  const [search, setSearch] = useState('')
+  const handleSearch = (search: string) => {
     setSearch(search)
     if (onChange) {
       onChange(search)

@@ -3,10 +3,10 @@ import type {TOCItem} from '~/routes/questions/toc'
 import './dropdown.css'
 
 const ArticlesSection = ({title, pageid, children}: TOCItem) => (
-  <div key={pageid}>
+    <div key={`${pageid}-${title}`}>
     <div className="articles-dropdown-title">{title}</div>
     {children?.map(({pageid, title}: TOCItem) => (
-      <a key={pageid} className="articles-dropdown-entry" href={`?state=${pageid}`}>
+      <a key={`${pageid}-${title}`} className="articles-dropdown-entry" href={`/${pageid}`}>
         {title}
       </a>
     ))}
@@ -17,20 +17,20 @@ export type ArticlesDropdownProps = {
   toc: TOCItem[]
   categories: Tag[]
   isSticky: boolean
-  MouseEnter: () => void
-  MouseLeave: () => void
+  onMouseEnter: () => void
+  onMouseLeave: () => void
 }
 export const ArticlesDropdown = ({
   toc,
   categories,
   isSticky,
-  MouseEnter,
-  MouseLeave,
+  onMouseEnter,
+  onMouseLeave,
 }: ArticlesDropdownProps) => (
   <div
     className="articles-dropdown-container"
-    onMouseEnter={MouseEnter}
-    onMouseLeave={MouseLeave}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
     style={{display: isSticky ? 'flex' : 'none'}}
   >
     <div className="articles-dropdown-grid">{toc.map(ArticlesSection)}</div>

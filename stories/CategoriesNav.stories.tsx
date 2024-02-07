@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {CategoriesNav} from '../app/components/CategoriesNav/Menu.tsx'
+import {CategoriesNav} from '../app/components/CategoriesNav/Menu'
 
 const meta = {
   title: 'Components/CategoriesNav',
@@ -16,28 +16,44 @@ export const Default: Story = {
     categories: [
       {
         name: 'Alignment',
-        id: 0,
+        tagId: 0,
+          rowId: '123',
+          url: 'http://bla.bla',
+          internal: false,
+          mainQuestion: null,
         questions: [
           {
             title: 'What is instrumental convergence?',
-            pageId: 0,
+            pageid: '0',
           },
         ],
       },
       {
         name: 'Contributing',
-        id: 1,
+        tagId: 1,
+          rowId: '123',
+          url: 'http://bla.bla',
+          internal: false,
         questions: [],
+          mainQuestion: null,
       },
       {
         name: 'Definitions',
-        id: 2,
+        tagId: 2,
+          rowId: '123',
+          url: 'http://bla.bla',
+          internal: false,
         questions: [],
+          mainQuestion: null,
       },
       {
         name: 'Lorem',
-        id: 3,
+        tagId: 3,
+          rowId: '123',
+          url: 'http://bla.bla',
+          internal: false,
         questions: [],
+          mainQuestion: null,
       },
     ],
   },

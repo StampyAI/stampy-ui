@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {SearchResults} from '../app/components/SearchResults/Dropdown.tsx'
-import {PaperclipIcon} from '../app/assets/Paperclip.tsx'
+import {SearchResults} from '../app/components/SearchResults/Dropdown'
+import {PaperclipIcon} from '../app/assets/Paperclip'
 
 const meta = {
   title: 'Components/SearchResults',
@@ -20,7 +20,7 @@ export const Default: Story = {
         title: 'What is instrumental convergence?',
         description:
           'Instrumental convergence is the idea that as an AI becomes more intelligent and capable, it will converge on certain instrumental goals, such as self-preservation and resource acquisition.',
-        link: '/what-is-instrumental-convergence',
+        url: '/what-is-instrumental-convergence',
         source: 'From Introduction to AI Safety',
       },
       {
@@ -28,6 +28,7 @@ export const Default: Story = {
         title: "A post that doesn't have the keyword in the title",
         description:
           'Ideally this post would show the first excerpt of where the word instrumental convergence was used, but only do this..',
+          url: 'http://bla.bom',
       },
     ],
   },

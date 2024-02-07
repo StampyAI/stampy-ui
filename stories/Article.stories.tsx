@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react'
 
-import {Article} from '../app/components/ArticlesContent/Articles.tsx'
+import {Article} from '../app/components/ArticlesContent/Articles'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 
@@ -14,9 +14,6 @@ const meta = {
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {
-    backgroundColor: {control: 'color'},
-  },
 } satisfies Meta<typeof Article>
 
 export default meta
@@ -29,6 +26,7 @@ export const Primary: Story = {
     timeToRead: ' 2 min read',
     interactiveOptions: ['copy'],
     tags: ['AI', 'Safety', 'Research'],
+      lastUpdated: '2023-03-03',
     description: `"AI safety" refers to efforts to prevent artificial intelligence from causing harm. This site focuses on powerful future AI systems pursuing goals in conflict with human flourishing, because these systems may end up in control of the world and pose an existential risk to humanity.  AI safety is closely related to AI alignment, which refers to ensuring that AI systems pursue the goals we want them to.  "AI safety" is split into four main categories:`,
   },
 }

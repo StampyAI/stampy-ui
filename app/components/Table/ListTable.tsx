@@ -1,20 +1,19 @@
-import {FunctionComponent} from 'react'
 import './listTable.css'
 
-export interface ListTableProps {
+export type ListTableProps = {
   /**
    * Browse by category
    */
-  Elements: Record<string, string>
+  elements: any[]
 }
 
-export const ListTable: FunctionComponent = ({Elements}: ListTableProps) => {
+export const ListTable = ({elements}: ListTableProps) => {
   return (
     <div className={'table-list'}>
-      {Object.keys(Elements).map((key, i) => {
+      {Object.values(elements).map(({pageid, title}, i) => {
         return (
-          <a key={`entry-${i}`} className={'table-entry'} href={Elements[key].pageid}>
-            {Elements[key].title}
+          <a key={`entry-${i}`} className={'table-entry'} href={pageid}>
+            {title}
           </a>
         )
       })}

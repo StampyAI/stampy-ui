@@ -1,10 +1,9 @@
-import React, {FunctionComponent} from 'react'
+import React from 'react'
 import './menu.css'
-import {act} from 'react-dom/test-utils'
 interface Article {
   title: string
   id: number
-  dropdown: Article[]
+  dropdown?: null | Article[]
   isHeader?: boolean
 }
 interface ArticlesNavProps {
@@ -22,7 +21,7 @@ interface ArticlesNavProps {
   onClick?: () => void
 }
 
-export const ArticlesNav = ({articles, active, onclick}: ArticlesNavProps) => {
+export const ArticlesNav = ({articles, active}: ArticlesNavProps) => {
   const [selected, setSelected] = React.useState(active || 0)
   // function to open dropdown on click of article
   const [dropdowns, setDropdowns] = React.useState([])

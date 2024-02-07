@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {Copy} from '../app/components/ArticleInteractive/Options.tsx'
+import {Copy} from '../app/components/ArticleInteractive/Options'
 const meta = {
   title: 'Components/Buttons/Copy',
   component: Copy,

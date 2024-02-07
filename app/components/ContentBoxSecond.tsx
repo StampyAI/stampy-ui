@@ -1,13 +1,12 @@
-import React from 'react'
-import {ListTable} from './ListTable'
+import {ListTable} from '~/components/Table/ListTable'
 
 interface ContentBoxSecondProps {
   /**
    * Table content
    */
-  Elements: Record<string, string>
+  elements: any[]
 }
-export const ContentBoxSecond = ({Elements}: ContentBoxSecondProps) => {
+export const ContentBoxSecond = ({elements}: ContentBoxSecondProps) => {
   return (
     <div className={'main-container-box-table'}>
       <div className={'content-box-description'}>
@@ -17,7 +16,7 @@ export const ContentBoxSecond = ({Elements}: ContentBoxSecondProps) => {
         </div>
       </div>
       <div className={'content-box-table'}>
-        <ListTable Elements={Elements} />
+        <ListTable elements={elements} />
       </div>
     </div>
   )

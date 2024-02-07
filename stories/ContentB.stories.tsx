@@ -1,6 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
 import {ContentBox} from '../app/components/ContentBox/Box'
-import {MaskGroup} from '../app/components/ContentBox/MaskGroup'
 
 const meta = {
   title: 'Components/ContentBox',
@@ -10,19 +9,17 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof ContentB>
+} satisfies Meta<typeof ContentBox>
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
     primary: true,
-    rightSide: <MaskGroup></MaskGroup>,
   },
 }
 export const Secondary: Story = {
   args: {
     primary: false,
-    rightSide: <MaskGroup></MaskGroup>,
   },
 }

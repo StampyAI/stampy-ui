@@ -1,4 +1,4 @@
-import {FunctionComponent, ReactElement} from 'react'
+import {ReactElement} from 'react'
 import './dropdown.css'
 
 export interface SearchResultsProps {
@@ -24,7 +24,7 @@ export interface SearchResultsProps {
   url: string
 }
 
-export const SearchResults: FunctionComponent = ({results}: SearchResultsProps[]) => {
+export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
   const HandleClick = (url: string) => {
     window.location.href = url
   }
@@ -40,9 +40,9 @@ export const SearchResults: FunctionComponent = ({results}: SearchResultsProps[]
 
   return (
     <div className={'container-search-results'}>
-      {results.map((result) => {
+      {results.map((result, i) => {
         return (
-          <div className={'search-result'} onClick={() => HandleClick(result.url)}>
+          <div key={i} className={'search-result'} onClick={() => HandleClick(result.url)}>
             <div className={'search-result-image'}>{result.image}</div>
             <div className={'search-result-content'}>
               <div className={'search-result-title'}>{result.title}</div>

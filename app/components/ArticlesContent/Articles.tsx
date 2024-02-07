@@ -1,8 +1,8 @@
 import React from 'react'
 import {H1} from '../Typography/H1'
-import {Paragraph} from '../Typography/Paragraph'
-import {CopyIcon} from '../../../../stampyReact/stampy-ui/src/assets/Copy.tsx'
-import {Tag} from '../Tags/Tag'
+import {Paragraph} from '~/components/Typography/Paragraph'
+import {CopyIcon} from '~/assets/Copy'
+import {Tag} from '~/components/Tags/Tag'
 import './articles.css'
 const mapInteractiveOptionsIcon = {
   copy: <CopyIcon />,
@@ -56,7 +56,7 @@ export const Article: React.FC<ArticleProps> = ({
 
         <div className={'article-interactive-options'}>
           {interactiveOptions.map((option) => {
-            return <div className={'interactive-option'}>{mapInteractiveOptionsIcon[option]}</div>
+            return <div key={option} className={'interactive-option'}>{mapInteractiveOptionsIcon[option]}</div>
           })}
         </div>
       </div>
@@ -64,7 +64,7 @@ export const Article: React.FC<ArticleProps> = ({
       <div className={'article-description'}>{description}</div>
       <div className={'article-tags'}>
         {tags.map((tag) => {
-          return <Tag>{tag}</Tag>
+          return <Tag key={tag}>{tag}</Tag>
         })}
       </div>
       <div className={'article-last-updated'}>{lastUpdated}</div>

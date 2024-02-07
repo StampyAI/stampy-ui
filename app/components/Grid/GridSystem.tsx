@@ -1,19 +1,15 @@
-import React from 'react'
 import {GridBox} from './GridBox'
+import type {TOCItem} from '~/routes/questions/toc'
 interface GridSystemProps {
   /**
    * Object of GridBoxes
    */
-  GridBoxes: []
+  GridBoxes: TOCItem[]
 }
 export const GridSystem = ({GridBoxes}: GridSystemProps) => {
   return (
     <div className={'grid-group'}>
-      {GridBoxes.map((box, index) => {
-        return (
-          <GridBox title={box.title} description={box.description} icon={box.icon} url={box.url} />
-        )
-      })}
+      {GridBoxes.map(GridBox)}
     </div>
   )
 }

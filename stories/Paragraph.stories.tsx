@@ -12,6 +12,6 @@ export default meta
 type Story = StoryObj<typeof Paragraph>
 export const Primary: Story = {
   args: {
-    children: '2min read',
+      children: <>2min read</>,
   },
 }

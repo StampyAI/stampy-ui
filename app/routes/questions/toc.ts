@@ -1,4 +1,4 @@
-import {LoaderArgs} from '@remix-run/cloudflare'
+import type {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadAllQuestions, Question, PageId} from '~/server-utils/stampy'
 
@@ -51,7 +51,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     timestamp,
   }
 }
-export const loader = async ({request}: LoaderArgs): Promise<LoaderResp> => loadToC(request)
+export const loader = async ({request}: Parameters<LoaderFunction>[0]): Promise<LoaderResp> => loadToC(request)
 
 export function fetchTOC() {
   const url = `/questions/toc`

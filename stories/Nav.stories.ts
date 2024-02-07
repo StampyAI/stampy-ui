@@ -11,13 +11,13 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   args: {
       categories: [
-          {rowId: '1', name: 'Superintelligence'},
-          {rowId: '2', name: 'Alignment'},
-          {rowId: '3', name: 'Boxing'},
-          {rowId: '4', name: 'Interpretability'},
-          {rowId: '5', name: 'ML'},
-          {rowId: '6', name: 'Oracles'},
-          {rowId: '7', name: 'FAI'},
+          {rowId: '1', name: 'Superintelligence', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
+          {rowId: '2', name: 'Alignment', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
+          {rowId: '3', name: 'Boxing', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
+          {rowId: '4', name: 'Interpretability', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
+          {rowId: '5', name: 'ML', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
+          {rowId: '6', name: 'Oracles', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
+          {rowId: '7', name: 'FAI', tagId: 123, url: '', internal: false, questions: [], mainQuestion: null},
       ],
       toc: [{
           "title": "New to AI safety? Start here.",

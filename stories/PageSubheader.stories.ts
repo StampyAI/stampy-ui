@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {PageSubheaderText} from '../app/components/PageSubheaderText.tsx'
+import {PageSubheaderText} from '../app/components/PageSubheaderText'
 
 const meta = {
   title: 'Components/SubHeader',

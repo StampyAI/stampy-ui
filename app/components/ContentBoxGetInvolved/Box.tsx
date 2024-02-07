@@ -1,9 +1,8 @@
-import React from 'react'
 import './box.css'
-import {EclipseIndividualIcon} from '../../../../stampyReact/stampy-ui/src/assets/EclipseIndividual.tsx'
-import {EclipseTeamIcon} from '../../../../stampyReact/stampy-ui/src/assets/EclipseTeam.tsx'
+import {EclipseIndividualIcon} from '~/assets/EclipseIndividual'
+import {EclipseTeamIcon} from '~/assets/EclipseTeam'
 
-export const ContentBoxGetInvolved = ({}) => {
+export const ContentBoxGetInvolved = () => {
   return (
     <div className={'main-container-box-table'}>
       <div className={'content-box-description'}>

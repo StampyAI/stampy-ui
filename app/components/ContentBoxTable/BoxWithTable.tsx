@@ -1,14 +1,13 @@
-import React from 'react'
 import './box.css'
-import {ListTable} from '../Table/ListTable.tsx'
+import {ListTable} from '~/components/Table/ListTable'
 
 interface ContentBoxTableProps {
   /**
    * Table content
    */
-  Elements: Record<string, string>
+  elements: any[]
 }
-export const ContentBoxTable = ({Elements}: ContentBoxTableProps) => {
+export const ContentBoxTable = ({elements}: ContentBoxTableProps) => {
   return (
     <div className={'main-container-box-table'}>
       <div className={'content-box-description'}>
@@ -18,7 +17,7 @@ export const ContentBoxTable = ({Elements}: ContentBoxTableProps) => {
         </div>
       </div>
       <div className={'content-box-table'}>
-        <ListTable Elements={Elements} />
+        <ListTable elements={elements} />
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react'
 
-import {MyComponent} from './testComponent.tsx'
+import {MyComponent} from './testComponent'
 
 // More on default export: https://storybook.js.org/docs/writing-stories/#default-export
 const meta: Meta<typeof MyComponent> = {

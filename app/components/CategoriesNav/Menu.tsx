@@ -1,24 +1,13 @@
-import React, {FunctionComponent} from 'react'
-import './menu.css'
-import {act} from 'react-dom/test-utils'
+import {useState} from 'react'
 import {SearchInput} from '../SearchInput/Input'
-interface Question {
-  title: string
-  pageId: string
-}
-interface Category {
-  name: string
-  rowId: string
-  tagId: number
-  url: string
-  internal: boolean
-  questions: Question[]
-}
+import {Tag as TagType} from '~/server-utils/stampy'
+import './menu.css'
+
 interface CategoriesNavProps {
   /**
    * Articles List
    */
-  categories: Category[]
+  categories: TagType[]
   /**
    * Selected article
    */
@@ -26,20 +15,20 @@ interface CategoriesNavProps {
   /**
    * Callback function to handle click on article
    */
-  onClick?: () => void
+  onClick?: (t: TagType) => void
   /**
    * Callback function to handle change in search input
    */
-  onChange?: () => void
+  onChange?: (search: string) => void
 }
 
-export const CategoriesNav = ({categories, active, onclick, onChange}: CategoriesNavProps) => {
-  const [selected, setSelected] = React.useState(active || 0)
+export const CategoriesNav = ({categories, active, onChange, onClick}: CategoriesNavProps) => {
+  const [selected, setSelected] = useState(active || 0)
 
-  const handleClick = (index) => {
+  const handleClick = (index: number) => {
     setSelected(index)
-    if (onclick) {
-      onclick(index)
+    if (onClick) {
+      onClick(index)
     }
   }
 

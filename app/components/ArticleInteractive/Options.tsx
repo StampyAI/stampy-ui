@@ -1,5 +1,4 @@
-import React from 'react'
-import {CopyIcon} from '../../../../stampyReact/stampy-ui/src/assets/Copy.tsx'
+import {CopyIcon} from '~/assets/Copy'
 
 export interface CopyProps {
   /**
