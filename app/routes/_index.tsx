@@ -39,20 +39,16 @@ export default function App() {
     <>
       <Header />
       <div className={'page-body'}>
-        <PageHeaderText
-          children={
-            <>
-              <p>Educational content</p>
-              <p>on all things AI Safety</p>
-            </>
-          }
-        />
+        <PageHeaderText>
+          <p>Educational content</p>
+          <p>on all things AI Safety</p>
+        </PageHeaderText>
         <ContentBoxMain />
         <ContentBoxSecond
           elements={[
-            {title: 'What are the main sources of AI existential risk?', pageid: '123'},
-            {title: 'Do people seriously worry about existential risk from AI?', pageid: '123'},
-            {title: 'Why would an AI do bad things?', pageid: '123'},
+            {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
+            {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+            {title: 'Why would an AI do bad things?', pageid: '2400'},
           ]}
         />
         <ContentBoxThird />
