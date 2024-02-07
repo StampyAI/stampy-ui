@@ -2,15 +2,7 @@ const Copy = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" height="50" width="72" viewBox="0 0 90 90" fill="none">
       <g filter="url(#a)">
-        <rect
-          x="44"
-          y="23"
-          width="40"
-          height="48"
-          rx="2"
-          fill="#fff"
-          shapeRendering="crispEdges"
-        />
+        <rect x="44" y="23" width="40" height="48" rx="2" fill="#fff" shapeRendering="crispEdges" />
         <rect
           x="43.5"
           y="22.5"

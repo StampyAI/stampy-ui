@@ -5,19 +5,17 @@ export {loader}
 import {Tag} from '~/components/Tags/Tag'
 import {H2} from '~/components/Typography/H2'
 import {Paragraph} from '~/components/Typography/Paragraph'
+import {ArticlesNav} from '~/components/ArticlesNav/Menu'
+import useToC from '~/hooks/useToC'
 
-export default function Article() {
-  const {
-    data: {title, text, tags},
-  } = useLoaderData<any>()
+const Bla = ({title, tags, text}: {title: string; text: string; tags: any[]}) => {
   const ttr = (text: string, rate = 160) => {
     const time = text.split(' ')
     return Math.round(time.length / rate)
   }
 
   return (
-    <>
-      <Header />
+    <div style={{paddingLeft: '40px'}}>
       <H2 teal={true}>{title}</H2>
       <Paragraph style={{marginTop: '0px'}}>{ttr(text)} min read</Paragraph>
       <div dangerouslySetInnerHTML={{__html: text}}></div>
@@ -25,6 +23,25 @@ export default function Article() {
         {tags.map((tag: string) => (
           <Tag key={tag}>{tag}</Tag>
         ))}
+      </div>
+    </div>
+  )
+}
+
+export default function Article() {
+  const {
+    data: {title, text, tags, pageid},
+  } = useLoaderData<any>()
+  const {findSection, getPath} = useToC()
+  const section = findSection(pageid)
+  const path = getPath(pageid)
+
+  return (
+    <>
+      <Header />
+      <div className="flex-container">
+        {section && <ArticlesNav current={pageid} article={section} path={path} />}
+        <Bla text={text} title={title} tags={tags} />
       </div>
       <Footer />
     </>

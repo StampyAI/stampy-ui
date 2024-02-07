@@ -1,5 +1,5 @@
 import {useCallback} from 'react'
-import type {TOCItem} from '~/routes/questions/toc'
+import type {TOCItem} from '~/routes/questions.toc'
 import './group.css'
 
 export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => {
@@ -8,7 +8,7 @@ export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => {
   }, [pageid])
 
   return (
-    <div className={'grid-container-group'} onClick={onGroupContainerClick}>
+    <div key={pageid + title} className={'grid-container-group'} onClick={onGroupContainerClick}>
       <div className={'cardBg'}>
         <div className={'grid-rectangle'} />
       </div>

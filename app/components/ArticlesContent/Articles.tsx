@@ -4,6 +4,7 @@ import {Paragraph} from '~/components/Typography/Paragraph'
 import {CopyIcon} from '~/assets/Copy'
 import {Tag} from '~/components/Tags/Tag'
 import './articles.css'
+
 const mapInteractiveOptionsIcon = {
   copy: <CopyIcon />,
   Edit: 'edit',

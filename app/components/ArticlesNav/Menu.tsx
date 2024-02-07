@@ -1,115 +1,70 @@
-import React from 'react'
+import type {TOCItem} from '~/routes/questions.toc'
 import './menu.css'
-interface Article {
-  title: string
-  id: number
-  dropdown?: null | Article[]
-  isHeader?: boolean
-}
-interface ArticlesNavProps {
-  /**
-   * Articles List
-   */
-  articles: Article[]
-  /**
-   * Selected article
-   */
-  active: 0
-  /**
-   * Callback function to handle click on article
-   */
-  onClick?: () => void
+
+type Article = {
+  article: TOCItem
+  path?: string[]
+  current?: string
 }
 
-export const ArticlesNav = ({articles, active}: ArticlesNavProps) => {
-  const [selected, setSelected] = React.useState(active || 0)
-  // function to open dropdown on click of article
-  const [dropdowns, setDropdowns] = React.useState([])
-  const handleDropdown = (index) => {
-    const newDropdowns = [...dropdowns]
-    if (newDropdowns.includes(index)) {
-      const indexToRemove = newDropdowns.indexOf(index)
-      newDropdowns.splice(indexToRemove, 1)
-    } else {
-      newDropdowns.push(index)
+const DropdownIcon = ({article, path}: Article) => {
+  if (!article?.children || article.children.length === 0 || article.pageid === (path && path[0]))
+    return null
+  if (!path?.includes(article.pageid)) return <div className="dropdown-icon" />
+  return <div className="dropdown-icon active" />
+}
+
+const Title = ({article, path, current}: Article) => {
+    const selectedClass = article?.pageid === current ? ' selected' : ''
+    if (article.pageid === (path && path[0])) {
+        return (
+            <a href={`/${article.pageid}`}>
+                <div className={'article' + selectedClass}>
+                    <div className="articles-headerLine">{article?.title}</div>
+                </div>
+            </a>
+        )
     }
-    setDropdowns(newDropdowns)
-  }
-  const handleClick = (index) => {
-    setSelected(index)
-    if (onclick) {
-      onclick(index)
-    }
-  }
+    return (
+        <summary className={'articles-title' + selectedClass}>
+            {!article.hasText ? article.title : <a href={`/${article.pageid}`}>{article.title}</a>}
+            <DropdownIcon article={article} path={path} />
+        </summary>
+    )
+}
+
+const ArticleLevel = ({article, path, current}: Article) => {
+  if (!article.hasText && (!article.children || article.children.length === 0)) return null
+    const isParentClass = article.pageid !== current && (path || []).includes(article.pageid) ? ' parent' : ''
+  return (
+    <details
+      key={article.pageid}
+      open={path?.includes(article.pageid)}
+      className={'article' + isParentClass}
+    >
+      <Title article={article} path={path} current={current} />
+      <div className={'articles-dropdown' + (path?.includes(article.pageid) ? ' active' : '')}>
+        {article.children?.map((child) => (
+          <ArticleLevel key={child.pageid} article={child} path={path} current={current} />
+        ))}
+      </div>
+    </details>
+  )
+}
+
+export const ArticlesNav = ({article, path}: Article) => {
+  const current = path ? path[path.length - 1] : ''
 
   return (
-    <div className={'articles-group'}>
-      {articles.map((article) => {
-        if (article.isHeader) {
-          return (
-            <div
-              key={`article-${article.id}`}
-              className={[
-                'articles-autoLayoutHorizontal',
-                selected == article.id ? ['active', 'article-hasdot'].join(' ') : '',
-              ].join(' ')}
-              onClick={() => handleClick(article.id)}
-            >
-              <div className={['articles-headerLine']}>{article.title}</div>
+    <div className="articles-group">
+      {/* Section Header */}
+      <Title article={article} path={path} current={current} />
 
-              <div className={'articles-line'} />
-              {/*<div className={"articles-rectangle"} />*/}
-            </div>
-          )
-        } else {
-          return (
-            <div
-              key={`article-${article.id}`}
-              className={[
-                'articles-autoLayoutHorizontal',
-                selected == article.id ? ['active'].join(' ') : '',
-              ].join(' ')}
-              onClick={() => handleClick(article.id)}
-            >
-              <div
-                className={[
-                  'articles-title',
-                  selected == article.id ? ['article-hasdot'].join(' ') : '',
-                ].join(' ')}
-              >
-                {article.title}
-                {article?.dropdown && article.dropdown.length !== 0 ? (
-                  <div
-                    onClick={() => handleDropdown(article.id)}
-                    className={[
-                      'articles-dropdownIcon',
-                      dropdowns.includes(article.id) ? 'active' : '',
-                    ].join(' ')}
-                  />
-                ) : null}
-              </div>
+      <div className="articles-line" />
 
-              <div
-                className={[
-                  'articles-dropdown',
-                  dropdowns.includes(article.id) ? 'active' : '',
-                ].join(' ')}
-              >
-                {article.dropdown?.map((dropdownArticle) => {
-                  return (
-                    <div
-                      key={`dropdown-article-${dropdownArticle.id}`}
-                      className={'articles-dropdown-item'}
-                    >
-                      {dropdownArticle.title}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        }
-      })}
+      {article.children?.map((item) => (
+        <ArticleLevel key={item.pageid} article={item} path={path} current={current} />
+      ))}
     </div>
   )
 }

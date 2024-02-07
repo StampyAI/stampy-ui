@@ -1,5 +1,5 @@
 import {GridBox} from './GridBox'
-import type {TOCItem} from '~/routes/questions/toc'
+import type {TOCItem} from '~/routes/questions.toc'
 interface GridSystemProps {
   /**
    * Object of GridBoxes

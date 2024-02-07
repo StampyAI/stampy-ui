@@ -1,5 +1,5 @@
 import type {Tag} from '~/server-utils/stampy'
-import type {TOCItem} from '~/routes/questions/toc'
+import type {TOCItem} from '~/routes/questions.toc'
 import './dropdown.css'
 
 const ArticlesSection = ({title, pageid, children}: TOCItem) => (
