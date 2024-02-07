@@ -18,23 +18,9 @@ const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) 
 export type ArticlesDropdownProps = {
   toc: TOCItem[]
   categories: Tag[]
-  isSticky: boolean
-  onMouseEnter: () => void
-  onMouseLeave: () => void
 }
-export const ArticlesDropdown = ({
-  toc,
-  categories,
-  isSticky,
-  onMouseEnter,
-  onMouseLeave,
-}: ArticlesDropdownProps) => (
-  <div
-    className="articles-dropdown-container"
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    style={{display: isSticky ? 'flex' : 'none'}}
-  >
+export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
+  <div className="articles-dropdown-container">
     <div className="articles-dropdown-grid">
       <ArticlesSection category={INTRODUCTORY} toc={toc} />
       <ArticlesSection category={ADVANCED} toc={toc} />

@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
 
+#showArticles:hover + .articles-dropdown-container,
+.articles-dropdown-container:hover {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 .articles-dropdown-container {
   z-index: 2;
   position: absolute;
@@ -11,9 +17,13 @@
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   box-sizing: border-box;
   width: 756px;
-  top: 106px;
-  display: flex;
+  top: 65px;
+  left: 320px;
   justify-content: space-between;
+  display: flex;
+
+  transition: visibility 0.2s;
+  visibility: hidden;
 }
 .articles-dropdown-title {
   font-size: 18px;

@@ -11,6 +11,7 @@ interface MenuItemProps {
   primary?: boolean
   onMouseEnter?: () => void
   onMouseLeave?: () => void
+  id?: string
 }
 export const MenuItem = ({
   primary = false,
@@ -19,9 +20,10 @@ export const MenuItem = ({
   text,
   onMouseEnter,
   onMouseLeave,
+  id,
 }: MenuItemProps) => {
   return (
-    <li className="top-menu-item" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <li className="top-menu-item" id={id} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <a href={link} className="top-menu-link">
         {icon ? (
           typeof icon === 'string' ? (

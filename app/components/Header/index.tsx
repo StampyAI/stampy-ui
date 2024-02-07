@@ -14,14 +14,6 @@ export interface HeaderProps {
   categories: Tag[]
 }
 export const Header = ({toc, categories}: HeaderProps) => {
-  const [isSticky, setSticky] = React.useState(false)
-  const MouseEnter = () => {
-    setSticky(true)
-  }
-  const MouseLeave = () => {
-    setSticky(false)
-  }
-
   return (
     <header className="top-header">
       <nav className="top-nav">
@@ -34,15 +26,9 @@ export const Header = ({toc, categories}: HeaderProps) => {
             link="#"
             icon={<OpenBookIcon classname={'top-menu-icon'} />}
             text="Articles"
-            onMouseEnter={MouseEnter}
+            id="showArticles"
           />
-          <ArticlesDropdown
-            isSticky={isSticky}
-            onMouseEnter={MouseEnter}
-            onMouseLeave={MouseLeave}
-            toc={toc}
-            categories={categories}
-          />
+          <ArticlesDropdown toc={toc} categories={categories} />
           <MenuItem
             primary={true}
             link="#"
@@ -53,7 +39,6 @@ export const Header = ({toc, categories}: HeaderProps) => {
             <div className="top-menu-divider"></div>
           </li>
         </ul>
-
         <div style={{flexGrow: 12}}></div>
         <Search />
       </nav>
