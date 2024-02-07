@@ -11,7 +11,7 @@ import useToC from '~/hooks/useToC'
 const Bla = ({title, tags, text}: {title: string; text: string; tags: any[]}) => {
   const ttr = (text: string, rate = 160) => {
     const time = text.split(' ')
-    return Math.round(time.length / rate)
+    return Math.ceil(time.length / rate)
   }
 
   return (
