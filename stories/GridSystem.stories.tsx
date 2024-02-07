@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    GridBoxes: [
+    gridBoxes: [
       {
         title: 'Technical alignment research categories',
         subtitle: 'Lorem ipsum dolor sit amet consectetur',

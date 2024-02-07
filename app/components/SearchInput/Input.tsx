@@ -24,8 +24,8 @@ export const SearchInput = ({onChange, style}: SearchInputProps) => {
   return (
     <div className={'search-box'} style={style}>
       <div className={'search-inputChild'} />
-      <div className={'search-content'}>
-        <MagnifyingIcon classnamme={'iconsMagnifyingGlass'} />
+      <label className={'search-content'}>
+        <MagnifyingIcon className={'iconsMagnifyingGlass'} />
         <input
           placeholder={'Search articles'}
           className={'search-input'}
@@ -45,7 +45,7 @@ export const SearchInput = ({onChange, style}: SearchInputProps) => {
             }}
           />
         )}
-      </div>
+      </label>
     </div>
   )
 }

@@ -56,7 +56,7 @@ export default function App() {
         <div className={'top-margin-large'} />
         <PageSubheaderText text={'Advanced Content'} />
         <GridSystem
-          GridBoxes={[
+          gridBoxes={[
             {
               title: 'Technical alignment research categories',
               subtitle: 'Lorem ipsum dolor sit amet consectetur',
