@@ -5,7 +5,7 @@ export const FooterBar: FunctionComponent = () => {
     <div className={'footer'} key={'footer'}>
       <div className={'footer-grid'}>
         <div>
-          <p className={'footer-brand'}>AIsafety.com</p>
+          <p className={'footer-brand'}>AISafety.info</p>
           <div className={'footer-description'}>
             We're a global team of volunteers from various disciplines who believe AI poses an grave
             risk of extinction to humanity.
