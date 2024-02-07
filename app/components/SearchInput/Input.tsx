@@ -27,6 +27,8 @@ export const SearchInput = ({onChange, style}: SearchInputProps) => {
       <label className={'search-content'}>
         <MagnifyingIcon className={'iconsMagnifyingGlass'} />
         <input
+          type="search"
+          name="searchbar"
           placeholder={'Search articles'}
           className={'search-input'}
           onChange={(e) => {

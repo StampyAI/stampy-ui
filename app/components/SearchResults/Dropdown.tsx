@@ -1,11 +1,6 @@
-import {ReactElement} from 'react'
 import './dropdown.css'
 
 export interface SearchResultsProps {
-  /**
-   * Result image
-   */
-  image: ReactElement
   /**
    * Result title
    */
@@ -25,10 +20,6 @@ export interface SearchResultsProps {
 }
 
 export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
-  const HandleClick = (url: string) => {
-    window.location.href = url
-  }
-
   const noResults = results.length === 0
   if (noResults) {
     return (
@@ -42,14 +33,16 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
     <div className={'container-search-results'}>
       {results.map((result, i) => {
         return (
-          <div key={i} className={'search-result'} onClick={() => HandleClick(result.url)}>
-            <div className={'search-result-image'}>{result.image}</div>
+          <a key={i} className={'search-result'} href={result.url}>
+            <div className={'search-result-image'}>
+              {/* TODO: static image, same for all results, not a property of result */}
+            </div>
             <div className={'search-result-content'}>
               <div className={'search-result-title'}>{result.title}</div>
               <div className={'search-result-description'}>{result.description}</div>
               <div className={'search-result-source'}>{result.source}</div>
             </div>
-          </div>
+          </a>
         )
       })}
     </div>

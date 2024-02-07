@@ -38,7 +38,7 @@
 .search-content {
   position: relative;
   top: calc(50% - 13px);
-  left: 12px;
+  padding-left: 12px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -61,8 +61,8 @@
   outline: none;
 }
 .x-icon {
+  position: absolute;
   width: 16px;
   height: 16px;
-  position: relative;
   right: 10px;
 }

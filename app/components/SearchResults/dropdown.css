@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .container-search-results {
-  position: relative;
-
+  position: absolute;
+  z-index: 2;
   text-align: left;
   font-size: 14px;
   color: var(--text-black, #1b2b3e);
@@ -24,6 +24,7 @@
   border-top: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   padding: 32px;
   gap: 16px;
+  text-decoration: none;
 }
 .search-result:hover {
   background-color: var(--colors-teal-50, #edfaf9);

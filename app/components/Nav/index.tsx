@@ -4,10 +4,10 @@ import {OpenBookIcon} from '~/assets/OpenBook'
 import {ChatBoxIcon} from '~/assets/ChatBox'
 import {AISafetyIcon} from '~/assets/AISafety'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
-import {SearchInput} from '~/components/SearchInput/Input'
 import type {TOCItem} from '~/routes/questions.toc'
 import type {Tag} from '~/server-utils/stampy'
 import './nav.css'
+import Search from '../search'
 
 export interface NavBarProps {
   toc: TOCItem[]
@@ -55,7 +55,7 @@ export const NavBar = ({toc, categories}: NavBarProps) => {
         </ul>
 
         <div style={{flexGrow: 12}}></div>
-        <SearchInput />
+        <Search />
       </nav>
     </header>
   )
