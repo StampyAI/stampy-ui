@@ -51,7 +51,8 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     timestamp,
   }
 }
-export const loader = async ({request}: Parameters<LoaderFunction>[0]): Promise<LoaderResp> => loadToC(request)
+export const loader = async ({request}: Parameters<LoaderFunction>[0]): Promise<LoaderResp> =>
+  loadToC(request)
 
 export function fetchTOC() {
   const url = `/questions/toc`

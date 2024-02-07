@@ -16,9 +16,9 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   args: {
     elements: [
-        {title: 'What are the main sources of AI existential risk?', pageid: '123'},
-        {title: 'Do people seriously worry about existential risk from AI?', pageid: '123'},
-        {title: 'Why would an AI do bad things?', pageid: '123'},
+      {title: 'What are the main sources of AI existential risk?', pageid: '123'},
+      {title: 'Do people seriously worry about existential risk from AI?', pageid: '123'},
+      {title: 'Why would an AI do bad things?', pageid: '123'},
     ],
   },
 }

@@ -18,14 +18,14 @@ const EclipseIndividual = ({classname}: EclipseIndividualProps) => {
         <ellipse cx="160" cy="62.3584" rx="40" ry="40.2312" fill="#1A817C" />
       </g>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M166 54.3121C166 57.645 163.314 60.3468 160 60.3468C156.686 60.3468 154 57.645 154 54.3121C154 50.9793 156.686 48.2775 160 48.2775C163.314 48.2775 166 50.9793 166 54.3121ZM164 54.3121C164 56.5341 162.209 58.3353 160 58.3353C157.791 58.3353 156 56.5341 156 54.3121C156 52.0902 157.791 50.289 160 50.289C162.209 50.289 164 52.0902 164 54.3121Z"
         fill="white"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M170 76.4393C171.105 76.4393 172 75.5387 172 74.4278C172 67.762 166.627 62.3584 160 62.3584C153.373 62.3584 148 67.762 148 74.4278C148 75.5387 148.895 76.4393 150 76.4393H170ZM160 64.37C155.162 64.37 151.127 67.8253 150.2 72.4162C150.069 73.0662 150 73.7389 150 74.4278H170C170 73.7389 169.931 73.0662 169.8 72.4162C168.873 67.8253 164.838 64.37 160 64.37Z"
         fill="white"
       />
@@ -49,9 +49,9 @@ const EclipseIndividual = ({classname}: EclipseIndividualProps) => {
           width="128"
           height="128.462"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

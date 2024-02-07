@@ -28,7 +28,7 @@ export const Default: Story = {
         title: "A post that doesn't have the keyword in the title",
         description:
           'Ideally this post would show the first excerpt of where the word instrumental convergence was used, but only do this..',
-          url: 'http://bla.bom',
+        url: 'http://bla.bom',
       },
     ],
   },

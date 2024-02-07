@@ -8,8 +8,12 @@ export interface ParagraphProps {
   /**
    * Style of the component
    */
-    style?: React.CSSProperties
+  style?: React.CSSProperties
 }
-export const Paragraph = ({children,style}: ParagraphProps) => {
-  return <p className={'paragraph'} style={style}>{children}</p>
+export const Paragraph = ({children, style}: ParagraphProps) => {
+  return (
+    <p className={'paragraph'} style={style}>
+      {children}
+    </p>
+  )
 }

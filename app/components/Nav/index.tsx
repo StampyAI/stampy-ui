@@ -10,8 +10,8 @@ import type {Tag} from '~/server-utils/stampy'
 import './nav.css'
 
 export interface NavBarProps {
-    toc: TOCItem[]
-    categories: Tag[]
+  toc: TOCItem[]
+  categories: Tag[]
 }
 export const NavBar = ({toc, categories}: NavBarProps) => {
   const [isSticky, setSticky] = React.useState(false)
@@ -37,11 +37,11 @@ export const NavBar = ({toc, categories}: NavBarProps) => {
             onMouseEnter={MouseEnter}
           />
           <ArticlesDropdown
-              isSticky={isSticky}
-              onMouseEnter={MouseEnter}
-              onMouseLeave={MouseLeave}
-              toc={toc}
-              categories={categories}
+            isSticky={isSticky}
+            onMouseEnter={MouseEnter}
+            onMouseLeave={MouseLeave}
+            toc={toc}
+            categories={categories}
           />
           <MenuItem
             primary={true}

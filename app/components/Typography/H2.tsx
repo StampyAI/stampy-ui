@@ -14,8 +14,8 @@ export interface h2Props {
   /**
    * Is teal color?
    */
-    teal?: boolean
+  teal?: boolean
 }
-export const H2 = ({children,teal}: h2Props) => {
-  return <h2 className={['h2', teal?'teal':null].join(' ')}>{children}</h2>
+export const H2 = ({children, teal}: h2Props) => {
+  return <h2 className={['h2', teal ? 'teal' : null].join(' ')}>{children}</h2>
 }

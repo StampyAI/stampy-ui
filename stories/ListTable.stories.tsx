@@ -14,12 +14,12 @@ type Story = StoryObj<typeof ListTable>
 export const Default: Story = {
   args: {
     elements: [
-        {title: 'What is AI alignment', pageid: '1231'},
-        {title: 'What is this', pageid: '1232'},
-        {title: 'What is AI safety', pageid: '1233'},
-        {title: 'What is that', pageid: '1234'},
-        {title: 'What is the the orthogonality thesis', pageid: '1235'},
-        {title: 'What is something else', pageid: '1236'},
+      {title: 'What is AI alignment', pageid: '1231'},
+      {title: 'What is this', pageid: '1232'},
+      {title: 'What is AI safety', pageid: '1233'},
+      {title: 'What is that', pageid: '1234'},
+      {title: 'What is the the orthogonality thesis', pageid: '1235'},
+      {title: 'What is something else', pageid: '1236'},
     ],
   },
 }

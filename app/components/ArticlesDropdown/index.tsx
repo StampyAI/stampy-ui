@@ -3,7 +3,7 @@ import type {TOCItem} from '~/routes/questions/toc'
 import './dropdown.css'
 
 const ArticlesSection = ({title, pageid, children}: TOCItem) => (
-    <div key={`${pageid}-${title}`}>
+  <div key={`${pageid}-${title}`}>
     <div className="articles-dropdown-title">{title}</div>
     {children?.map(({pageid, title}: TOCItem) => (
       <a key={`${pageid}-${title}`} className="articles-dropdown-entry" href={`/${pageid}`}>

@@ -56,7 +56,11 @@ export const Article: React.FC<ArticleProps> = ({
 
         <div className={'article-interactive-options'}>
           {interactiveOptions.map((option) => {
-            return <div key={option} className={'interactive-option'}>{mapInteractiveOptionsIcon[option]}</div>
+            return (
+              <div key={option} className={'interactive-option'}>
+                {mapInteractiveOptionsIcon[option]}
+              </div>
+            )
           })}
         </div>
       </div>

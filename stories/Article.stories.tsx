@@ -26,7 +26,7 @@ export const Primary: Story = {
     timeToRead: ' 2 min read',
     interactiveOptions: ['copy'],
     tags: ['AI', 'Safety', 'Research'],
-      lastUpdated: '2023-03-03',
+    lastUpdated: '2023-03-03',
     description: `"AI safety" refers to efforts to prevent artificial intelligence from causing harm. This site focuses on powerful future AI systems pursuing goals in conflict with human flourishing, because these systems may end up in control of the world and pose an existential risk to humanity.  AI safety is closely related to AI alignment, which refers to ensuring that AI systems pursue the goals we want them to.  "AI safety" is split into four main categories:`,
   },
 }

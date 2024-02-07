@@ -7,9 +7,5 @@ interface GridSystemProps {
   GridBoxes: TOCItem[]
 }
 export const GridSystem = ({GridBoxes}: GridSystemProps) => {
-  return (
-    <div className={'grid-group'}>
-      {GridBoxes.map(GridBox)}
-    </div>
-  )
+  return <div className={'grid-group'}>{GridBoxes.map(GridBox)}</div>
 }

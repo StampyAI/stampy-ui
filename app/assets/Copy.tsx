@@ -9,7 +9,7 @@ const Copy = () => {
           height="48"
           rx="2"
           fill="#fff"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
         <rect
           x="43.5"
@@ -18,20 +18,20 @@ const Copy = () => {
           height="47"
           rx="5.5"
           stroke="#DFE3E9"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
-        <path d="M68 55H74" stroke="#788492" stroke-linecap="round" />
+        <path d="M68 55H74" stroke="#788492" strokeLinecap="round" />
         <path
           d="M69.5 52.5H67C65.6193 52.5 64.5 53.6193 64.5 55V55C64.5 56.3807 65.6193 57.5 67 57.5H69.5"
           stroke="#788492"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
         <path
           d="M72.5 57.5L75 57.5C76.3807 57.5 77.5 56.3807 77.5 55V55C77.5 53.6193 76.3807 52.5 75 52.5L72.5 52.5"
           stroke="#788492"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
-        <rect x="64" y="37" width="8" height="3" rx="1.5" stroke="#788492" stroke-linecap="round" />
+        <rect x="64" y="37" width="8" height="3" rx="1.5" stroke="#788492" strokeLinecap="round" />
         <path
           d="M60 39C60 38.4477 60.4477 38 61 38H64V39H61V57H63C63.2761 57 63.5 57.2239 63.5 57.5C63.5 57.7761 63.2761 58 63 58H61C60.4477 58 60 57.5523 60 57V39Z"
           fill="#788492"
@@ -49,9 +49,9 @@ const Copy = () => {
           width="216"
           height="128"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
