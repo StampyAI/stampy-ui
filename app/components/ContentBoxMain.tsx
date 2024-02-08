@@ -4,15 +4,18 @@ export const ContentBoxMain = () => {
   return (
     <div className="main-container primary bordered">
       <div className="content-box-description primary">
-        <p>New to AI Safety?</p>
-        <span className="content-box-quick-read">
-          Something about <br /> reading and quick
-        </span>
-        <a href="/9OGZ" className="unstyled teal">
-        <div className="content-box-button">
+        <h2>
+          <div className="white">New to AI Safety?</div>
+          <div className="teal-200">
+            Something about <br />
+            reading and quick
+          </div>
+        </h2>
+        <a href="/9OGZ" className="teal-500">
+          <div className="content-box-button">
             Start here
-          <ArrowRight className="img-2" />
-        </div>
+            <ArrowRight className="img-2" />
+          </div>
         </a>
       </div>
       <img

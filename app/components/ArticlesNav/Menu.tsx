@@ -18,7 +18,7 @@ const Title = ({article, path, current}: Article) => {
   const selectedClass = article?.pageid === current ? ' selected' : ''
   if (article.pageid === (path && path[0])) {
     return (
-      <a href={`/${article.pageid}`} className="unstyled">
+      <a href={`/${article.pageid}`}>
         <div className={'article' + selectedClass}>
           <div className="articles-headerLine">{article?.title}</div>
         </div>
@@ -27,7 +27,7 @@ const Title = ({article, path, current}: Article) => {
   }
   return (
     <summary className={'articles-title' + selectedClass}>
-        {!article.hasText ? article.title : <a href={`/${article.pageid}`} className="unstyled">{article.title}</a>}
+      {!article.hasText ? article.title : <a href={`/${article.pageid}`}>{article.title}</a>}
       <DropdownIcon article={article} path={path} />
     </summary>
   )

@@ -7,6 +7,14 @@ export {loader}
 import {ArticlesNav, EmtpyArticlesNav} from '~/components/ArticlesNav/Menu'
 import Article from '~/components/Article'
 import useToC from '~/hooks/useToC'
+import type {Question} from '~/server-utils/stampy'
+
+const dummyQuestion = (title: string | undefined) =>
+  ({
+    text: '',
+    title: title ?? 'Loading...',
+    tags: [],
+  }) as any as Question
 
 export default function RenderArticle() {
   const params = useParams()
@@ -27,7 +35,7 @@ export default function RenderArticle() {
         ) : (
           <EmtpyArticlesNav />
         )}
-        <Suspense fallback={<Article text="" title={section?.title ?? 'Loading...'} tags={[]} />}>
+        <Suspense fallback={<Article {...dummyQuestion(section?.title)} />}>
           <Await resolve={data}>{Article}</Await>
         </Suspense>
       </div>

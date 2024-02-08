@@ -33,15 +33,15 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
   return (
     <div className="container-search-results">
       {results.map((result, i) => (
-          <a key={i} className="search-result" href={result.url}>
-            <Paper />
-            <div className="search-result-content">
-              <div className="search-result-title">{result.title}</div>
-              <div className="search-result-description">{result.description}</div>
-              <div className="search-result-source">{result.source}</div>
-            </div>
-          </a>
-        ))}
+        <a key={i} className="search-result" href={result.url}>
+          <Paper />
+          <div className="search-result-content">
+            <div className="search-result-title">{result.title}</div>
+            <div className="search-result-description">{result.description}</div>
+            <div className="search-result-source">{result.source}</div>
+          </div>
+        </a>
+      ))}
     </div>
   )
 }

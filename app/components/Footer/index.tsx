@@ -5,7 +5,7 @@ const year = new Date().getFullYear()
 
 const Link = ({to, title}: {to: string; title: string}) => (
   <div>
-    <a href={to} className="unstyled" target="_blank" rel="noreferrer">
+    <a href={to} target="_blank" rel="noreferrer">
       {title}
     </a>
   </div>

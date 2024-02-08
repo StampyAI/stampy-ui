@@ -67,9 +67,7 @@ export default function App() {
 
           {selectedTag === null ? null : (
             <div>
-              <h1 style={{marginTop: '0px'}}>
-                {tag.name}
-              </h1>
+              <h1 style={{marginTop: '0px'}}>{tag.name}</h1>
               {tag.questions.length === 0 ? (
                 <div className={'no-questions'}>No questions found</div>
               ) : (

@@ -67,7 +67,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "generate-icons": "npx @svgr/cli --out-dir app/components/icons-generated -- app/assets/icons",
+    "generate-icons": "npx @svgr/cli --typescript --out-dir app/components/icons-generated -- app/assets/icons",
     "eslint": "eslint --ignore-pattern .gitignore \"**/*.ts*\"",
     "prettier": "prettier --check --ignore-path .gitignore \"**/*.{ts*,js,css,md,html}\"",
     "lint": "tsc && npm run prettier && npm run eslint",

@@ -3,13 +3,10 @@ import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
 import './dropdown.css'
 import {sortFuncs} from '~/routes/tags._index'
 
-
-const Link = ({to, text, className}: {to: string, text: string, className?: string}) => (
-    <div className={"articles-dropdown-entry " + (className || '')}>
-        <a className="unstyled" href={to}>
-            {text}
-        </a>
-    </div>
+const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
+  <div className={'articles-dropdown-entry ' + (className || '')}>
+    <a href={to}>{text}</a>
+  </div>
 )
 
 const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) => (
@@ -17,7 +14,9 @@ const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) 
     <div className="articles-dropdown-title">{category}</div>
     {toc
       .filter((item) => item.category === category)
-      .map(({pageid, title}: TOCItem) => (<Link key={`${pageid}-${title}`} to={`/${pageid}`} text={title} />))}
+      .map(({pageid, title}: TOCItem) => (
+        <Link key={`${pageid}-${title}`} to={`/${pageid}`} text={title} />
+      ))}
   </div>
 )
 
@@ -49,7 +48,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
         ))}
 
       <div className="dropdown-button bordered grey">
-        <a href="/tags" className="dropdown-button-label unstyled">
+        <a href="/tags" className="dropdown-button-label">
           Browse all categories
         </a>
       </div>

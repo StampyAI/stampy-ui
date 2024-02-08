@@ -42,7 +42,7 @@ export default function App() {
 
         <ContentBoxMain />
 
-      <ContentBoxSecond
+        <ContentBoxSecond
           elements={[
             {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
             {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
@@ -50,11 +50,11 @@ export default function App() {
           ]}
         />
 
-      <ContentBoxThird />
+        <ContentBoxThird />
 
-      <WidgetStampy />
+        <WidgetStampy />
 
-      <div className="top-margin-large" />
+        <div className="top-margin-large" />
         <PageSubheaderText text="Advanced Content" />
         <Grid gridBoxes={toc} />
       </div>
