@@ -1,5 +1,7 @@
 import type {Preview} from '@storybook/react'
 
+import '../app/newRoot.css'
+
 const preview: Preview = {
   parameters: {
     actions: {argTypesRegex: '^on[A-Z].*'},
