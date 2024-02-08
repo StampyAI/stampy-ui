@@ -1,6 +1,5 @@
 .grid-description {
   letter-spacing: -0.01em;
-  line-height: 170%;
 }
 .grid-title {
   font-size: 22px;
@@ -12,7 +11,6 @@
 .grid-item {
   cursor: pointer;
   text-align: left;
-  font-size: 18px;
   padding: 32.5px 32px;
 }
 .grid-item div {

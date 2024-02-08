@@ -34,18 +34,14 @@
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   box-sizing: border-box;
   letter-spacing: -0.01em;
-  line-height: 170%;
   text-align: left;
-  font-size: 18px;
   color: var(--colors-cool-grey-600, #788492);
-  font-family: Poppins;
   padding-left: 16px;
   padding-right: 66px;
 }
 .input-label {
   position: relative;
   letter-spacing: -0.01em;
-  line-height: 170%;
 }
 .input-horizontal {
   position: absolute;
@@ -130,7 +126,6 @@
   top: 32px;
   left: 32px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   color: var(--text-black, #1b2b3e);
   margin: 16px;
 }
@@ -152,9 +147,7 @@
   position: relative;
   height: 594px;
   text-align: left;
-  font-size: 18px;
   color: var(--colors-teal-500, #1d9089);
-  font-family: Poppins;
 }
 .chat-message {
   display: flex;

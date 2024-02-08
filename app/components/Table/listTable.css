@@ -1,11 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 .table-entry {
-  font-size: 18px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   font-weight: 600;
-  font-family: Poppins;
   color: var(--colors-teal-500, #1d9089);
   text-align: left;
   display: block;
@@ -21,9 +18,7 @@
   width: 100%;
   position: relative;
   text-align: left;
-  font-size: 18px;
   color: var(--colors-teal-500, #1d9089);
-  font-family: Poppins;
   border-radius: 6px;
   border: 1px solid var(--colors-teal-200, #a6d9d7);
   box-sizing: border-box;

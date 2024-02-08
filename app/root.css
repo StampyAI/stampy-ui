@@ -361,7 +361,6 @@ article > h2 {
   background-color: var(--bgColorQuestion);
   color: var(--colorQuestionTitle);
   font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 400;
   line-height: 1.2;
   display: flex;
   justify-content: space-between;
@@ -867,7 +866,6 @@ a.see-more.visible:after {
   color: var(--colorTagBorderAndText);
 }
 .all-tags-container .tag .tag-name {
-  font-size: 18px;
   padding-right: 10px;
 }
 .tags-container .tag {

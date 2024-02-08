@@ -36,13 +36,11 @@
   letter-spacing: -0.01em;
   line-height: 130%;
   font-weight: 600;
-  font-family: Poppins;
 }
 .content-box-description {
   font-size: 35px;
   max-width: 30.486vw;
   margin-right: 100px;
-  font-family: Poppins;
   padding-right: 200px;
   position: relative;
   z-index: 2;
@@ -84,9 +82,7 @@
   box-sizing: border-box;
   gap: 4px;
   text-align: center;
-  font-size: 18px;
   color: var(--colors-teal-500, #1d9089);
-  font-family: Poppins;
   margin-top: 34px;
 }
 
@@ -94,11 +90,8 @@
   border: 0px;
   background-color: transparent;
   color: var(--colors-teal-500, #1d9089);
-  font-size: 18px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   font-weight: 600;
-  font-family: Poppins;
 }
 
 .content-box-quick-read {

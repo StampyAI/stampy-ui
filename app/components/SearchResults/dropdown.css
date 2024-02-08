@@ -6,7 +6,6 @@
   text-align: left;
   font-size: 14px;
   color: var(--text-black, #1b2b3e);
-  font-family: Poppins;
   border-radius: 6px;
   background-color: #fff;
   box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
@@ -37,9 +36,7 @@
 .search-result-title {
   font-size: 14px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   font-weight: 600;
-  font-family: Poppins;
   color: var(--text-black, #1b2b3e);
   text-align: left;
   cursor: pointer;
@@ -47,16 +44,12 @@
 .search-result-description {
   font-size: 14px;
   letter-spacing: -0.01em;
-  line-height: 170%;
-  font-family: Poppins;
   color: var(--text-black, #1b2b3e);
   text-align: left;
 }
 .search-result-source {
   font-size: 14px;
   letter-spacing: -0.01em;
-  line-height: 170%;
-  font-family: Poppins;
   color: var(--colors-cool-grey-600, #788492);
   text-align: left;
 }

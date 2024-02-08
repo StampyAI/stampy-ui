@@ -19,8 +19,8 @@
   text-align: left;
   font-size: 16px;
   color: var(--colors-cool-grey-600, #788492);
-  font-family: Poppins;
   width: 100%;
+  width: 256px;
   transition: width 100ms;
 }
 
@@ -60,13 +60,11 @@
 .search-input {
   position: relative;
   letter-spacing: -0.01em;
-  line-height: 170%;
   width: calc(100% - 62px);
   border: 0;
   text-align: left;
   font-size: 16px;
   color: var(--text-black, #1b2b3e);
-  font-family: Poppins;
 }
 .search-input:focus-visible {
   border: 0;

@@ -22,9 +22,7 @@
   visibility: hidden;
 }
 .articles-dropdown-title {
-  font-size: 18px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   font-weight: 600;
 }
 .articles-dropdown-title.top-margin-large {
@@ -34,7 +32,6 @@
   margin: 24px 0;
   font-size: 16px;
   letter-spacing: -0.01em;
-  line-height: 170%;
 }
 .articles-dropdown-teal-entry {
   color: var(--colors-teal-500, #1d9089);

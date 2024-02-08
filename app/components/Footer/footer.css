@@ -14,9 +14,7 @@
 .footer-description {
   top: 154px;
   left: 192px;
-  font-size: 18px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   display: inline-block;
   max-width: 403px;
   margin-bottom: 23px;
@@ -38,7 +36,6 @@
   top: 35.16%;
   left: 65.21%;
   letter-spacing: -0.01em;
-  line-height: 170%;
   display: inline-block;
 }
 
@@ -47,13 +44,11 @@
   top: 35.16%;
   left: 45.76%;
   letter-spacing: -0.01em;
-  line-height: 170%;
   display: inline-block;
 }
 
 .footer h5 {
     letter-spacing: -0.01em;
-    line-height: 170%;
     font-weight: 600;
     margin-block-end: 1em;
 }
@@ -61,7 +56,6 @@
 .footer .copyright {
   font-size: 14px;
   letter-spacing: -0.01em;
-  line-height: 170%;
   text-align: center;
   width: 100%;
 }
