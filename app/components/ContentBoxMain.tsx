@@ -9,7 +9,7 @@ export const ContentBoxMain = () => {
           Something about <br /> reading and quick
         </span>
         <div className={'content-box-button'}>
-          <button>Start here</button>
+          <a href="/9OGZ">Start here</a>
           <ArrowRight className="img-2" />
         </div>
       </div>

@@ -408,8 +408,8 @@ hr {
   margin-top: 34px;
 }
 
-.content-box-button button {
-  border: 0px;
+.content-box-button a {
+  display: inline-block;
   background-color: transparent;
   color: var(--colors-teal-500, #1d9089);
   font-size: 18px;
@@ -417,6 +417,16 @@ hr {
   line-height: 170%;
   font-weight: 600;
   font-family: Poppins;
+}
+
+.content-box-button a:visited,
+.content-box-table-button a:visited {
+  color: currentColor;
+}
+
+.content-box-button a:not(:hover),
+.content-box-table-button a:not(:hover) {
+  text-decoration: none;
 }
 
 .content-box-quick-read {

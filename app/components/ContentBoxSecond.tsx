@@ -12,7 +12,7 @@ export const ContentBoxSecond = ({elements}: ContentBoxSecondProps) => {
       <div className="content-box-description">
         <p>Explore the arguments</p>
         <div className="content-box-table-button">
-          <span>Browse all arguments</span>
+          <a href="/9TDI">Browse all arguments</a>
         </div>
       </div>
       <div className="content-box-table">

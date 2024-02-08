@@ -1,4 +1,3 @@
-import React from 'react'
 import {BottomEclipse} from '~/components/icons-generated'
 import {GroupTopEcplise} from '~/components/icons-generated'
 
@@ -10,7 +9,7 @@ export const ContentBoxThird = () => {
           Get involved <br /> with AI safety
         </p>
         <div className="content-box-table-button">
-          <span>Learn how</span>
+          <a href="/8TJV">Learn how</a>
         </div>
       </div>
       <div className="content-box-table">
