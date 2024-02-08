@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import debounce from 'lodash/debounce'
-import {useSearch} from '~/hooks/search'
+import {useSearch} from '~/hooks/useSearch'
 import AutoHeight from 'react-auto-height'
 import {Question} from '~/server-utils/stampy'
 import {SearchInput} from './SearchInput/Input'
@@ -79,25 +79,15 @@ export default function Search({queryFromUrl, limitFromUrl, removeQueryFromUrl}:
         {isPendingSearch && results.length == 0 && (
           <div className="result-item-box no-questions">Searching for questions...</div>
         )}
-        <AutoHeight>
-          <div
-            className={`dropdown ${
-              showResults && searchInputRef.current.length > 0 ? '' : 'hidden'
-            }`}
-          >
-            <div>
-              {showResults && (
-                <SearchResults
-                  results={results.map((r) => ({
-                    title: r.title,
-                    url: `/${r.pageid}`,
-                    description: '', // TODO: fetch descriptions 🤔
-                  }))}
-                />
-              )}
-            </div>
-          </div>
-        </AutoHeight>
+        {searchInput && showResults && (
+          <SearchResults
+            results={results.map((r) => ({
+              title: r.title,
+              url: `/${r.pageid}`,
+              description: '', // TODO: fetch descriptions 🤔
+            }))}
+          />
+        )}
       </div>
     </>
   )

@@ -1,3 +1,4 @@
+import {Paper} from '~/assets/Paper'
 import './dropdown.css'
 
 export interface SearchResultsProps {
@@ -34,9 +35,7 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
       {results.map((result, i) => {
         return (
           <a key={i} className={'search-result'} href={result.url}>
-            <div className={'search-result-image'}>
-              {/* TODO: static image, same for all results, not a property of result */}
-            </div>
+            <Paper classname={'search-result-image'} />
             <div className={'search-result-content'}>
               <div className={'search-result-title'}>{result.title}</div>
               <div className={'search-result-description'}>{result.description}</div>
