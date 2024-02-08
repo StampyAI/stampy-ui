@@ -28,7 +28,7 @@
 .search-result:hover {
   background-color: var(--colors-teal-50, #edfaf9);
 }
-.search-result-image {
+.search-result svg {
   flex: none;
   width: 16px;
   height: 16px;

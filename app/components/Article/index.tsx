@@ -1,6 +1,6 @@
-import React from 'react'
-import {CopyIcon} from '~/assets/Copy'
-import {Tag} from '~/components/Tags/Tag'
+import React, {ReactNode} from 'react'
+import CopyIcon from '~/components/icons-generated/Copy'
+import EditIcon from '~/components/icons-generated/Pencil'
 import type {Question} from '~/server-utils/stampy'
 import './article.css'
 
@@ -9,6 +9,17 @@ const mapInteractiveOptionsIcon = {
   Edit: 'edit',
   Audio: 'audio',
 }
+
+type ActionProps = {
+    text: string
+    icon: ReactNode
+    action?: any
+}
+const Action = ({hint, icon, action}: ActionProps) => (
+    <div className="interactive-option">
+        {icon}
+    </div>
+)
 
 export const Article: React.FC<ArticleProps> = ({
   title,
@@ -23,26 +34,23 @@ export const Article: React.FC<ArticleProps> = ({
 
   return (
     <div className="article-container">
-      <h1>{title}</h1>
+      <h1 className="teal">{title}</h1>
       <div className="article-meta">
-          <p>{ttr(text)}</p>
+          <p className="grey">{ttr(text)} min read</p>
 
-        <div className="article-interactive-options">
-            {/* {interactiveOptions.map((option) => {
-                return (
-                <div key={option} className="interactive-option">
-                {mapInteractiveOptionsIcon[option]}
-                </div>
-                )
-                })} */}
+          <div className="interactive-options bordered">
+             <Action icon={<CopyIcon/>} hint="Copy to clipboard" />
+             <Action icon={<EditIcon className="no-fill" />} hint="Edit" />
         </div>
       </div>
 
       <div dangerouslySetInnerHTML={{__html: text}}></div>
       <div className="article-tags">
-        {tags.map((tag) => {
-          return <Tag key={tag}>{tag}</Tag>
-        })}
+        {tags.map((tag) => (
+            <a key={tag} className="tag bordered unstyled" href={`/tags/${tag}`}>
+                <div className="tags-label">{tag}</div>
+            </a>
+        ))}
       </div>
       <div className="article-last-updated">{lastUpdated}</div>
     </div>

@@ -4,6 +4,32 @@
   flex-direction: row;
   justify-content: flex-start;
 }
-.interactive-option {
+
+.interactive-options {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    vertical-align: center;
+}
+.interactive-options .interactive-option {
   cursor: pointer;
+}
+
+.article-tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.article-container {
+    max-width: 800px;
+}
+
+.article-container .tag {
+    background-color: var(--colors-teal-50, #edfaf9);
+    border: 1px solid var(--colors-teal-100, #d3f2f0);
+
+    color: var(--colors-teal-500, #1d9089);
+    font-size: 14px;
 }

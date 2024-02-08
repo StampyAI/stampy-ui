@@ -8,10 +8,12 @@ export const ContentBoxMain = () => {
         <span className="content-box-quick-read">
           Something about <br /> reading and quick
         </span>
-        <div className={'content-box-button'}>
-          <a href="/9OGZ">Start here</a>
+        <a href="/9OGZ" className="unstyled teal">
+        <div className="content-box-button">
+            Start here
           <ArrowRight className="img-2" />
         </div>
+        </a>
       </div>
       <img
         loading="lazy"

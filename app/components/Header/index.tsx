@@ -1,8 +1,7 @@
-import React from 'react'
 import {MenuItem} from '~/components/Menu'
-import {OpenBookIcon} from '~/assets/OpenBook'
-import {ChatBoxIcon} from '~/assets/ChatBox'
-import {AISafetyIcon} from '~/assets/AISafety'
+import OpenBookIcon from '~/components/icons-generated/OpenBook'
+import ChatBoxIcon from '~/components/icons-generated/Chatbot'
+import AISafetyIcon from '~/components/icons-generated/Aisafety'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
 import type {TOCItem} from '~/routes/questions.toc'
 import type {Tag} from '~/server-utils/stampy'
@@ -17,14 +16,14 @@ export const Header = ({toc, categories}: HeaderProps) => {
   return (
     <header className="top-header">
       <nav className="top-nav">
-        <a href="/">
-          <AISafetyIcon classname={'top-logo'} />
+        <a href="/" className="top-logo">
+          <AISafetyIcon />
         </a>
         <ul className="top-menu">
           <MenuItem
             primary={true}
             link="#"
-            icon={<OpenBookIcon classname={'top-menu-icon'} />}
+            icon={<OpenBookIcon />}
             text="Articles"
             id="showArticles"
           />
@@ -32,7 +31,7 @@ export const Header = ({toc, categories}: HeaderProps) => {
           <MenuItem
             primary={true}
             link="#"
-            icon={<ChatBoxIcon classname={'top-menu-icon'} />}
+            icon={<ChatBoxIcon />}
             text="Stampy chatbot"
           />
           <li className="top-menu-item">

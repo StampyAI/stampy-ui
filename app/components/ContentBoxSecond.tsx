@@ -11,9 +11,11 @@ export const ContentBoxSecond = ({elements}: ContentBoxSecondProps) => {
     <div className="main-container-box-table bordered">
       <div className="content-box-description">
         <p>Explore the arguments</p>
-        <div className="content-box-table-button">
-          <a href="/9TDI">Browse all arguments</a>
-        </div>
+          <a href="/9TDI" className="unstyled teal">
+              <div className="content-box-table-button">
+                  Browse all arguments
+              </div>
+          </a>
       </div>
       <div className="content-box-table">
         <ListTable elements={elements} />

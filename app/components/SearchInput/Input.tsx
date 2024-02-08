@@ -1,6 +1,6 @@
 import {useState} from 'react'
-import {MagnifyingIcon} from '~/assets/Magnifying'
-import {XIcon} from '~/assets/X'
+import MagnifyingIcon from '~/components/icons-generated/Magnifying'
+import XIcon from '~/components/icons-generated/X'
 import './input.css'
 
 interface SearchInputProps {
@@ -23,14 +23,14 @@ export const SearchInput = ({onChange, expandable}: SearchInputProps) => {
   }
   return (
     <div className={`search-box ${expandable ? 'expandable' : ''}`}>
-      <div className={'search-inputChild'} />
-      <label className={'search-content'}>
-        <MagnifyingIcon className={'iconsMagnifyingGlass'} />
+      <div className="search-inputChild" />
+      <label className="search-content">
+        <MagnifyingIcon className="iconsMagnifyingGlass" />
         <input
           type="search"
           name="searchbar"
-          placeholder={'Search articles'}
-          className={'search-input'}
+          placeholder="Search articles"
+          className="search-input"
           onChange={(e) => {
             handleSearch(e.currentTarget.value)
           }}
@@ -38,7 +38,7 @@ export const SearchInput = ({onChange, expandable}: SearchInputProps) => {
         ></input>
         {search === '' ? null : (
           <XIcon
-            classname={'x-icon'}
+            className="x-icon"
             onClick={() => {
               setSearch('')
               if (onChange) {

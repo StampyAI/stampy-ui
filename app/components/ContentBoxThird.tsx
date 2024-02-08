@@ -8,9 +8,11 @@ export const ContentBoxThird = () => {
         <p>
           Get involved <br /> with AI safety
         </p>
-        <div className="content-box-table-button">
-          <a href="/8TJV">Learn how</a>
-        </div>
+          <a href="/8TJV" className="unstyled teal">
+              <div className="content-box-table-button">
+                  Learn how
+              </div>
+          </a>
       </div>
       <div className="content-box-table">
         <GroupTopEcplise className="eclipse-individual-top" />
