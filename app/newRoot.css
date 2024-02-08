@@ -351,12 +351,14 @@ hr {
 }
 
 .content-box-button a:visited,
-.content-box-table-button a:visited {
+.content-box-table-button a:visited,
+.footer-brand a:visited {
   color: currentColor;
 }
 
 .content-box-button a:not(:hover),
-.content-box-table-button a:not(:hover) {
+.content-box-table-button a:not(:hover),
+.footer-brand a:not(:hover) {
   text-decoration: none;
 }
 
