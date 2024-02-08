@@ -1,4 +1,5 @@
-import {useLoaderData} from '@remix-run/react'
+import {Await, useLoaderData, useParams} from '@remix-run/react'
+import {Suspense} from 'react'
 import Header from '~/components/Header'
 import Footer from '~/components/Footer'
 import {loader} from '~/routes/questions.$questionId'
@@ -30,9 +31,9 @@ const Bla = ({title, tags, text}: {title: string; text: string; tags: any[]}) =>
 }
 
 export default function Article() {
-  const {
-    data: {title, text, tags, pageid},
-  } = useLoaderData<any>()
+  const params = useParams()
+  const pageid = params.questionId ?? '😱'
+  const {data} = useLoaderData<typeof loader>()
   const {toc, findSection, getPath} = useToC()
   const section = findSection(pageid)
   const path = getPath(pageid)
@@ -42,7 +43,11 @@ export default function Article() {
       <Header toc={toc} categories={[]} />
       <div className="flex-container">
         {section && <ArticlesNav current={pageid} article={section} path={path} />}
-        <Bla text={text} title={title} tags={tags} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Await resolve={data}>
+            {({text, title, tags}) => <Bla text={text ?? ''} title={title} tags={tags ?? []} />}
+          </Await>
+        </Suspense>
       </div>
       <Footer />
     </>

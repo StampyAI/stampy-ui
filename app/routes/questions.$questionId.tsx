@@ -1,5 +1,4 @@
-import {wrapCORS} from '../server-utils/responses'
-import type {LoaderFunctionArgs} from '@remix-run/cloudflare'
+import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {GlossaryEntry, loadQuestionDetail, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
@@ -14,20 +13,20 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
-export const loader = wrapCORS(async ({request, params}: LoaderFunctionArgs) => {
+export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const {questionId} = params
   if (!questionId) {
     throw Error('missing question title')
   }
 
   try {
-    return await loadQuestionDetail(request, questionId)
+    const dataPromise = loadQuestionDetail(request, questionId).then(({data}) => data)
+    return defer({data: dataPromise})
   } catch (error: unknown) {
     const data: Question = {
       pageid: questionId,
       title: UNKNOWN_QUESTION_TITLE,
-      text: `No question found with ID ${questionId}. Please go to the Discord in the lower right
-(or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
+      text: `No question found with ID ${questionId}. Please go to the Discord in the lower right (or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
       answerEditLink: null,
       relatedQuestions: [],
       tags: [],
@@ -35,11 +34,10 @@ export const loader = wrapCORS(async ({request, params}: LoaderFunctionArgs) => 
     }
     return {
       error: error?.toString(),
-      timestamp: new Date().toISOString(),
       data,
     }
   }
-})
+}
 
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
