@@ -21,13 +21,6 @@
   padding: 8px 0px 8px 14px; /* top, right, bottom, left */
 }
 
-.articles-line {
-  border-top: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  box-sizing: border-box;
-  width: 100%;
-  height: 1px;
-}
-
 .articles-title {
   position: relative;
   font-size: 16px;

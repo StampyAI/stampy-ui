@@ -61,7 +61,7 @@ export const ArticlesNav = ({article, path}: Article) => {
       {/* Section Header */}
       <Title article={article} path={path} current={current} />
 
-      <div className="articles-line" />
+      <hr />
 
       {article.children?.map((item) => (
         <ArticleLevel key={item.pageid} article={item} path={path} current={current} />
