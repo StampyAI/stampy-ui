@@ -34,7 +34,7 @@ export default function App() {
   return (
     <>
       <Header toc={toc} categories={tags.data} />
-      <div className={'page-body'}>
+      <div className="page-body">
         <PageHeaderText>
           <p>Educational content</p>
           <p>on all things AI Safety</p>
@@ -54,19 +54,12 @@ export default function App() {
 
       <WidgetStampy />
 
-      <div className={'top-margin-large'} />
-        <PageSubheaderText text={'Advanced Content'} />
+      <div className="top-margin-large" />
+        <PageSubheaderText text="Advanced Content" />
         <Grid gridBoxes={toc} />
-
-        {!embed && (
-          <>
-            <div className={'top-margin-large-with-border'} />
-
-            <div className={'top-margin-large'} />
-            <Footer />
-          </>
-        )}
       </div>
+
+      {!embed && <Footer />}
     </>
   )
 }

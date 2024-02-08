@@ -811,15 +811,6 @@ hr {
   border-radius: 6px;
 }
 
-.top-margin-large {
-  content: ' ';
-  margin-top: 108px;
-}
-.top-margin-large-with-border {
-  content: ' ';
-  margin-top: 104px;
-  border-top: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-}
 .group-elements {
   display: flex;
   flex-direction: row;
