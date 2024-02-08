@@ -21,7 +21,7 @@ const useToC = () => {
     if (path) return [item.pageid, ...path]
   }
 
-  const findSection = (pageid: string) => {
+  const findSection = (pageid: string): TOCItem | undefined => {
     return toc.filter(checkPath(pageid))[0]
   }
 

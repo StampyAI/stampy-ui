@@ -7,25 +7,21 @@ export {loader}
 import {Tag} from '~/components/Tags/Tag'
 import {H2} from '~/components/Typography/H2'
 import {Paragraph} from '~/components/Typography/Paragraph'
-import {ArticlesNav} from '~/components/ArticlesNav/Menu'
+import {ArticlesNav, EmtpyArticlesNav} from '~/components/ArticlesNav/Menu'
 import useToC from '~/hooks/useToC'
 
-const Bla = ({title, tags, text}: {title: string; text: string; tags: any[]}) => {
+const Bla = ({title, tags, text}: {title: string; text: string; tags?: string[]}) => {
   const ttr = (text: string, rate = 160) => {
     const time = text.split(' ')
-    return Math.round(time.length / rate)
+    return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
   }
 
   return (
     <div style={{paddingLeft: '40px'}}>
       <H2 teal={true}>{title}</H2>
-      <Paragraph style={{marginTop: '0px'}}>{ttr(text)} min read</Paragraph>
+      {text && <Paragraph style={{marginTop: '0px'}}>{ttr(text)} min read</Paragraph>}
       <div dangerouslySetInnerHTML={{__html: text}}></div>
-      <div style={{display: 'flex'}}>
-        {tags.map((tag: string) => (
-          <Tag key={tag}>{tag}</Tag>
-        ))}
-      </div>
+      <div style={{display: 'flex'}}>{tags?.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div>
     </div>
   )
 }
@@ -42,10 +38,14 @@ export default function Article() {
     <>
       <Header toc={toc} categories={[]} />
       <div className="flex-container">
-        {section && <ArticlesNav current={pageid} article={section} path={path} />}
-        <Suspense fallback={<div>Loading...</div>}>
+        {section ? (
+          <ArticlesNav current={pageid} article={section} path={path} />
+        ) : (
+          <EmtpyArticlesNav />
+        )}
+        <Suspense fallback={<Bla text="" title={section?.title ?? 'Loading...'} tags={[]} />}>
           <Await resolve={data}>
-            {({text, title, tags}) => <Bla text={text ?? ''} title={title} tags={tags ?? []} />}
+            {({text, title, tags}) => <Bla text={text ?? ''} title={title} tags={tags} />}
           </Await>
         </Suspense>
       </div>

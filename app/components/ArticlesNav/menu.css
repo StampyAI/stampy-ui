@@ -13,6 +13,10 @@
   overflow-x: hidden;
 }
 
+.articles-group.empty {
+  border-color: transparent;
+}
+
 .articles-headerLine {
   letter-spacing: -0.01em;
   line-height: 170%;

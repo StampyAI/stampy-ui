@@ -69,3 +69,7 @@ export const ArticlesNav = ({article, path}: Article) => {
     </div>
   )
 }
+
+export const EmtpyArticlesNav = () => {
+  return <div className="articles-group empty"></div>
+}
