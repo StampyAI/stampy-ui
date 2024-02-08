@@ -4,29 +4,11 @@ import Header from '~/components/Header'
 import Footer from '~/components/Footer'
 import {loader} from '~/routes/questions.$questionId'
 export {loader}
-import {Tag} from '~/components/Tags/Tag'
-import {H2} from '~/components/Typography/H2'
-import {Paragraph} from '~/components/Typography/Paragraph'
 import {ArticlesNav, EmtpyArticlesNav} from '~/components/ArticlesNav/Menu'
+import Article from '~/components/Article'
 import useToC from '~/hooks/useToC'
 
-const Bla = ({title, tags, text}: {title: string; text: string; tags?: string[]}) => {
-  const ttr = (text: string, rate = 160) => {
-    const time = text.split(' ')
-    return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
-  }
-
-  return (
-    <div style={{paddingLeft: '40px'}}>
-      <H2 teal={true}>{title}</H2>
-      {text && <Paragraph style={{marginTop: '0px'}}>{ttr(text)} min read</Paragraph>}
-      <div dangerouslySetInnerHTML={{__html: text}}></div>
-      <div style={{display: 'flex'}}>{tags?.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div>
-    </div>
-  )
-}
-
-export default function Article() {
+export default function RenderArticle() {
   const params = useParams()
   const pageid = params.questionId ?? '😱'
   const {data} = useLoaderData<typeof loader>()
@@ -43,9 +25,9 @@ export default function Article() {
         ) : (
           <EmtpyArticlesNav />
         )}
-        <Suspense fallback={<Bla text="" title={section?.title ?? 'Loading...'} tags={[]} />}>
+        <Suspense fallback={<Article text="" title={section?.title ?? 'Loading...'} tags={[]} />}>
           <Await resolve={data}>
-            {({text, title, tags}) => <Bla text={text ?? ''} title={title} tags={tags} />}
+            {Article}
           </Await>
         </Suspense>
       </div>

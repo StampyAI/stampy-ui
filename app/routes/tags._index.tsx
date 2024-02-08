@@ -6,8 +6,6 @@ import Header from '~/components/Header'
 import Footer from '~/components/Footer'
 import {CategoriesNav} from '../components/CategoriesNav/Menu'
 import {ListTable} from '~/components/Table/ListTable'
-import {H1} from '~/components/Typography/H1'
-import {Paragraph} from '~/components/Typography/Paragraph'
 import useToC from '~/hooks/useToC'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
@@ -72,15 +70,15 @@ export default function App() {
 
           {selectedTag === null ? null : (
             <div>
-              <H1 main={true} style={{marginTop: '0px'}}>
+              <h1 style={{marginTop: '0px'}}>
                 {tag.name}
-              </H1>
+              </h1>
               {tag.questions.length === 0 ? (
                 <div className={'no-questions'}>No questions found</div>
               ) : (
-                <Paragraph>
+                <p>
                   {tag.questions.length} pages tagged {`"${tag.name}"`}
-                </Paragraph>
+                </p>
               )}
               {selectedTag && <ListTable elements={tag.questions} />}
             </div>
