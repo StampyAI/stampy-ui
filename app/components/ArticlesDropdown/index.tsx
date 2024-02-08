@@ -38,7 +38,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
 
       {categories
         ?.sort(sortFuncs['by number of questions'])
-        .slice(0, 10)
+        .slice(0, 12)
         .map(({rowId, name}) => (
           <Link
             key={rowId}
