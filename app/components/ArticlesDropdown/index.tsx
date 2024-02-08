@@ -2,16 +2,21 @@ import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
 import './dropdown.css'
 
+
+const Link = ({to, text, className}: {to: string, text: string, className?: string}) => (
+    <div className={"articles-dropdown-entry " + (className || '')}>
+        <a className="unstyled" href={to}>
+            {text}
+        </a>
+    </div>
+)
+
 const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) => (
   <div>
     <div className="articles-dropdown-title">{category}</div>
     {toc
       .filter((item) => item.category === category)
-      .map(({pageid, title}: TOCItem) => (
-        <a key={`${pageid}-${title}`} className="articles-dropdown-entry" href={`/${pageid}`}>
-          {title}
-        </a>
-      ))}
+      .map(({pageid, title}: TOCItem) => (<Link key={`${pageid}-${title}`} to={`/${pageid}`} text={title} />))}
   </div>
 )
 
@@ -30,16 +35,12 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
       {/*sorted right side*/}
       <div className="articles-dropdown-title">Browse by category</div>
 
-      {categories?.slice(0, 10).map(({rowId, name}) => {
-        return (
-          <a key={rowId} className="articles-dropdown-teal-entry" href={`/tags/${name}`}>
-            {name}
-          </a>
-        )
-      })}
+      {categories?.slice(0, 10).map(({rowId, name}) => (
+          <Link key={rowId} className="articles-dropdown-teal-entry" to={`/tags/${name}`} text={name} />
+      ))}
 
-      <div className="dropdown-button">
-        <a href="/tags" className="dropdown-button-label unstyled">
+      <div className="dropdown-button bordered grey">
+          <a href="/tags" className="dropdown-button-label unstyled">
           Browse all categories
         </a>
       </div>
