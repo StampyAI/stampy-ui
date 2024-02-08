@@ -71,11 +71,6 @@
   padding-left: 48px;
 }
 
-.articles-group a {
-  color: inherit; /* disable link specific colours */
-  text-decoration: inherit; /* no underline */
-}
-
 .articles-group .selected {
   background-color: rgba(237.0000010728836, 250.00000029802322, 249.00000035762787, 1);
 }

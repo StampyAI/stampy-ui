@@ -7,15 +7,11 @@
 }
 
 .articles-dropdown-container {
-  z-index: 2;
+  z-index: 100;
   position: absolute;
   padding: 56px;
 
-  border-radius: 6px;
   background-color: #fff;
-  box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  box-sizing: border-box;
   width: 756px;
   top: 65px;
   left: 320px;
@@ -30,8 +26,6 @@
   letter-spacing: -0.01em;
   line-height: 170%;
   font-weight: 600;
-  font-family: Poppins;
-  color: var(--text-black, #1b2b3e);
   text-align: left;
   display: inline-block;
 }
@@ -44,8 +38,6 @@
   font-size: 16px;
   letter-spacing: -0.01em;
   line-height: 170%;
-  font-family: Poppins;
-  color: var(--text-black, #1b2b3e);
   text-align: left;
   display: block;
   text-decoration: none;
@@ -56,7 +48,6 @@
   font-size: 16px;
   letter-spacing: -0.01em;
   line-height: 170%;
-  font-family: Poppins;
   color: var(--colors-teal-500, #1d9089);
   text-align: left;
   display: block;
@@ -86,7 +77,4 @@
   position: relative;
   letter-spacing: -0.01em;
   line-height: 170%;
-  color: inherit;
-  font: inherit;
-  text-decoration: none;
 }

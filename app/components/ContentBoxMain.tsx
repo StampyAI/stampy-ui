@@ -2,8 +2,8 @@ import {ArrowRight} from '~/components/icons-generated'
 
 export const ContentBoxMain = () => {
   return (
-    <div className={['main-container', 'primary'].join(' ')}>
-      <div className={['content-box-description', 'primary'].join(' ')}>
+    <div className="main-container primary bordered">
+      <div className="content-box-description primary">
         <p>New to AI Safety?</p>
         <span className="content-box-quick-read">
           Something about <br /> reading and quick

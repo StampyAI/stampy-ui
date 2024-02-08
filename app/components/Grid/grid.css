@@ -1,0 +1,27 @@
+.grid-description {
+  letter-spacing: -0.01em;
+  line-height: 170%;
+}
+.grid-title {
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+.grid-item {
+  cursor: pointer;
+  text-align: left;
+  font-size: 18px;
+  padding: 32.5px 32px;
+}
+.grid-item div {
+    padding: 8px;
+}
+
+.grid {
+  display: grid;
+  gap: 50px 50px;
+  grid-template-columns: auto auto auto;
+  justify-content: space-around;
+}

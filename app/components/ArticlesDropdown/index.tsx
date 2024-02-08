@@ -20,7 +20,7 @@ export type ArticlesDropdownProps = {
   categories: Tag[]
 }
 export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
-  <div className="articles-dropdown-container">
+    <div className="articles-dropdown-container bordered">
     <div className="articles-dropdown-grid">
       <ArticlesSection category={INTRODUCTORY} toc={toc} />
       <ArticlesSection category={ADVANCED} toc={toc} />
@@ -30,7 +30,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
       {/*sorted right side*/}
       <div className="articles-dropdown-title">Browse by category</div>
 
-      {categories?.map(({rowId, name}) => {
+      {categories?.slice(0, 10).map(({rowId, name}) => {
         return (
           <a key={rowId} className="articles-dropdown-teal-entry" href={`/tags/${name}`}>
             {name}
@@ -39,7 +39,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
       })}
 
       <div className="dropdown-button">
-        <a href="/tags" className="dropdown-button-label">
+        <a href="/tags" className="dropdown-button-label unstyled">
           Browse all categories
         </a>
       </div>
