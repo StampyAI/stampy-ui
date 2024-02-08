@@ -1,8 +1,8 @@
 import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
-import {GlossaryEntry, loadQuestionDetail, QuestionState} from '~/server-utils/stampy'
+import {GlossaryEntry, loadQuestionDetail, loadTags, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question, Glossary, PageId, Banner as BannerType} from '~/server-utils/stampy'
+import type {Question, Glossary, PageId, Banner as BannerType, Tag} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags.$tag'
@@ -21,7 +21,8 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
 
   try {
     const dataPromise = loadQuestionDetail(request, questionId).then(({data}) => data)
-    return defer({data: dataPromise})
+    const tagsPromise = loadTags(request).then(({data}) => data)
+    return defer({data: dataPromise, tags: tagsPromise})
   } catch (error: unknown) {
     const data: Question = {
       pageid: questionId,
@@ -35,6 +36,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     return {
       error: error?.toString(),
       data,
+      tags: [] as Tag[],
     }
   }
 }

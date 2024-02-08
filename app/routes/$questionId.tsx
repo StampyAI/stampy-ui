@@ -11,14 +11,16 @@ import useToC from '~/hooks/useToC'
 export default function RenderArticle() {
   const params = useParams()
   const pageid = params.questionId ?? '😱'
-  const {data} = useLoaderData<typeof loader>()
+  const {data, tags} = useLoaderData<typeof loader>()
   const {toc, findSection, getPath} = useToC()
   const section = findSection(pageid)
   const path = getPath(pageid)
 
   return (
     <>
-      <Header toc={toc} categories={[]} />
+      <Suspense fallback={<Header toc={toc} categories={[]} />}>
+        <Await resolve={tags}>{(tags) => <Header toc={toc} categories={tags} />}</Await>
+      </Suspense>
       <div className="flex-container">
         {section ? (
           <ArticlesNav current={pageid} article={section} path={path} />
@@ -26,9 +28,7 @@ export default function RenderArticle() {
           <EmtpyArticlesNav />
         )}
         <Suspense fallback={<Article text="" title={section?.title ?? 'Loading...'} tags={[]} />}>
-          <Await resolve={data}>
-            {Article}
-          </Await>
+          <Await resolve={data}>{Article}</Await>
         </Suspense>
       </div>
       <Footer />

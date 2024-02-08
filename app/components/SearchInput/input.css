@@ -10,8 +10,8 @@
   border: 1px solid var(--colors-teal-500, #1d9089);
   box-sizing: border-box;
   border-radius: 6px;
-  width: 384px;
 }
+
 .search-box {
   flex-grow: 1;
   position: relative;
@@ -20,9 +20,19 @@
   font-size: 16px;
   color: var(--colors-cool-grey-600, #788492);
   font-family: Poppins;
-  width: 256px;
+  width: 100%;
   transition: width 100ms;
 }
+
+.search-box.expandable {
+  width: 256px;
+}
+
+.search-box.expandable:focus-within {
+  width: 384px;
+}
+
+
 .search-inputChild {
   position: absolute;
   height: 100%;

@@ -17,8 +17,10 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   }
 }
 
-interface SortFunc {
-  [key: string]: (a: TagType, b: TagType) => number
+export const sortFuncs = {
+  alphabetically: (a: TagType, b: TagType) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+  'by number of questions': (a: TagType, b: TagType) => b.questions.length - a.questions.length,
 }
 
 export default function App() {
@@ -28,12 +30,7 @@ export default function App() {
   const [tagsFilter, setTagsFilter] = useState<string>('')
   const {toc} = useToC()
 
-  const [sortBy, setSortBy] = useState<string>('alphabetically')
-  const sortFuncs: SortFunc = {
-    alphabetically: (a: TagType, b: TagType) =>
-      a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-    'by number of questions': (a: TagType, b: TagType) => b.questions.length - a.questions.length,
-  }
+  const [sortBy, setSortBy] = useState<keyof typeof sortFuncs>('alphabetically')
   const nextSortFunc = (): string => {
     const sortFuncKeys = Object.keys(sortFuncs)
     return sortFuncKeys[(sortFuncKeys.indexOf(sortBy) + 1) % sortFuncKeys.length]

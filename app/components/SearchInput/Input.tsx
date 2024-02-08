@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {MagnifyingIcon} from '~/assets/Magnifying'
 import {XIcon} from '~/assets/X'
 import './input.css'
@@ -11,9 +11,9 @@ interface SearchInputProps {
   /**
    * Custom styles
    */
-  style?: React.CSSProperties
+  expandable?: boolean
 }
-export const SearchInput = ({onChange, style}: SearchInputProps) => {
+export const SearchInput = ({onChange, expandable}: SearchInputProps) => {
   const [search, setSearch] = useState('')
   const handleSearch = (search: string) => {
     setSearch(search)
@@ -22,7 +22,7 @@ export const SearchInput = ({onChange, style}: SearchInputProps) => {
     }
   }
   return (
-    <div className={'search-box'} style={style}>
+    <div className={`search-box ${expandable ? 'expandable' : ''}`}>
       <div className={'search-inputChild'} />
       <label className={'search-content'}>
         <MagnifyingIcon className={'iconsMagnifyingGlass'} />

@@ -74,7 +74,7 @@ export default function Search({queryFromUrl, limitFromUrl, removeQueryFromUrl}:
   return (
     <>
       <div onFocus={() => setShowResults(true)} onBlur={handleBlur}>
-        <SearchInput onChange={handleChange} />
+        <SearchInput expandable onChange={handleChange} />
         <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
         {isPendingSearch && results.length == 0 && (
           <div className="result-item-box no-questions">Searching for questions...</div>

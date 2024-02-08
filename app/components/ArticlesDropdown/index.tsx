@@ -1,6 +1,7 @@
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
 import './dropdown.css'
+import {sortFuncs} from '~/routes/tags._index'
 
 
 const Link = ({to, text, className}: {to: string, text: string, className?: string}) => (
@@ -25,7 +26,7 @@ export type ArticlesDropdownProps = {
   categories: Tag[]
 }
 export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
-    <div className="articles-dropdown-container bordered">
+  <div className="articles-dropdown-container bordered">
     <div className="articles-dropdown-grid">
       <ArticlesSection category={INTRODUCTORY} toc={toc} />
       <ArticlesSection category={ADVANCED} toc={toc} />
@@ -35,12 +36,20 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
       {/*sorted right side*/}
       <div className="articles-dropdown-title">Browse by category</div>
 
-      {categories?.slice(0, 10).map(({rowId, name}) => (
-          <Link key={rowId} className="articles-dropdown-teal-entry" to={`/tags/${name}`} text={name} />
-      ))}
+      {categories
+        ?.sort(sortFuncs['by number of questions'])
+        .slice(0, 10)
+        .map(({rowId, name}) => (
+          <Link
+            key={rowId}
+            className="articles-dropdown-teal-entry"
+            to={`/tags/${name}`}
+            text={name}
+          />
+        ))}
 
       <div className="dropdown-button bordered grey">
-          <a href="/tags" className="dropdown-button-label unstyled">
+        <a href="/tags" className="dropdown-button-label unstyled">
           Browse all categories
         </a>
       </div>

@@ -34,7 +34,7 @@ export default function Dialog({children, onClose}: Props) {
   }
 
   // Older browsers don't support HTML5 dialogs, so add a fallback option for them
-  const nativeDialogSupport = !!document.createElement('dialog').showModal
+  const nativeDialogSupport = 'document' in global && !!document.createElement('dialog').showModal
   if (nativeDialogSupport) {
     return (
       <dialog ref={dialogSetter} className="dialog" onClose={onClose} onClick={closeIfOutside}>

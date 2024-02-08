@@ -37,7 +37,7 @@ export const CategoriesNav = ({categories, active, onChange, onClick}: Categorie
       <div className={'category-autoLayoutHorizontal'}>
         <div className={'category-nav-title'}>Categories</div>
       </div>
-      <SearchInput onChange={onChange} style={{margin: '16px 24px'}} />
+      <SearchInput onChange={onChange} />
       {categories.map((category) => {
         return (
           <div

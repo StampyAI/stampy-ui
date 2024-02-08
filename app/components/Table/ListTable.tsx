@@ -10,7 +10,7 @@ export type ListTableProps = {
 export const ListTable = ({elements}: ListTableProps) => {
   return (
     <div className={'table-list'}>
-      {Object.values(elements).map(({pageid, title}, i) => {
+      {elements.map(({pageid, title}, i) => {
         return (
           <a key={`entry-${i}`} className={'table-entry'} href={pageid}>
             {title}

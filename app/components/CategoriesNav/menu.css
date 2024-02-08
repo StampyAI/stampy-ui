@@ -10,7 +10,7 @@
   text-align: left;
   display: inline-flex;
   align-items: center;
-  padding: 8px 24px;
+  padding: 8px 0;
   cursor: pointer;
 }
 .category-nav-title {
@@ -19,7 +19,7 @@
   line-height: 170%;
   color: var(--text-black, #1b2b3e);
   align-items: center;
-  padding: 8px 24px;
+  padding: 8px 0;
   font-size: 16px;
   font-weight: 600;
   font-family: Poppins;
@@ -50,4 +50,5 @@
   border-radius: 6px;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   max-width: 328px;
+  padding: 0 24px;
 }
