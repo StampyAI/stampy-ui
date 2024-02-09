@@ -1,8 +1,20 @@
 import {useState, useEffect, ReactNode} from 'react'
 import {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {loadTag, Tag as TagType, QuestionState, RelatedQuestions} from '~/server-utils/stampy'
+import {
+  loadTag,
+  Tag as TagType,
+  QuestionState,
+  RelatedQuestions,
+  loadTags,
+} from '~/server-utils/stampy'
 import Dialog from '~/components/dialog'
+import Footer from '~/components/Footer'
+import Header from '~/components/Header'
+import useToC from '~/hooks/useToC'
+import {useLoaderData} from '@remix-run/react'
+import {ListTable} from '~/components/Table/ListTable'
+import {CategoriesNav} from '~/components/CategoriesNav/Menu'
 
 type Props = {
   tags: string[]
@@ -17,15 +29,22 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
   }
 
   try {
-    return await loadTag(request, tag)
+    const tags = await loadTags(request)
+    return {tag, tags}
   } catch (error: unknown) {
     console.error(`error fetching tag "${tag}":`, error)
-    return {
-      error: error?.toString(),
-      timestamp: new Date().toISOString(),
-      data: [],
-    }
+    // return {
+    //   error: error?.toString(),
+    //   timestamp: new Date().toISOString(),
+    //   data: [],
+    // }
   }
+}
+
+export const sortFuncs = {
+  alphabetically: (a: TagType, b: TagType) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+  'by number of questions': (a: TagType, b: TagType) => b.questions.length - a.questions.length,
 }
 
 export async function fetchTag(tagName: string): Promise<TagType | never[]> {
@@ -125,5 +144,69 @@ export function Tags({tags}: Props) {
     <div className="tags-container">
       <div>{tags && tags.map((name) => <Tag key={name} name={name} />)}</div>
     </div>
+  )
+}
+
+export default function App() {
+  const {tag, tags} = useLoaderData<ReturnType<typeof loader>>()
+  // const result = useLoaderData<ReturnType<typeof loader>>()
+  const {data = []} = tags ?? {}
+  const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
+  const [tagsFilter, setTagsFilter] = useState<string>('')
+  const {toc} = useToC()
+
+  const [sortBy, setSortBy] = useState<keyof typeof sortFuncs>('alphabetically')
+
+  const tagWithQuestions = data.filter((tagData) => tagData.name === tag)[0]
+  useEffect(() => {
+    if (selectedTag === null) {
+      setSelectedTag(data.filter((tag) => tag.questions.length > 0)[0])
+    }
+  }, [data, selectedTag])
+  if (selectedTag === null) {
+    return null
+  }
+  return (
+    <>
+      <Header toc={toc} categories={data} />
+      <div className={'top-margin-large'} />
+      <main>
+        <div className={'group-elements'}>
+          <CategoriesNav
+            categories={
+              data
+                .filter((tag) => tag.questions.length > 0)
+                .filter((tag) => tag.name.toLowerCase().includes(tagsFilter.toLowerCase()))
+                .sort(sortFuncs[sortBy])
+
+              // {title: "AI Safety", id: 1},
+            }
+            active={Number(selectedTag)}
+            onClick={setSelectedTag}
+            onChange={setTagsFilter}
+          />
+
+          {selectedTag === null ? null : (
+            <div>
+              <h1 style={{marginTop: '0px'}}>{tagWithQuestions.name}</h1>
+              {tagWithQuestions.questions.length === 0 ? (
+                <div className={'no-questions'}>No questions found</div>
+              ) : (
+                <p>
+                  {tagWithQuestions.questions.length} pages tagged {`"${tagWithQuestions.name}"`}
+                </p>
+              )}
+              {selectedTag && <ListTable elements={tagWithQuestions.questions} />}
+            </div>
+          )}
+        </div>
+      </main>
+
+      <div className={'top-margin-large-with-border'} />
+
+      <div className={'top-margin-large'} />
+
+      <Footer />
+    </>
   )
 }
