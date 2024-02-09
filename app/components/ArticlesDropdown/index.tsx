@@ -48,8 +48,11 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
           />
         ))}
 
-      <Button action="/tags" className="dropdown-button bordered grey dropdown-button-label">
-          Browse all categories
+      <Button
+        action={`/tags/display/${categories[0].name}`}
+        className="dropdown-button bordered grey dropdown-button-label"
+      >
+        Browse all categories
       </Button>
     </div>
   </div>
