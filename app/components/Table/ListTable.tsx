@@ -12,7 +12,7 @@ export const ListTable = ({elements}: ListTableProps) => {
     <div className={'table-list'}>
       {elements.map(({pageid, title}, i) => {
         return (
-          <a key={`entry-${i}`} className={'table-entry'} href={pageid}>
+          <a key={`entry-${i}`} className={'table-entry'} href={`/${pageid}`}>
             {title}
           </a>
         )
