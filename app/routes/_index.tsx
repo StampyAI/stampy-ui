@@ -5,11 +5,9 @@ import Header from '~/components/Header'
 import Footer from '~/components/Footer'
 import type {Context} from '~/root'
 import {PageHeaderText} from '~/components/PageHeader'
-import {ContentBoxMain} from '~/components/ContentBoxMain'
-import {ContentBoxSecond} from '~/components/ContentBoxSecond'
-import {ContentBoxThird} from '~/components/ContentBoxThird'
 import {WidgetStampy} from '~/components/WidgetStampy'
 import {PageSubheaderText} from '~/components/PageSubHeader'
+import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/ContentBox'
 import Grid from '~/components/Grid'
 import useToC from '~/hooks/useToC'
 
@@ -41,15 +39,7 @@ export default function App() {
         </PageHeaderText>
 
         <ContentBoxMain />
-
-        <ContentBoxSecond
-          elements={[
-            {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
-            {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
-            {title: 'Why would an AI do bad things?', pageid: '2400'},
-          ]}
-        />
-
+        <ContentBoxSecond />
         <ContentBoxThird />
 
         <WidgetStampy />
