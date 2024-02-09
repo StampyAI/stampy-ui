@@ -43,7 +43,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
           <Link
             key={rowId}
             className="articles-dropdown-teal-entry"
-            to={`/tags/${name}`}
+            to={`/tags/display/${name}`}
             text={name}
           />
         ))}
