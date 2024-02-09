@@ -24,14 +24,15 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 
   try {
     const tags = await loadTags(request)
-    return {tag, tags}
+    return {tag, ...tags}
   } catch (error: unknown) {
     console.error(`error fetching tag "${tag}":`, error)
-    // return {
-    //   error: error?.toString(),
-    //   timestamp: new Date().toISOString(),
-    //   data: [],
-    // }
+    return {
+      error: error?.toString(),
+      timestamp: new Date().toISOString(),
+      data: new Array<TagType>(),
+      tag,
+    }
   }
 }
 
@@ -47,10 +48,11 @@ export async function fetchTag(tagName: string): Promise<TagType | never[]> {
     const json: Awaited<ReturnType<typeof loader>> = await response.json()
     if ('error' in json) console.error(json.error)
     const {data, timestamp} = json
+    const currentTagData = data.filter((tagData) => tagData.name === tagName)[0]
 
     reloadInBackgroundIfNeeded(url, timestamp)
 
-    return data
+    return currentTagData
   })
 }
 
@@ -142,15 +144,14 @@ export function Tags({tags}: Props) {
 }
 
 export default function App() {
-  const {tag, tags} = useLoaderData<ReturnType<typeof loader>>()
-  const {data = []} = tags ?? {}
+  const {tag, data} = useLoaderData<ReturnType<typeof loader>>()
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
   const [tagsFilter, setTagsFilter] = useState<string>('')
   const {toc} = useToC()
 
-  const [sortBy, setSortBy] = useState<keyof typeof sortFuncs>('alphabetically')
+  const [sortBy] = useState<keyof typeof sortFuncs>('alphabetically')
 
-  const tagWithQuestions = data.filter((tagData) => tagData.name === tag)[0]
+  const currentTagData = data.filter((tagData) => tagData.name === tag)[0]
   useEffect(() => {
     if (selectedTag === null) {
       setSelectedTag(data.filter((tag) => tag.questions.length > 0)[0])
@@ -181,15 +182,15 @@ export default function App() {
 
           {selectedTag === null ? null : (
             <div>
-              <h1 style={{marginTop: '0px'}}>{tagWithQuestions.name}</h1>
-              {tagWithQuestions.questions.length === 0 ? (
+              <h1 style={{marginTop: '0px'}}>{currentTagData.name}</h1>
+              {currentTagData.questions.length === 0 ? (
                 <div className={'no-questions'}>No questions found</div>
               ) : (
                 <p>
-                  {tagWithQuestions.questions.length} pages tagged {`"${tagWithQuestions.name}"`}
+                  {currentTagData.questions.length} pages tagged {`"${currentTagData.name}"`}
                 </p>
               )}
-              {selectedTag && <ListTable elements={tagWithQuestions.questions} />}
+              {selectedTag && <ListTable elements={currentTagData.questions} />}
             </div>
           )}
         </div>
