@@ -228,7 +228,6 @@ a:not(:hover, :focus-visible) {
   margin-top: var(--spacing-80, 80px);
 }
 
-
 .iconsMagnifyingGlass {
   width: 16px;
   position: relative;

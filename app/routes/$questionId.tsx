@@ -1,13 +1,15 @@
 import {Await, useLoaderData, useParams} from '@remix-run/react'
-import {Suspense} from 'react'
+import {Suspense, useEffect, useState} from 'react'
 import Header from '~/components/Header'
 import Footer from '~/components/Footer'
 import {loader} from '~/routes/questions.$questionId'
-export {loader}
 import {ArticlesNav, EmtpyArticlesNav} from '~/components/ArticlesNav/Menu'
 import Article from '~/components/Article'
+import {fetchGlossary} from '~/routes/questions.glossary'
 import useToC from '~/hooks/useToC'
-import type {Question} from '~/server-utils/stampy'
+import type {Question, Glossary} from '~/server-utils/stampy'
+
+export {loader}
 
 const dummyQuestion = (title: string | undefined) =>
   ({
@@ -17,12 +19,22 @@ const dummyQuestion = (title: string | undefined) =>
   }) as any as Question
 
 export default function RenderArticle() {
+  const [glossary, setGlossary] = useState<Glossary>({} as Glossary)
   const params = useParams()
   const pageid = params.questionId ?? '😱'
   const {data, tags} = useLoaderData<typeof loader>()
   const {toc, findSection, getPath} = useToC()
   const section = findSection(pageid)
   const path = getPath(pageid)
+
+  useEffect(() => {
+    const getGlossary = async () => {
+      const {data} = await fetchGlossary()
+      console.log(data)
+      setGlossary(data)
+    }
+    getGlossary()
+  }, [setGlossary])
 
   return (
     <>
@@ -35,8 +47,8 @@ export default function RenderArticle() {
         ) : (
           <EmtpyArticlesNav />
         )}
-        <Suspense fallback={<Article {...dummyQuestion(section?.title)} />}>
-          <Await resolve={data}>{Article}</Await>
+        <Suspense fallback={<Article question={dummyQuestion(section?.title)} />}>
+          <Await resolve={data}>{(data) => <Article question={data} glossary={glossary} />}</Await>
         </Suspense>
       </div>
       <Footer />

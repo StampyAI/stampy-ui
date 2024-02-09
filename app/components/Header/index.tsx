@@ -28,7 +28,12 @@ export const Header = ({toc, categories}: HeaderProps) => {
             id="showArticles"
           />
           <ArticlesDropdown toc={toc} categories={categories} />
-          <MenuItem primary={true} link="#" icon={<ChatBoxIcon />} text="Stampy chatbot" />
+          <MenuItem
+            primary={true}
+            link="https://chat.aisafety.info"
+            icon={<ChatBoxIcon />}
+            text="Stampy chatbot"
+          />
           <li className="top-menu-item">
             <div className="top-menu-divider"></div>
           </li>
