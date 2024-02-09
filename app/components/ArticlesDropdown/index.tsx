@@ -1,7 +1,7 @@
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
 import './dropdown.css'
-import {sortFuncs} from '~/routes/tags._index'
+import {sortFuncs} from '~/routes/tags.$tag'
 
 const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
   <div className={'articles-dropdown-entry ' + (className || '')}>

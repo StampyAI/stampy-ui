@@ -1,13 +1,7 @@
 import {useState, useEffect, ReactNode} from 'react'
 import {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {
-  loadTag,
-  Tag as TagType,
-  QuestionState,
-  RelatedQuestions,
-  loadTags,
-} from '~/server-utils/stampy'
+import {Tag as TagType, QuestionState, RelatedQuestions, loadTags} from '~/server-utils/stampy'
 import Dialog from '~/components/dialog'
 import Footer from '~/components/Footer'
 import Header from '~/components/Header'
@@ -149,7 +143,6 @@ export function Tags({tags}: Props) {
 
 export default function App() {
   const {tag, tags} = useLoaderData<ReturnType<typeof loader>>()
-  // const result = useLoaderData<ReturnType<typeof loader>>()
   const {data = []} = tags ?? {}
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
   const [tagsFilter, setTagsFilter] = useState<string>('')
