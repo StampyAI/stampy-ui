@@ -34,7 +34,7 @@
   letter-spacing: -0.01em;
 }
 .articles-dropdown-teal-entry {
-  color: var(--colors-teal-500, #1d9089);
+  color: var(--colors-teal-500);
 }
 .dropdown-button {
   padding: 7px 17px;

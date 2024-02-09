@@ -16,8 +16,8 @@
 }
 .top-menu-text {
   margin-left: 8px;
-  color: var(--text-black, #1b2b3e);
+  color: var(--text-black);
 }
 .top-menu-text.secondary {
-  color: var(--colors-teal-500, #1d9089);
+  color: var(--colors-teal-500);
 }

@@ -6,7 +6,7 @@
   letter-spacing: -0.02em;
   line-height: 125%;
   font-weight: 600;
-  color: var(--text-black, #1b2b3e);
+  color: var(--text-black);
   text-align: left;
   display: inline-block;
   width: 770px;

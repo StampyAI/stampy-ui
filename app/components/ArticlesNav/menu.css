@@ -4,7 +4,7 @@
   text-align: left;
   font-size: 16px;
   border-radius: 6px;
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  border: 1px solid var(--colors-cool-grey-200);
   max-width: 328px;
 
   overflow-y: scroll;
@@ -26,7 +26,7 @@
   position: relative;
   font-size: 16px;
   letter-spacing: -0.01em;
-  color: var(--text-black, #1b2b3e);
+  color: var(--text-black);
   text-align: left;
   display: inline-flex;
   align-items: center;

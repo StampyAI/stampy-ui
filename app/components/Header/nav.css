@@ -1,5 +1,5 @@
 .top-header {
-  padding: var(--spacing-24, 24px) var(--spacing-80, 80px);
+  padding: var(--spacing-24) var(--spacing-80);
 }
 .top-nav {
   display: flex;
@@ -10,7 +10,7 @@
 }
 
 .top-logo svg {
-  color: var(--colors-teal-500, #1d9089);
+  color: var(--colors-teal-500);
   max-height: 91px;
   max-width: 174px;
   width: 100%;

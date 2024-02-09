@@ -67,7 +67,7 @@
   letter-spacing: -0.02em;
   line-height: 155%;
   font-weight: 600;
-  color: var(--colors-teal-500, #1d9089);
+  color: var(--colors-teal-500);
 }
 
 .footer-grid {

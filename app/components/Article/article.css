@@ -32,8 +32,8 @@ article .meta {
 
 article .tag {
     display: inline-block;
-  background-color: var(--colors-teal-50, #edfaf9);
-  border: 1px solid var(--colors-teal-100, #d3f2f0);
+  background-color: var(--colors-teal-50);
+  border: 1px solid var(--colors-teal-100);
     color: var(--colors-teal-500);
     padding: 0 var(--spacing-8);
 }
