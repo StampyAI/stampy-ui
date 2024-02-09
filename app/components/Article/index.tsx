@@ -203,7 +203,7 @@ export const Article = ({question, glossary}: ArticleProps) => {
       <div className="article-tags">
         {tags.map((tag) => (
           <a key={tag} className="tag bordered" href={`/tags/${tag}`}>
-            <div className="tags-label">{tag}</div>
+            {tag}
           </a>
         ))}
       </div>

@@ -15,6 +15,10 @@
   text-decoration: none;
 }
 
+.grit-item:last-of-type {
+  margin-right: auto;
+}
+
 .grid-item:hover {
   outline: 1px solid var(--colors-teal-200);
 }
@@ -26,6 +30,6 @@
 .grid {
   display: grid;
   gap: 50px 50px;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: space-around;
 }
