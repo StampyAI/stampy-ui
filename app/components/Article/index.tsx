@@ -1,4 +1,4 @@
-import {ReactNode, useRef, useEffect, useState} from 'react'
+import {ReactNode, useRef, useEffect} from 'react'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import type {Question, Glossary, PageId} from '~/server-utils/stampy'
@@ -147,7 +147,7 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
   }, [html, glossary, pageid])
 
   return (
-    <div
+    <div className="contents"
       dangerouslySetInnerHTML={{
         __html: html,
       }}
@@ -164,7 +164,7 @@ export const Article = ({title, text, tags, pageid}: Question) => {
   const lastUpdated = '<last updated goes here>'
 
   return (
-    <div className="article-container">
+    <article className="article-container">
       <h1 className="teal">{title}</h1>
       <div className="article-meta">
         <p className="grey">{ttr(text || '')} min read</p>
@@ -185,7 +185,7 @@ export const Article = ({title, text, tags, pageid}: Question) => {
         ))}
       </div>
       <div className="article-last-updated">{lastUpdated}</div>
-    </div>
+    </article>
   )
 }
 export default Article
