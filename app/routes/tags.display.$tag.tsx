@@ -14,18 +14,15 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
     throw Error('missing tag name')
   }
 
-  try {
-    const tags = await loadTags(request)
-    return {...tags, tagFromUrl}
-  } catch (error: unknown) {
-    console.error(`error fetching tag "${tagFromUrl}":`, error)
-    return {
-      error: error?.toString(),
-      timestamp: new Date().toISOString(),
-      data: new Array<TagType>(),
-      tagFromUrl,
-    }
+  const tags = await loadTags(request)
+  const currentTag = tags.data.find((tagData) => tagData.name === tagFromUrl)
+  if (currentTag === undefined) {
+    throw new Response(null, {
+      status: 404,
+      statusText: 'Unable to find requested tag',
+    })
   }
+  return {...tags, currentTag}
 }
 
 export const sortFuncs = {
@@ -35,7 +32,7 @@ export const sortFuncs = {
 }
 
 export default function App() {
-  const {tagFromUrl, data} = useLoaderData<ReturnType<typeof loader>>()
+  const {currentTag, data} = useLoaderData<ReturnType<typeof loader>>()
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
   const [tagsFilter, setTagsFilter] = useState<string>('')
   const {toc} = useToC()
@@ -44,10 +41,9 @@ export default function App() {
 
   useEffect(() => {
     if (selectedTag === null) {
-      const dataForUrlTag = data.filter((tagData) => tagData.name === tagFromUrl)[0]
-      setSelectedTag(dataForUrlTag)
+      setSelectedTag(currentTag)
     }
-  }, [selectedTag, data, tagFromUrl])
+  }, [selectedTag, data, currentTag])
   if (selectedTag === null) {
     return null
   }
