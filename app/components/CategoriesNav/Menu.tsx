@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
 import './menu.css'
@@ -11,7 +10,7 @@ interface CategoriesNavProps {
   /**
    * Selected article
    */
-  active: number
+  active: TagType
   /**
    * Callback function to handle click on article
    */
@@ -23,12 +22,9 @@ interface CategoriesNavProps {
 }
 
 export const CategoriesNav = ({categories, active, onChange, onClick}: CategoriesNavProps) => {
-  const [selected, setSelected] = useState(active || 0)
-
-  const handleClick = (index: number) => {
-    setSelected(index)
+  const handleClick = (newTag: TagType) => {
     if (onClick) {
-      onClick(index)
+      onClick(newTag)
     }
   }
 
@@ -44,9 +40,9 @@ export const CategoriesNav = ({categories, active, onChange, onClick}: Categorie
             key={`category-${category.tagId}`}
             className={[
               'category-autoLayoutHorizontal',
-              selected == category.tagId ? ['active'].join(' ') : '',
+              active.tagId == category.tagId ? ['active'].join(' ') : '',
             ].join(' ')}
-            onClick={() => handleClick(category.tagId)}
+            onClick={() => handleClick(category)}
           >
             <div className={'category-title'}>
               {category.name} ({category.questions.length})
