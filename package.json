@@ -44,8 +44,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "wrangler": "^3.24.0",
-
-
     "@storybook/addon-designs": "^7.0.9",
     "@storybook/addon-essentials": "^7.6.8",
     "@storybook/addon-interactions": "^7.6.8",
@@ -82,7 +80,7 @@
     "deploy": "npm run build && wrangler deploy",
     "test": "npm run build && jest",
     "refresh-test-data": "ts-node app/mocks/coda-responses/refresh-coda-data-for-tests.ts",
-
+    "clean-cache": "rimraf .cache .wrangler node_modules/.cache build public/build",
     "storybook": "storybook dev -p 6006"
   },
   "main": "build/index.js"
