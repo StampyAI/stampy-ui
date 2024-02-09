@@ -1,7 +1,8 @@
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
-import './dropdown.css'
 import {sortFuncs} from '~/routes/tags.$tag'
+import Button from '~/components/Button'
+import './dropdown.css'
 
 const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
   <div className={'articles-dropdown-entry ' + (className || '')}>
@@ -47,11 +48,9 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
           />
         ))}
 
-      <div className="dropdown-button bordered grey">
-        <a href="/tags" className="dropdown-button-label">
+      <Button action="/tags" className="dropdown-button bordered grey dropdown-button-label">
           Browse all categories
-        </a>
-      </div>
+      </Button>
     </div>
   </div>
 )

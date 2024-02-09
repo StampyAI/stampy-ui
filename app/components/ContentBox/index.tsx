@@ -3,6 +3,7 @@ import {ArrowRight} from '~/components/icons-generated'
 import {BottomEclipse} from '~/components/icons-generated'
 import {GroupTopEcplise} from '~/components/icons-generated'
 import {ListTable} from '~/components/Table/ListTable'
+import Button from '~/components/Button'
 import './box.css'
 
 interface ContentBoxProps {
@@ -17,9 +18,9 @@ export const ContentBox = ({title, action, actionTitle, children, className}: Co
     <div className={`main-container-box-table bordered ${className || ''}`}>
       <div className="content-box-description">
         <h2>{title}</h2>
-        <a href={action} className="bordered content-box-table-button teal-500">
+        <Button action={action} className="bordered content-box-table-button teal-500">
           {actionTitle}
-        </a>
+        </Button>
       </div>
       <div className="content-box-table">{children}</div>
     </div>
