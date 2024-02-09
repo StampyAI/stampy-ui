@@ -4,7 +4,7 @@ import {Tag as TagType, loadTags} from '~/server-utils/stampy'
 import Footer from '~/components/Footer'
 import Header from '~/components/Header'
 import useToC from '~/hooks/useToC'
-import {useLoaderData} from '@remix-run/react'
+import {useLoaderData, useNavigate} from '@remix-run/react'
 import {ListTable} from '~/components/Table/ListTable'
 import {CategoriesNav} from '~/components/CategoriesNav/Menu'
 
@@ -36,11 +36,12 @@ export default function App() {
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
   const [tagsFilter, setTagsFilter] = useState<string>('')
   const {toc} = useToC()
+  const navigate = useNavigate()
 
   const [sortBy] = useState<keyof typeof sortFuncs>('alphabetically')
 
   useEffect(() => {
-    if (selectedTag === null) {
+    if (selectedTag !== currentTag) {
       setSelectedTag(currentTag)
     }
   }, [selectedTag, data, currentTag])
@@ -63,7 +64,9 @@ export default function App() {
               // {title: "AI Safety", id: 1},
             }
             active={selectedTag}
-            onClick={setSelectedTag}
+            onClick={(selectedTag) => {
+              navigate(`../${selectedTag.name}`, {relative: 'path'})
+            }}
             onChange={setTagsFilter}
           />
 
