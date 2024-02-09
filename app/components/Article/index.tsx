@@ -1,7 +1,7 @@
 import {ReactNode, useRef, useEffect} from 'react'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
-import type {Question, Glossary, PageId} from '~/server-utils/stampy'
+import type {Question, Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 import './article.css'
 
 type ActionProps = {
