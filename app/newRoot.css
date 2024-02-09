@@ -206,7 +206,11 @@ hr {
 
 a {
   color: inherit; /* disable link specific colours */
-  text-decoration: inherit; /* no underline */
+  text-decoration-color: color-mix(in srgb, currentColor, white);
+}
+
+a:not(:hover, :focus-visible) {
+  text-decoration: none;
 }
 
 .page-body {
@@ -217,6 +221,13 @@ a {
   width: 16px;
   height: 16px;
 }
+
+.main-container-box-table {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-80, 80px);
+}
+
 
 .iconsMagnifyingGlass {
   width: 16px;

@@ -39,12 +39,12 @@ export const ContentBoxMain = () => (
       </>
     }
     action="/9OGZ"
-    actionTitle={(
+    actionTitle={
       <>
         Start here
-        <ArrowRight className="img-2" />
+        <ArrowRight />
       </>
-    )}
+    }
   >
     <img
       loading="lazy"

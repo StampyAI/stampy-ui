@@ -12,7 +12,13 @@
   cursor: pointer;
   text-align: left;
   padding: 32.5px 32px;
+  text-decoration: none;
 }
+
+.grid-item:hover {
+  outline: 1px solid var(--colors-teal-200);
+}
+
 .grid-item div {
   padding: 8px;
 }

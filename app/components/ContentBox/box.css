@@ -1,33 +1,43 @@
 .main-container-box-table {
   display: flex;
   justify-content: space-between;
-  margin-top: var(--spacing-80, 80px);
+  margin-top: var(--spacing-80);
 }
 
 .content-box-table-button {
-  padding: var(--spacing-16, 16px) var(--spacing-24, 24px);
+  padding: var(--spacing-8) var(--spacing-24);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .eclipse-team-bottom {
   /* position: relative; */
-  top: var(--spacing-40, 40px);
-  left: var(--spacing-56, 56ax);
+  top: var(--spacing-40);
+  left: var(--spacing-56);
 }
 
 .eclipse-individual-top {
   /* position: relative; */
-  bottom: var(--spacing-80, 80px);
-  right: var(--spacing-40, 40px);
+  bottom: var(--spacing-80);
+  right: var(--spacing-40);
 }
 
 .content-box-table {
-  padding: var(--spacing-16, 16px);
+  padding: var(--spacing-16);
 }
 
 .teal-background {
-  background-color: var(--colors-teal-600, #1a817c);
+  background-color: var(--colors-teal-600);
 }
 
 .content-box-description {
-  margin: var(--spacing-80, 80px);
+  margin: var(--spacing-80);
+}
+
+.content-box-button:hover,
+.content-box-table-button:hover {
+  color: var(--colors-teal-800);
+  border-color: var(--colors-teal-200);
+  text-decoration: none;
 }
