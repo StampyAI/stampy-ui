@@ -43,13 +43,13 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
           <Link
             key={rowId}
             className="articles-dropdown-teal-entry"
-            to={`/tags/display/${name}`}
+            to={`/tags/${name}`}
             text={name}
           />
         ))}
 
       <Button
-        action={`/tags/display/${categories[0].name}`}
+        action={`/tags/${categories[0].name}`}
         className="dropdown-button bordered grey dropdown-button-label"
       >
         Browse all categories

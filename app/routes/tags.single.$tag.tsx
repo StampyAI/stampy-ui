@@ -29,7 +29,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 }
 
 export async function fetchTag(tagName: string): Promise<TagType | never[]> {
-  const url = `/tags/${encodeURIComponent(tagName)}`
+  const url = `/tags/single/${encodeURIComponent(tagName)}`
   return fetch(url).then(async (response) => {
     const json: Awaited<ReturnType<typeof loader>> = await response.json()
     if ('error' in json) console.error(json.error)
