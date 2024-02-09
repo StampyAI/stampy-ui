@@ -43,7 +43,7 @@ export const FooterBar: FunctionComponent = () => {
         <br />
         <Link
           to="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa"
-          title={`© stampy.ai, 2022 - ${year}`}
+          title={`© aisafety.info, 2022 - ${year}`}
         />
       </div>
     </div>
