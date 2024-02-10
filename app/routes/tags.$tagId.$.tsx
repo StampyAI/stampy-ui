@@ -31,6 +31,8 @@ export const sortFuncs = {
   'by number of questions': (a: TagType, b: TagType) => b.questions.length - a.questions.length,
 }
 
+export const buildTagUrl = (tag: TagType) => `${tag.tagId}/${tag.name}`
+
 export default function App() {
   const {currentTag, data} = useLoaderData<ReturnType<typeof loader>>()
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
@@ -65,7 +67,7 @@ export default function App() {
             }
             activeCategoryId={selectedTag.tagId}
             onClick={(selectedTag) => {
-              navigate(`../${selectedTag.tagId}/${selectedTag.name}`, {relative: 'path'})
+              navigate(`../${buildTagUrl(selectedTag)}`, {relative: 'path'})
             }}
             onChange={setTagsFilter}
           />
