@@ -1,4 +1,3 @@
-import React from 'react'
 import './pageSubheaderText.css'
 
 interface PageSubheaderTextProps {

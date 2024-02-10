@@ -1,4 +1,3 @@
-import * as React from 'react'
 import type {SVGProps} from 'react'
 const SvgGroupTopEcplise = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={320} height={224} fill="none" {...props}>

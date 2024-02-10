@@ -1,4 +1,3 @@
-import React from 'react'
 import {PlaneSend} from '~/components/icons-generated'
 import {StampyChat} from '~/components/icons-generated'
 

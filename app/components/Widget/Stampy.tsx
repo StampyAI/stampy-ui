@@ -1,4 +1,3 @@
-import React from 'react'
 import './stampy.css'
 
 export const WidgetStampy = () => {

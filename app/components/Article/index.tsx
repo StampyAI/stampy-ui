@@ -142,9 +142,7 @@ type ActionProps = {
   icon: ReactNode
   action?: any
 }
-const Action = ({hint, icon, action}: ActionProps) => (
-  <div className="interactive-option">{icon}</div>
-)
+const Action = ({icon}: ActionProps) => <div className="interactive-option">{icon}</div>
 
 const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) => {
   const elementRef = useRef<HTMLDivElement>(null)

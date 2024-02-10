@@ -1,7 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import debounce from 'lodash/debounce'
 import {useSearch} from '~/hooks/useSearch'
-import AutoHeight from 'react-auto-height'
 import {Question} from '~/server-utils/stampy'
 import {SearchInput} from './SearchInput/Input'
 import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'

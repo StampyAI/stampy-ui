@@ -1,4 +1,3 @@
-import * as React from 'react'
 import type {SVGProps} from 'react'
 const SvgHide = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" viewBox="0 0 640 512" {...props}>
