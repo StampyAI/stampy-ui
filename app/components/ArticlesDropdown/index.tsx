@@ -1,6 +1,6 @@
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
-import {sortFuncs} from '~/routes/tags.$tag'
+import {buildTagUrl, sortFuncs} from '~/routes/tags.$tagId.$'
 import Button from '~/components/Button'
 import './dropdown.css'
 
@@ -39,12 +39,12 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
       {categories
         ?.sort(sortFuncs['by number of questions'])
         .slice(0, 12)
-        .map(({rowId, name}) => (
+        .map((tag) => (
           <Link
-            key={rowId}
+            key={tag.rowId}
             className="articles-dropdown-teal-entry"
-            to={`/tags/${name}`}
-            text={name}
+            to={`/tags/${buildTagUrl(tag)}`}
+            text={tag.name}
           />
         ))}
 

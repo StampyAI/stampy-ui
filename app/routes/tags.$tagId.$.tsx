@@ -9,13 +9,13 @@ import {ListTable} from '~/components/Table/ListTable'
 import {CategoriesNav} from '~/components/CategoriesNav/Menu'
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
-  const {tag: tagFromUrl} = params
+  const {tagId: tagFromUrl} = params
   if (!tagFromUrl) {
     throw Error('missing tag name')
   }
 
   const tags = await loadTags(request)
-  const currentTag = tags.data.find((tagData) => tagData.name === tagFromUrl)
+  const currentTag = tags.data.find((tagData) => tagData.tagId === Number(tagFromUrl))
   if (currentTag === undefined) {
     throw new Response(null, {
       status: 404,
@@ -30,6 +30,8 @@ export const sortFuncs = {
     a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
   'by number of questions': (a: TagType, b: TagType) => b.questions.length - a.questions.length,
 }
+
+export const buildTagUrl = (tag: TagType) => `${tag.tagId}/${tag.name}`
 
 export default function App() {
   const {currentTag, data} = useLoaderData<ReturnType<typeof loader>>()
@@ -65,7 +67,7 @@ export default function App() {
             }
             activeCategoryId={selectedTag.tagId}
             onClick={(selectedTag) => {
-              navigate(`../${selectedTag.name}`, {relative: 'path'})
+              navigate(`../${buildTagUrl(selectedTag)}`, {relative: 'path'})
             }}
             onChange={setTagsFilter}
           />
