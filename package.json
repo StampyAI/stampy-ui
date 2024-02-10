@@ -58,7 +58,8 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-storybook": "^0.6.15",
     "storybook": "^7.6.8",
-    "vite": "^5.0.8"
+    "vite": "^5.0.8",
+    "eslint-plugin-unused-imports": "^3.0.0"
   },
   "engines": {
     "node": ">=18"
