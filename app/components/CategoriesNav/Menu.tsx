@@ -40,7 +40,7 @@ export const CategoriesNav = ({categories, active, onChange, onClick}: Categorie
             key={`category-${category.tagId}`}
             className={[
               'category-autoLayoutHorizontal',
-              active.tagId == category.tagId ? ['active'].join(' ') : '',
+              active?.tagId == category.tagId ? ['active'].join(' ') : '',
             ].join(' ')}
             onClick={() => handleClick(category)}
           >
