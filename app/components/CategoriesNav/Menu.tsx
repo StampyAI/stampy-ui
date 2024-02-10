@@ -4,15 +4,15 @@ import './menu.css'
 
 interface CategoriesNavProps {
   /**
-   * Articles List
+   * Categories List
    */
   categories: TagType[]
   /**
-   * Selected article
+   * Id of selected category
    */
-  active: TagType
+  activeCategoryId: number
   /**
-   * Callback function to handle click on article
+   * Callback function to handle click on category
    */
   onClick?: (t: TagType) => void
   /**
@@ -21,7 +21,12 @@ interface CategoriesNavProps {
   onChange?: (search: string) => void
 }
 
-export const CategoriesNav = ({categories, active, onChange, onClick}: CategoriesNavProps) => {
+export const CategoriesNav = ({
+  categories,
+  activeCategoryId,
+  onChange,
+  onClick,
+}: CategoriesNavProps) => {
   const handleClick = (newTag: TagType) => {
     if (onClick) {
       onClick(newTag)
@@ -40,7 +45,7 @@ export const CategoriesNav = ({categories, active, onChange, onClick}: Categorie
             key={`category-${category.tagId}`}
             className={[
               'category-autoLayoutHorizontal',
-              active?.tagId == category.tagId ? ['active'].join(' ') : '',
+              activeCategoryId == category.tagId ? ['active'].join(' ') : '',
             ].join(' ')}
             onClick={() => handleClick(category)}
           >

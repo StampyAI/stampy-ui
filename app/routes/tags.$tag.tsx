@@ -63,7 +63,7 @@ export default function App() {
 
               // {title: "AI Safety", id: 1},
             }
-            active={selectedTag}
+            activeCategoryId={selectedTag.tagId}
             onClick={(selectedTag) => {
               navigate(`../${selectedTag.name}`, {relative: 'path'})
             }}
