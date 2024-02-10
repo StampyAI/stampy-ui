@@ -26,7 +26,6 @@
     "@types/lodash": "^4.14.202",
     "@types/markdown-it": "^13.0.7",
     "@types/markdown-it-footnote": "^3.0.3",
-    "@types/node": "20.8.3",
     "@types/react": "^18.2.53",
     "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
@@ -84,8 +83,5 @@
     "clean-cache": "rimraf .cache .wrangler node_modules/.cache build public/build",
     "storybook": "storybook dev -p 6006"
   },
-  "main": "build/index.js",
-  "overrides": {
-    "@types/node": "20.8.3"
-  }
+  "main": "build/index.js"
 }
