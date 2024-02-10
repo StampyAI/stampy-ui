@@ -1,4 +1,3 @@
-
 interface PageSubheaderTextProps {
   /**
    * Text to display in subheader of page
