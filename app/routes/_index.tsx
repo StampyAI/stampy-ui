@@ -1,18 +1,13 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
-import {ShouldRevalidateFunction, useOutletContext, useLoaderData, redirect} from '@remix-run/react'
-import {QuestionState, loadTags} from '~/server-utils/stampy'
-import Header from '~/components/Header'
-import Footer from '~/components/Footer'
-import type {Context} from '~/root'
-import {PageHeaderText} from '~/components/PageHeader'
+import {ShouldRevalidateFunction, redirect} from '@remix-run/react'
+import {QuestionState} from '~/server-utils/stampy'
 import {WidgetStampy} from '~/components/WidgetStampy'
-import {PageSubheaderText} from '~/components/PageSubHeader'
 import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/ContentBox'
-import Grid from '~/components/Grid'
 import useToC from '~/hooks/useToC'
+import Grid from '~/components/Grid'
+import Page from '~/components/Page'
 import {getStateEntries} from '~/hooks/stateModifiers'
 
-const empty: Awaited<ReturnType<typeof loadTags>> = {data: [], timestamp: ''}
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
   const stateFromUrl = url.searchParams.get('state')
@@ -26,30 +21,20 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
       throw redirect(url.toString())
     }
   }
-  try {
-    const tags = await loadTags(request)
-    return {tags}
-  } catch (e) {
-    console.error(e)
-    return {tags: empty}
-  }
+  return null
 }
 
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
-  const {tags} = useLoaderData<ReturnType<typeof loader>>()
-  const {embed} = useOutletContext<Context>()
   const {toc} = useToC()
-
   return (
-    <>
-      <Header toc={toc} categories={tags.data} />
+    <Page>
       <div className="page-body">
-        <PageHeaderText>
-          <p>Educational content</p>
-          <p>on all things AI Safety</p>
-        </PageHeaderText>
+        <h1>
+          Educational content <br />
+          on all things AI Safety
+        </h1>
 
         <ContentBoxMain />
         <ContentBoxSecond />
@@ -58,11 +43,9 @@ export default function App() {
         <WidgetStampy />
 
         <div className="top-margin-large" />
-        <PageSubheaderText text="Advanced Content" />
+        <h3 className="grey">Advanced Content</h3>
         <Grid gridBoxes={toc} />
       </div>
-
-      {!embed && <Footer />}
-    </>
+    </Page>
   )
 }

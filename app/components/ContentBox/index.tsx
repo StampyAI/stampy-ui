@@ -2,7 +2,7 @@ import {ReactNode} from 'react'
 import {ArrowRight} from '~/components/icons-generated'
 import {BottomEclipse} from '~/components/icons-generated'
 import {GroupTopEcplise} from '~/components/icons-generated'
-import {ListTable} from '~/components/Table/ListTable'
+import ListTable from '~/components/Table'
 import Button from '~/components/Button'
 import './box.css'
 

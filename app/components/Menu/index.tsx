@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from '@remix-run/react'
 import './menuItem.css'
 
 interface MenuItemProps {
@@ -24,7 +25,7 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   return (
     <li className="top-menu-item" id={id} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <a href={link} className="top-menu-link">
+      <Link to={link} className="top-menu-link">
         {icon ? (
           typeof icon === 'string' ? (
             <img loading="lazy" src={icon} className="top-menu-icon" alt={text} />
@@ -34,7 +35,7 @@ export const MenuItem = ({
         ) : null}
 
         <span className={['top-menu-text', primary ? '' : 'secondary'].join(' ')}>{text}</span>
-      </a>
+      </Link>
     </li>
   )
 }

@@ -1,3 +1,4 @@
+import {Link} from '@remix-run/react'
 import {MenuItem} from '~/components/Menu'
 import OpenBookIcon from '~/components/icons-generated/OpenBook'
 import ChatBoxIcon from '~/components/icons-generated/Chatbot'
@@ -10,15 +11,15 @@ import Search from '../search'
 
 export interface HeaderProps {
   toc: TOCItem[]
-  categories: Tag[]
+  categories?: Tag[]
 }
 export const Header = ({toc, categories}: HeaderProps) => {
   return (
     <header className="top-header">
       <nav className="top-nav">
-        <a href="/" className="top-logo">
+        <Link to="/" className="top-logo">
           <AISafetyIcon />
-        </a>
+        </Link>
         <ul className="top-menu">
           <MenuItem
             primary={true}
@@ -27,7 +28,7 @@ export const Header = ({toc, categories}: HeaderProps) => {
             text="Articles"
             id="showArticles"
           />
-          <ArticlesDropdown toc={toc} categories={categories} />
+          <ArticlesDropdown toc={toc} categories={categories || []} />
           <MenuItem
             primary={true}
             link="https://chat.aisafety.info"

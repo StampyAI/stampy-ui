@@ -1,3 +1,4 @@
+import {Link} from '@remix-run/react'
 import Paper from '~/components/icons-generated/Paper'
 import './dropdown.css'
 
@@ -33,14 +34,14 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
   return (
     <div className="container-search-results">
       {results.map((result, i) => (
-        <a key={i} className="search-result" href={result.url}>
+        <Link key={i} className="search-result" to={result.url}>
           <Paper />
           <div className="search-result-content">
             <div className="search-result-title">{result.title}</div>
             <div className="search-result-description">{result.description}</div>
             <div className="search-result-source">{result.source}</div>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   )

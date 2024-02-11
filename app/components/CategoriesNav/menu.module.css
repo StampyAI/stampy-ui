@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-.category-title {
+.categoryTitle {
   position: relative;
   text-align: left;
   display: inline-flex;
@@ -8,18 +6,8 @@
   padding: 8px 0;
   cursor: pointer;
 }
-.category-nav-title {
-  position: relative;
-  letter-spacing: -0.01em;
-  color: var(--text-black);
-  align-items: center;
-  padding: 8px 0;
-  font-weight: 600;
-  text-align: left;
-  display: inline-block;
-}
 
-.category-autoLayoutHorizontal {
+.categoryAutoLayoutHorizontal {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -28,10 +16,10 @@
   margin: 5px;
   position: relative;
 }
-.category-autoLayoutHorizontal.active {
+.categoryAutoLayoutHorizontal.active {
   background-color: rgba(237.0000010728836, 250.00000029802322, 249.00000035762787, 1);
 }
-.categories-group {
+.categoriesGroup {
   width: 100%;
   position: relative;
   height: 100%;

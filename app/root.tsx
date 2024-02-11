@@ -4,6 +4,7 @@ import {cssBundleHref} from '@remix-run/css-bundle'
 import newStyles from '~/newRoot.css'
 
 import {useLoaderData} from '@remix-run/react'
+import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {questionsOnPage} from '~/hooks/stateModifiers'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 import {useTheme} from './hooks/theme'
@@ -166,14 +167,16 @@ export default function App() {
   }, [embed])
 
   return (
-    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
-      <Head minLogo={minLogo} />
-      <body>
-        <Outlet context={context} />
-        {/* <ScrollRestoration /> wasn't doing anything useful */}
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
+    <CachedObjectsProvider>
+      <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
+        <Head minLogo={minLogo} />
+        <body>
+          <Outlet context={context} />
+          {/* <ScrollRestoration /> wasn't doing anything useful */}
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    </CachedObjectsProvider>
   )
 }

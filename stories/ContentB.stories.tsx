@@ -3,7 +3,7 @@ import ContentBox from '../app/components/ContentBox'
 import {ArrowRight} from '../app/components/icons-generated'
 import {BottomEclipse} from '../app/components/icons-generated'
 import {GroupTopEcplise} from '../app/components/icons-generated'
-import {ListTable} from '../app/components/Table/ListTable'
+import ListTable from '../app/components/Table'
 
 const meta = {
   title: 'Components/ContentBox',

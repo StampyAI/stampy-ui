@@ -1,6 +1,8 @@
+import {useState} from 'react'
+import {Link} from '@remix-run/react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
-import './menu.css'
+import styles from './menu.module.css'
 
 interface CategoriesNavProps {
   /**
@@ -11,50 +13,30 @@ interface CategoriesNavProps {
    * Id of selected category
    */
   activeCategoryId: number
-  /**
-   * Callback function to handle click on category
-   */
-  onClick?: (t: TagType) => void
-  /**
-   * Callback function to handle change in search input
-   */
-  onChange?: (search: string) => void
 }
 
-export const CategoriesNav = ({
-  categories,
-  activeCategoryId,
-  onChange,
-  onClick,
-}: CategoriesNavProps) => {
-  const handleClick = (newTag: TagType) => {
-    if (onClick) {
-      onClick(newTag)
-    }
-  }
-
+export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps) => {
+  const [search, onSearch] = useState('')
   return (
-    <div className={'categories-group'}>
-      <div className={'category-autoLayoutHorizontal'}>
-        <div className={'category-nav-title'}>Categories</div>
-      </div>
-      <SearchInput onChange={onChange} />
-      {categories.map((category) => {
-        return (
-          <div
-            key={`category-${category.tagId}`}
+    <div className={styles.categoriesGroup}>
+      <h4>Categories</h4>
+      <SearchInput onChange={onSearch} />
+      {categories
+        .filter((tag) => tag.name.toLowerCase().includes(search.toLowerCase()))
+        .map(({tagId, name, questions}) => (
+          <Link
+            to={`/tags/${tagId}/${name}`}
+            key={tagId}
             className={[
-              'category-autoLayoutHorizontal',
-              activeCategoryId == category.tagId ? ['active'].join(' ') : '',
+              styles.categoryAutoLayoutHorizontal,
+              activeCategoryId == tagId ? styles.active : '',
             ].join(' ')}
-            onClick={() => handleClick(category)}
           >
-            <div className={'category-title'}>
-              {category.name} ({category.questions.length})
+            <div className={styles.categoryTitle}>
+              {name} ({questions.length})
             </div>
-          </div>
-        )
-      })}
+          </Link>
+        ))}
     </div>
   )
 }

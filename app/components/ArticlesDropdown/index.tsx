@@ -1,58 +1,73 @@
+import {useState, useEffect} from 'react'
+import {Link as LinkElem} from '@remix-run/react'
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
-import {buildTagUrl, sortFuncs} from '~/routes/tags.$tagId.$'
+import {buildTagUrl, sortFuncs} from '~/routes/tags.$'
 import Button from '~/components/Button'
 import './dropdown.css'
-
-const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
-  <div className={'articles-dropdown-entry ' + (className || '')}>
-    <a href={to}>{text}</a>
-  </div>
-)
-
-const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) => (
-  <div>
-    <div className="articles-dropdown-title">{category}</div>
-    {toc
-      .filter((item) => item.category === category)
-      .map(({pageid, title}: TOCItem) => (
-        <Link key={`${pageid}-${title}`} to={`/${pageid}`} text={title} />
-      ))}
-  </div>
-)
 
 export type ArticlesDropdownProps = {
   toc: TOCItem[]
   categories: Tag[]
 }
-export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => (
-  <div className="articles-dropdown-container bordered">
-    <div className="articles-dropdown-grid">
-      <ArticlesSection category={INTRODUCTORY} toc={toc} />
-      <ArticlesSection category={ADVANCED} toc={toc} />
+export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
+  // The dropdown works by using the onHover pseudoclass, so will only hide once
+  // the mouse leaves it. When using client side changes, the mouse doesn't leave
+  // it, so it's always shown (until the mouse is moved out, of course). To get around
+  // this, use this variable to simply not render the dropdown for one render, which
+  // will reset the CSS onHover checker.
+  const [shown, setShown] = useState(false)
+  const hide = () => setShown(true)
+  useEffect(() => setShown(false), [shown])
+
+  const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
+    <div className={'articles-dropdown-entry ' + (className || '')}>
+      <LinkElem to={to} onClick={hide}>
+        {text}
+      </LinkElem>
     </div>
+  )
 
-    <div className="articles-dropdown-grid">
-      {/*sorted right side*/}
-      <div className="articles-dropdown-title">Browse by category</div>
-
-      {categories
-        ?.sort(sortFuncs['by number of questions'])
-        .slice(0, 12)
-        .map((tag) => (
-          <Link
-            key={tag.rowId}
-            className="articles-dropdown-teal-entry"
-            to={`/tags/${buildTagUrl(tag)}`}
-            text={tag.name}
-          />
+  const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) => (
+    <div>
+      <div className="articles-dropdown-title">{category}</div>
+      {toc
+        .filter((item) => item.category === category)
+        .map(({pageid, title}: TOCItem) => (
+          <Link key={`${pageid}-${title}`} to={`/${pageid}`} text={title} />
         ))}
-
-      <Button action="/tags/" className="dropdown-button bordered grey dropdown-button-label">
-        Browse all categories
-      </Button>
     </div>
-  </div>
-)
+  )
+
+  return shown ? null : (
+    <div className="articles-dropdown-container bordered">
+      <div className="articles-dropdown-grid">
+        <ArticlesSection category={INTRODUCTORY} toc={toc} />
+        <ArticlesSection category={ADVANCED} toc={toc} />
+      </div>
+
+      <div className="articles-dropdown-grid">
+        {/*sorted right side*/}
+        <div className="articles-dropdown-title">Browse by category</div>
+
+        {categories
+          ?.sort(sortFuncs['by number of questions'])
+          .slice(0, 12)
+          .map((tag) => (
+            <Link
+              key={tag.rowId}
+              className="articles-dropdown-teal-entry"
+              to={buildTagUrl(tag)}
+              text={tag.name}
+            />
+          ))}
+
+        <Button action="/tags/" className="dropdown-button bordered grey dropdown-button-label">
+          <span onClick={hide}> Browse all categories</span>
+        </Button>
+      </div>
+    </div>
+  )
+}
 
 export default ArticlesDropdown

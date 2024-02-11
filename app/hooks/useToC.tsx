@@ -1,19 +1,10 @@
-import {useState, useEffect} from 'react'
-import {fetchTOC, TOCItem} from '~/routes/questions.toc'
+import {TOCItem} from '~/routes/questions.toc'
+import {useToC as useCachedToC} from '~/hooks/useCachedObjects'
 
 const identity = (i: any) => i
 
 const useToC = () => {
-  const [toc, setToC] = useState<TOCItem[]>([])
-
-  useEffect(() => {
-    const getToc = async () => {
-      const {data} = await fetchTOC()
-      console.log(data)
-      setToC(data)
-    }
-    getToc()
-  }, [])
+  const {items: toc} = useCachedToC()
 
   const checkPath = (pageid: string) => (item: TOCItem) => {
     if (item.pageid === pageid) return [pageid]
@@ -22,16 +13,16 @@ const useToC = () => {
   }
 
   const findSection = (pageid: string): TOCItem | undefined => {
-    return toc.filter(checkPath(pageid))[0]
+    return (toc || []).filter(checkPath(pageid))[0]
   }
 
   const getPath = (pageid: string) => {
-    if (toc.length === 0) return undefined
+    if (!toc || toc.length === 0) return undefined
     return toc.map(checkPath(pageid)).filter(identity)[0]
   }
 
   return {
-    toc,
+    toc: toc || [],
     findSection,
     getPath,
   }

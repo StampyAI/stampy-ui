@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {ListTable} from '../app/components/Table/ListTable'
+import ListTable from '../app/components/Table'
 
 const meta = {
   title: 'Components/ListTable',

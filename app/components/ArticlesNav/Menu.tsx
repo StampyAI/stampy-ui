@@ -1,3 +1,4 @@
+import {Link} from '@remix-run/react'
 import type {TOCItem} from '~/routes/questions.toc'
 import './menu.css'
 
@@ -18,16 +19,16 @@ const Title = ({article, path, current}: Article) => {
   const selectedClass = article?.pageid === current ? ' selected' : ''
   if (article.pageid === (path && path[0])) {
     return (
-      <a href={`/${article.pageid}`}>
+      <Link to={`/${article.pageid}`}>
         <div className={'article' + selectedClass}>
           <div className="articles-headerLine">{article?.title}</div>
         </div>
-      </a>
+      </Link>
     )
   }
   return (
     <summary className={'articles-title' + selectedClass}>
-      {!article.hasText ? article.title : <a href={`/${article.pageid}`}>{article.title}</a>}
+      {!article.hasText ? article.title : <Link to={`/${article.pageid}`}>{article.title}</Link>}
       <DropdownIcon article={article} path={path} />
     </summary>
   )

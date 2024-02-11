@@ -1,6 +1,18 @@
+import {BrowserRouter} from 'react-router-dom'
 import type {Preview} from '@storybook/react'
+import {CachedObjectsProvider} from '../app//hooks/useCachedObjects'
 
 import '../app/newRoot.css'
+
+export const decorators = [
+  (Story) => (
+    <CachedObjectsProvider>
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+    </CachedObjectsProvider>
+  ),
+]
 
 const preview: Preview = {
   parameters: {
