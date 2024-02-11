@@ -5,8 +5,8 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
   const {data: tags, timestamp} = await loadTags(request)
 
-  const tagId = params['*'] && Number(params['*'].split('/')[0])
-  const currentTag = tagId ? tags.find((tagData) => tagData.tagId === tagId) : tags[0]
+  const tagId = params['*'] && params['*'].split('/')[0]
+  const currentTag = tagId ? tags.find(({tagId: checkedId, name}) => [checkedId.toString(), name].includes(tagId)) : tags[0]
 
   if (currentTag === undefined) {
     throw new Response(null, {
@@ -26,7 +26,6 @@ export const fetchTags = () => {
     const {data, timestamp} = json
 
     reloadInBackgroundIfNeeded(url, timestamp)
-    console.log(data)
 
     return data
   })

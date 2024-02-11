@@ -1,6 +1,9 @@
-import {ReactNode, useRef, useEffect} from 'react'
+import {useRef, useState, useEffect} from 'react'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
+import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
+import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
+import Button, {CompositeButton} from '~/components/Button'
 import type {Question, Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 import './article.css'
 
@@ -137,12 +140,58 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
   }
 }
 
-type ActionProps = {
-  hint: string
-  icon: ReactNode
-  action?: any
+const ArticleFooter = (question: Question) => {
+  const date =
+    question.updatedAt &&
+    new Date(question.updatedAt).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+    })
+
+  return (
+    <div className="footer-comtainer">
+      {date && <div className="grey"> {`Updated ${date}`}</div>}
+      <div className="flex-double">
+        <Button className="secondary" action={question.answerEditLink || ''} tooltip="Edit article">
+          <EditIcon className="no-fill" />
+        </Button>
+      </div>
+      <span>Did this page help you?</span>
+
+      <CompositeButton>
+        <Button className="secondary" action={() => alert('Like')}>
+          <ThumbUpIcon />
+          <span className="teal-500">Yes</span>
+        </Button>
+        <Button className="secondary" action={() => alert('Dislike')}>
+          <ThumbDownIcon />
+          <span className="teal-500">No</span>
+        </Button>
+      </CompositeButton>
+    </div>
+  )
 }
-const Action = ({icon}: ActionProps) => <div className="interactive-option">{icon}</div>
+
+const ArticleActions = ({answerEditLink}: Question) => {
+  const [tooltip, setTooltip] = useState('Copy link to clipboard')
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.toString())
+    setTooltip('Copied link to clipboard')
+    setTimeout(() => setTooltip('Copy link to clipboard'), 1000)
+  }
+
+  return (
+    <CompositeButton>
+      <Button className="secondary" action={copyLink} tooltip={tooltip}>
+        <CopyIcon />
+      </Button>
+      <Button className="secondary" action={answerEditLink || ''} tooltip="Edit article">
+        <EditIcon className="no-fill" />
+      </Button>
+    </CompositeButton>
+  )
+}
 
 const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) => {
   const elementRef = useRef<HTMLDivElement>(null)
@@ -178,11 +227,11 @@ type ArticleProps = {
 }
 export const Article = ({question, glossary}: ArticleProps) => {
   const {title, text, pageid, tags} = question
+
   const ttr = (text: string, rate = 160) => {
     const time = text.split(' ')
     return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
   }
-  const lastUpdated = '<last updated goes here>'
 
   return (
     <article className="article-container">
@@ -190,22 +239,20 @@ export const Article = ({question, glossary}: ArticleProps) => {
       <div className="article-meta">
         <p className="grey">{ttr(text || '')} min read</p>
 
-        <div className="interactive-options bordered">
-          <Action icon={<CopyIcon />} hint="Copy to clipboard" />
-          <Action icon={<EditIcon className="no-fill" />} hint="Edit" />
-        </div>
+        <ArticleActions {...question} />
       </div>
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
 
+      <ArticleFooter {...question} />
+      <hr />
       <div className="article-tags">
         {tags.map((tag) => (
-          <a key={tag} className="tag bordered" href={`/tags/${tag}`}>
+          <Button key={tag} className="primary" action={`/tags/${tag}`}>
             {tag}
-          </a>
+          </Button>
         ))}
       </div>
-      <div className="article-last-updated">{lastUpdated}</div>
     </article>
   )
 }

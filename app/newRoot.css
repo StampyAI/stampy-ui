@@ -46,6 +46,10 @@
   display: flex;
 }
 
+.flex-double {
+  flex-grow: 2;
+}
+
 body,
 input {
   font-size: 18px;
@@ -232,33 +236,6 @@ a:not(:hover, :focus-visible) {
   width: 16px;
   position: relative;
   height: 16px;
-}
-
-.container-page-subtitle {
-  position: relative;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  line-height: 155%;
-  font-weight: 600;
-  color: var(--colors-cool-grey-600);
-  text-align: left;
-}
-
-.container-page-title {
-  position: relative;
-  font-size: 64px;
-  letter-spacing: -0.02em;
-  line-height: 125%;
-  font-weight: 600;
-  color: var(--text-black);
-  text-align: left;
-  display: inline-block;
-  width: 770px;
-  margin-top: 40px;
-}
-
-.container-page-title p {
-  margin: 0;
 }
 
 .widget-title {

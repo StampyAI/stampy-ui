@@ -124,6 +124,7 @@ export type AnswersRow = CodaRowCommon & {
     'Alternate Phrasings': string
     'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
+    'Doc Last Edited': '' | string
     Tags: '' | Entity[]
     Banners: '' | Entity[]
     'Rich Text': string
@@ -283,11 +284,11 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
         }))
       : [],
   status: values['Status']?.name as QuestionStatus,
-  updatedAt,
   alternatePhrasings: extractText(values['Alternate Phrasings']),
   subtitle: extractText(values.Subtitle),
   icon: extractText(values.Icon),
   parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
+  updatedAt: updatedAt || values['Doc Last Edited'],
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
