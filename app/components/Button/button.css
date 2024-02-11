@@ -1,0 +1,49 @@
+.button {
+    display: inline-flex;
+    height: var(--spacing-56, 56px);
+    padding: 7px 21px;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-4, 4px);
+    box-shadow: 0px 16px 40px 0px rgba(32, 44, 89, 0.05);
+    border-radius: 6px;
+}
+
+.primary {
+    background: var(--colors-teal-500, #1D9089);
+    font-weight: 600;
+    color: var(--colors-white, #ffffff);
+}
+
+.primary:hover {
+    background: var(--colors-teal-700, #17736E);
+}
+
+.primary-alt {
+    background: var(--colors-white, #ffffff);
+    color: var(--colors-teal-500, #1D9089);
+}
+
+.primary-alt:hover {
+    color: var(--colors-teal-800, #146560);
+}
+
+.secondary {
+    color: var(--colors-cool-grey-600, #788492);
+    border: 1px solid var(--colors-cool-grey-200, #DFE3E9);
+    background: var(--colors-white, #FFF);
+}
+
+.secondary:hover {
+    border: 1px solid var(--colors-teal-200, #A6D9D7);
+}
+
+.secondary-alt {
+    color: var(--colors-teal-500, #1D9089);
+    border: 1px solid var(--colors-cool-grey-200, #DFE3E9);
+    background: var(--colors-white, #FFF);
+}
+
+.secondary-alt:hover {
+    border: 1px solid var(--colors-teal-200, #A6D9D7);
+}
