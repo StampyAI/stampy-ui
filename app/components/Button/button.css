@@ -37,7 +37,7 @@
 }
 
 .secondary:hover {
-  border: 1px solid var(--colors-teal-200, #a6d9d7);
+  border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
 }
 
 .secondary-alt {
@@ -67,17 +67,14 @@
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
   border-left-width: 1px;
+  border-right: 1px solid transparent;
 }
 
 .composite-button > .button:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   border-right-width: 1px;
-}
-
-/* Ensure that there are no gaps on the sides of the composite button */
-.composite-button > .button {
-  margin-left: -2px;
+  border-left: 1px solid transparent;
 }
 
 /* Make sure the first button doesn't have a negative margin */
@@ -87,8 +84,6 @@
 
 .composite-button .button:hover {
   border-width: 1px;
-  border-width: 1px;
-  margin: 2px;
 }
 
 .tooltip::after {

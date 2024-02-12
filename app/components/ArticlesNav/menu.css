@@ -1,4 +1,9 @@
+.articles-group::-webkit-scrollbar {
+  display: none;
+}
 .articles-group {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   width: 100%;
   position: relative;
   text-align: left;
