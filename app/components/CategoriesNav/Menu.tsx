@@ -20,7 +20,7 @@ export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps
   return (
     <div className={styles.categoriesGroup}>
       <h4>Categories</h4>
-      <SearchInput onChange={onSearch} />
+      <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
       {categories
         .filter((tag) => tag.name.toLowerCase().includes(search.toLowerCase()))
         .map(({tagId, name, questions}) => (
