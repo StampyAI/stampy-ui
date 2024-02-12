@@ -12,8 +12,12 @@ interface SearchInputProps {
    * Custom styles
    */
   expandable?: boolean
+  /**
+   * Custom placeholder
+   */
+  placeholderText?: string
 }
-export const SearchInput = ({onChange, expandable}: SearchInputProps) => {
+export const SearchInput = ({onChange, expandable, placeholderText}: SearchInputProps) => {
   const [search, setSearch] = useState('')
   const handleSearch = (search: string) => {
     setSearch(search)
@@ -29,7 +33,7 @@ export const SearchInput = ({onChange, expandable}: SearchInputProps) => {
         <input
           type="search"
           name="searchbar"
-          placeholder="Search articles"
+          placeholder={placeholderText ?? 'Search articles'}
           className="search-input"
           onChange={(e) => {
             handleSearch(e.currentTarget.value)
