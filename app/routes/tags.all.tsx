@@ -6,7 +6,9 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
   const {data: tags, timestamp} = await loadTags(request)
 
   const tagId = params['*'] && params['*'].split('/')[0]
-  const currentTag = tagId ? tags.find(({tagId: checkedId, name}) => [checkedId.toString(), name].includes(tagId)) : tags[0]
+  const currentTag = tagId
+    ? tags.find(({tagId: checkedId, name}) => [checkedId.toString(), name].includes(tagId))
+    : tags[0]
 
   if (currentTag === undefined) {
     throw new Response(null, {
