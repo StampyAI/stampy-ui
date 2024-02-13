@@ -12,7 +12,8 @@
 }
 
 .primary {
-  background: var(--colors-teal-500, #1d9089);
+  /* background: var(--colors-teal-500, #1d9089); */
+  background: red;
   font-weight: 600;
   color: var(--colors-white, #ffffff);
 }
