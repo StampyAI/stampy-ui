@@ -32,7 +32,7 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
   )
 
 export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
-  const {findSection, getNext} = useToC()
+  const {findSection, getArticle, getNext} = useToC()
   const section = findSection(pageid)
   const next = getNext(pageid)
   const hasRelated = relatedQuestions && relatedQuestions.length > 0
@@ -52,7 +52,10 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
       )}
 
       {next && hasRelated && !skipNext && <span>Or jump to a related question</span>}
-      {hasRelated && <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated)} />}
+      {hasRelated && !skipNext && (
+        <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated)} />
+      )}
+      {skipNext && <ListTable elements={getArticle(pageid)?.children?.map(formatRelated) || []} />}
     </div>
   )
 }

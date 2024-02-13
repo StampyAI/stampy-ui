@@ -1,6 +1,8 @@
 import {useState, useEffect, useRef, MutableRefObject} from 'react'
 import {Question} from '~/server-utils/stampy'
 
+const NUM_RESULTS = 8
+
 export type SearchResult = {
   pageid: string
   title: string
@@ -34,7 +36,7 @@ const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
 export const baselineSearch = async (
   searchQueryRaw: string,
   questions: Question[],
-  numResults = 5
+  numResults = NUM_RESULTS
 ): Promise<SearchResult[]> => {
   if (!searchQueryRaw) {
     return []
@@ -110,7 +112,10 @@ const normalize = (question: string) =>
  * use baseline search over the list of questions already loaded on the site.
  * Searches containing only one or two words will also use the baseline search
  */
-export const useSearch = (onSiteQuestions: MutableRefObject<Question[]>, numResults = 5) => {
+export const useSearch = (
+  onSiteQuestions: MutableRefObject<Question[]>,
+  numResults = NUM_RESULTS
+) => {
   const tfWorkerRef = useRef<Worker>()
   const runningQueryRef = useRef<string>() // detect current query in search function from previous render => ref
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>() // cancel previous timeout => ref

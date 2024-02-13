@@ -15,7 +15,7 @@ const ArticleFooter = (question: Question) => {
   const date =
     question.updatedAt &&
     new Date(question.updatedAt).toLocaleDateString('en-GB', {
-      day: '2-digit',
+      year: 'numeric',
       month: 'short',
     })
 

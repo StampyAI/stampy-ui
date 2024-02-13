@@ -16,7 +16,7 @@ const article = {
   title: 'New to AI safety? Start here.',
   subtitle: 'Basic information about all of this',
   pageid: '9OGZ',
-  icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9769202bfb08a9b87ab3d7e55cff70586447e8f76a8c076fff6f0d4e8902c5da?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+  icon: '/assets/coded-banner.svg',
   hasText: true,
   children: [
     {

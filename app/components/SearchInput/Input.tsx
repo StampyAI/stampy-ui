@@ -19,12 +19,16 @@ interface SearchInputProps {
 }
 export const SearchInput = ({onChange, expandable, placeholderText}: SearchInputProps) => {
   const [search, setSearch] = useState('')
+
   const handleSearch = (search: string) => {
     setSearch(search)
     if (onChange) {
       onChange(search)
     }
   }
+
+  const clear = () => handleSearch('')
+
   return (
     <div className={`search-box ${expandable ? 'expandable' : ''}`}>
       <div className="search-inputChild" />
@@ -34,23 +38,16 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
           type="search"
           name="searchbar"
           placeholder={placeholderText ?? 'Search articles'}
-          className="search-input"
+          className="search-input black"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') clear()
+          }}
           onChange={(e) => {
             handleSearch(e.currentTarget.value)
           }}
           value={search}
-        ></input>
-        {search === '' ? null : (
-          <XIcon
-            className="x-icon"
-            onClick={() => {
-              setSearch('')
-              if (onChange) {
-                onChange('')
-              }
-            }}
-          />
-        )}
+        />
+        {search !== '' && <XIcon className="x-icon" onClick={clear} />}
       </label>
     </div>
   )
