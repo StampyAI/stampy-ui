@@ -8,6 +8,8 @@ import Button, {CompositeButton} from '~/components/Button'
 import type {Question, Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 import './article.css'
 
+const isLoading = ({text}: Question) => !text || text === 'Loading...'
+
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
   const footnote = el.querySelector(id)
@@ -150,26 +152,32 @@ const ArticleFooter = (question: Question) => {
     })
 
   return (
-    <div className="footer-comtainer">
-      {date && <div className="grey"> {`Updated ${date}`}</div>}
-      <div className="flex-double">
-        <Button className="secondary" action={question.answerEditLink || ''} tooltip="Edit article">
-          <EditIcon className="no-fill" />
-        </Button>
-      </div>
-      <span>Did this page help you?</span>
+    !isLoading(question) && (
+      <div className="footer-comtainer">
+        {date && <div className="grey"> {`Updated ${date}`}</div>}
+        <div className="flex-double">
+          <Button
+            className="secondary"
+            action={question.answerEditLink || ''}
+            tooltip="Edit article"
+          >
+            <EditIcon className="no-fill" />
+          </Button>
+        </div>
+        <span>Did this page help you?</span>
 
-      <CompositeButton>
-        <Button className="secondary" action={() => alert('Like')}>
-          <ThumbUpIcon />
-          <span className="teal-500">Yes</span>
-        </Button>
-        <Button className="secondary" action={() => alert('Dislike')}>
-          <ThumbDownIcon />
-          <span className="teal-500">No</span>
-        </Button>
-      </CompositeButton>
-    </div>
+        <CompositeButton>
+          <Button className="secondary" action={() => alert('Like')}>
+            <ThumbUpIcon />
+            <span className="teal-500">Yes</span>
+          </Button>
+          <Button className="secondary" action={() => alert('Dislike')}>
+            <ThumbDownIcon />
+            <span className="teal-500">No</span>
+          </Button>
+        </CompositeButton>
+      </div>
+    )
   )
 }
 
@@ -222,12 +230,8 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
   )
 }
 
-type ArticleProps = {
-  question: Question
-  glossary?: Glossary
-}
-export const Article = ({question, glossary}: ArticleProps) => {
-  const {title, text, pageid, tags} = question
+const ArticleMeta = (question: Question) => {
+  const {text} = question
 
   const ttr = (text: string, rate = 160) => {
     const time = text.split(' ')
@@ -235,13 +239,27 @@ export const Article = ({question, glossary}: ArticleProps) => {
   }
 
   return (
-    <article className="article-container">
-      <h1 className="teal">{title}</h1>
+    !isLoading(question) && (
       <div className="article-meta">
         <p className="grey">{ttr(text || '')} min read</p>
 
         <ArticleActions {...question} />
       </div>
+    )
+  )
+}
+
+type ArticleProps = {
+  question: Question
+  glossary?: Glossary
+}
+export const Article = ({question, glossary}: ArticleProps) => {
+  const {title, text, pageid, tags} = question
+
+  return (
+    <article className="article-container">
+      <h1 className="teal">{title}</h1>
+      <ArticleMeta {...question} />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
 
