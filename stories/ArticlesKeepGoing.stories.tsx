@@ -83,6 +83,18 @@ export const Default: Story = {
   } as any as Question,
 }
 
+export const FirstArticle: Story = {
+  args: {
+    pageid: '9OGZ',
+    relatedQuestions: [
+      {pageid: '1412', title: 'something or other'},
+      {pageid: '1234', title: 'Another related question'},
+      {pageid: '1235', title: 'How about this one?'},
+      {pageid: '1236', title: 'What time is it?'},
+    ],
+  } as any as Question,
+}
+
 export const NoMore: Story = {
   args: {
     pageid: '123',

@@ -8,15 +8,23 @@ import './keepGoing.css'
 
 const nonContinueSections = ['8TJV']
 
-const NextArticle = ({section, next}: {section?: TOCItem; next?: TOCItem}) =>
+type NextArticleProps = {
+  section?: TOCItem
+  next?: TOCItem
+  first?: boolean
+}
+const NextArticle = ({section, next, first}: NextArticleProps) =>
   next && (
     <>
       <h2>Keep going! &#128073;</h2>
-      <span>Continue with the next article in {section?.category}</span>
+      <span>
+        {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} article in{' '}
+        {section?.category}
+      </span>
       <div className="keepGoing-next">
         <span className="keepGoing-next-title">{next.title}</span>
         <Button action={`/${next.pageid}`} className="primary-alt">
-          Next
+          {first ? 'Start' : 'Next'}
           <ArrowRight />
         </Button>
       </div>
@@ -32,7 +40,9 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
 
   return (
     <div className="keepGoing">
-      {!skipNext && <NextArticle section={section} next={next} />}
+      {!skipNext && (
+        <NextArticle section={section} next={next} first={section?.pageid === pageid} />
+      )}
 
       {next && hasRelated && !skipNext && <span>Or jump to a related question</span>}
       {hasRelated && <ListTable elements={relatedQuestions.map((i) => ({...i, hasIcon: true}))} />}
