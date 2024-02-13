@@ -1,4 +1,4 @@
-import {Question, QuestionState, RelatedQuestions, PageId} from '~/server-utils/stampy'
+import {Question, QuestionState, RelatedQuestion, PageId} from '~/server-utils/stampy'
 
 type StateEntry = [PageId, QuestionState]
 type StateString = string
@@ -70,7 +70,7 @@ export const insertAfter = (state: StateString, pageId: PageId, to: PageId): Sta
 export const insertInto = (
   state: StateString,
   pageid: PageId,
-  relatedQuestions: RelatedQuestions,
+  relatedQuestions: RelatedQuestion[],
   options = {toggle: true}
 ): StateString =>
   processStateEntries(state, (entries: StateEntry[]) =>
