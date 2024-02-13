@@ -3,7 +3,7 @@ import ListTable from '~/components/Table'
 import {ArrowRight} from '~/components/icons-generated'
 import useToC from '~/hooks/useToC'
 import type {TOCItem} from '~/routes/questions.toc'
-import type {Question} from '~/server-utils/stampy'
+import type {Question, RelatedQuestion} from '~/server-utils/stampy'
 import './keepGoing.css'
 
 const nonContinueSections = ['8TJV']
@@ -38,6 +38,13 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
   const hasRelated = relatedQuestions && relatedQuestions.length > 0
   const skipNext = nonContinueSections.includes(section?.pageid || '')
 
+  const formatRelated = (related: RelatedQuestion) => {
+    const relatedSection = findSection(related.pageid)
+    const subtitle =
+      relatedSection && relatedSection.pageid !== section?.pageid ? relatedSection.title : undefined
+    return {...related, subtitle, hasIcon: true}
+  }
+
   return (
     <div className="keepGoing">
       {!skipNext && (
@@ -45,7 +52,7 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
       )}
 
       {next && hasRelated && !skipNext && <span>Or jump to a related question</span>}
-      {hasRelated && <ListTable elements={relatedQuestions.map((i) => ({...i, hasIcon: true}))} />}
+      {hasRelated && <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated)} />}
     </div>
   )
 }
