@@ -1,4 +1,5 @@
 import {useRef, useState, useEffect} from 'react'
+import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
@@ -232,7 +233,7 @@ export const Article = ({question, glossary}: ArticleProps) => {
     const time = text.split(' ')
     return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
   }
-  console.log('Question', question)
+
   return (
     <article className="article-container">
       <h1 className="teal">{title}</h1>
@@ -243,6 +244,8 @@ export const Article = ({question, glossary}: ArticleProps) => {
       </div>
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
+
+      <KeepGoing {...question} />
 
       <ArticleFooter {...question} />
       <hr />

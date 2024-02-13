@@ -2,11 +2,16 @@ import {Link} from '@remix-run/react'
 import {ArrowUpRight} from '~/components/icons-generated'
 import './listTable.css'
 
+export type ListItem = {
+  pageid: string
+  title: string
+  hasIcon?: boolean
+}
 export type ListTableProps = {
   /**
    * Browse by category
    */
-  elements: any[]
+  elements: ListItem[]
 }
 
 export const ListTable = ({elements}: ListTableProps) => (
