@@ -23,3 +23,15 @@ export const Default: Story = {
     ],
   },
 }
+export const WithIcon: Story = {
+  args: {
+    elements: [
+      {title: 'What is AI alignment', pageid: '1231', hasIcon: true},
+      {title: 'What is this', pageid: '1232', hasIcon: true},
+      {title: 'What is AI safety', pageid: '1233', hasIcon: true},
+      {title: 'What is that', pageid: '1234'},
+      {title: 'What is the the orthogonality thesis', pageid: '1235', hasIcon: true},
+      {title: 'What is something else', pageid: '1236', hasIcon: true},
+    ],
+  },
+}

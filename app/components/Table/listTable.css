@@ -9,6 +9,8 @@
   text-decoration: none;
   padding: 32px;
   border-bottom: 1px solid var(--colors-teal-200);
+  display: flex;
+  justify-content: space-between;
 }
 .table-entry:hover {
   background-color: var(--colors-teal-50);

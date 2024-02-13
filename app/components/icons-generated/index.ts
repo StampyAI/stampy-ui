@@ -1,5 +1,6 @@
 export {default as Aisafety} from './Aisafety'
 export {default as ArrowRight} from './ArrowRight'
+export {default as ArrowUpRight} from './ArrowUpRight'
 export {default as BottomEclipse} from './BottomEclipse'
 export {default as Chatbot} from './Chatbot'
 export {default as Code} from './Code'

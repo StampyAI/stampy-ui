@@ -29,7 +29,7 @@ type useCachedObjectsType = {
   tags: useObjectsType<Tag[]>
   toc: useObjectsType<TOCItem[]>
 }
-const CachedObjectsContext = createContext<useCachedObjectsType | null>(null)
+export const CachedObjectsContext = createContext<useCachedObjectsType | null>(null)
 
 const getGlossary = async () => (await fetchGlossary()).data
 const getTags = async () => (await fetchTags()).tags
@@ -40,7 +40,6 @@ export const CachedObjectsProvider = ({children}: {children: ReactElement}) => {
   const tags = useItemsFuncs<Tag[]>(getTags)
   const toc = useItemsFuncs<TOCItem[]>(getToC)
 
-  console.log('caching')
   return (
     <CachedObjectsContext.Provider value={{tags, glossary, toc}}>
       {children}

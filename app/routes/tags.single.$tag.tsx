@@ -1,7 +1,7 @@
 import {useState, useEffect, ReactNode} from 'react'
 import {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {Tag as TagType, QuestionState, RelatedQuestions, loadTag} from '~/server-utils/stampy'
+import {Tag as TagType, QuestionState, RelatedQuestion, loadTag} from '~/server-utils/stampy'
 import Dialog from '~/components/dialog'
 
 type Props = {
@@ -47,7 +47,7 @@ export function Tag({
   showCount,
 }: {
   name: string
-  questions?: RelatedQuestions
+  questions?: RelatedQuestion[]
   showCount?: boolean
 }) {
   const [questions, setQuestions] = useState(tqs)
