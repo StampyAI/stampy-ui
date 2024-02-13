@@ -5,7 +5,15 @@ const identity = (i: any) => i
 
 const useToC = () => {
   const {items: toc} = useCachedToC()
-  console.log(toc)
+  const all = {pageid: '', children: toc || []} as TOCItem
+
+  const getArticle = (pageid: string): TOCItem | undefined => {
+    const search = (item: TOCItem): TOCItem | undefined => {
+      if (item.pageid === pageid) return item
+      return item.children?.map(search).filter(identity)[0]
+    }
+    return toc && search(all)
+  }
 
   const checkPath = (pageid: string) => (item: TOCItem) => {
     if (item.pageid === pageid) return [pageid]
@@ -39,12 +47,12 @@ const useToC = () => {
       return {current: previous}
     }
 
-    const all = {pageid: '', children: toc || []} as TOCItem
     return toc && findNext('', all).next
   }
 
   return {
     toc: toc || [],
+    getArticle,
     findSection,
     getPath,
     getNext,

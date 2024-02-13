@@ -12,7 +12,7 @@ export {loader}
 
 const dummyQuestion = (title: string | undefined) =>
   ({
-    text: '',
+    text: 'Loading...',
     title: title ?? 'Loading...',
     tags: [],
   }) as any as Question
@@ -22,9 +22,8 @@ export default function RenderArticle() {
   const params = useParams()
   const pageid = params.questionId ?? '😱'
   const {data} = useLoaderData<typeof loader>()
-  const {findSection, getPath} = useToC()
+  const {findSection, getArticle, getPath} = useToC()
   const section = findSection(pageid)
-  const path = getPath(pageid)
 
   useEffect(() => {
     const getGlossary = async () => {
@@ -38,12 +37,17 @@ export default function RenderArticle() {
     <Page>
       <div className="flex-container">
         {section ? (
-          <ArticlesNav current={pageid} article={section} path={path} />
+          <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />
         ) : (
           <EmtpyArticlesNav />
         )}
-        <Suspense fallback={<Article question={dummyQuestion(section?.title)} />}>
-          <Await resolve={data}>{(data) => <Article question={data} glossary={glossary} />}</Await>
+        <Suspense
+          key={pageid}
+          fallback={<Article question={dummyQuestion(getArticle(pageid)?.title)} />}
+        >
+          <Await resolve={data}>
+            {(resolvedValue) => <Article question={resolvedValue} glossary={glossary} />}
+          </Await>
         </Suspense>
       </div>
     </Page>

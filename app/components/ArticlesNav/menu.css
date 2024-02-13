@@ -39,7 +39,7 @@
   cursor: pointer;
 }
 .articles-group .dropdown-icon {
-  background-image: url(https://cdn.builder.io/api/v1/image/assets/TEMP/96fb907358d911377bbe9140fe09eb0758bb8be662c1fc28040cc12a9dd7e0e6?apiKey=f1073757e44b4ccd8d59791af6c41a77&);
+  background-image: url(/assets/arrow.svg);
   background-repeat: no-repeat;
   background-position-x: center;
   padding-right: 16px;
@@ -76,7 +76,7 @@
 }
 .articles-group .parent::before {
   content: ' ';
-  background-image: url(https://cdn.builder.io/api/v1/image/assets/TEMP/8b3b87af0a97a2778dbdc11f33a22e6c9b6a02a262bc2f698e343eefe3912ef2?apiKey=f1073757e44b4ccd8d59791af6c41a77&);
+  background-image: url(/assets/green-dot.svg);
   background-repeat: no-repeat;
   width: 31px;
   height: 8px;

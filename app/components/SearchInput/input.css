@@ -62,8 +62,6 @@
   width: calc(100% - 62px);
   border: 0;
   text-align: left;
-  font-size: 16px;
-  color: var(--text-black);
 }
 .search-input:focus-visible {
   border: 0;
