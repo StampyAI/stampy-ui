@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type {SVGProps} from 'react'
 const SvgEclipseBook = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={1056} height={348} fill="none" {...props}>

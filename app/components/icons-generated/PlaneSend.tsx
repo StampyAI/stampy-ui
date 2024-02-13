@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type {SVGProps} from 'react'
 const SvgPlaneSend = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={48} height={48} fill="none" {...props}>

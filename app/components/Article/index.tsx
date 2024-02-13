@@ -232,7 +232,7 @@ export const Article = ({question, glossary}: ArticleProps) => {
     const time = text.split(' ')
     return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
   }
-
+  console.log('Question', question)
   return (
     <article className="article-container">
       <h1 className="teal">{title}</h1>
