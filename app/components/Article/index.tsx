@@ -1,11 +1,14 @@
-import {useRef, useState, useEffect} from 'react'
+import {MouseEvent, useCallback, useEffect, useRef, useState} from 'react'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
 import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
 import Button, {CompositeButton} from '~/components/Button'
-import type {Question, Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
+import type {Glossary, GlossaryEntry, PageId, Question} from '~/server-utils/stampy'
 import './article.css'
+import {forEach} from "lodash";
+import {Simulate} from "react-dom/test-utils";
+import keyUp = Simulate.keyUp;
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
@@ -148,6 +151,52 @@ const ArticleFooter = (question: Question) => {
       month: 'short',
     })
 
+  const actionIds = {helpful:false, unhelpful:false};
+
+  const loadActionTaken = () => {
+    forEach(actionIds, (value, key) => {
+        try {
+            actionIds[key]= localStorage.getItem(`${question.pageid}-${key}`) === 'true';
+        } catch (e) {
+            // This will happen when local storage is disabled
+            actionIds[key]= false;
+        }
+    })
+  }
+
+  const actionParams = (actionType) => {
+    return new URLSearchParams({
+      pageid:question.pageid,
+      actionTaken: actionIds[actionType].toString(),
+      action: actionType,
+    })
+  }
+  const switchAction = (actionType) => {
+    if(actionIds[actionType]) {
+      actionIds[actionType==="helpful"?'unhelpful':'helpful'] = false;
+    }
+  }
+  const handleAction = async (actionTaken) => {
+    actionIds[actionTaken] = !actionIds[actionTaken];
+    switchAction(actionTaken);
+    const searchParams = actionParams(actionTaken);
+    const response = await fetch('/questions/actions', {method: 'POST', body: searchParams});
+
+    if (response.ok !== true){
+      actionIds[actionTaken] = !actionIds[actionTaken];
+      switchAction(actionTaken);
+      return
+    }
+    try {
+      forEach(actionIds, (value, key) => {
+        localStorage.setItem(`${question.pageid}-${key}`, actionIds[key].toString());
+      })
+    } catch (e) {
+    }
+  }
+
+  loadActionTaken()
+
   return (
     <div className="footer-comtainer">
       {date && <div className="grey"> {`Updated ${date}`}</div>}
@@ -159,11 +208,11 @@ const ArticleFooter = (question: Question) => {
       <span>Did this page help you?</span>
 
       <CompositeButton>
-        <Button className="secondary" action={() => alert('Like')}>
+        <Button className={["secondary", actionIds["helpful"]?'focused':''].join(' ')} action={() => handleAction("helpful")}>
           <ThumbUpIcon />
           <span className="teal-500">Yes</span>
         </Button>
-        <Button className="secondary" action={() => alert('Dislike')}>
+        <Button className={["secondary", actionIds["unhelpful"]?'focused':''].join(' ')} action={() => handleAction("unhelpful")}>
           <ThumbDownIcon />
           <span className="teal-500">No</span>
         </Button>

@@ -36,6 +36,7 @@
   background: var(--colors-white, #fff);
 }
 
+.secondary.focused,
 .secondary:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
 }
