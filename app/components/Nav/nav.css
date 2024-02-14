@@ -18,12 +18,12 @@
 }
 
 .top-logo {
-  padding: 0 56px 0 0;
+  padding: 0 var(--spacing-56) 0 0;
 }
 
 .top-menu {
   display: flex;
-  gap: 40px;
+  gap: var(--spacing-40);
   list-style: none;
 }
 

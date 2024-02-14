@@ -37,7 +37,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
     toc: TOCItem[]
     className?: string
   }) => (
-    <div className={'myClassName ' + (className || '')}>
+    <div className={(className || '')}>
       <div className="default-bold">{category}</div>
       {toc
         .filter((item) => item.category === category)
