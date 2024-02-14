@@ -3,6 +3,9 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
+import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
+import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
+import Button, {CompositeButton} from '~/components/Button'
 import {
   DarkLight,
   Edit,
@@ -56,13 +59,13 @@ const actions = {
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {
-    Icon: Like,
-    title: 'Helpful',
+    Icon: ThumbUpIcon,
+    title: 'Yes',
     handler: makeColumnIncrementer('Helpful'),
   },
   unhelpful: {
-    Icon: Dislike,
-    title: 'Unhelpful',
+    Icon: ThumbDownIcon,
+    title: 'No',
     handler: makeColumnIncrementer('Unhelpful'),
   },
   hide: {
@@ -163,10 +166,14 @@ export const Action = ({pageid, actionType, showText = true, children, ...props}
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
       {children}
-      <button className={className} title={title} type="button">
-        <Icon />
-        {showText && title}
-      </button>
+      <Button className={'secondary'} action={() => alert('helpful')}>
+        <Icon className={className} />
+        <span className="teal-500"> {showText && title}</span>
+      </Button>
+      {/*<button className={className} title={title} type="button">*/}
+      {/*  <Icon />*/}
+      {/*  {showText && title}*/}
+      {/*</button>*/}
     </Form>
   )
 }

@@ -1,4 +1,4 @@
-import {ReactNode} from 'react'
+import {CSSProperties, ReactNode} from 'react'
 import {Link} from '@remix-run/react'
 import './button.css'
 
@@ -26,8 +26,14 @@ const Button = ({children, action, tooltip, icon, className}: ButtonProps) => {
   )
 }
 
-export const CompositeButton = ({children}: {children: ReactNode}) => (
-  <div className="composite-button">{children}</div>
+export interface CompositeButtonProps {
+  children: ReactNode
+  style?: CSSProperties
+}
+export const CompositeButton = ({children, style}: CompositeButtonProps) => (
+  <div className="composite-button" style={style}>
+    {children}
+  </div>
 )
 
 export default Button

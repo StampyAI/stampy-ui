@@ -411,3 +411,10 @@ a:not(:hover, :focus-visible) {
   justify-content: flex-start;
   gap: 10.9vw;
 }
+
+.icon-link path {
+  stroke: var(--colors-cool-grey-600);
+}
+.icon-link.focused path {
+  stroke: var(--colors-teal-600);
+}
