@@ -15,6 +15,7 @@
   align-items: flex-start;
   margin: 5px;
   position: relative;
+  padding: 0px 10px 0px 24px;
 }
 .categoryAutoLayoutHorizontal.active {
   background-color: rgba(237.0000010728836, 250.00000029802322, 249.00000035762787, 1);
