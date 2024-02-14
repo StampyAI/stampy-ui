@@ -11,25 +11,19 @@
 
   background-color: #fff;
   width: 756px;
-  top: 65px;
-  left: 320px;
+  top: 80px;
+  left: 300px;
   justify-content: space-between;
   display: flex;
 
   transition: visibility 0.2s;
   visibility: hidden;
 }
-.articles-dropdown-title {
-  letter-spacing: -0.01em;
-  font-weight: 600;
-}
 .articles-dropdown-title.top-margin-large {
   margin-top: 56px;
 }
 .articles-dropdown-entry {
-  margin: 24px 0;
-  font-size: 16px;
-  letter-spacing: -0.01em;
+  margin: 12px 0;
 }
 .articles-dropdown-teal-entry {
   color: var(--colors-teal-500);

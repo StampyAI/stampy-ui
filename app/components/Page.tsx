@@ -2,7 +2,7 @@ import {ReactNode, Suspense} from 'react'
 import {Await, useOutletContext} from '@remix-run/react'
 import type {Context} from '~/root'
 import Footer from '~/components/Footer'
-import Header from '~/components/Header'
+import Header from '~/components/Nav'
 import {useTags} from '~/hooks/useCachedObjects'
 import useToC from '~/hooks/useToC'
 

@@ -9,3 +9,5 @@
 
 .DS_store
 wrangler.toml
+*.sqlite
+.wrangler

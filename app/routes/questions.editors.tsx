@@ -1,4 +1,4 @@
-import Header from '~/components/Header'
+import Header from '~/components/Nav'
 import Footer from '~/components/Footer'
 import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import type {Question} from '../server-utils/stampy'

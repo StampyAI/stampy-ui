@@ -43,7 +43,7 @@ export default function App() {
         <WidgetStampy />
 
         <div className="top-margin-large" />
-        <h3 className="grey">Advanced Content</h3>
+        <h3 className="grey">Advanced content</h3>
         <Grid gridBoxes={toc} />
       </div>
     </Page>

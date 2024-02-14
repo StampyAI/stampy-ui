@@ -1,5 +1,5 @@
 .footer {
-  margin-top: 80px;
+  margin-top: 104px;
 }
 
 .footer-icon {
@@ -14,15 +14,8 @@
 .footer-description {
   top: 154px;
   left: 192px;
-  letter-spacing: -0.01em;
   display: inline-block;
   max-width: 403px;
-  margin-bottom: 23px;
-}
-
-.footer-logo {
-  margin-block-start: 0;
-  margin-block-end: 8px;
 }
 
 .footer-ecosystem {
@@ -47,33 +40,11 @@
   display: inline-block;
 }
 
-.footer h5 {
-  letter-spacing: -0.01em;
-  font-weight: 600;
-  margin-block-end: 1em;
-}
-
-.footer .copyright {
-  font-size: 14px;
-  letter-spacing: -0.01em;
-  text-align: center;
-  width: 100%;
-}
-
-.footer-brand {
-  top: 104px;
-  left: 192px;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  line-height: 155%;
-  font-weight: 600;
-  color: var(--colors-teal-500);
-}
-
 .footer-grid {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-evenly;
   align-items: baseline;
+  margin: 104px 0 80px 0;
 }
