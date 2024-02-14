@@ -1,12 +1,23 @@
-import {useEffect} from 'react'
-import {Links, LiveReload, Meta, Outlet, Scripts, useLoaderData} from '@remix-run/react'
+import {useEffect, ReactNode} from 'react'
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  ScrollRestoration,
+  Scripts,
+  useParams,
+  useRouteError,
+  useLoaderData,
+} from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import {cssBundleHref} from '@remix-run/css-bundle'
 import newStyles from '~/newRoot.css'
-
+import Error from '~/components/Error'
+import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {questionsOnPage} from '~/hooks/stateModifiers'
-import {useTheme} from './hooks/theme'
+import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 
 /*
@@ -86,10 +97,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const embed = !!request.url.match(/embed/)
   const showSearch = !request.url.match(/onlyInitial/)
 
-  const question = await fetchQuestion(request).catch((e) => {
-    console.error('\n\nUnexpected error in loader\n', e)
-    return null
-  })
+  const question = await fetchQuestion(request)
 
   return {
     question,
@@ -145,19 +153,37 @@ function Head({minLogo}: {minLogo?: boolean}) {
   )
 }
 
-export function ErrorBoundary({error}: {error: Error}) {
-  console.error(error)
-  return (
-    <html>
-      <Head />
-      <body>
-        <h2>Oops! Something went wrong!</h2>
-        <div>
-          Please report this error to <a href="https://discord.gg/5ZFqAKBX">the Stampy Discord</a>
-        </div>
-        <Scripts />
-      </body>
+const BasePage = ({
+  children,
+  embed,
+  savedTheme,
+  minLogo,
+}: {
+  children: ReactNode
+  embed?: boolean
+  savedTheme?: string
+  minLogo?: boolean
+}) => (
+  <CachedObjectsProvider>
+    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
+      <Head minLogo={minLogo} />
+      <body>{children}</body>
     </html>
+  </CachedObjectsProvider>
+)
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+  console.error(error)
+  const params = useParams()
+  const embed = !!params.embed
+
+  return (
+    <BasePage embed={embed}>
+      <Page>
+        <Error error={error as any} />
+      </Page>
+    </BasePage>
   )
 }
 
@@ -190,17 +216,12 @@ export default function App() {
   }, [embed])
 
   return (
-    <CachedObjectsProvider>
-      <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
-        <Head minLogo={minLogo} />
-        <body>
-          <GoogleAnalytics gaTrackingId={gaTrackingId} />
-          <Outlet context={context} />
-          {/* <ScrollRestoration /> wasn't doing anything useful */}
-          <Scripts />
-          <LiveReload />
-        </body>
-      </html>
-    </CachedObjectsProvider>
+    <BasePage embed={embed} savedTheme={savedTheme} minLogo={minLogo}>
+      <GoogleAnalytics gaTrackingId={gaTrackingId} />
+      <Outlet context={context} />
+      <ScrollRestoration />
+      <Scripts />
+      <LiveReload />
+    </BasePage>
   )
 }

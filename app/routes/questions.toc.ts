@@ -41,8 +41,17 @@ const formatQuestion =
     category: getCategory(tags),
   })
 
+const getToc = async (request: any) => {
+  try {
+    return await loadAllQuestions(request)
+  } catch (e) {
+    console.error(e)
+    throw new Response('Could not fetch table of contents', {status: 500})
+  }
+}
+
 export const loadToC = async (request: any): Promise<LoaderResp> => {
-  const {data, timestamp} = await loadAllQuestions(request)
+  const {data, timestamp} = await getToc(request)
   const items = data.reduce((acc, item) => ({...acc, [item.title]: item}), {}) as {
     [k: string]: Question
   }

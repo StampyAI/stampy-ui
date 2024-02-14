@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
@@ -83,11 +84,11 @@ const ArticleMeta = (question: Question) => {
 }
 
 const Tags = ({tags}: Question) => (
-  <div className="article-tags">
-    {tags.map((tag) => (
-      <Button key={tag} className="primary" action={`/tags/${tag}`}>
+  <div className="tags">
+    {tags?.map((tag) => (
+      <Link key={tag} className="tag bordered" to={`/tags/${tag}`}>
         {tag}
-      </Button>
+      </Link>
     ))}
   </div>
 )

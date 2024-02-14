@@ -3,7 +3,12 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadOnSiteAnswers} from '~/server-utils/stampy'
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
-  return await loadOnSiteAnswers(request)
+  try {
+    return await loadOnSiteAnswers(request)
+  } catch (e) {
+    console.error(e)
+    throw new Response('Could not fetch all articles', {status: 500})
+  }
 }
 type Data = ReturnType<typeof loader>
 
