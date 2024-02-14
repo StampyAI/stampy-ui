@@ -1,7 +1,7 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldRevalidateFunction, redirect} from '@remix-run/react'
 import {QuestionState} from '~/server-utils/stampy'
-import {WidgetStampy} from '~/components/WidgetStampy'
+import {WidgetStampy} from '~/components/Widget/Stampy'
 import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/ContentBox'
 import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
@@ -43,7 +43,7 @@ export default function App() {
         <WidgetStampy />
 
         <div className="top-margin-large" />
-        <h3 className="grey">Advanced Content</h3>
+        <h3 className="grey">Advanced content</h3>
         <Grid gridBoxes={toc} />
       </div>
     </Page>

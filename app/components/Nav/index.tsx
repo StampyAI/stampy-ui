@@ -9,18 +9,18 @@ import type {Tag} from '~/server-utils/stampy'
 import './nav.css'
 import Search from '../search'
 
-export interface HeaderProps {
+export interface NavProps {
   toc: TOCItem[]
   categories?: Tag[]
 }
-export const Header = ({toc, categories}: HeaderProps) => {
+export const Nav = ({toc, categories}: NavProps) => {
   return (
     <header className="top-header">
       <nav className="top-nav">
         <Link to="/" className="top-logo">
           <AISafetyIcon />
         </Link>
-        <ul className="top-menu">
+        <ul className="top-menu small">
           <MenuItem
             primary={true}
             link="#"
@@ -45,4 +45,4 @@ export const Header = ({toc, categories}: HeaderProps) => {
     </header>
   )
 }
-export default Header
+export default Nav

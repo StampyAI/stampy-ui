@@ -1,11 +1,10 @@
 import type {SVGProps} from 'react'
 const SvgChatbot = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
     <path
       stroke="#1D9089"
       strokeLinejoin="round"
-      strokeWidth={2}
-      d="M21 6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h.975a7 7 0 0 1-.106.957 1.5 1.5 0 0 1-.106.367A1 1 0 0 0 5.5 22c2.301 0 3.54-1.532 4.186-3H20a1 1 0 0 0 1-1z"
+      d="M21.5 5a.5.5 0 0 0-.5-.5H3a.5.5 0 0 0-.5.5v14a.5.5 0 0 0 .5.5h1.495c-.016.711-.068 1.208-.136 1.554-.085.432-.184.564-.213.592a.5.5 0 0 0 .354.854c2.164 0 3.284-1.53 3.852-3H21a.5.5 0 0 0 .5-.5z"
     />
   </svg>
 )

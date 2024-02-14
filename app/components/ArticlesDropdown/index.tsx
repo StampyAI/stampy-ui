@@ -28,9 +28,17 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
     </div>
   )
 
-  const ArticlesSection = ({category, toc}: {category: Category; toc: TOCItem[]}) => (
-    <div>
-      <div className="articles-dropdown-title">{category}</div>
+  const ArticlesSection = ({
+    category,
+    toc,
+    className,
+  }: {
+    category: Category
+    toc: TOCItem[]
+    className?: string
+  }) => (
+    <div className={className || ''}>
+      <div className="default-bold">{category}</div>
       {toc
         .filter((item) => item.category === category)
         .map(({pageid, title}: TOCItem) => (
@@ -41,14 +49,14 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
 
   return shown ? null : (
     <div className="articles-dropdown-container bordered">
-      <div className="articles-dropdown-grid">
-        <ArticlesSection category={INTRODUCTORY} toc={toc} />
+      <div>
+        <ArticlesSection category={INTRODUCTORY} toc={toc} className="padding-bottom-32" />
         <ArticlesSection category={ADVANCED} toc={toc} />
       </div>
 
-      <div className="articles-dropdown-grid">
+      <div>
         {/*sorted right side*/}
-        <div className="articles-dropdown-title">Browse by category</div>
+        <div className="default-bold">Browse by category</div>
 
         {categories
           ?.sort(sortFuncs['by number of questions'])
@@ -62,7 +70,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
             />
           ))}
 
-        <Button action="/tags/" className="dropdown-button bordered grey dropdown-button-label">
+        <Button action="/tags/" className="secondary">
           <span onClick={hide}> Browse all categories</span>
         </Button>
       </div>

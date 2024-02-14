@@ -2,7 +2,7 @@
 
 :root {
   /* colors */
-  --colors-black: #000;
+  --colors-black: #1b2b3e;
   --colors-cool-grey-900: #1b2b3e;
   --colors-cool-grey-800: #3a485a;
   --colors-cool-grey-700: #596676;
@@ -60,6 +60,7 @@ input {
   line-height: 170%; /* 30.6px */
   letter-spacing: -0.18px;
   color: var(--colors-cool-grey-900), #1b2b3e;
+  margin: 0;
 }
 
 /* typography tags */
@@ -98,12 +99,13 @@ h2 {
 }
 
 .default-bold {
+  font-size: 18px;
   font-weight: 600;
 }
 
 .small {
-  font-size: 16px;
-  letter-spacing: -0.16px;
+  font-size: 16px !important;
+  letter-spacing: -0.16px !important;
 }
 
 .small-bold {
@@ -113,10 +115,12 @@ h2 {
 }
 
 .xs {
+  font-size: 14px;
   letter-spacing: -0.14px;
 }
 
 .xs-bold {
+  font-size: 14px;
   letter-spacing: -0.14px;
   font-weight: 600;
 }
@@ -124,7 +128,7 @@ h2 {
 /* color classes */
 
 .black {
-  color: var(--colors-black, #000);
+  color: var(--colors-black, #1b2b3e);
 }
 
 .grey {
@@ -195,8 +199,35 @@ h2 {
 
 /* other tags */
 
+a {
+  color: inherit; /* disable link specific colours */
+  text-decoration-color: color-mix(in srgb, currentColor, white);
+}
+
+a:hover {
+  text-decoration: none;
+  color: var(--colors-teal-500, #1d9089);
+}
+
+a:not(:hover, :focus-visible) {
+  text-decoration: none;
+}
+
 hr {
   border: 1px solid var(--colors-cool-grey-200);
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* for troubleshooting */
+
+.pink {
+  color: pink !important;
+  background: pink !important;
 }
 
 /* all other classes */
@@ -209,15 +240,7 @@ hr {
   box-sizing: border-box;
 }
 
-a {
-  color: inherit; /* disable link specific colours */
-  text-decoration-color: color-mix(in srgb, currentColor, white);
-}
-
-a:not(:hover, :focus-visible) {
-  text-decoration: none;
-}
-
+/* defines the standard left and right margins */
 .page-body {
   padding: 0px 13.333vw;
 }

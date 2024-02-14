@@ -1,5 +1,5 @@
 .top-header {
-  padding: var(--spacing-24) var(--spacing-80);
+  padding: var(--spacing-32) var(--spacing-80);
 }
 .top-nav {
   display: flex;
@@ -16,9 +16,14 @@
   width: 100%;
   height: 100%;
 }
+
+.top-logo {
+  padding: 0 var(--spacing-56) 0 0;
+}
+
 .top-menu {
   display: flex;
-  gap: 20px;
+  gap: var(--spacing-40);
   list-style: none;
 }
 
