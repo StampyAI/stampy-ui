@@ -1,4 +1,4 @@
-import Header from '~/components/Nav'
+import Nav from '~/components/Nav'
 import Footer from '~/components/Footer'
 import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import type {Question} from '../server-utils/stampy'
@@ -53,7 +53,7 @@ export default function App() {
 
   return (
     <>
-      <Header categories={[]} toc={[]} />
+      <Nav categories={[]} toc={[]} />
       <main>
         <ul className="urls">
           <li>

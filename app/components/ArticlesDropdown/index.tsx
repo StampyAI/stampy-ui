@@ -21,7 +21,6 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   useEffect(() => setShown(false), [shown])
 
   const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
-    // add the line below to ArticlesSection
     <div className={'articles-dropdown-entry ' + (className || '')}>
       <LinkElem to={to} onClick={hide}>
         {text}

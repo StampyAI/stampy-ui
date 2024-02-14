@@ -1,11 +1,11 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import Header from '../app/components/Nav'
+import Nav from '../app/components/Nav'
 
 const meta = {
   title: 'Components/Nav',
-  component: Header,
+  component: Nav,
   tags: ['autodocs'],
-} satisfies Meta<typeof Header>
+} satisfies Meta<typeof Nav>
 export default meta
 type Story = StoryObj<typeof meta>
 export const Primary: Story = {
