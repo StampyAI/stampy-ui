@@ -1,17 +1,12 @@
-import {MouseEvent, useCallback, useEffect, useRef, useState} from 'react'
+import {useState} from 'react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
-import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
-import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
 import Button, {CompositeButton} from '~/components/Button'
 import {Action, ActionType} from '~/routes/questions.actions'
-import type {Glossary, GlossaryEntry, PageId, Question} from '~/server-utils/stampy'
+import type {Glossary, Question} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
-import {forEach} from 'lodash'
-import {Simulate} from 'react-dom/test-utils'
-import keyUp = Simulate.keyUp
 
 const isLoading = ({text}: Question) => !text || text === 'Loading...'
 
@@ -38,11 +33,12 @@ const ArticleFooter = (question: Question) => {
         </div>
         <span>Did this page help you?</span>
 
-      <CompositeButton style={{display: 'flex'}}>
-        <Action pageid={question.pageid} showText={true} actionType={ActionType.HELPFUL} />
-        <Action pageid={question.pageid} showText={true} actionType={ActionType.UNHELPFUL} />
-      </CompositeButton>
-    </div>
+        <CompositeButton className="flex-container">
+          <Action pageid={question.pageid} showText={true} actionType={ActionType.HELPFUL} />
+          <Action pageid={question.pageid} showText={true} actionType={ActionType.UNHELPFUL} />
+        </CompositeButton>
+      </div>
+    )
   )
 }
 
