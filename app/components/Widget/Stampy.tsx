@@ -1,4 +1,4 @@
-import StampyIcon from '~/components/icons-generated/StampyChat'
+import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import './stampy.css'
 
