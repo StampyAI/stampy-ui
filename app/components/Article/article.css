@@ -45,6 +45,7 @@ article .tag:hover {
 
 article .contents a {
   color: var(--colors-teal-500);
+  font-weight: bolder;
 }
 
 article .contents a:visited {
@@ -102,4 +103,8 @@ article .footer-comtainer {
 
 article .footer-comtainer > * {
   margin: var(--spacing-8, 8px);
+}
+
+h1.teal {
+  color: var(--colors-teal-500);
 }
