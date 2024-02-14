@@ -26,7 +26,7 @@ export enum QuestionState {
   COLLAPSED = '-',
   RELATED = 'r',
 }
-export type RelatedQuestions = {title: string; pageid: string}[]
+export type RelatedQuestion = {title: string; pageid: string}
 export enum QuestionStatus {
   WITHDRAWN = 'Withdrawn',
   SKETCH = 'Bulletpoint sketch',
@@ -59,7 +59,7 @@ export type Tag = {
   name: string
   url: string
   internal: boolean
-  questions: RelatedQuestions
+  questions: RelatedQuestion[]
   mainQuestion: string | null
 }
 export type Question = {
@@ -67,7 +67,7 @@ export type Question = {
   pageid: string
   text: string | null
   answerEditLink: string | null
-  relatedQuestions: RelatedQuestions
+  relatedQuestions: RelatedQuestion[]
   questionState?: QuestionState
   tags: string[]
   banners: Banner[]
@@ -82,7 +82,7 @@ export type Question = {
 export type PageId = Question['pageid']
 export type NewQuestion = {
   title: string
-  relatedQuestions: RelatedQuestions
+  relatedQuestions: RelatedQuestion[]
   source?: string
 }
 type Entity = {
@@ -434,7 +434,7 @@ export const insertRows = async (table: string, rows: NewQuestion[]) => {
   return await sendToCoda(url, payload, 'POST', `${CODA_INCOMING_TOKEN}`)
 }
 
-export const addQuestion = async (title: string, relatedQuestions: RelatedQuestions) => {
+export const addQuestion = async (title: string, relatedQuestions: RelatedQuestion[]) => {
   return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
 }
 

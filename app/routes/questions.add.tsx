@@ -2,9 +2,9 @@ import {useState, useEffect} from 'react'
 import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form} from '@remix-run/react'
 import {redirect} from '@remix-run/cloudflare'
-import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestions} from '~/server-utils/stampy'
+import {addQuestion, loadAllQuestions, fetchJsonList, RelatedQuestion} from '~/server-utils/stampy'
 
-const getRelated = async (question: string): Promise<RelatedQuestions> => {
+const getRelated = async (question: string): Promise<RelatedQuestion[]> => {
   const url = `${NLP_SEARCH_ENDPOINT}/api/search?query=${question}?status=all`
   try {
     return await fetchJsonList(url)
@@ -41,7 +41,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   } else {
     relatedQuestions = formData
       .getAll('relatedQuestion')
-      .map((question) => ({title: question})) as RelatedQuestions
+      .map((question) => ({title: question})) as RelatedQuestion[]
   }
 
   // Make sure the question is formatted as a question

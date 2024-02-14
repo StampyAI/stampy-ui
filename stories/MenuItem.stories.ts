@@ -38,7 +38,7 @@ export const WithIcon: Story = {
   args: {
     link: '#',
     text: 'Link',
-    icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a6d92c1038a2e95b3f9371f120e22f78d20f757ed372832f0daa5df5d632a4b?apiKey=f1073757e44b4ccd8d59791af6c41a77&',
+    icon: '/assets/book-circle.svg',
     primary: false,
   },
 }
