@@ -55,6 +55,7 @@
   box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
 }
 
+.composite-button > form .button,
 .composite-button > .button {
   border-radius: 0;
   border-radius: 0;
@@ -63,6 +64,7 @@
   box-shadow: revert;
 }
 
+.composite-button > form:first-child .button,
 .composite-button > .button:first-child {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
@@ -70,6 +72,7 @@
   border-right: 1px solid transparent;
 }
 
+.composite-button > form:last-child .button,
 .composite-button > .button:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
@@ -78,10 +81,12 @@
 }
 
 /* Make sure the first button doesn't have a negative margin */
+.composite-button > form:first-child .button,
 .composite-button > .button:first-child {
   margin-left: 0;
 }
 
+.composite-button form .button:hover,
 .composite-button .button:hover {
   border-width: 1px;
 }

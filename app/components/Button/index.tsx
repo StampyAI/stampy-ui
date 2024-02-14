@@ -26,8 +26,12 @@ const Button = ({children, action, tooltip, icon, className}: ButtonProps) => {
   )
 }
 
-export const CompositeButton = ({children}: {children: ReactNode}) => (
-  <div className="composite-button">{children}</div>
+export interface CompositeButtonProps {
+  children: ReactNode
+  className?: string
+}
+export const CompositeButton = ({children, className}: CompositeButtonProps) => (
+  <div className={`composite-button ${className || ''}`}>{children}</div>
 )
 
 export default Button

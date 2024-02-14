@@ -3,16 +3,10 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {redirect, json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
-import {
-  DarkLight,
-  Edit,
-  Flag,
-  Followup,
-  Hide,
-  Like,
-  Search,
-  Dislike,
-} from '~/components/icons-generated'
+import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
+import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
+import Button from '~/components/Button'
+import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
 
 export enum ActionType {
   DARKLIGHT = 'darkLight',
@@ -56,13 +50,13 @@ const actions = {
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {
-    Icon: Like,
-    title: 'Helpful',
+    Icon: ThumbUpIcon,
+    title: 'Yes',
     handler: makeColumnIncrementer('Helpful'),
   },
   unhelpful: {
-    Icon: Dislike,
-    title: 'Unhelpful',
+    Icon: ThumbDownIcon,
+    title: 'No',
     handler: makeColumnIncrementer('Unhelpful'),
   },
   hide: {
@@ -147,7 +141,7 @@ export const Action = ({pageid, actionType, showText = true, children, ...props}
     if (response.ok !== true) setActionTaken(!actionTaken)
   }
 
-  const className = 'icon-link' + (actionTaken ? ' focused' : '')
+  const className = 'secondary icon-link' + (actionTaken ? ' focused' : '')
 
   return (
     <Form
@@ -163,10 +157,10 @@ export const Action = ({pageid, actionType, showText = true, children, ...props}
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
       {children}
-      <button className={className} title={title} type="button">
+      <Button className={className}>
         <Icon />
-        {showText && title}
-      </button>
+        <span className={actionTaken ? 'teal-500' : 'grey'}> {showText && title}</span>
+      </Button>
     </Form>
   )
 }

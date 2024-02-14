@@ -436,3 +436,10 @@ ul {
   gap: 10.9vw;
   margin-left: 5.56vw;
 }
+
+.icon-link path {
+  stroke: var(--colors-cool-grey-600);
+}
+.icon-link.focused path {
+  stroke: var(--colors-teal-600);
+}

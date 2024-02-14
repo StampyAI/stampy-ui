@@ -2,10 +2,9 @@ import {useState} from 'react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
-import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
-import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
 import Button, {CompositeButton} from '~/components/Button'
-import type {Question, Glossary} from '~/server-utils/stampy'
+import {Action, ActionType} from '~/routes/questions.actions'
+import type {Glossary, Question} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
 
@@ -34,15 +33,9 @@ const ArticleFooter = (question: Question) => {
         </div>
         <span>Did this page help you?</span>
 
-        <CompositeButton>
-          <Button className="secondary" action={() => alert('Like')}>
-            <ThumbUpIcon />
-            <span className="teal-500">Yes</span>
-          </Button>
-          <Button className="secondary" action={() => alert('Dislike')}>
-            <ThumbDownIcon />
-            <span className="teal-500">No</span>
-          </Button>
+        <CompositeButton className="flex-container">
+          <Action pageid={question.pageid} showText={true} actionType={ActionType.HELPFUL} />
+          <Action pageid={question.pageid} showText={true} actionType={ActionType.UNHELPFUL} />
         </CompositeButton>
       </div>
     )
