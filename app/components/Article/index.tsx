@@ -165,20 +165,6 @@ const ArticleFooter = (question: Question) => {
       <CompositeButton style={{display: 'flex'}}>
         <Action pageid={question.pageid} showText={true} actionType={ActionType.HELPFUL} />
         <Action pageid={question.pageid} showText={true} actionType={ActionType.UNHELPFUL} />
-        {/*<Button*/}
-        {/*  className={'secondary'}*/}
-        {/*  action={() => alert('helpful')}*/}
-        {/*>*/}
-        {/*  <ThumbUpIcon />*/}
-        {/*  <span className="teal-500">Yes</span>*/}
-        {/*</Button>*/}
-        {/*<Button*/}
-        {/*  className={'secondary'}*/}
-        {/*  action={() => alert('unhelpful')}*/}
-        {/*>*/}
-        {/*  <ThumbDownIcon />*/}
-        {/*  <span className="teal-500">No</span>*/}
-        {/*</Button>*/}
       </CompositeButton>
     </div>
   )
