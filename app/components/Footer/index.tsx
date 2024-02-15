@@ -39,7 +39,7 @@ export const FooterBar: FunctionComponent = () => {
           <Link to="https://alignment.dev/" title="Alignment Ecosystem Development" />
         </div>
       </div>
-      <div className="xs grey">
+      <div className="xs grey text-align-center padding-bottom-16">
         <br />
         <Link
           to="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa"
