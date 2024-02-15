@@ -5,6 +5,7 @@ import {GroupTopEcplise} from '~/components/icons-generated'
 import ListTable from '~/components/Table'
 import Button from '~/components/Button'
 import './box.css'
+import SvgGroup from '~/components/icons-generated/Group'
 
 interface ContentBoxProps {
   title: string | ReactNode
@@ -12,8 +13,16 @@ interface ContentBoxProps {
   actionTitle?: string | ReactNode
   children?: ReactNode
   className?: string
+  classNameTable?: string
 }
-export const ContentBox = ({title, action, actionTitle, children, className}: ContentBoxProps) => {
+export const ContentBox = ({
+  title,
+  action,
+  actionTitle,
+  children,
+  className,
+  classNameTable = 'content-box-table',
+}: ContentBoxProps) => {
   return (
     <div className={`main-container-box-table bordered ${className || ''}`}>
       <div className="content-box-description">
@@ -22,7 +31,7 @@ export const ContentBox = ({title, action, actionTitle, children, className}: Co
           {actionTitle}
         </Button>
       </div>
-      <div className="content-box-table">{children}</div>
+      <div className={classNameTable}>{children}</div>
     </div>
   )
 }
@@ -30,6 +39,7 @@ export const ContentBox = ({title, action, actionTitle, children, className}: Co
 export const ContentBoxMain = () => (
   <ContentBox
     className="teal-background"
+    classNameTable={'content-box-table main'}
     title={
       <>
         <div className="white">New to AI Safety?</div>
@@ -72,9 +82,13 @@ export const ContentBoxSecond = () => {
 
 export const ContentBoxThird = () => {
   return (
-    <ContentBox title="Get involved with AI safety" action="/8TJV" actionTitle="Learn how">
-      <GroupTopEcplise className="eclipse-individual-top" />
-      <BottomEclipse className="eclipse-team-bottom" />
+    <ContentBox
+      title="Get involved with AI safety"
+      action="/8TJV"
+      actionTitle="Learn how"
+      classNameTable={'content-box-table main'}
+    >
+      <SvgGroup />
     </ContentBox>
   )
 }

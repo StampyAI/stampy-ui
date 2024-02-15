@@ -41,3 +41,13 @@
   border-color: var(--colors-teal-200);
   text-decoration: none;
 }
+
+.content-box-table.main img {
+  width: fit-content;
+  height: -webkit-fill-available;
+}
+.content-box-table.main {
+  overflow: hidden;
+  padding: 0;
+  padding-right: var(--spacing-8);
+}
