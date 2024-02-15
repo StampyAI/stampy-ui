@@ -79,42 +79,6 @@ const glossaryInjecter = (pageid: string, glossary: Glossary) => {
   }
 }
 
-const glossaryContents = ({term, pageid, contents, image}: GlossaryEntry) => {
-  const glossaryPopup = document.createElement('div')
-  glossaryPopup.className = 'glossary-popup flex-container'
-
-  const contentsDiv = document.createElement('div')
-  contentsDiv.className = 'contents'
-
-  const termHeading = document.createElement('h3')
-  termHeading.textContent = term
-  contentsDiv.appendChild(termHeading)
-
-  const contentsPaddingDiv = document.createElement('div')
-  contentsPaddingDiv.className = 'padding-bottom-24'
-  contentsPaddingDiv.innerHTML = contents
-  contentsDiv.appendChild(contentsPaddingDiv)
-
-  if (pageid) {
-    const viewFullLink = document.createElement('a')
-    viewFullLink.href = `/${pageid}`
-    viewFullLink.className = 'button secondary'
-    viewFullLink.textContent = 'View full definition'
-    contentsDiv.appendChild(viewFullLink)
-  }
-
-  glossaryPopup.appendChild(contentsDiv)
-
-  if (image) {
-    const imageElem = document.createElement('img')
-    imageElem.src = image
-    glossaryPopup.appendChild(imageElem)
-  }
-
-  console.log(glossaryPopup.outerHTML)
-  return glossaryPopup.outerHTML
-}
-
 const insertGlossary = (pageid: string, glossary: Glossary) => {
   const injecter = glossaryInjecter(pageid, glossary)
 
@@ -157,7 +121,23 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
      */
     fragment.querySelectorAll('.glossary-entry').forEach((e) => {
       const entry = glossaryEntry(e)
-      entry && addPopup(e as HTMLSpanElement, `glossary-${entry.term}`, glossaryContents(entry))
+      if (!entry) return undefined
+      const link =
+        entry.pageid &&
+        `<a href="/${entry.pageid}" class="button secondary">View full definition</a>`
+      const image = entry.image && `<img src="${entry.image}"/>`
+      addPopup(
+        e as HTMLSpanElement,
+        `glossary-${entry.term}`,
+        `<div class="glossary-popup flex-container black">
+              <div class="contents">
+                   <h3>${entry.term}</h3>
+                   <div class="padding-bottom-24">${entry.contents}</div>
+                   ${link || ''}
+              </div>
+              ${image || ''}
+          </div>`
+      )
     })
 
     return fragment
