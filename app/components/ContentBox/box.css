@@ -45,6 +45,7 @@
 .content-box-table.main img {
   width: fit-content;
   height: -webkit-fill-available;
+  height: -moz-available;
 }
 .content-box-table.main {
   overflow: hidden;
