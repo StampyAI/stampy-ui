@@ -202,6 +202,49 @@ h2 {
   padding-bottom: var(--spacing-288);
 }
 
+/* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
+/* note I may change these to vars later */
+
+.col-2 {
+  width: 8.54vw;
+}
+
+.col-3 {
+  width: 15vw;
+}
+
+.col-4 {
+  width: 21.46vw;
+}
+
+.col-5 {
+  width: 27.99vw;
+}
+
+.col-6 {
+  width: 34.44vw;
+}
+
+.col-7 {
+  width: 40.9vw;
+}
+
+.col-8 {
+  width: 47.43vw;
+}
+
+.col-9 {
+  width: 53.89vw;
+}
+
+.col-10 {
+  width: 60.35vw;
+}
+
+.col-11 {
+  width: 66.88vw;
+}
+
 /* other tags */
 
 a {
