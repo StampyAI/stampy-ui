@@ -125,8 +125,16 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
         addPopup(
           e as HTMLSpanElement,
           `glossary-${entry.term}`,
-          `<div>${entry.contents}</div>` +
-            (entry.pageid ? `<br><a href="/${entry.pageid}">See more...</a>` : '')
+          '<div class="glossary-popup flex-container">' +
+            '   <div class="contents">' +
+            `       <h3>${entry.term}</h3>` +
+            `       <div class="padding-bottom-24">${entry.contents}</div>` +
+            (entry.pageid
+              ? `<a href="/${entry.pageid}" class="button secondary">View full definition</a>`
+              : '') +
+            '   </div>' +
+            (entry.image ? `<img src="${entry.image}" alt="${entry.term}"/>` : '') +
+            '</div>'
         )
     })
 
