@@ -19,8 +19,8 @@ jobs:
         run: |
           cat wrangler.toml.template \
             | sed s/stampy-ui/redesign/ \
-            | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID }}/ \
-            | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID }}/ \
+            | sed s/{CLOUDFLARE_ACCT_ID}/${{ secrets.CLOUDFLARE_ACCT_ID_APRILLION_WORKERS_DEV }}/ \
+            | sed s/{STAMPY_KV_ID}/${{ secrets.STAMPY_KV_ID_APRILLION_WORKERS_DEV }}/ \
             | sed s/{CODA_TOKEN}/${{ secrets.CODA_TOKEN }}/ \
             | sed s/{CODA_INCOMING_TOKEN}/${{ secrets.CODA_INCOMING_TOKEN }}/ \
             | sed s/{CODA_WRITES_TOKEN}/${{ secrets.CODA_WRITES_TOKEN }}/ \
