@@ -2,7 +2,7 @@ import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {GlossaryEntry, loadQuestionDetail, loadTags, QuestionState} from '~/server-utils/stampy'
 import {useRef, useEffect, useState} from 'react'
 import AutoHeight from 'react-auto-height'
-import type {Question, Glossary, PageId, Banner as BannerType, Tag} from '~/server-utils/stampy'
+import type {Question, Glossary, PageId, Banner as BannerType} from '~/server-utils/stampy'
 import type useQuestionStateInUrl from '~/hooks/useQuestionStateInUrl'
 import {Edit, Link as LinkIcon} from '~/components/icons-generated'
 import {Tags} from '~/routes/tags.single.$tag'
@@ -13,45 +13,43 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 const UNKNOWN_QUESTION_TITLE = 'Unknown question'
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
+const raise500 = (error: Error) => new Response(error.toString(), {status: 500})
+
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const {questionId} = params
   if (!questionId) {
-    throw Error('missing question title')
+    throw new Response('Missing question title', {status: 400})
   }
 
   try {
-    const dataPromise = loadQuestionDetail(request, questionId).then(({data}) => data)
-    const tagsPromise = loadTags(request).then(({data}) => data)
+    const dataPromise = loadQuestionDetail(request, questionId)
+      .then(({data}) => data)
+      .catch(raise500)
+    const tagsPromise = loadTags(request)
+      .then(({data}) => data)
+      .catch(raise500)
     return defer({data: dataPromise, tags: tagsPromise})
   } catch (error: unknown) {
-    const data: Question = {
-      pageid: questionId,
-      title: UNKNOWN_QUESTION_TITLE,
-      text: `No question found with ID ${questionId}. Please go to the Discord in the lower right (or click <a href="https://discord.com/invite/Bt8PaRTDQC">here</a>) and report where you found this link.`,
-      answerEditLink: null,
-      relatedQuestions: [],
-      tags: [],
-      banners: [],
-    }
-    return {
-      error: error?.toString(),
-      data,
-      tags: [] as Tag[],
-    }
+    const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
+    throw new Response(msg, {status: 404})
   }
 }
 
 export function fetchQuestion(pageid: string) {
   const url = `/questions/${encodeURIComponent(pageid)}`
-  return fetch(url).then(async (response) => {
-    const json: Awaited<ReturnType<typeof loadQuestionDetail>> = await response.json()
-    if ('error' in json) console.error(json.error)
-    const {data, timestamp} = json
+  return fetch(url)
+    .then(async (response) => {
+      const json: Awaited<ReturnType<typeof loadQuestionDetail>> = await response.json()
+      if ('error' in json) console.error(json.error)
+      const {data, timestamp} = json
 
-    reloadInBackgroundIfNeeded(url, timestamp)
+      reloadInBackgroundIfNeeded(url, timestamp)
 
-    return data
-  })
+      return data
+    })
+    .catch((e) => {
+      throw raise500(e)
+    })
 }
 
 export function Question({

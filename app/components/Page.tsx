@@ -1,5 +1,5 @@
-import {ReactNode, Suspense} from 'react'
-import {Await, useOutletContext} from '@remix-run/react'
+import {ReactNode} from 'react'
+import {useOutletContext} from '@remix-run/react'
 import type {Context} from '~/root'
 import Footer from '~/components/Footer'
 import Nav from '~/components/Nav'
@@ -9,13 +9,11 @@ import useToC from '~/hooks/useToC'
 const Page = ({children}: {children: ReactNode}) => {
   const {toc} = useToC()
   const {items: tags} = useTags()
-  const {embed} = useOutletContext<Context>()
+  const {embed} = useOutletContext<Context>() || {}
 
   return (
     <>
-      <Suspense fallback={<Nav toc={toc} categories={[]} />}>
-        <Await resolve={tags}>{(tags) => <Nav toc={toc} categories={tags} />}</Await>
-      </Suspense>
+      <Nav toc={toc} categories={tags} />
       {children}
 
       {!embed && <Footer />}

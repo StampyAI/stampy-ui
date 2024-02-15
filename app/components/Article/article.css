@@ -23,7 +23,7 @@ article .meta {
   line-height: 1;
 }
 
-.article-tags {
+article .tags {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -33,7 +33,7 @@ article .meta {
 article .tag {
   display: inline-block;
   background-color: var(--colors-teal-50);
-  border: 1px solid var(--colors-teal-100);
+  border-color: var(--colors-teal-100);
   color: var(--colors-teal-500);
   padding: 0 var(--spacing-8);
 }

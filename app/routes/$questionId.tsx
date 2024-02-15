@@ -4,6 +4,7 @@ import Page from '~/components/Page'
 import {loader} from '~/routes/questions.$questionId'
 import {ArticlesNav, EmtpyArticlesNav} from '~/components/ArticlesNav/Menu'
 import Article from '~/components/Article'
+import Error from '~/components/Error'
 import {fetchGlossary} from '~/routes/questions.glossary'
 import useToC from '~/hooks/useToC'
 import type {Question, Glossary} from '~/server-utils/stampy'
@@ -35,7 +36,7 @@ export default function RenderArticle() {
 
   return (
     <Page>
-      <div className="flex-container">
+      <div className="flex-container flex-double">
         {section ? (
           <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />
         ) : (
@@ -46,7 +47,17 @@ export default function RenderArticle() {
           fallback={<Article question={dummyQuestion(getArticle(pageid)?.title)} />}
         >
           <Await resolve={data}>
-            {(resolvedValue) => <Article question={resolvedValue} glossary={glossary} />}
+            {(resolvedValue) => {
+              if (resolvedValue instanceof Response) {
+                return <Error error={resolvedValue} />
+              } else if (!(resolvedValue as any)?.pageid) {
+                return (
+                  <Error error={{statusText: 'Could not fetch question', status: 'emptyArticle'}} />
+                )
+              } else {
+                return <Article question={resolvedValue as Question} glossary={glossary} />
+              }
+            }}
           </Await>
         </Suspense>
       </div>
