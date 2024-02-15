@@ -228,6 +228,12 @@ ul {
   padding: 0;
 }
 
+/* other one-off classes */
+
+.text-align-center {
+  text-align: center;
+}
+
 /* for troubleshooting */
 
 .pink {
