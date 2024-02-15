@@ -22,7 +22,7 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
         {section?.category}
       </div>
       <div className={`${styles.container} flex-container bordered`}>
-        <div className="verticaly-centered white default-bold">{next.title}</div>
+        <div className="vertically-centered white default-bold">{next.title}</div>
         <Button action={`/${next.pageid}`} className="primary-alt">
           {first ? 'Start' : 'Next'}
           <ArrowRight />

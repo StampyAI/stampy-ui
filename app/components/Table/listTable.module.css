@@ -3,7 +3,7 @@
 }
 
 .entry {
-  padding: 32px;
+  padding: var(--spacing-32);
   border-bottom: 1px solid var(--colors-teal-200);
   justify-content: space-between;
 }

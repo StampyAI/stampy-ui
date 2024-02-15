@@ -29,7 +29,7 @@ export const ListTable = ({elements}: ListTableProps) => (
           <div>{title}</div>
           {subtitle && <div className="grey subtitle">{subtitle}</div>}
         </div>
-        {hasIcon && <ArrowUpRight className="verticaly-centered" />}
+        {hasIcon && <ArrowUpRight className="vertically-centered" />}
       </Link>
     ))}
   </div>
