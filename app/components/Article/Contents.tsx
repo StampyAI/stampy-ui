@@ -163,7 +163,7 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
 
   return (
     <div
-      className="contents"
+      className="contents large-reading padding-bottom-80"
       dangerouslySetInnerHTML={{
         __html: html,
       }}

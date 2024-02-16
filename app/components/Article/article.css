@@ -1,5 +1,12 @@
 article {
-  max-width: 800px;
+  max-width: 47.43vw;
+}
+
+.article-wrapper {
+  padding-top: var(--spacing-40);
+  margin-left: 5.56vw;
+  margin-right: 13.33vw;
+  gap: 10.69vw;
 }
 
 article .meta {
@@ -45,15 +52,19 @@ article .tag:hover {
 
 article .contents a {
   color: var(--colors-teal-500);
-  font-weight: bolder;
+  font-weight: 700;
 }
 
 article .contents a:visited {
   color: var(--colors-teal-800);
 }
 
+article .contents p {
+  padding-bottom: 32px;
+}
+
 article .glossary-entry {
-  border-bottom: 2px dotted grey;
+  border-bottom: 3px dotted var(--colors-cool-grey-500);
   cursor: pointer;
 }
 
@@ -70,6 +81,7 @@ article .link-popup {
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
+
 article .link-popup::after {
   content: '';
   position: absolute;
