@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react'
+import React from 'react'
 import './feedbackForm.css'
 
 export interface FeedbackFormProps {
@@ -11,10 +11,7 @@ export interface FeedbackFormProps {
    */
   className?: string
 }
-const FeedbackForm: FunctionComponent = ({
-  pageid,
-  className = 'feedback-form',
-}: FeedbackFormProps) => {
+const FeedbackForm = ({pageid, className = 'feedback-form'}: FeedbackFormProps) => {
   // to be implemented.
   console.log(pageid)
   const [feedbackOptions, setFeedbackOptions] = React.useState([
