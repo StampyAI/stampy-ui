@@ -28,6 +28,7 @@ article .tags {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-8);
+  margin-top: var(--spacing-24);
 }
 
 article .tag {
@@ -98,6 +99,8 @@ article .link-popup p {
 article .footer-comtainer {
   display: flex;
   align-items: center;
+  margin-top: var(--spacing-56);
+  margin-bottom: var(--spacing-24);
 }
 
 article .footer-comtainer > * {

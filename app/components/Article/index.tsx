@@ -8,10 +8,13 @@ import {Action, ActionType} from '~/routes/questions.actions'
 import type {Glossary, Question} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
+import FeedbackForm from '~/components/Article/FeedbackForm'
 
 const isLoading = ({text}: Question) => !text || text === 'Loading...'
 
 const ArticleFooter = (question: Question) => {
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const date =
     question.updatedAt &&
     new Date(question.updatedAt).toLocaleDateString('en-GB', {
@@ -35,8 +38,25 @@ const ArticleFooter = (question: Question) => {
         <span>Did this page help you?</span>
 
         <CompositeButton className="flex-container">
-          <Action pageid={question.pageid} showText={true} actionType={ActionType.HELPFUL} />
-          <Action pageid={question.pageid} showText={true} actionType={ActionType.UNHELPFUL} />
+          <Action
+            pageid={question.pageid}
+            showText={true}
+            actionType={ActionType.HELPFUL}
+            onSuccess={() => setShowFeedback(true)}
+          />
+          <Action
+            pageid={question.pageid}
+            showText={true}
+            actionType={ActionType.UNHELPFUL}
+            onSuccess={() => setShowFeedbackForm(true)}
+          />
+          <span className={['action-feedback-text', showFeedback ? 'show' : ''].join(' ')}>
+            Thanks for your feedback!
+          </span>
+          <FeedbackForm
+            pageid={question.pageid}
+            className={['feedback-form', showFeedbackForm ? 'show' : ''].join(' ')}
+          />
         </CompositeButton>
       </div>
     )

@@ -45,6 +45,7 @@
 
 .flex-container {
   display: flex;
+  position: relative;
 }
 
 .flex-double {
