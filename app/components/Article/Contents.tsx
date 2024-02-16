@@ -121,13 +121,23 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
      */
     fragment.querySelectorAll('.glossary-entry').forEach((e) => {
       const entry = glossaryEntry(e)
-      entry &&
-        addPopup(
-          e as HTMLSpanElement,
-          `glossary-${entry.term}`,
-          `<div>${entry.contents}</div>` +
-            (entry.pageid ? `<br><a href="/${entry.pageid}">See more...</a>` : '')
-        )
+      if (!entry) return undefined
+      const link =
+        entry.pageid &&
+        `<a href="/${entry.pageid}" class="button secondary">View full definition</a>`
+      const image = entry.image && `<img src="${entry.image}"/>`
+      addPopup(
+        e as HTMLSpanElement,
+        `glossary-${entry.term}`,
+        `<div class="glossary-popup flex-container black">
+              <div class="contents">
+                   <h3>${entry.term}</h3>
+                   <div class="padding-bottom-24">${entry.contents}</div>
+                   ${link || ''}
+              </div>
+              ${image || ''}
+          </div>`
+      )
     })
 
     return fragment

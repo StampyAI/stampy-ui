@@ -62,7 +62,6 @@ article .link-popup {
   position: absolute;
   display: inline-block;
   font: var(--baseFont);
-  padding: 5px 10px;
   margin-left: 10px;
   max-width: 35%;
   z-index: 2;
@@ -75,6 +74,15 @@ article .link-popup::after {
   position: absolute;
   top: 5px;
   right: 100%;
+}
+
+article .link-popup .glossary-popup > .contents {
+  padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
+}
+article .link-popup .glossary-popup > img {
+  width: 100%;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 article .link-popup.shown {
