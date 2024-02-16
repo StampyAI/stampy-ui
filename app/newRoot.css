@@ -51,6 +51,10 @@
   flex-grow: 2;
 }
 
+.vertically-centered {
+  margin: auto 0;
+}
+
 body,
 input {
   font-size: 18px;

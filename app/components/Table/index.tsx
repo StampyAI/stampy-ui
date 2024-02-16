@@ -1,6 +1,6 @@
 import {Link} from '@remix-run/react'
 import {ArrowUpRight} from '~/components/icons-generated'
-import './listTable.css'
+import styles from './listTable.module.css'
 
 export type ListItem = {
   pageid: string
@@ -16,18 +16,20 @@ export type ListTableProps = {
 }
 
 export const ListTable = ({elements}: ListTableProps) => (
-  <div className={'table-list'}>
+  <div className={styles.container + ' bordered'}>
     {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
       <Link
         key={`entry-${i}`}
-        className={'table-entry'}
+        className={styles.entry + ' teal-500 default-bold flex-container'}
         to={`/${pageid}`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <div>{title}</div>
-        {subtitle && <div className="grey">{subtitle}</div>}
-        {hasIcon && <ArrowUpRight />}
+        <div>
+          <div>{title}</div>
+          {subtitle && <div className="grey subtitle">{subtitle}</div>}
+        </div>
+        {hasIcon && <ArrowUpRight className="vertically-centered" />}
       </Link>
     ))}
   </div>

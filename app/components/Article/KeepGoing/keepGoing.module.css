@@ -1,0 +1,6 @@
+.container {
+  background-color: var(--colors-teal-600);
+  justify-content: space-between;
+  padding: var(--spacing-32);
+  margin-bottom: var(--spacing-56);
+}
