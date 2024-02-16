@@ -4,7 +4,7 @@ import {ArrowRight} from '~/components/icons-generated'
 import useToC from '~/hooks/useToC'
 import type {TOCItem} from '~/routes/questions.toc'
 import type {Question, RelatedQuestion} from '~/server-utils/stampy'
-import './keepGoing.css'
+import styles from './keepGoing.module.css'
 
 const nonContinueSections = ['8TJV']
 
@@ -17,12 +17,12 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
   next && (
     <>
       <h2>Keep going! &#128073;</h2>
-      <span>
+      <div className="padding-bottom-24">
         {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} article in{' '}
         {section?.category}
-      </span>
-      <div className="keepGoing-next">
-        <span className="keepGoing-next-title">{next.title}</span>
+      </div>
+      <div className={`${styles.container} flex-container bordered`}>
+        <div className="vertically-centered white default-bold">{next.title}</div>
         <Button action={`/${next.pageid}`} className="primary-alt">
           {first ? 'Start' : 'Next'}
           <ArrowRight />
@@ -51,7 +51,9 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
         <NextArticle section={section} next={next} first={section?.pageid === pageid} />
       )}
 
-      {next && hasRelated && !skipNext && <span>Or jump to a related question</span>}
+      {next && hasRelated && !skipNext && (
+        <div className="padding-bottom-24">Or jump to a related question</div>
+      )}
       {hasRelated && !skipNext && (
         <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated)} />
       )}

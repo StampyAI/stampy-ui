@@ -102,6 +102,7 @@
   border-radius: 5px;
   display: none;
   z-index: 1;
+  font-size: 16px;
 }
 
 .tooltip:hover::after {

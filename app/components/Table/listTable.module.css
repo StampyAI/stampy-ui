@@ -1,0 +1,23 @@
+.container {
+  border: 1px solid var(--colors-teal-200);
+}
+
+.entry {
+  padding: var(--spacing-32);
+  border-bottom: 1px solid var(--colors-teal-200);
+  justify-content: space-between;
+}
+.entry:hover {
+  background-color: var(--colors-teal-50);
+}
+
+.container > .entry:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.container > .entry:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}

@@ -35,7 +35,6 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
       <label className="search-content">
         <MagnifyingIcon className="iconsMagnifyingGlass" />
         <input
-          type="search"
           name="searchbar"
           placeholder={placeholderText ?? 'Search articles'}
           className="search-input black"
