@@ -43,13 +43,19 @@
   --spacing-288: 288px;
 }
 
-.flex-container {
-  display: flex;
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.flex-double {
-  flex-grow: 2;
+body,
+html {
+  height: 100%;
 }
+
+/* body */
 
 .vertically-centered {
   margin: auto 0;
@@ -236,6 +242,18 @@ ul {
 
 .text-align-center {
   text-align: center;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-double {
+  flex-grow: 2;
+}
+
+.vertically-centered {
+  margin: auto 0;
 }
 
 /* for troubleshooting */
