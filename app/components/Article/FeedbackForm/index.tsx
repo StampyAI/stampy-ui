@@ -15,7 +15,8 @@ const FeedbackForm: FunctionComponent = ({
   pageid,
   className = 'feedback-form',
 }: FeedbackFormProps) => {
-  _=pageid; // to be implemented.
+  // to be implemented.
+  console.log(pageid)
   const [feedbackOptions, setFeedbackOptions] = React.useState([
     {
       text: 'Making things up',
