@@ -40,7 +40,6 @@ export const WidgetStampy = () => {
           />
         </div>
         <div className={'send-button-group'}>
-          <div className={'send-button'} />
           <SendIcon />
         </div>
       </div>

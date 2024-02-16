@@ -1,6 +1,6 @@
 import type {SVGProps} from 'react'
 const SvgGroup = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={539} height={'100%'} fill="none" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={539} height={348} fill="none" {...props}>
     <mask
       id="group_svg__a"
       width={539}
@@ -12,7 +12,7 @@ const SvgGroup = (props: SVGProps<SVGSVGElement>) => (
         maskType: 'alpha',
       }}
     >
-      <path fill="#1A817C" d="M0 0h539v348H0z" />
+      <rect width={539} height="100%" fill="#1A817C" />
     </mask>
     <g mask="url(#group_svg__a)">
       <g filter="url(#group_svg__b)">

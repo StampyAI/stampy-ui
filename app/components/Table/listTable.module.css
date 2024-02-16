@@ -10,6 +10,9 @@
 .entry:hover {
   background-color: var(--colors-teal-50);
 }
+.entry svg {
+  min-width: var(--spacing-16);
+}
 
 .container > .entry:last-child {
   border-bottom: none;

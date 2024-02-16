@@ -36,9 +36,9 @@ const useToC = () => {
       next?: TOCItem
     }
     const findNext = (prev: string | undefined, item: TOCItem): NextItem => {
-      if (pageid === prev) return {current: prev, next: item}
+      if (item.hasText && pageid === prev) return {current: prev, next: item}
 
-      let previous: string | undefined = item.pageid
+      let previous: string | undefined = item.hasText ? item.pageid : prev
       for (const child of item.children || []) {
         const {next, current} = findNext(previous, child)
         if (next) return {next, current}

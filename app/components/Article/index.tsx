@@ -21,7 +21,7 @@ const ArticleFooter = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="footer-comtainer">
+      <div className="footer-comtainer padding-bottom-40">
         {date && <div className="grey"> {`Updated ${date}`}</div>}
         <div className="flex-double">
           <Button

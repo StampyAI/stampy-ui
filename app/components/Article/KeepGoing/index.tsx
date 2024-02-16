@@ -16,7 +16,7 @@ type NextArticleProps = {
 const NextArticle = ({section, next, first}: NextArticleProps) =>
   next && (
     <>
-      <h2>Keep going! &#128073;</h2>
+      <h2 className="padding-bottom-40">Keep going! &#128073;</h2>
       <div className="padding-bottom-24">
         {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} article in{' '}
         {section?.category}
@@ -46,18 +46,24 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
   }
 
   return (
-    <div className="keepGoing">
+    <div>
       {!skipNext && (
         <NextArticle section={section} next={next} first={section?.pageid === pageid} />
       )}
 
       {next && hasRelated && !skipNext && (
-        <div className="padding-bottom-24">Or jump to a related question</div>
+        <div className="padding-bottom-56">Or jump to a related question</div>
       )}
       {hasRelated && !skipNext && (
-        <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated)} />
+        <div className="padding-bottom-40">
+          <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated)} />
+        </div>
       )}
-      {skipNext && <ListTable elements={getArticle(pageid)?.children?.map(formatRelated) || []} />}
+      {skipNext && (
+        <div className="padding-bottom-40">
+          <ListTable elements={getArticle(pageid)?.children?.map(formatRelated) || []} />
+        </div>
+      )}
     </div>
   )
 }
