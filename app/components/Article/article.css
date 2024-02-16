@@ -60,7 +60,7 @@ article .contents a:visited {
 }
 
 article .contents p {
-  padding-bottom: 32px;
+  padding-bottom: var(--spacing-32);
 }
 
 article .glossary-entry {

@@ -64,7 +64,7 @@ const ArticleActions = ({answerEditLink}: Question) => {
   )
 }
 
-const ArticleMeta = ({question, className}: {question: Question, className?: string}) => {
+const ArticleMeta = ({question, className}: {question: Question; className?: string}) => {
   const {text} = question
 
   const ttr = (text: string, rate = 160) => {
@@ -103,7 +103,7 @@ export const Article = ({question, glossary}: ArticleProps) => {
   return (
     <article>
       <h1 className="teal padding-bottom-24">{title}</h1>
-      <ArticleMeta question={question} className="padding-bottom-56"/>
+      <ArticleMeta question={question} className="padding-bottom-56" />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
 
