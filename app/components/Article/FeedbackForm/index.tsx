@@ -32,7 +32,7 @@ const FeedbackForm = ({pageid, className = 'feedback-form'}: FeedbackFormProps) 
     },
   ])
   const [enabledSubmit, setEnabledSubmit] = React.useState(false)
-  const selectFeedback = (option:number) => {
+  const selectFeedback = (option: number) => {
     setFeedbackOptions(
       feedbackOptions.map((feedback, index) => {
         if (index === option) {
