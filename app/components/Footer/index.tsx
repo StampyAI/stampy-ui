@@ -16,24 +16,24 @@ export const FooterBar: FunctionComponent = () => {
     <div className="footer" key="footer">
       <hr />
       <div className="footer-grid">
-        <div>
+        <div className="col-5">
           <p className="large-bold teal-500">
             <a href="/">AISafety.info</a>
           </p>
-          <div className="footer-description">
+          <div>
             We're a global team of volunteers from various disciplines who believe AI poses a grave
             risk of extinction to humanity.
           </div>
         </div>
 
-        <div className="small">
+        <div className="col-3 small">
           <p className="small-bold">Help out</p>
           <Link to="https://www.every.org/stampy?utm_campaign=donate-link#/donate" title="Donate" />
           <Link to="https://github.com/StampyAI/stampy-ui" title="Code" />
           <Link to="https://get_involved.aisafety.info/" title="Write" />
           <Link to="https://discord.com/invite/Bt8PaRTDQC" title="Join us on Discord" />
         </div>
-        <div className="partners small">
+        <div className="partners small col-4">
           <p className="small-bold">Partner projects</p>
           <Link to="https://www.aisafety.com/" title="AIsafety.com" />
           <Link to="https://alignment.dev/" title="Alignment Ecosystem Development" />
