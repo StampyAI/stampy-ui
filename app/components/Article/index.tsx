@@ -64,7 +64,7 @@ const ArticleActions = ({answerEditLink}: Question) => {
   )
 }
 
-const ArticleMeta = (question: Question) => {
+const ArticleMeta = ({question, className}: {question: Question; className?: string}) => {
   const {text} = question
 
   const ttr = (text: string, rate = 160) => {
@@ -74,8 +74,8 @@ const ArticleMeta = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="article-meta">
-        <p className="grey">{ttr(text || '')} min read</p>
+      <div className={'article-meta ' + (className || '')}>
+        <p className="grey large">{ttr(text || '')} min read</p>
 
         <ArticleActions {...question} />
       </div>
@@ -101,9 +101,9 @@ export const Article = ({question, glossary}: ArticleProps) => {
   const {title, text, pageid} = question
 
   return (
-    <article className="article-container">
-      <h1 className="teal">{title}</h1>
-      <ArticleMeta {...question} />
+    <article>
+      <h1 className="teal padding-bottom-24">{title}</h1>
+      <ArticleMeta question={question} className="padding-bottom-56" />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
 

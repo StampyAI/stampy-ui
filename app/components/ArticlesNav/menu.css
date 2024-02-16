@@ -4,13 +4,13 @@
 .articles-group {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  width: 100%;
+  width: 22.78vw;
   position: relative;
   text-align: left;
   font-size: 16px;
   border-radius: 6px;
   border: 1px solid var(--colors-cool-grey-200);
-  max-width: 328px;
+  /* max-width: 328px; */
 
   overflow-y: scroll;
   overflow-x: hidden;
@@ -21,7 +21,6 @@
 }
 
 .articles-headerLine {
-  letter-spacing: -0.01em;
   font-weight: 600;
   margin: 8px 0px;
   padding: 8px 0px 8px 14px; /* top, right, bottom, left */
@@ -82,4 +81,5 @@
   height: 8px;
   position: relative;
   top: 25px;
+  margin-left: -5px;
 }

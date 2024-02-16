@@ -36,7 +36,7 @@ export default function RenderArticle() {
 
   return (
     <Page>
-      <div className="flex-container flex-double">
+      <div className="flex-container flex-double article-wrapper">
         {section ? (
           <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />
         ) : (
