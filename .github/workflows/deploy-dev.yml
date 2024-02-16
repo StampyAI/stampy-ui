@@ -7,7 +7,7 @@ on:
     types:
       - closed
 env:
-  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN_APRILLION_WORKERS_DEV }}
 jobs:
   deploy:
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
