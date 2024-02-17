@@ -2,7 +2,7 @@ import {Await, useLoaderData, useParams} from '@remix-run/react'
 import {Suspense, useEffect, useState} from 'react'
 import Page from '~/components/Page'
 import {loader} from '~/routes/questions.$questionId'
-import {ArticlesNav, EmtpyArticlesNav} from '~/components/ArticlesNav/Menu'
+import {ArticlesNav} from '~/components/ArticlesNav/Menu'
 import Article from '~/components/Article'
 import Error from '~/components/Error'
 import {fetchGlossary} from '~/routes/questions.glossary'
@@ -37,11 +37,7 @@ export default function RenderArticle() {
   return (
     <Page>
       <div className="flex-container flex-double article-wrapper">
-        {section ? (
-          <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />
-        ) : (
-          <EmtpyArticlesNav />
-        )}
+        {section && <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />}
         <Suspense
           key={pageid}
           fallback={<Article question={dummyQuestion(getArticle(pageid)?.title)} />}

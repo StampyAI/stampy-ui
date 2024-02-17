@@ -11,7 +11,9 @@
 .grid-item {
   cursor: pointer;
   text-align: left;
-  padding: 32.5px 32px;
+  padding: var(--spacing-32) var(--spacing-32);
+  min-width: var(--spacing-288);
+  min-height: var(--spacing-288);
   text-decoration: none;
 }
 
@@ -29,7 +31,7 @@
 
 .grid {
   display: grid;
-  gap: 50px 50px;
+  gap: var(--spacing-56) var(--spacing-56);
   grid-template-columns: repeat(3, 1fr);
   justify-content: space-around;
 }

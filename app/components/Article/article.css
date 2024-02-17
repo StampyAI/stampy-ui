@@ -1,12 +1,10 @@
 article {
   max-width: 47.43vw;
+  margin: auto;
 }
 
 .article-wrapper {
-  padding-top: var(--spacing-40);
-  margin-left: 5.56vw;
-  margin-right: 13.33vw;
-  gap: 10.69vw;
+  padding: var(--spacing-80);
 }
 
 article .meta {
@@ -35,6 +33,7 @@ article .tags {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-8);
+  margin-top: var(--spacing-40);
 }
 
 article .tag {
@@ -42,7 +41,7 @@ article .tag {
   background-color: var(--colors-teal-50);
   border-color: var(--colors-teal-100);
   color: var(--colors-teal-500);
-  padding: 0 var(--spacing-8);
+  padding: 0 var(--spacing-16);
 }
 
 article .tag:hover {
