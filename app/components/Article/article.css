@@ -73,23 +73,31 @@ article .link-popup {
   position: absolute;
   display: inline-block;
   font: var(--baseFont);
+  font-style: normal;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
   margin-left: 10px;
-  max-width: 35%;
   z-index: 2;
+  transform: translate(-20vw, 40px);
   transition:
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
 
-article .link-popup::after {
-  content: '';
-  position: absolute;
-  top: 5px;
-  right: 100%;
+article .contents a.button {
+  font-weight: normal;
 }
-
 article .link-popup .glossary-popup > .contents {
+  height: 21.46vw;
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
+}
+article .defintion {
+  display: -webkit-box;
+  /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; /* Number of lines you want to display */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 article .link-popup .glossary-popup > img {
   width: 100%;
