@@ -3,8 +3,9 @@ import debounce from 'lodash/debounce'
 import {useSearch} from '~/hooks/useSearch'
 import {Question} from '~/server-utils/stampy'
 import {SearchInput} from './SearchInput/Input'
-import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import {SearchResults} from './SearchResults/Dropdown'
+import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
+import {questionUrl} from '~/routesMapper'
 
 type Props = {
   queryFromUrl?: string
@@ -82,7 +83,7 @@ export default function Search({queryFromUrl, limitFromUrl, removeQueryFromUrl}:
           <SearchResults
             results={results.map((r) => ({
               title: r.title,
-              url: `/${r.pageid}`,
+              url: questionUrl(r),
               description: '', // TODO: fetch descriptions 🤔
             }))}
           />

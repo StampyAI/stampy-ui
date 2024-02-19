@@ -1,12 +1,13 @@
 import {LoaderFunctionArgs} from '@remix-run/cloudflare'
-import {loadAllQuestions, QuestionStatus, Question, QuestionState} from '~/server-utils/stampy'
+import {loadAllQuestions, QuestionStatus, Question} from '~/server-utils/stampy'
+import {questionUrl} from '~/routesMapper'
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const origin = new URL(request.url).origin
-  const formatQuestion = ({pageid, updatedAt}: Question) => `
+  const formatQuestion = (question: Question) => `
     <url>
-      <loc>${origin}/?state=${pageid}${QuestionState.OPEN}</loc>
-      <lastmod>${updatedAt}</lastmod>
+      <loc>${origin}${questionUrl(question)}</loc>
+      <lastmod>${question.updatedAt}</lastmod>
       <priority>1.0</priority>
     </url>
     `

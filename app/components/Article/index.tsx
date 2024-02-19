@@ -6,6 +6,7 @@ import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
 import {Action, ActionType} from '~/routes/questions.actions'
 import type {Glossary, Question} from '~/server-utils/stampy'
+import {tagUrl} from '~/routesMapper'
 import Contents from './Contents'
 import './article.css'
 
@@ -86,7 +87,7 @@ const ArticleMeta = ({question, className}: {question: Question; className?: str
 const Tags = ({tags}: Question) => (
   <div className="tags">
     {tags?.map((tag) => (
-      <Link key={tag} className="tag bordered" to={`/tags/${tag}`}>
+      <Link key={tag} className="tag bordered" to={tagUrl({name: tag})}>
         {tag}
       </Link>
     ))}

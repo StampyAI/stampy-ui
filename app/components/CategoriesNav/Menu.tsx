@@ -2,6 +2,7 @@ import {useState} from 'react'
 import {Link} from '@remix-run/react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
+import {tagUrl} from '~/routesMapper'
 import styles from './menu.module.css'
 
 interface CategoriesNavProps {
@@ -28,7 +29,7 @@ export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps
         .map(({tagId, name, questions}) => (
           <Link
             key={tagId}
-            to={`/tags/${tagId}/${name}`}
+            to={tagUrl({tagId, name})}
             className={[
               styles.categoryTitle,
               activeCategoryId == tagId ? 'teal-50-background' : '',

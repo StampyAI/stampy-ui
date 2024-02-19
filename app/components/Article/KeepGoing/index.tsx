@@ -4,6 +4,7 @@ import {ArrowRight} from '~/components/icons-generated'
 import useToC from '~/hooks/useToC'
 import type {TOCItem} from '~/routes/questions.toc'
 import type {Question, RelatedQuestion} from '~/server-utils/stampy'
+import {questionUrl} from '~/routesMapper'
 import styles from './keepGoing.module.css'
 
 const nonContinueSections = ['8TJV']
@@ -23,7 +24,7 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
       </div>
       <div className={`${styles.container} flex-container bordered`}>
         <div className="vertically-centered white default-bold">{next.title}</div>
-        <Button action={`/${next.pageid}`} className="primary-alt">
+        <Button action={questionUrl(next)} className="primary-alt">
           {first ? 'Start' : 'Next'}
           <ArrowRight />
         </Button>

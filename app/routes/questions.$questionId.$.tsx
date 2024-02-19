@@ -1,15 +1,56 @@
 import {Await, useLoaderData, useParams} from '@remix-run/react'
+import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {Suspense, useEffect, useState} from 'react'
 import Page from '~/components/Page'
-import {loader} from '~/routes/questions.$questionId'
-import {ArticlesNav} from '~/components/ArticlesNav/Menu'
 import Article from '~/components/Article'
 import Error from '~/components/Error'
+import {ArticlesNav} from '~/components/ArticlesNav/Menu'
 import {fetchGlossary} from '~/routes/questions.glossary'
+import {loadQuestionDetail, loadTags} from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
 import type {Question, Glossary} from '~/server-utils/stampy'
+import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
-export {loader}
+export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
+
+const raise500 = (error: Error) => new Response(error.toString(), {status: 500})
+
+export const loader = async ({request, params}: LoaderFunctionArgs) => {
+  const {questionId} = params
+  if (!questionId) {
+    throw new Response('Missing question title', {status: 400})
+  }
+
+  try {
+    const dataPromise = loadQuestionDetail(request, questionId)
+      .then(({data}) => data)
+      .catch(raise500)
+    const tagsPromise = loadTags(request)
+      .then(({data}) => data)
+      .catch(raise500)
+    return defer({data: dataPromise, tags: tagsPromise})
+  } catch (error: unknown) {
+    const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
+    throw new Response(msg, {status: 404})
+  }
+}
+
+export function fetchQuestion(pageid: string) {
+  const url = `/questions/${encodeURIComponent(pageid)}`
+  return fetch(url)
+    .then(async (response) => {
+      const json: Awaited<ReturnType<typeof loadQuestionDetail>> = await response.json()
+      if ('error' in json) console.error(json.error)
+      const {data, timestamp} = json
+
+      reloadInBackgroundIfNeeded(url, timestamp)
+
+      return data
+    })
+    .catch((e) => {
+      throw raise500(e)
+    })
+}
 
 const dummyQuestion = (title: string | undefined) =>
   ({

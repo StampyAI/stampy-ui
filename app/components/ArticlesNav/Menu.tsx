@@ -1,4 +1,5 @@
 import {Link} from '@remix-run/react'
+import {questionUrl} from '~/routesMapper'
 import type {TOCItem} from '~/routes/questions.toc'
 import './menu.css'
 
@@ -19,7 +20,7 @@ const Title = ({article, path, current}: Article) => {
   const selectedClass = article?.pageid === current ? ' selected' : ''
   if (article.pageid === (path && path[0])) {
     return (
-      <Link to={`/${article.pageid}`}>
+      <Link to={questionUrl(article)}>
         <div className={'article' + selectedClass}>
           <div className="articles-headerLine">{article?.title}</div>
         </div>
@@ -28,7 +29,7 @@ const Title = ({article, path, current}: Article) => {
   }
   return (
     <summary className={'articles-title' + selectedClass}>
-      {!article.hasText ? article.title : <Link to={`/${article.pageid}`}>{article.title}</Link>}
+      {!article.hasText ? article.title : <Link to={questionUrl(article)}>{article.title}</Link>}
       <DropdownIcon article={article} path={path} />
     </summary>
   )

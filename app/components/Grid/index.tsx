@@ -1,8 +1,9 @@
 import type {TOCItem} from '~/routes/questions.toc'
+import {questionUrl} from '~/routesMapper'
 import './grid.css'
 
 export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => (
-  <a href={`/${pageid}`} className="grid-item bordered">
+  <a href={questionUrl({title, pageid})} className="grid-item bordered">
     {icon && <img alt={title} width="72" height="72" src={icon} />}
     <div className="grid-title">{title}</div>
     <div className="grid-description grey">{subtitle}</div>

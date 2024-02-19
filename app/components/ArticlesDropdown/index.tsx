@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react'
 import {Link as LinkElem} from '@remix-run/react'
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
-import {buildTagUrl, sortFuncs} from '~/routes/tags.$'
+import {sortFuncs} from '~/routes/tags.$'
+import {questionUrl, tagsUrl, tagUrl} from '~/routesMapper'
 import Button from '~/components/Button'
 import './dropdown.css'
 
@@ -41,8 +42,8 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
       <div className="default-bold">{category}</div>
       {toc
         .filter((item) => item.category === category)
-        .map(({pageid, title}: TOCItem) => (
-          <Link key={`${pageid}-${title}`} to={`/${pageid}`} text={title} />
+        .map((item: TOCItem) => (
+          <Link key={`${item.pageid}-${item.title}`} to={questionUrl(item)} text={item.title} />
         ))}
     </div>
   )
@@ -65,12 +66,12 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
             <Link
               key={tag.rowId}
               className="articles-dropdown-teal-entry"
-              to={buildTagUrl(tag)}
+              to={tagUrl(tag)}
               text={tag.name}
             />
           ))}
 
-        <Button action="/tags/" className="secondary">
+        <Button action={tagsUrl()} className="secondary">
           <span onClick={hide}> Browse all categories</span>
         </Button>
       </div>

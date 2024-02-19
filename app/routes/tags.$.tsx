@@ -8,8 +8,6 @@ import type {Tag as TagType} from '~/server-utils/stampy'
 
 export {loader}
 
-export const buildTagUrl = ({tagId, name}: TagType) => `/tags/${tagId}/${name}`
-
 export const sortFuncs = {
   alphabetically: (a: TagType, b: TagType) =>
     a.name.toLowerCase().localeCompare(b.name.toLowerCase()),

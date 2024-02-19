@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react'
 import {ArrowUpRight} from '~/components/icons-generated'
+import {questionUrl} from '~/routesMapper'
 import styles from './listTable.module.css'
 
 export type ListItem = {
@@ -22,7 +23,7 @@ export const ListTable = ({elements, className}: ListTableProps) => (
       <Link
         key={`entry-${i}`}
         className={styles.entry + ' teal-500 default-bold flex-container'}
-        to={`/${pageid}`}
+        to={questionUrl({pageid, title})}
         target="_blank"
         rel="noopener noreferrer"
       >
