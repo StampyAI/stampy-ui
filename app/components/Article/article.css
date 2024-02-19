@@ -1,10 +1,6 @@
 article {
   max-width: 47.43vw;
-  margin: auto;
-}
-
-.article-wrapper {
-  padding: var(--spacing-80);
+  margin: 0 auto;
 }
 
 article .meta {

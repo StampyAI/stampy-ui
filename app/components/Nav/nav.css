@@ -1,5 +1,5 @@
 .top-header {
-  padding: var(--spacing-32) var(--spacing-80);
+  padding: var(--spacing-32) 5.56vw;
 }
 .top-nav {
   display: flex;

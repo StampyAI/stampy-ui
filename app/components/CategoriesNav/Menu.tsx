@@ -18,23 +18,23 @@ interface CategoriesNavProps {
 export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps) => {
   const [search, onSearch] = useState('')
   return (
-    <div className={styles.categoriesGroup}>
+    <div className={styles.categoriesGroup + ' bordered col-4-5'}>
       <h4>Categories</h4>
-      <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
+      <div>
+        <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
+      </div>
       {categories
         .filter((tag) => tag.name.toLowerCase().includes(search.toLowerCase()))
         .map(({tagId, name, questions}) => (
           <Link
-            to={`/tags/${tagId}/${name}`}
             key={tagId}
+            to={`/tags/${tagId}/${name}`}
             className={[
-              styles.categoryAutoLayoutHorizontal,
-              activeCategoryId == tagId ? styles.active : '',
+              styles.categoryTitle,
+              activeCategoryId == tagId ? 'teal-50-background' : '',
             ].join(' ')}
           >
-            <div className={styles.categoryTitle}>
-              {name} ({questions.length})
-            </div>
+            {name} ({questions.length})
           </Link>
         ))}
     </div>

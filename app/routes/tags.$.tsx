@@ -33,26 +33,23 @@ export default function Tags() {
   }
   return (
     <Page>
-      <div className={'top-margin-large'} />
       <main>
-        <div className={'group-elements'}>
+        <div className="article-container">
           <CategoriesNav
             categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
             activeCategoryId={selectedTag.tagId}
           />
 
           {selectedTag === null ? null : (
-            <div>
-              <h1 style={{marginTop: '0px'}}>{selectedTag.name}</h1>
-              {selectedTag.questions.length === 0 ? (
-                <div className={'no-questions'}>No questions found</div>
-              ) : (
-                <p>
-                  {selectedTag.questions.length} pages tagged {`"${selectedTag.name}"`}
-                </p>
-              )}
-              {selectedTag && <ListTable elements={selectedTag.questions} />}
-            </div>
+            <article>
+              <h1 className="padding-bottom-40">{selectedTag.name}</h1>
+              <div className="padding-bottom-24">
+                {selectedTag.questions.length === 0
+                  ? 'No pages found'
+                  : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
+              </div>
+              {selectedTag && <ListTable className="col-8" elements={selectedTag.questions} />}
+            </article>
           )}
         </div>
       </main>

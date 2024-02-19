@@ -20,7 +20,6 @@
   font-size: 16px;
   color: var(--colors-cool-grey-600);
   width: 100%;
-  width: 256px;
   transition: width 100ms;
 }
 
