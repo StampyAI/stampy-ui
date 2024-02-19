@@ -41,6 +41,7 @@ export default function App() {
         <ContentBoxSecond />
         <ContentBoxThird />
 
+        <div className="padding-bottom-80" />
         <WidgetStampy />
 
         <div className="padding-bottom-80" />
