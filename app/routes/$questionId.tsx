@@ -36,7 +36,7 @@ export default function RenderArticle() {
 
   return (
     <Page>
-      <div className="flex-container flex-double article-wrapper">
+      <div className="article-container">
         {section && <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />}
         <Suspense
           key={pageid}

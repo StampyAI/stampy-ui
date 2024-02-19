@@ -13,10 +13,11 @@ export type ListTableProps = {
    * Browse by category
    */
   elements: ListItem[]
+  className?: string
 }
 
-export const ListTable = ({elements}: ListTableProps) => (
-  <div className={styles.container + ' bordered'}>
+export const ListTable = ({elements, className}: ListTableProps) => (
+  <div className={styles.container + ' bordered' + (className ? ' ' + className : '')}>
     {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
       <Link
         key={`entry-${i}`}
