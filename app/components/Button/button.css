@@ -31,7 +31,7 @@
 }
 
 .secondary {
-  color: var(--colors-cool-grey-600, #788492);
+  color: var(--colors-cool-grey-600, #788492) !important;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
 }
