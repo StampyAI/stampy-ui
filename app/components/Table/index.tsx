@@ -14,18 +14,19 @@ export type ListTableProps = {
    * Browse by category
    */
   elements: ListItem[]
+  sameTab?: boolean
   className?: string
 }
 
-export const ListTable = ({elements, className}: ListTableProps) => (
+export const ListTable = ({elements, sameTab, className}: ListTableProps) => (
   <div className={styles.container + ' bordered' + (className ? ' ' + className : '')}>
     {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
       <Link
         key={`entry-${i}`}
         className={styles.entry + ' teal-500 default-bold flex-container'}
         to={questionUrl({pageid, title})}
-        target="_blank"
-        rel="noopener noreferrer"
+        target={sameTab ? undefined : '_blank'}
+        rel={sameTab ? undefined : 'noopener noreferrer'}
       >
         <div>
           <div>{title}</div>
