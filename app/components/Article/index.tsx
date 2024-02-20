@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
@@ -15,12 +15,25 @@ const isLoading = ({text}: Question) => !text || text === 'Loading...'
 const ArticleFooter = (question: Question) => {
   const [showFeedback, setShowFeedback] = useState(false)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  const [isFormFocused, setIsFormFocused] = useState(false)
   const date =
     question.updatedAt &&
     new Date(question.updatedAt).toLocaleDateString('en-GB', {
       year: 'numeric',
       month: 'short',
     })
+
+  React.useEffect(() => {
+    // Hide the form after 10 seconds if the user hasn't interacted with it
+    const timeoutId = setInterval(() => {
+      if (!isFormFocused) {
+        setShowFeedbackForm(false)
+      }
+    }, 10000)
+
+    // Clear the timeout to prevent it from running if the component unmounts
+    return () => clearInterval(timeoutId)
+  }, [showFeedbackForm, isFormFocused])
 
   return (
     !isLoading(question) && (
@@ -56,6 +69,9 @@ const ArticleFooter = (question: Question) => {
           <FeedbackForm
             pageid={question.pageid}
             className={['feedback-form', showFeedbackForm ? 'show' : ''].join(' ')}
+            onBlur={() => setIsFormFocused(false)}
+            onFocus={() => setIsFormFocused(true)}
+            hasOptions={false}
           />
         </CompositeButton>
       </div>

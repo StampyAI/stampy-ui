@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {ChangeEvent} from 'react'
+import Button from '~/components/Button'
 import './feedbackForm.css'
 
 export interface FeedbackFormProps {
@@ -10,8 +11,26 @@ export interface FeedbackFormProps {
    * Class name
    */
   className?: string
+  /**
+   * onBlur
+   */
+  onBlur?: () => void
+  /**
+   * onFocus
+   */
+  onFocus?: () => void
+  /**
+   * Has Options
+   */
+  hasOptions?: boolean
 }
-const FeedbackForm = ({pageid, className = 'feedback-form'}: FeedbackFormProps) => {
+const FeedbackForm = ({
+  pageid,
+  className = 'feedback-form',
+  onBlur,
+  onFocus,
+  hasOptions = true,
+}: FeedbackFormProps) => {
   // to be implemented.
   console.log(pageid)
   const [feedbackOptions, setFeedbackOptions] = React.useState([
@@ -41,30 +60,54 @@ const FeedbackForm = ({pageid, className = 'feedback-form'}: FeedbackFormProps) 
         return {...feedback, selected: false}
       })
     )
+    if (onFocus) {
+      onFocus()
+    }
     setEnabledSubmit(true)
   }
+  const handleBlur = React.useCallback(
+    (e: ChangeEvent<HTMLElement>) => {
+      const currentTarget = e.currentTarget
+
+      // Give browser time to focus the next element
+      requestAnimationFrame(() => {
+        // Check if the new focused element is a child of the original container
+        if (!currentTarget.contains(document.activeElement)) {
+          if (onBlur) {
+            onBlur()
+          }
+        }
+      })
+    },
+    [onBlur]
+  )
+
+  const handleSubmit = () => {}
 
   return (
-    <div className={className}>
-      <div className={'feedback-container'}>
+    <div className={className} onBlur={handleBlur} onFocus={onFocus}>
+      <div className={'feedback-container bordered'}>
         <span className={'feedback-header'}>What was the problem?</span>
-        {feedbackOptions.map((option, index) => (
-          <div
-            key={index}
-            className={['select-option', option.selected ? 'selected' : ''].join(' ')}
-            onClick={() => selectFeedback(index)}
-          >
-            <div className={'small'}>{option.text}</div>
-          </div>
-        ))}
+        {hasOptions
+          ? feedbackOptions.map((option, index) => (
+              <div
+                key={index}
+                className={['select-option bordered', option.selected ? 'selected' : ''].join(' ')}
+                onClick={() => selectFeedback(index)}
+              >
+                <div>{option.text}</div>
+              </div>
+            ))
+          : null}
+
         <textarea
           name={'feedback-text'}
-          className={'feedback-text'}
+          className={'feedback-text bordered'}
           placeholder={'Leave a comment (optional)'}
         ></textarea>
-        <div className={['submit-feedback', enabledSubmit ? 'enabled' : ''].join(' ')}>
-          <div className={'small3'}>Submit feedback</div>
-        </div>
+        <Button className="primary full-width" action={handleSubmit} disabled={!enabledSubmit}>
+          <p>Submit feedback</p>
+        </Button>
       </div>
     </div>
   )
