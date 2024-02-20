@@ -18,23 +18,26 @@ export type ListTableProps = {
   className?: string
 }
 
-export const ListTable = ({elements, sameTab, className}: ListTableProps) => (
-  <div className={styles.container + ' bordered' + (className ? ' ' + className : '')}>
-    {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
-      <Link
-        key={`entry-${i}`}
-        className={styles.entry + ' teal-500 default-bold flex-container'}
-        to={questionUrl({pageid, title})}
-        target={sameTab ? undefined : '_blank'}
-        rel={sameTab ? undefined : 'noopener noreferrer'}
-      >
-        <div>
-          <div>{title}</div>
-          {subtitle && <div className="grey subtitle">{subtitle}</div>}
-        </div>
-        {hasIcon && <ArrowUpRight className="vertically-centered" />}
-      </Link>
-    ))}
-  </div>
-)
+export const ListTable = ({elements, sameTab, className}: ListTableProps) => {
+  if (!elements || elements.length === 0) return null
+  return (
+    <div className={styles.container + ' bordered' + (className ? ' ' + className : '')}>
+      {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
+        <Link
+          key={`entry-${i}`}
+          className={styles.entry + ' teal-500 default-bold flex-container'}
+          to={questionUrl({pageid, title})}
+          target={sameTab ? undefined : '_blank'}
+          rel={sameTab ? undefined : 'noopener noreferrer'}
+        >
+          <div>
+            <div>{title}</div>
+            {subtitle && <div className="grey subtitle">{subtitle}</div>}
+          </div>
+          {hasIcon && <ArrowUpRight className="vertically-centered" />}
+        </Link>
+      ))}
+    </div>
+  )
+}
 export default ListTable
