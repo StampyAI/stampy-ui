@@ -80,6 +80,7 @@ export type Question = {
   icon?: string
   parents?: string[]
   children?: Question[]
+  order?: number
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -133,6 +134,7 @@ export type AnswersRow = CodaRowCommon & {
     Subtitle?: string
     Icon?: string
     Parents?: Entity[]
+    Order?: number
   }
 }
 type TagsRow = CodaRowCommon & {
@@ -292,6 +294,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   icon: extractText(values.Icon),
   parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
   updatedAt: updatedAt || values['Doc Last Edited'],
+  order: values.Order || 0,
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
