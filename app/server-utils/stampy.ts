@@ -47,6 +47,7 @@ export type Banner = {
 }
 export type GlossaryEntry = {
   term: string
+  alias: string
   pageid: PageId
   contents: string
   image: string
@@ -328,13 +329,14 @@ export const loadGlossary = withCache('loadGlossary', async () => {
         const phrases = [values.phrase, ...values.aliases.split('\n')]
         const item = {
           pageid,
+          term: extractText(values.phrase),
           image: values.image?.url,
           contents: renderText(pageid, extractText(values.definition)),
         }
         return phrases
           .map((i) => extractText(i))
           .filter(Boolean)
-          .map((phrase) => [phrase.toLowerCase(), {term: phrase, ...item}])
+          .map((phrase) => [phrase.toLowerCase(), {alias: phrase, ...item}])
       })
       .flat()
   )
