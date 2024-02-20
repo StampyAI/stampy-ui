@@ -8,7 +8,7 @@ import {ArticlesNav} from '~/components/ArticlesNav/Menu'
 import {fetchGlossary} from '~/routes/questions.glossary'
 import {loadQuestionDetail, loadTags} from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
-import type {Question, Glossary} from '~/server-utils/stampy'
+import type {Question, Glossary, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
@@ -59,11 +59,22 @@ const dummyQuestion = (title: string | undefined) =>
     tags: [],
   }) as any as Question
 
+const updateTags = (question: Question, tags: Tag[]) => {
+  const mappedTags = tags.reduce((acc, t) => ({...acc, [t.name]: t}), {})
+  return {
+    ...question,
+    tags: question.tags
+      ?.map((name) => mappedTags[name as keyof typeof mappedTags])
+      .filter((t?: Tag) => t && !t?.internal)
+      .map(({name}) => name),
+  }
+}
+
 export default function RenderArticle() {
   const [glossary, setGlossary] = useState<Glossary>({} as Glossary)
   const params = useParams()
   const pageid = params.questionId ?? '😱'
-  const {data} = useLoaderData<typeof loader>()
+  const {data, tags} = useLoaderData<typeof loader>()
   const {findSection, getArticle, getPath} = useToC()
   const section = findSection(pageid)
 
@@ -83,8 +94,8 @@ export default function RenderArticle() {
           key={pageid}
           fallback={<Article question={dummyQuestion(getArticle(pageid)?.title)} />}
         >
-          <Await resolve={data}>
-            {(resolvedValue) => {
+          <Await resolve={Promise.all([data, tags])}>
+            {([resolvedValue, tags]) => {
               if (resolvedValue instanceof Response) {
                 return <Error error={resolvedValue} />
               } else if (!(resolvedValue as any)?.pageid) {
@@ -92,7 +103,12 @@ export default function RenderArticle() {
                   <Error error={{statusText: 'Could not fetch question', status: 'emptyArticle'}} />
                 )
               } else {
-                return <Article question={resolvedValue as Question} glossary={glossary} />
+                return (
+                  <Article
+                    question={updateTags(resolvedValue as Question, tags as Tag[])}
+                    glossary={glossary}
+                  />
+                )
               }
             }}
           </Await>
