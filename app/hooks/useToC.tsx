@@ -47,7 +47,7 @@ const useToC = () => {
       return {current: previous}
     }
 
-    return toc && findNext('', all).next
+    return toc?.map((section) => findNext('', section).next).filter(identity)[0]
   }
 
   return {

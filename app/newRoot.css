@@ -259,6 +259,9 @@ h2 {
   width: 66.88vw;
 }
 
+.full-width {
+  width: 100%;
+}
 /* other tags */
 
 a {
@@ -311,6 +314,11 @@ ul {
 }
 
 /* all other classes */
+.rounded {
+  border-radius: 6px;
+  box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
+  box-sizing: border-box;
+}
 
 .bordered {
   border-radius: 6px;

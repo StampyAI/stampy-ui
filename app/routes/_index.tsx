@@ -7,6 +7,7 @@ import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
 import Page from '~/components/Page'
 import {getStateEntries} from '~/hooks/stateModifiers'
+import {questionUrl} from '~/routesMapper'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
@@ -17,7 +18,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     )[0]?.[0]
     if (firstOpenId) {
       url.searchParams.delete('state')
-      url.pathname = `/${firstOpenId}`
+      url.pathname = questionUrl({pageid: firstOpenId})
       throw redirect(url.toString())
     }
   }
@@ -40,6 +41,7 @@ export default function App() {
         <ContentBoxSecond />
         <ContentBoxThird />
 
+        <div className="padding-bottom-80" />
         <WidgetStampy />
 
         <div className="padding-bottom-80" />

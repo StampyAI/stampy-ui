@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react'
 import {ArrowUpRight} from '~/components/icons-generated'
+import {questionUrl} from '~/routesMapper'
 import styles from './listTable.module.css'
 
 export type ListItem = {
@@ -13,18 +14,19 @@ export type ListTableProps = {
    * Browse by category
    */
   elements: ListItem[]
+  sameTab?: boolean
   className?: string
 }
 
-export const ListTable = ({elements, className}: ListTableProps) => (
+export const ListTable = ({elements, sameTab, className}: ListTableProps) => (
   <div className={styles.container + ' bordered' + (className ? ' ' + className : '')}>
     {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
       <Link
         key={`entry-${i}`}
         className={styles.entry + ' teal-500 default-bold flex-container'}
-        to={`/${pageid}`}
-        target="_blank"
-        rel="noopener noreferrer"
+        to={questionUrl({pageid, title})}
+        target={sameTab ? undefined : '_blank'}
+        rel={sameTab ? undefined : 'noopener noreferrer'}
       >
         <div>
           <div>{title}</div>

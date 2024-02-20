@@ -1,5 +1,6 @@
 import {LoaderFunction} from '@remix-run/cloudflare'
 import {loadTags} from '~/server-utils/stampy'
+import {allTagsUrl} from '~/routesMapper'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) => {
@@ -21,7 +22,7 @@ export const loader = async ({request, params}: Parameters<LoaderFunction>[0]) =
 }
 
 export const fetchTags = () => {
-  const url = `/tags/all`
+  const url = allTagsUrl()
   return fetch(url).then(async (response) => {
     const json: Awaited<ReturnType<typeof loader>> = await response.json()
     if ('error' in json) console.error(json.error)

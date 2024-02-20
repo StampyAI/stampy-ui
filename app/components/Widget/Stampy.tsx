@@ -1,47 +1,52 @@
+import {useState} from 'react'
+import {Link} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
+import Button from '~/components/Button'
 import './stampy.css'
 
 export const WidgetStampy = () => {
+  const [question, setQuestion] = useState('')
+  const questions = [
+    'Why couldn’t we just turn the AI off?',
+    'How would the AI even get out in the world?',
+    'Do people seriously worry about existential risk from AI?',
+  ]
   return (
-    <div className={'widget-group'}>
-      <div className={'widget-header'}>
-        <p className={'widget-title'}>Questions?</p>
-        <p className={'widget-subtitle'}>Ask Stampy any question about AI Safety</p>
+    <div className="chat col-10">
+      <div className="col-6 padding-bottom-56">
+        <h2 className="teal-500">Questions?</h2>
+        <h2>Ask Stampy any question about AI Safety</h2>
       </div>
 
-      <div className={'widget-chat-group'}>
-        <div className={'chat-message'}>
-          <StampyIcon />
-          <div className={'chat-incoming-message'}>
-            <div className={'widget-conversation-start-header'}>Try asking me...</div>
-            {/*<img className={"rectangleIcon"} alt="" src="Rectangle.svg" />*/}
-            <div className={'widget-start-conversation'}>
-              <div className={'input-label'}>Why couldn’t we just turn the AI off?</div>
+      <div className="sample-messages-container padding-bottom-24">
+        <StampyIcon />
+        <div className="sample-messages rounded">
+          <div className="padding-bottom-24">Try asking me...</div>
+          {questions.map((question, i) => (
+            <div key={i} className="padding-bottom-16">
+              <Button
+                className="secondary-alt"
+                action={`https://chat.aisafety.info/?question=${question}`}
+              >
+                {question}
+              </Button>
             </div>
-            <div className={'widget-start-conversation'}>
-              <div className={'input-label'}>How would the AI even get out in the world?</div>
-            </div>
-            <div className={'widget-start-conversation'}>
-              <div className={'input-label'}>
-                Do people seriously worry about existential risk from AI?
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      <div className={'widget-ask'}>
-        <div className={'widget-textbox'}>
-          <input
-            type={'text'}
-            className={'widget-input'}
-            placeholder={'Ask Stampy a question...'}
-          />
-        </div>
-        <div className={'send-button-group'}>
+      <div className="widget-ask">
+        <input
+          type="text"
+          className="full-width bordered secondary"
+          placeholder="Ask Stampy a question..."
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        />
+        <Link to={`https://chat.aisafety.info/?question=${question}`}>
           <SendIcon />
-        </div>
+        </Link>
       </div>
     </div>
   )
