@@ -1,4 +1,5 @@
 import {useRef, useEffect} from 'react'
+import {questionUrl} from '~/routesMapper'
 import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
@@ -56,27 +57,19 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
  *  - use each glossary item only once
  */
 const glossaryInjecter = (pageid: string, glossary: Glossary) => {
-  const unusedGlossaryEntries = Object.values(glossary)
-    .filter((item) => item.pageid != pageid)
-    .map(({term}) => term)
-    .sort((a, b) => b.length - a.length)
-    .map(
-      (term) =>
-        [
-          new RegExp(`(^|[^\\w-])(${term})($|[^\\w-])`, 'i'),
-          '$1<span class="glossary-entry">$2</span>$3',
-        ] as const
-    )
-
-  return (html: string) => {
-    return unusedGlossaryEntries.reduce((html, [match, replacement], index) => {
-      if (html.match(match)) {
-        unusedGlossaryEntries.splice(index, 1)
-        return html.replace(match, replacement)
-      }
-      return html
-    }, html)
-  }
+  const seen = new Set()
+  return (html: string) =>
+    Object.values(glossary)
+      .filter((item) => item.pageid != pageid)
+      .sort((a, b) => b.alias.length - a.alias.length)
+      .reduce((html, {term, alias}) => {
+        const match = new RegExp(`(^|[^\\w-])(${alias})($|[^\\w-])`, 'i')
+        if (!seen.has(term) && html.search(match) >= 0) {
+          seen.add(term)
+          return html.replace(match, '$1<span class="glossary-entry">$2</span>$3')
+        }
+        return html
+      }, html)
 }
 
 const insertGlossary = (pageid: string, glossary: Glossary) => {
@@ -101,6 +94,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
      */
     const glossaryEntry = (e: Element) => {
       const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
+      console.log(e.textContent, entry)
       if (
         // If the contents of this item aren't simply a glossary item word, then
         // something has gone wrong and the glossary-entry should be removed
@@ -124,7 +118,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       if (!entry) return undefined
       const link =
         entry.pageid &&
-        `<a href="/${entry.pageid}" class="button secondary">View full definition</a>`
+        `<a href="${questionUrl(entry)}" class="button secondary">View full definition</a>`
       const image = entry.image && `<img src="${entry.image}"/>`
       addPopup(
         e as HTMLSpanElement,
