@@ -17,7 +17,7 @@
 .widget-ask input {
   display: inline-flex;
   height: var(--spacing-56, 56px);
-  padding: 7px 21px;
+  padding: var(--spacing-8) var(--spacing-24);
 }
 .widget-ask svg {
   position: absolute;

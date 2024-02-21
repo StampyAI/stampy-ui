@@ -1,13 +1,3 @@
-.grid-description {
-  letter-spacing: -0.01em;
-}
-.grid-title {
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  line-height: 150%;
-  font-weight: 600;
-}
-
 .grid-item {
   cursor: pointer;
   text-align: left;
@@ -26,7 +16,7 @@
 }
 
 .grid-item div {
-  padding: 8px;
+  padding: var(--spacing-8);
 }
 
 .grid {

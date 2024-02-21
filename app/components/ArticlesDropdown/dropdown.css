@@ -6,29 +6,19 @@
 
 .articles-dropdown-container {
   z-index: 100;
-  position: absolute;
-  padding: 56px;
-
-  background-color: #fff;
-  width: 756px;
   top: 80px;
-  left: 300px;
+  position: absolute;
+  padding: var(--spacing-56);
   justify-content: space-between;
   display: flex;
 
   transition: visibility 0.2s;
   visibility: hidden;
 }
+
 .articles-dropdown-title.top-margin-large {
-  margin-top: 56px;
+  margin-top: var(--spacing-56);
 }
 .articles-dropdown-entry {
-  margin: 12px 0;
-}
-.articles-dropdown-teal-entry {
-  color: var(--colors-teal-500);
-}
-.dropdown-button {
-  padding: 7px 17px;
-  font-size: 16px;
+  margin: var(--spacing-12) 0;
 }

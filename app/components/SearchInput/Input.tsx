@@ -30,9 +30,8 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
   const clear = () => handleSearch('')
 
   return (
-    <div className={`search-box ${expandable ? 'expandable' : ''}`}>
-      <div className="search-inputChild" />
-      <label className="search-content">
+    <div className={`search-box bordered ${expandable ? 'expandable' : ''}`}>
+      <div className="search-content">
         <MagnifyingIcon className="iconsMagnifyingGlass" />
         <input
           name="searchbar"
@@ -47,7 +46,7 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
           value={search}
         />
         {search !== '' && <XIcon className="x-icon" onClick={clear} />}
-      </label>
+      </div>
     </div>
   )
 }

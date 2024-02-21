@@ -2,15 +2,12 @@
   display: flex;
 }
 .top-menu-icon {
-  width: 24px;
+  width: var(--spacing-24);
   max-width: 100%;
   aspect-ratio: 1;
   object-fit: contain;
   object-position: center;
 }
 .top-menu-text {
-  margin-left: 8px;
-}
-.top-menu-text.secondary {
-  color: var(--colors-teal-500);
+  margin-left: var(--spacing-8);
 }
