@@ -104,30 +104,6 @@
   z-index: 1;
 }
 
-.tooltip:hover::after {
-  display: block;
-}
-
-.action-feedback-text {
-  display: none;
-  position: absolute;
-  left: 180px;
-  text-wrap: nowrap;
-  top: 13px;
-}
-.action-feedback-text.show {
-  display: block;
-}
-.composite-button > .feedback-form {
-  position: absolute;
-  left: 90px;
-  top: -389px;
-  display: none;
-}
-.composite-button > .feedback-form.show {
-  display: block;
-}
-
 .button.full-width {
   width: 100%;
   height: 48px;

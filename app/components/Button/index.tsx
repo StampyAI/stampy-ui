@@ -14,7 +14,16 @@ const Button = ({children, action, tooltip, icon, className, disabled = false}: 
   const classes = ['button', className, tooltip && 'tooltip'].filter((i) => i).join(' ')
   if (typeof action === 'string') {
     return (
-      <Link to={action} className={classes} data-tooltip={tooltip}>
+      <Link
+        to={action}
+        className={classes}
+        data-tooltip={tooltip}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault()
+          }
+        }}
+      >
         {children}
         {icon && icon}
       </Link>

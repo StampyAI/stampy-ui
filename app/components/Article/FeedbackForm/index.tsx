@@ -33,33 +33,25 @@ const FeedbackForm = ({
 }: FeedbackFormProps) => {
   // to be implemented.
   console.log(pageid)
-  const [feedbackOptions, setFeedbackOptions] = React.useState([
+  const [selected, setSelected] = React.useState<string>()
+  const options = [
     {
       text: 'Making things up',
-      selected: false,
       option: 'making_things_up',
     },
     {
       text: 'Being mean',
-      selected: false,
       option: 'being_mean',
     },
     {
       text: 'Typos',
-      selected: false,
       option: 'typos',
     },
-  ])
+  ]
   const [enabledSubmit, setEnabledSubmit] = React.useState(false)
-  const selectFeedback = (option: number) => {
-    setFeedbackOptions(
-      feedbackOptions.map((feedback, index) => {
-        if (index === option) {
-          return {...feedback, selected: !feedback.selected}
-        }
-        return {...feedback, selected: false}
-      })
-    )
+  const selectFeedback = (option: string) => {
+    setSelected(option)
+
     if (onFocus) {
       onFocus()
     }
@@ -87,22 +79,25 @@ const FeedbackForm = ({
   return (
     <div className={className} onBlur={handleBlur} onFocus={onFocus}>
       <div className={'feedback-container bordered'}>
-        <span className={'feedback-header'}>What was the problem?</span>
+        <span className={'black'}>What was the problem?</span>
         {hasOptions
-          ? feedbackOptions.map((option, index) => (
-              <div
+          ? options.map((option, index) => (
+              <Button
                 key={index}
-                className={['select-option bordered', option.selected ? 'selected' : ''].join(' ')}
-                onClick={() => selectFeedback(index)}
+                className={[
+                  option.text == selected ? 'secondary-alt selected' : 'secondary',
+                  'select-option',
+                ].join(' ')}
+                action={() => selectFeedback(option.text)}
               >
                 <div>{option.text}</div>
-              </div>
+              </Button>
             ))
           : null}
 
         <textarea
           name={'feedback-text'}
-          className={'feedback-text bordered'}
+          className={['feedback-text bordered', !hasOptions ? 'no-options' : ''].join(' ')}
           placeholder={'Leave a comment (optional)'}
         ></textarea>
         <Button className="primary full-width" action={handleSubmit} disabled={!enabledSubmit}>
