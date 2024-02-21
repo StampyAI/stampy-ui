@@ -42,10 +42,15 @@
   text-decoration: none;
 }
 
+.content-box-table.main svg {
+  margin: -10px 0;
+}
+
 .content-box-table.main img {
   width: fit-content;
   height: -webkit-fill-available;
   height: -moz-available;
+  margin: -7px 0;
 }
 .content-box-table.main {
   overflow: hidden;
