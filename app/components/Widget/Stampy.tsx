@@ -12,6 +12,8 @@ export const WidgetStampy = () => {
     'How would the AI even get out in the world?',
     'Do people seriously worry about existential risk from AI?',
   ]
+
+  const stampyUrl = `https://chat.aisafety.info/?question=${question.trim()}`
   return (
     <div className="chat col-10">
       <div className="col-6 padding-bottom-56">
@@ -25,10 +27,7 @@ export const WidgetStampy = () => {
           <div className="padding-bottom-24">Try asking me...</div>
           {questions.map((question, i) => (
             <div key={i} className="padding-bottom-16">
-              <Button
-                className="secondary-alt"
-                action={`https://chat.aisafety.info/?question=${question}`}
-              >
+              <Button className="secondary-alt" action={stampyUrl}>
                 {question}
               </Button>
             </div>
@@ -43,8 +42,13 @@ export const WidgetStampy = () => {
           placeholder="Ask Stampy a question..."
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && question.trim()) {
+              window.location = stampyUrl as any
+            }
+          }}
         />
-        <Link to={`https://chat.aisafety.info/?question=${question}`}>
+        <Link to={stampyUrl}>
           <SendIcon />
         </Link>
       </div>
