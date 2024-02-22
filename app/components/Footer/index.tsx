@@ -15,7 +15,7 @@ export const FooterBar: FunctionComponent = () => {
   return (
     <div className="footer" key="footer">
       <hr />
-      <div className="footer-grid">
+      <div className="footer-contents">
         <div className="col-5">
           <p className="large-bold teal-500">
             <a href="/">AISafety.info</a>

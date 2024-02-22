@@ -30,10 +30,9 @@ export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps
           <Link
             key={tagId}
             to={tagUrl({tagId, name})}
-            className={[
-              styles.categoryTitle,
-              activeCategoryId == tagId ? 'teal-50-background' : '',
-            ].join(' ')}
+            className={[styles.categoryTitle, activeCategoryId == tagId ? 'selected' : ''].join(
+              ' '
+            )}
           >
             {name} ({questions.length})
           </Link>

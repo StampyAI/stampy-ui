@@ -28,7 +28,7 @@
 }
 
 .top-menu svg {
-  width: 24px;
+  width: var(--spacing-24);
   max-width: 100%;
   aspect-ratio: 1;
   object-fit: contain;

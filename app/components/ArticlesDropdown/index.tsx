@@ -49,7 +49,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   )
 
   return shown ? null : (
-    <div className="articles-dropdown-container bordered">
+    <div className="articles-dropdown-container bordered col-8">
       <div>
         <ArticlesSection category={INTRODUCTORY} toc={toc} className="padding-bottom-32" />
         <ArticlesSection category={ADVANCED} toc={toc} />
@@ -63,12 +63,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
           ?.sort(sortFuncs['by number of questions'])
           .slice(0, 12)
           .map((tag) => (
-            <Link
-              key={tag.rowId}
-              className="articles-dropdown-teal-entry"
-              to={tagUrl(tag)}
-              text={tag.name}
-            />
+            <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
           ))}
 
         <Button action={tagsUrl()} className="secondary">

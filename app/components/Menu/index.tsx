@@ -34,7 +34,7 @@ export const MenuItem = ({
           )
         ) : null}
 
-        <span className={['top-menu-text', primary ? '' : 'secondary'].join(' ')}>{text}</span>
+        <span className={['top-menu-text', primary ? '' : 'teal-500'].join(' ')}>{text}</span>
       </Link>
     </li>
   )

@@ -72,9 +72,8 @@ article .link-popup {
   font-style: normal;
   font-weight: 300;
   line-height: 170%; /* 30.6px */
-  margin-left: 10px;
   z-index: 2;
-  transform: translate(-20vw, 40px);
+  transform: translate(-20vw, var(--spacing-40));
   transition:
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
@@ -97,8 +96,8 @@ article .defintion {
 }
 article .link-popup .glossary-popup > img {
   width: 100%;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 article .link-popup.shown {
