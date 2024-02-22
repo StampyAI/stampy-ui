@@ -286,6 +286,10 @@ hr {
 ul {
   margin: 0;
   padding: 0;
+  padding-left: var(--spacing-32);
+}
+ol {
+  padding-left: var(--spacing-32);
 }
 
 /* other one-off classes */
