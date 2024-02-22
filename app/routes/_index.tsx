@@ -32,16 +32,16 @@ export default function App() {
   return (
     <Page>
       <div className="page-body">
-        <h1>
+        <h1 className="padding-bottom-56">
           Educational content <br />
           on all things AI Safety
         </h1>
 
+        <h3 className="grey padding-bottom-40">Introductory content</h3>
         <ContentBoxMain />
         <ContentBoxSecond />
         <ContentBoxThird />
 
-        <div className="padding-bottom-80" />
         <WidgetStampy />
 
         <div className="padding-bottom-80" />

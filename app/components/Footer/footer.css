@@ -10,3 +10,11 @@
   align-items: baseline;
   margin: var(--spacing-104) 13.33vw var(--spacing-80) 13.33vw;
 }
+
+@media (max-width: 600px) {
+  .footer-contents {
+    flex-direction: column;
+    gap: var(--spacing-32);
+    margin-bottom: 0;
+  }
+}
