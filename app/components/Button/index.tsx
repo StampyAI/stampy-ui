@@ -8,12 +8,14 @@ type ButtonProps = {
   className?: string
   tooltip?: string
   icon?: ReactNode
+  leftIcon?: ReactNode
 }
-const Button = ({children, action, tooltip, icon, className}: ButtonProps) => {
+const Button = ({children, action, tooltip, icon, leftIcon, className}: ButtonProps) => {
   const classes = ['button', className, tooltip && 'tooltip'].filter((i) => i).join(' ')
   if (typeof action === 'string') {
     return (
       <Link to={action} className={classes} data-tooltip={tooltip}>
+        {leftIcon && leftIcon}
         {children}
         {icon && icon}
       </Link>
@@ -21,7 +23,9 @@ const Button = ({children, action, tooltip, icon, className}: ButtonProps) => {
   }
   return (
     <button className={classes} onClick={action} data-tooltip={tooltip}>
+      {leftIcon && leftIcon}
       {children}
+      {icon && icon}
     </button>
   )
 }
