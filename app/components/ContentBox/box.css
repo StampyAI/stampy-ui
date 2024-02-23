@@ -62,7 +62,7 @@
   .main-container-box-table {
     flex-direction: column;
     height: 550px;
-    margin-bottom: var(--spacing-40);
+    margin-bottom: var(--spacing-80);
   }
 
   .content-box-description {

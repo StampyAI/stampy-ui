@@ -361,10 +361,6 @@ ul {
 }
 
 @media (max-width: 600px) {
-  .page-body {
-    padding: 0px 6.333vw;
-  }
-
   .col-2 {
   }
 
