@@ -66,6 +66,8 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   opacity: 0;
+  width: 522px;
+  height: 304px;
   position: absolute;
   display: inline-block;
   font: var(--baseFont);
@@ -83,7 +85,6 @@ article .contents a.button {
   font-weight: normal;
 }
 article .link-popup .glossary-popup > .contents {
-  height: 21.46vw;
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
 article .defintion {
@@ -96,6 +97,7 @@ article .defintion {
 }
 article .link-popup .glossary-popup > img {
   width: 100%;
+  height: 303px;
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }
