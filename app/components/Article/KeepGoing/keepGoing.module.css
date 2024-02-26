@@ -4,3 +4,14 @@
   padding: var(--spacing-32);
   margin-bottom: var(--spacing-56);
 }
+
+@media (max-width: 640px) {
+  .flex_dynamic {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+  }
+  .container {
+    padding: var(--spacing-24);
+  }
+}
