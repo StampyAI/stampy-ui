@@ -22,7 +22,7 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
         {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} article in "
         {section?.title}"
       </div>
-      <div className={`${styles.container} flex-container bordered`}>
+      <div className={`${styles.container} flex-container bordered ${styles.flex_dynamic}`}>
         <div className="vertically-centered white default-bold">{next.title}</div>
         <Button action={questionUrl(next)} className="primary-alt">
           {first ? 'Start' : 'Next'}
