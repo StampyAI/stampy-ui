@@ -15,7 +15,7 @@ export const WidgetStampy = () => {
 
   const stampyUrl = (question: string) => `https://chat.aisafety.info/?question=${question.trim()}`
   return (
-    <div className="chat col-10">
+    <div className="centered col-9">
       <div className="col-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
         <h2>Ask Stampy any question about AI Safety</h2>

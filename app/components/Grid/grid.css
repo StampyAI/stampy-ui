@@ -1,7 +1,16 @@
+.grid {
+  display: flex;
+  gap: var(--spacing-32);
+  justify-content: center;
+  flex-flow: wrap;
+}
+
 .grid-item {
   cursor: pointer;
   text-align: left;
   padding: var(--spacing-32) var(--spacing-32);
+  width: 21.46vw;
+  height: 21.46vw;
   min-width: var(--spacing-288);
   min-height: var(--spacing-288);
   text-decoration: none;
@@ -17,11 +26,4 @@
 
 .grid-item div {
   padding: var(--spacing-8);
-}
-
-.grid {
-  display: grid;
-  gap: var(--spacing-56) var(--spacing-56);
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: space-around;
 }

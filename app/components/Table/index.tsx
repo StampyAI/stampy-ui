@@ -8,6 +8,7 @@ export type ListItem = {
   title: string
   subtitle?: string
   hasIcon?: boolean
+  className?: string
 }
 export type ListTableProps = {
   /**
@@ -22,10 +23,10 @@ export const ListTable = ({elements, sameTab, className}: ListTableProps) => {
   if (!elements || elements.length === 0) return null
   return (
     <div className={styles.container + ' bordered' + (className ? ' ' + className : '')}>
-      {elements.map(({pageid, title, subtitle, hasIcon}, i) => (
+      {elements.map(({pageid, title, subtitle, hasIcon, className}, i) => (
         <Link
           key={`entry-${i}`}
-          className={styles.entry + ' teal-500 default-bold flex-container'}
+          className={styles.entry + ' teal-500 default-bold flex-container ' + (className || '')}
           to={questionUrl({pageid, title})}
           target={sameTab ? undefined : '_blank'}
           rel={sameTab ? undefined : 'noopener noreferrer'}

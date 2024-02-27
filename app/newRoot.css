@@ -308,6 +308,9 @@ ol {
   flex-grow: 2;
 }
 
+.centered {
+  margin: auto;
+}
 .vertically-centered {
   margin: auto 0;
 }
@@ -351,4 +354,50 @@ ol {
 }
 .icon-link.focused path {
   stroke: var(--colors-teal-600);
+}
+
+.desktop-only {
+  display: inherit;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .col-2 {
+  }
+
+  .col-3 {
+  }
+
+  .col-4 {
+    width: 65vw;
+  }
+
+  .col-4-5 {
+  }
+
+  .col-5 {
+    width: 87.2vw;
+  }
+
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10 {
+    width: 87.2vw;
+  }
+
+  .col-11 {
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: inherit;
+  }
 }
