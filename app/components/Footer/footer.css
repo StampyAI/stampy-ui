@@ -11,10 +11,10 @@
   margin: var(--spacing-104) 13.33vw var(--spacing-80) 13.33vw;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .footer-contents {
     flex-direction: column;
-    gap: var(--spacing-80);
+    gap: 32px;
     margin-bottom: 0;
   }
 }

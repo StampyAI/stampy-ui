@@ -7,15 +7,21 @@
 .sample-messages {
   width: 100%;
   padding: var(--spacing-32);
-  background: var(--colors-cool-grey-200);
+  background: var(--colors-cool-grey-100);
 }
 
 .widget-ask input {
   display: inline-flex;
-  height: var(--spacing-56, 56px);
+  height: 56px;
   padding: var(--spacing-8) var(--spacing-24);
 }
 .widget-ask svg {
   position: absolute;
   transform: translate(-52px, 4px);
+}
+
+@media (max-width: 640px) {
+  .button {
+    width: 100%;
+  }
 }

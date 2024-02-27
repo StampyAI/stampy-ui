@@ -1,4 +1,5 @@
 import {Link} from '@remix-run/react'
+import ChevronRight from '~/components/icons-generated/ChevronRight'
 import {questionUrl} from '~/routesMapper'
 import type {TOCItem} from '~/routes/questions.toc'
 import './menu.css'
@@ -8,13 +9,14 @@ type Article = {
   path?: string[]
   current?: string
   hideChildren?: boolean
+  className?: string
 }
 
 const DropdownIcon = ({article, path}: Article) => {
   if (!article?.children || article.children.length === 0 || article.pageid === (path && path[0]))
     return null
-  if (!path?.includes(article.pageid)) return <div className="dropdown-icon" />
-  return <div className="dropdown-icon active" />
+  if (!path?.includes(article.pageid)) return <ChevronRight className="dropdown-icon" />
+  return <ChevronRight className="dropdown-icon active" />
 }
 
 const Title = ({article, path, current}: Article) => {
@@ -50,21 +52,26 @@ const ArticleLevel = ({article, path, current, hideChildren}: Article) => {
     >
       <Title article={article} path={path} current={current} />
       {!hideChildren && (
-        <div className={'articles-dropdown' + (path?.includes(article.pageid) ? ' active' : '')}>
-          {article.children?.map((child) => (
-            <ArticleLevel key={child.pageid} article={child} path={path} current={current} />
-          ))}
-        </div>
+        <>
+          <div
+            className={'grey articles-dropdown' + (path?.includes(article.pageid) ? ' active' : '')}
+          >
+            {article.children?.map((child) => (
+              <ArticleLevel key={child.pageid} article={child} path={path} current={current} />
+            ))}
+          </div>
+          <hr className="mobile-only" />
+        </>
       )}
     </details>
   )
 }
 
-export const ArticlesNav = ({article, path}: Article) => {
+export const ArticlesNav = ({article, path, className}: Article) => {
   const current = path ? path[path.length - 1] : ''
 
   return (
-    <div className="articles-group col-4-5 bordered small">
+    <div className={`articles-group col-4-5 small ${className || ''}`}>
       <ArticleLevel article={article} path={path} current={current} hideChildren />
       <hr />
 
