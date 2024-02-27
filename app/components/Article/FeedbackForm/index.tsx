@@ -78,8 +78,8 @@ const FeedbackForm = ({
 
   return (
     <div className={className} onBlur={handleBlur} onFocus={onFocus}>
-      <div className={'feedback-container bordered'}>
-        <span className={'black'}>What was the problem?</span>
+      <div className={'col-5 feedback-container bordered'}>
+        <span className={'black small'}>What was the problem?</span>
         {hasOptions
           ? options.map((option, index) => (
               <Button

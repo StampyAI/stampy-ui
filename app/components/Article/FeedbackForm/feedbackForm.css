@@ -1,5 +1,4 @@
 .feedback-container {
-  width: 384px;
   padding: var(--spacing-32);
 }
 .select-option {
@@ -16,8 +15,6 @@
 .feedback-form {
   width: 100%;
   position: relative;
-  text-align: left;
-  font-size: 16px;
   color: var(--colors-cool-grey-600);
   z-index: 2;
 }
