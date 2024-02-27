@@ -132,3 +132,12 @@ article .footer-comtainer > * {
 h1.teal {
   color: var(--colors-teal-500);
 }
+@media only screen and (max-width: 640px) {
+  article .footer-comtainer {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  article .footer-comtainer > div:nth-child(-n + 2) {
+    flex: 1 1;
+  }
+}
