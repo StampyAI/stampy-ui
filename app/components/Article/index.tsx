@@ -33,7 +33,7 @@ const ArticleFooter = (question: Question) => {
             <EditIcon className="no-fill" />
           </Button>
         </div>
-        <span>Did this page help you?</span>
+        <span>Was this page helpful?</span>
 
         <CompositeButton className="flex-container">
           <Action pageid={question.pageid} showText={true} actionType={ActionType.HELPFUL} />
