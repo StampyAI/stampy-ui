@@ -17,9 +17,9 @@ type NextArticleProps = {
 const NextArticle = ({section, next, first}: NextArticleProps) =>
   next && (
     <>
-      <h2 className="padding-bottom-40">Keep going! &#128073;</h2>
+      <h2 className="padding-bottom-40">Keep reading! &#128073;</h2>
       <div className="padding-bottom-24">
-        {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} article in "
+        {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} entry in "
         {section?.title}"
       </div>
       <div className={`${styles.container} flex-container bordered ${styles.flex_dynamic}`}>

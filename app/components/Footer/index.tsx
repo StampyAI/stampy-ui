@@ -21,13 +21,13 @@ export const FooterBar: FunctionComponent = () => {
             <a href="/">AISafety.info</a>
           </p>
           <div>
-            We're a global team of volunteers from various disciplines who believe AI poses a grave
-            risk of extinction to humanity.
+            We’re a global team of specialists supported by volunteers from various backgrounds who
+            are concerned about the possibility of human extinction from future AI.
           </div>
         </div>
 
         <div className="col-3 small">
-          <p className="small-bold">Help out</p>
+          <p className="small-bold">Get involved</p>
           <Link to="https://www.every.org/stampy?utm_campaign=donate-link#/donate" title="Donate" />
           <Link to="https://github.com/StampyAI/stampy-ui" title="Code" />
           <Link to="https://get_involved.aisafety.info/" title="Write" />

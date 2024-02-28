@@ -17,4 +17,5 @@
 }
 .search-result svg {
   margin-top: var(--spacing-4);
+  flex-shrink: 0;
 }

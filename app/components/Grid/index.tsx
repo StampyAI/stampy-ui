@@ -14,11 +14,15 @@ interface GridProps {
   gridBoxes: TOCItem[]
 }
 export const Grid = ({gridBoxes}: GridProps) => {
+  console.log(gridBoxes)
   return (
     <div className="grid">
-      {gridBoxes.slice(0, 6).map((gridBoxProps) => (
-        <GridBox key={gridBoxProps.title} {...gridBoxProps} />
-      ))}
+      {gridBoxes
+        .filter(({category}) => category)
+        .slice(0, 6)
+        .map((gridBoxProps) => (
+          <GridBox key={gridBoxProps.title} {...gridBoxProps} />
+        ))}
     </div>
   )
 }
