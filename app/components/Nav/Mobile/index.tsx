@@ -6,19 +6,24 @@ import {XLarge} from '~/components/icons-generated'
 import {CarrotLarge} from '~/components/icons-generated'
 import OpenBookIcon from '~/components/icons-generated/OpenBook'
 import BotIcon from '~/components/icons-generated/Bot'
+import MagnifyingLarge from '~/components/icons-generated/MagnifyingLarge'
 import {NavProps} from '~/components/Nav'
 import Button from '~/components/Button'
 import '../nav.css'
 import './navMobile.css'
-import {sortFuncs} from '~/routes/tags.$'
-import {questionUrl, tagsUrl, tagUrl} from '~/routesMapper'
-import {TOCItem} from '~/routes/questions.toc'
+import ArticlesDropdown from '~/components/ArticlesDropdown'
+import Search from '~/components/search'
 export const MobileNav = ({toc, categories}: NavProps) => {
   const [showMenu, setShowMenu] = React.useState(false)
+  const [showSearch, setShowSearch] = React.useState(false)
   const [showArticles, setShowArticles] = React.useState(false)
   const toggleMenu = () => {
-    setShowMenu(!showMenu)
+    setShowMenu(false)
     setShowArticles(false)
+    setShowSearch(false)
+  }
+  const toggleSearch = () => {
+    setShowSearch(!showSearch)
   }
   console.log('toc', toc)
   return (
@@ -26,14 +31,29 @@ export const MobileNav = ({toc, categories}: NavProps) => {
       {!showArticles && (
         <>
           <nav className="top-nav">
-            <Link to="/" className="top-logo">
-              <AISafetyIcon />
-            </Link>
-            {!showMenu ? (
-              <ListLarge className={'menu-button'} onClick={toggleMenu} />
-            ) : (
-              <XLarge className={'menu-button'} onClick={toggleMenu} />
+            {!showSearch && (
+              <>
+                <Link to="/" className="top-logo">
+                  <AISafetyIcon />
+                </Link>
+
+                {!showMenu ? (
+                  <div>
+                    <MagnifyingLarge className={'search-icon'} onClick={toggleSearch} />
+                    <ListLarge className={'menu-button'} onClick={() => setShowMenu(true)} />
+                  </div>
+                ) : (
+                  <XLarge className={'menu-button'} onClick={toggleMenu} />
+                )}
+              </>
             )}
+
+            {showSearch ? (
+              <div className={'mobile-searchbar'}>
+                <XLarge className={'menu-button'} onClick={toggleMenu} />
+                <Search />
+              </div>
+            ) : null}
           </nav>
           {showMenu && (
             <div className="mobile-menu">
@@ -42,13 +62,13 @@ export const MobileNav = ({toc, categories}: NavProps) => {
                 className="secondary full-width space-between"
                 icon={<CarrotLarge />}
               >
-                <p className={'composite-elements'}>
+                <p className={'composite-elements small'}>
                   <OpenBookIcon className={'icon-margin'} />
                   Articles
                 </p>
               </Button>
               <Button action="https://xkcd.com/285/" className="secondary full-width flex-start">
-                <p className={'composite-elements'}>
+                <p className={'composite-elements small'}>
                   <BotIcon className={'icon-margin'} />
                   Stampy chatbot
                 </p>
@@ -69,46 +89,7 @@ export const MobileNav = ({toc, categories}: NavProps) => {
           </nav>
 
           <div className={'articles-mobile'}>
-            <div className="default-bold margin-bottom">Introductory</div>
-            {toc
-              .filter((item) => item.category === 'Introductory')
-              .map((item: TOCItem) => (
-                <Link
-                  key={`${item.pageid}-${item.title}`}
-                  className="articles-entry"
-                  to={questionUrl(item)}
-                >
-                  {item.title}
-                </Link>
-              ))}
-            <div className="default-bold margin-bottom top-margin">Advanced</div>
-            {toc
-              .filter((item) => item.category === 'Advanced')
-              .map((item: TOCItem) => (
-                <Link
-                  key={`${item.pageid}-${item.title}`}
-                  to={questionUrl(item)}
-                  className="articles-entry"
-                >
-                  {item.title}
-                </Link>
-              ))}
-            <div className="default-bold margin-bottom top-margin">Browse by category</div>
-            {categories
-              ?.sort(sortFuncs['by number of questions'])
-              .slice(0, 12)
-              .map((tag) => (
-                <Link
-                  key={tag.rowId}
-                  className="articles-dropdown-teal-entry articles-entry"
-                  to={tagUrl(tag)}
-                >
-                  {tag.name}
-                </Link>
-              ))}
-            <Button action={tagsUrl()} className="secondary">
-              <span> Browse all categories</span>
-            </Button>
+            <ArticlesDropdown toc={toc} categories={categories || []} />
           </div>
         </>
       )}
