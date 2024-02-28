@@ -5,7 +5,7 @@ import ListTable from '~/components/Table'
 import {loader} from '~/routes/tags.all'
 import {CategoriesNav} from '~/components/CategoriesNav/Menu'
 import type {Tag as TagType} from '~/server-utils/stampy'
-import isMobile from '~/hooks/isMobile'
+import useIsMobile from '~/hooks/isMobile'
 export {loader}
 
 export const sortFuncs = {
@@ -15,7 +15,7 @@ export const sortFuncs = {
 }
 
 export default function Tags() {
-  const mobile = isMobile()
+  const mobile = useIsMobile()
   const {data} = useLoaderData<ReturnType<typeof loader>>()
   const {currentTag, tags} = data
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
