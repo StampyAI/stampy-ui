@@ -4,7 +4,7 @@ import './grid.css'
 
 export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => (
   <a href={questionUrl({title, pageid})} className="grid-item bordered">
-    {icon && <img alt={title} width="72" height="72" src={icon} />}
+    {icon && <img alt={title} width="72" height="80" src={icon} />}
     <h3>{title}</h3>
     <div className="grid-description grey">{subtitle}</div>
   </a>

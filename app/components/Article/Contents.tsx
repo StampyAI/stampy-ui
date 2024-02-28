@@ -94,7 +94,6 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
      */
     const glossaryEntry = (e: Element) => {
       const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
-      console.log(e.textContent, entry)
       if (
         // If the contents of this item aren't simply a glossary item word, then
         // something has gone wrong and the glossary-entry should be removed

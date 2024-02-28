@@ -15,16 +15,14 @@
   padding: var(--spacing-8);
   cursor: pointer;
 }
+.article-selector .dropdown-icon,
 .articles-group .dropdown-icon {
-  background-image: url(/assets/chevron-right.svg);
-  background-repeat: no-repeat;
   height: var(--spacing-12);
   margin-left: var(--spacing-8);
-  padding-left: var(--spacing-16);
 }
+.article-selector .dropdown-icon.active,
 .articles-group .article[open] .dropdown-icon {
   transform: rotate(90deg);
-  margin-top: var(--spacing-4);
 }
 
 .articles-group .article {
@@ -50,4 +48,17 @@
   position: relative;
   top: 25px;
   left: -5px;
+}
+
+@media (max-width: 640px) {
+  .articles-group {
+    width: 100%;
+  }
+  .article-selector {
+    margin-bottom: var(--spacing-40);
+    justify-content: space-between;
+  }
+  .articles-title {
+    padding: var(--spacing-8) var(--spacing-16);
+  }
 }

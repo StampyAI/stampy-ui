@@ -97,13 +97,14 @@ const Tags = ({tags}: Question) => (
 type ArticleProps = {
   question: Question
   glossary?: Glossary
+  className?: string
 }
-export const Article = ({question, glossary}: ArticleProps) => {
+export const Article = ({question, glossary, className}: ArticleProps) => {
   const {title, text, pageid} = question
 
   return (
-    <article>
-      <h1 className="teal padding-bottom-24">{title}</h1>
+    <article className={className}>
+      <h1 className="teal-500 padding-bottom-24">{title}</h1>
       <ArticleMeta question={question} className="padding-bottom-56" />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />

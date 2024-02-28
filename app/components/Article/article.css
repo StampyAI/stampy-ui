@@ -91,7 +91,7 @@ article .defintion {
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5; /* Number of lines you want to display */
+  -webkit-line-clamp: 4; /* Number of lines you want to display */
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -129,10 +129,10 @@ article .footer-comtainer > * {
   margin: var(--spacing-8, 8px);
 }
 
-h1.teal {
-  color: var(--colors-teal-500);
-}
 @media only screen and (max-width: 640px) {
+  article {
+    max-width: 100%;
+  }
   article .footer-comtainer {
     flex-direction: row;
     flex-wrap: wrap;

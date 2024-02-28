@@ -1,9 +1,13 @@
+import {Suspense, useEffect, useState} from 'react'
+import {useLocation} from 'react-router-dom'
 import {Await, useLoaderData, useParams} from '@remix-run/react'
 import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
-import {Suspense, useEffect, useState} from 'react'
 import Page from '~/components/Page'
 import Article from '~/components/Article'
+import Button from '~/components/Button'
 import Error from '~/components/Error'
+import XIcon from '~/components/icons-generated/X'
+import ChevronRight from '~/components/icons-generated/ChevronRight'
 import {ArticlesNav} from '~/components/ArticlesNav/Menu'
 import {fetchGlossary} from '~/routes/questions.glossary'
 import {loadQuestionDetail, loadTags} from '~/server-utils/stampy'
@@ -71,7 +75,9 @@ const updateTags = (question: Question, tags: Tag[]) => {
 }
 
 export default function RenderArticle() {
+  const location = useLocation()
   const [glossary, setGlossary] = useState<Glossary>({} as Glossary)
+  const [showNav, setShowNav] = useState(false) // Used on mobile
   const params = useParams()
   const pageid = params.questionId ?? '😱'
   const {data, tags} = useLoaderData<typeof loader>()
@@ -86,13 +92,51 @@ export default function RenderArticle() {
     getGlossary()
   }, [setGlossary])
 
+  useEffect(() => {
+    console.log('locatiopn change', location.key)
+    setShowNav(false)
+  }, [location.key])
+
   return (
-    <Page>
-      <div className="article-container">
-        {section && <ArticlesNav current={pageid} article={section} path={getPath(pageid)} />}
+    <Page modal={showNav}>
+      <div className={`article-container ${showNav ? 'no-padding' : ''}`}>
+        {showNav ? (
+          <div className="horizontally-centered">
+            <div className="padding-bottom-24" />
+            <XIcon
+              width="24"
+              height="24"
+              viewBox="0 0 16 16"
+              className="pointer"
+              onClick={() => setShowNav(false)}
+            />
+          </div>
+        ) : (
+          <Button
+            className="mobile-only article-selector large-reading"
+            action={() => setShowNav(true)}
+          >
+            {getArticle(pageid)?.title}
+            <ChevronRight className="dropdown-icon active" />
+          </Button>
+        )}
+        {section && (
+          <ArticlesNav
+            current={pageid}
+            article={section}
+            path={getPath(pageid)}
+            className={!showNav ? 'desktop-only bordered' : ''}
+          />
+        )}
+
         <Suspense
           key={pageid}
-          fallback={<Article question={dummyQuestion(getArticle(pageid)?.title)} />}
+          fallback={
+            <Article
+              question={dummyQuestion(getArticle(pageid)?.title)}
+              className={showNav ? 'desktop-only' : ''}
+            />
+          }
         >
           <Await resolve={Promise.all([data, tags])}>
             {([resolvedValue, tags]) => {
@@ -107,6 +151,7 @@ export default function RenderArticle() {
                   <Article
                     question={updateTags(resolvedValue as Question, tags as Tag[])}
                     glossary={glossary}
+                    className={showNav ? 'desktop-only' : ''}
                   />
                 )
               }
