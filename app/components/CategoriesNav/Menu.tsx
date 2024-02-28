@@ -3,7 +3,7 @@ import {Link} from '@remix-run/react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
 import {tagUrl} from '~/routesMapper'
-import styles from './menu.module.css'
+import './menu.css'
 
 interface CategoriesNavProps {
   /**
@@ -19,7 +19,7 @@ interface CategoriesNavProps {
 export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps) => {
   const [search, onSearch] = useState('')
   return (
-    <div className={styles.categoriesGroup + ' bordered col-4-5'}>
+    <div className={'categoriesGroup bordered col-4-5'}>
       <h4>Categories</h4>
       <div>
         <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
@@ -30,9 +30,7 @@ export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps
           <Link
             key={tagId}
             to={tagUrl({tagId, name})}
-            className={[styles.categoryTitle, activeCategoryId == tagId ? 'selected' : ''].join(
-              ' '
-            )}
+            className={['categoryTitle', activeCategoryId == tagId ? 'selected' : ''].join(' ')}
           >
             {name} ({questions.length})
           </Link>

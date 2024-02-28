@@ -5,7 +5,7 @@ import ListTable from '~/components/Table'
 import {loader} from '~/routes/tags.all'
 import {CategoriesNav} from '~/components/CategoriesNav/Menu'
 import type {Tag as TagType} from '~/server-utils/stampy'
-
+import isMobile from '~/hooks/isMobile'
 export {loader}
 
 export const sortFuncs = {
@@ -15,6 +15,7 @@ export const sortFuncs = {
 }
 
 export default function Tags() {
+  const mobile = isMobile()
   const {data} = useLoaderData<ReturnType<typeof loader>>()
   const {currentTag, tags} = data
   const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
@@ -29,16 +30,18 @@ export default function Tags() {
   if (selectedTag === null) {
     return null
   }
+  const isTagsPage = window.location.pathname.split('/').slice(-2)[0] === 'tags'
   return (
     <Page>
       <main>
         <div className="article-container">
-          <CategoriesNav
-            categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
-            activeCategoryId={selectedTag.tagId}
-          />
-
-          {selectedTag === null ? null : (
+          {mobile && !isTagsPage ? null : (
+            <CategoriesNav
+              categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
+              activeCategoryId={selectedTag.tagId}
+            />
+          )}
+          {(mobile && isTagsPage) || selectedTag === null ? null : (
             <article>
               <h1 className="padding-bottom-40">{selectedTag.name}</h1>
               <div className="padding-bottom-24">

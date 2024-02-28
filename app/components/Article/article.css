@@ -140,4 +140,7 @@ h1.teal {
   article .footer-comtainer > div:nth-child(-n + 2) {
     flex: 1 1;
   }
+  article {
+    margin: 0;
+  }
 }
