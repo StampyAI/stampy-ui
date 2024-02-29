@@ -40,7 +40,7 @@ export default function App() {
 
         <WidgetStampy />
 
-        <p className="large-bold grey padding-bottom-32">Advanced content</p>
+        <p className="grey large-bold padding-bottom-32">Advanced sections</p>
         <Grid gridBoxes={toc} />
       </div>
     </Page>
