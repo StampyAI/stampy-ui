@@ -32,19 +32,14 @@ export default function App() {
   return (
     <Page>
       <div className="page-body">
-        <h1>
-          Educational content <br />
-          on all things AI Safety
-        </h1>
+        <h1 className="padding-bottom-80 padding-top-56">Answers on all things AI safety</h1>
 
         <ContentBoxMain />
         <ContentBoxSecond />
         <ContentBoxThird />
 
-        <div className="padding-bottom-80" />
         <WidgetStampy />
 
-        <div className="padding-bottom-80" />
         <p className="large-bold grey padding-bottom-32">Advanced content</p>
         <Grid gridBoxes={toc} />
       </div>

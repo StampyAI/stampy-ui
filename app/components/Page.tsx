@@ -6,17 +6,17 @@ import Nav from '~/components/Nav'
 import {useTags} from '~/hooks/useCachedObjects'
 import useToC from '~/hooks/useToC'
 
-const Page = ({children}: {children: ReactNode}) => {
+const Page = ({children, modal}: {children: ReactNode; modal?: boolean}) => {
   const {toc} = useToC()
   const {items: tags} = useTags()
   const {embed} = useOutletContext<Context>() || {}
 
   return (
     <>
-      <Nav toc={toc} categories={tags} />
+      {!modal && <Nav toc={toc} categories={tags} />}
       {children}
 
-      {!embed && <Footer />}
+      {!embed && !modal && <Footer />}
     </>
   )
 }

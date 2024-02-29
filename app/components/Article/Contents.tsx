@@ -94,7 +94,6 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
      */
     const glossaryEntry = (e: Element) => {
       const entry = e.textContent && glossary[e?.textContent.toLowerCase().trim()]
-      console.log(e.textContent, entry)
       if (
         // If the contents of this item aren't simply a glossary item word, then
         // something has gone wrong and the glossary-entry should be removed
@@ -123,10 +122,10 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}`,
-        `<div class="glossary-popup flex-container black col-6 small">
+        `<div class="glossary-popup flex-container black small">
               <div class="contents col-8">
-                   <h3>${entry.term}</h3>
-                   <div class="defintion">${entry.contents}</div>
+                   <div class="small-bold">${entry.term}</div>
+                   <div class="defintion small">${entry.contents}</div>
                    ${link || ''}
               </div>
               ${image || ''}

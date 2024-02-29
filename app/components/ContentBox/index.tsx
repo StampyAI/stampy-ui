@@ -42,16 +42,13 @@ export const ContentBoxMain = () => (
     title={
       <>
         <div className="white">New to AI Safety?</div>
-        <div className="teal-200">
-          Something about <br />
-          reading and quick
-        </div>
+        <div className="teal-200">Jump into the basics.</div>
       </>
     }
     action={questionUrl({pageid: '9OGZ'})}
     actionTitle={
       <>
-        Start here
+        Start reading
         <ArrowRight />
       </>
     }
@@ -69,14 +66,18 @@ export const ContentBoxSecond = () => {
   const article = {pageid: '9TDI', title: 'Not convinced? Explore the arguments.'}
   return (
     <ContentBox
-      title="Explore the arguments"
+      title="Not convinced?"
       action={questionUrl(article)}
-      actionTitle="Browse all arguments"
+      actionTitle="Explore the arguments"
     >
       <ListTable
         elements={[
           {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
-          {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+          {
+            title: 'Do people seriously worry about existential risk from AI?',
+            pageid: '6953',
+            className: 'desktop-only',
+          },
           {title: 'Why would an AI do bad things?', pageid: '2400'},
         ]}
       />
@@ -88,9 +89,9 @@ export const ContentBoxThird = () => {
   const article = {pageid: '8TJV', title: 'Get involved with AI safety'}
   return (
     <ContentBox
-      title="Get involved with AI safety"
+      title="Want to help with AI safety?"
       action={questionUrl(article)}
-      actionTitle="Learn how"
+      actionTitle="Get involved"
       classNameTable={'content-box-table main'}
     >
       <SvgGroup />

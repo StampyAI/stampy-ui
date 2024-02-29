@@ -66,6 +66,8 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   opacity: 0;
+  width: 522px;
+  height: 304px;
   position: absolute;
   display: inline-block;
   font: var(--baseFont);
@@ -83,19 +85,20 @@ article .contents a.button {
   font-weight: normal;
 }
 article .link-popup .glossary-popup > .contents {
-  height: 21.46vw;
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
 article .defintion {
+  height: 160px;
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5; /* Number of lines you want to display */
+  -webkit-line-clamp: 4; /* Number of lines you want to display */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 article .link-popup .glossary-popup > img {
   width: 100%;
+  height: 303px;
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }
@@ -127,6 +130,18 @@ article .footer-comtainer > * {
   margin: var(--spacing-8, 8px);
 }
 
-h1.teal {
-  color: var(--colors-teal-500);
+@media only screen and (max-width: 640px) {
+  article {
+    max-width: 100%;
+  }
+  article .footer-comtainer {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  article .footer-comtainer > div:nth-child(-n + 2) {
+    flex: 1 1;
+  }
+  article {
+    margin: 0;
+  }
 }

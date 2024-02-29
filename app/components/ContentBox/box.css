@@ -1,7 +1,7 @@
 .main-container-box-table {
   display: flex;
   justify-content: space-between;
-  margin-top: var(--spacing-80);
+  margin-bottom: var(--spacing-40);
 }
 
 .content-box-table-button {
@@ -56,4 +56,16 @@
   overflow: hidden;
   padding: 0;
   padding-right: var(--spacing-8);
+}
+
+@media (max-width: 640px) {
+  .main-container-box-table {
+    flex-direction: column;
+    margin-bottom: var(--spacing-80);
+  }
+
+  .content-box-table {
+    padding: var(--spacing-80);
+    padding-top: 0;
+  }
 }

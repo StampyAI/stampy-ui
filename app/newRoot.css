@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway&display=swap');
 
 :root {
   /* colors */
@@ -79,14 +79,14 @@ body {
 
 h1 {
   font-size: 64px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 125%; /* 80px */
   letter-spacing: -1.28px;
 }
 
 h2 {
   font-size: 38px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 130%; /* 49.4px */
   letter-spacing: -0.57px;
 }
@@ -95,46 +95,66 @@ h2 {
 
 .large {
   font-size: 22px;
+  font-weight: 300;
+  line-height: 170%; /* 37.4px */
   letter-spacing: -0.44px;
 }
 
 .large-reading {
   font-size: 22px;
+  font-weight: 300;
   line-height: 190%; /* 41.8px */
   letter-spacing: -0.44px;
 }
 
 .large-bold {
   font-size: 22px;
+  font-weight: 500;
+  line-height: 170%; /* 37.4px */
   letter-spacing: -0.44px;
-  font-weight: 600;
+}
+
+.default {
+  /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .default-bold {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .small {
-  font-size: 16px !important;
-  letter-spacing: -0.16px !important;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
 .small-bold {
   font-size: 16px;
+  font-weight: 500;
+  line-height: 170%; /* 27.2px */
   letter-spacing: -0.16px;
-  font-weight: 600;
 }
 
 .xs {
   font-size: 14px;
+  font-weight: 300;
+  line-height: 170%; /* 23.8px */
   letter-spacing: -0.14px;
 }
 
 .xs-bold {
   font-size: 14px;
+  font-weight: 500;
+  line-height: 170%; /* 23.8px */
   letter-spacing: -0.14px;
-  font-weight: 600;
 }
 
 /* color classes */
@@ -164,6 +184,10 @@ h2 {
 }
 
 /* spacing classes */
+
+.no-padding {
+  padding: 0 !important;
+}
 
 .padding-bottom-4 {
   padding-bottom: var(--spacing-4);
@@ -211,6 +235,54 @@ h2 {
 
 .padding-bottom-288 {
   padding-bottom: var(--spacing-288);
+}
+
+.padding-top-4 {
+  padding-top: var(--spacing-4);
+}
+
+.padding-top-8 {
+  padding-top: var(--spacing-8);
+}
+
+.padding-top-16 {
+  padding-top: var(--spacing-16);
+}
+
+.padding-top-24 {
+  padding-top: var(--spacing-24);
+}
+
+.padding-top-32 {
+  padding-top: var(--spacing-32);
+}
+
+.padding-top-40 {
+  padding-top: var(--spacing-40);
+}
+
+.padding-top-56 {
+  padding-top: var(--spacing-56);
+}
+
+.padding-top-80 {
+  padding-top: var(--spacing-80);
+}
+
+.padding-top-104 {
+  padding-top: var(--spacing-104);
+}
+
+.padding-top-128 {
+  padding-top: var(--spacing-128);
+}
+
+.padding-top-192 {
+  padding-top: var(--spacing-192);
+}
+
+.padding-top-288 {
+  padding-top: var(--spacing-288);
 }
 
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
@@ -263,6 +335,7 @@ h2 {
 .full-width {
   width: 100%;
 }
+
 /* other tags */
 
 a {
@@ -288,6 +361,10 @@ hr {
 ul {
   margin: 0;
   padding: 0;
+  padding-left: var(--spacing-32);
+}
+ol {
+  padding-left: var(--spacing-32);
 }
 
 /* other one-off classes */
@@ -304,8 +381,18 @@ ul {
   flex-grow: 2;
 }
 
+.centered {
+  margin: auto;
+}
 .vertically-centered {
   margin: auto 0;
+}
+.horizontally-centered {
+  margin: 0 auto;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 /* for troubleshooting */
@@ -348,3 +435,95 @@ ul {
 .icon-link.focused path {
   stroke: var(--colors-teal-600);
 }
+
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* mobile */
+
+@media (max-width: 640px) {
+  :root {
+    --spacing-24: 16px;
+    --spacing-32: 24px;
+    --spacing-40: 24px;
+    --spacing-56: 24px;
+    --spacing-80: 40px;
+    --spacing-104: 56px;
+    --spacing-128: 56px;
+    --spacing-192: 80px;
+    --spacing-288: 128px;
+  }
+
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-4-5,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11 {
+    width: 87.2vw;
+  }
+
+  .page-body {
+    padding: 0px 6.4vw;
+  }
+
+  /* typography tags */
+
+  h1 {
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 130%; /* 49.4px */
+    letter-spacing: -0.57px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 145%; /* 37.7px */
+    letter-spacing: -0.52px;
+  }
+
+  /* typography classes */
+
+  .large {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: -0.18px;
+  }
+
+  .large-reading {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 190%; /* 34.2px */
+    letter-spacing: -0.18px;
+  }
+
+  .large-bold {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: -0.18px;
+  }
+
+  /* other one-off classes */
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* other classes */
+
+  .article-container {
+    padding: var(--spacing-32);
+    flex-direction: column;
+  }
+} /* end mobile */
