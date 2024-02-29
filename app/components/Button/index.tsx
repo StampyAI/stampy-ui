@@ -20,7 +20,6 @@ const Button = ({children, action, tooltip, className}: ButtonProps) => {
   return (
     <button className={classes} onClick={action} data-tooltip={tooltip}>
       {children}
-      {icon && icon}
     </button>
   )
 }

@@ -78,8 +78,9 @@
   }
   .container-search-results {
     height: 50vh !important;
-    width: 100% !important;
+    width: 82vw !important;
     position: inherit !important;
     margin-top: var(--spacing-8);
+    overflow: scroll;
   }
 }

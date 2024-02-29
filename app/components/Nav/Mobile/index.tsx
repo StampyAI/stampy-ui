@@ -25,7 +25,6 @@ export const MobileNav = ({toc, categories}: NavProps) => {
   const toggleSearch = () => {
     setShowSearch(!showSearch)
   }
-  console.log('toc', toc)
   return (
     <header className="top-header">
       {!showArticles && (
@@ -60,12 +59,12 @@ export const MobileNav = ({toc, categories}: NavProps) => {
               <Button
                 action={() => setShowArticles(!showArticles)}
                 className="secondary full-width space-between"
-                icon={<CarrotLarge />}
               >
                 <p className={'composite-elements small'}>
                   <OpenBookIcon className={'icon-margin'} />
                   Articles
                 </p>
+                <CarrotLarge />
               </Button>
               <Button action="https://xkcd.com/285/" className="secondary full-width flex-start">
                 <p className={'composite-elements small'}>
