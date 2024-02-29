@@ -14,12 +14,16 @@ interface CategoriesNavProps {
    * Id of selected category
    */
   activeCategoryId: number
+  /**
+   * Class name for the component
+   */
+  className?: string
 }
 
-export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps) => {
+export const CategoriesNav = ({categories, activeCategoryId, className}: CategoriesNavProps) => {
   const [search, onSearch] = useState('')
   return (
-    <div className={'categoriesGroup bordered col-4-5'}>
+    <div className={['categoriesGroup bordered col-4-5', className].join(' ')}>
       <h4>Categories</h4>
       <div>
         <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />

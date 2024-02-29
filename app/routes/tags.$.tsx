@@ -23,25 +23,25 @@ export default function Tags() {
   const [sortBy] = useState<keyof typeof sortFuncs>('alphabetically')
 
   useEffect(() => {
-    if (selectedTag !== currentTag) {
-      setSelectedTag(currentTag)
+    if (currentTag === undefined) {
+      setSelectedTag(null)
+    } else {
+      if (selectedTag !== currentTag) {
+        setSelectedTag(currentTag)
+      }
     }
   }, [selectedTag, tags, currentTag])
-  if (selectedTag === null) {
-    return null
-  }
-  const isTagsPage = window.location.pathname.split('/').slice(-2)[0] === 'tags'
+
   return (
     <Page>
       <main>
         <div className="article-container">
-          {mobile && !isTagsPage ? null : (
-            <CategoriesNav
-              categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
-              activeCategoryId={selectedTag.tagId}
-            />
-          )}
-          {(mobile && isTagsPage) || selectedTag === null ? null : (
+          <CategoriesNav
+            categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
+            activeCategoryId={selectedTag?.tagId || 0}
+            className={mobile && selectedTag !== null ? 'desktop-only' : ''}
+          />
+          {selectedTag === null ? null : (
             <article>
               <h1 className="padding-bottom-40">{selectedTag.name}</h1>
               <div className="padding-bottom-24">
