@@ -76,10 +76,10 @@
   .mobile-searchbar > * .search-box.expandable {
     width: 100%;
   }
-  .container-search-results {
-    height: 50vh !important;
-    width: 82vw !important;
-    position: inherit !important;
+  .container-search-results-mobile {
+    height: 50vh;
+    width: 82vw;
+    position: inherit;
     margin-top: var(--spacing-8);
     overflow: scroll;
   }
