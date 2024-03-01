@@ -13,17 +13,14 @@ export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => (
 interface GridProps {
   gridBoxes: TOCItem[]
 }
-export const Grid = ({gridBoxes}: GridProps) => {
-  console.log(gridBoxes)
-  return (
-    <div className="grid">
-      {gridBoxes
-        .filter(({category}) => category)
-        .slice(0, 6)
-        .map((gridBoxProps) => (
-          <GridBox key={gridBoxProps.title} {...gridBoxProps} />
-        ))}
-    </div>
-  )
-}
+export const Grid = ({gridBoxes}: GridProps) => (
+  <div className="grid">
+    {gridBoxes
+      .filter(({category}) => category)
+      .slice(0, 6)
+      .map((gridBoxProps) => (
+        <GridBox key={gridBoxProps.title} {...gridBoxProps} />
+      ))}
+  </div>
+)
 export default Grid

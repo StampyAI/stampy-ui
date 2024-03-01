@@ -132,8 +132,6 @@ export const useSearch = (
           runningQueryRef.current = undefined
           if (data.searchResults) setResults(data.searchResults)
           setIsPendingSearch(false)
-          // TODO: temporary debug, remove if search works well for some time
-          console.debug('tfWorker search results for:', data.userQuery, data.searchResults)
         }
       })
     }
@@ -169,8 +167,6 @@ export const useSearch = (
         runningQueryRef.current = undefined
         setResults(searchResults)
         setIsPendingSearch(false)
-        // TODO: temporary debug, remove if search works well for some time
-        console.debug('baseline search results for:', userQuery, searchResults)
       })
     }
   }
