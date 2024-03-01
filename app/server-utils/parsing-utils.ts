@@ -56,7 +56,7 @@ export const convertToHtmlAndWrapInDetails = (markdown: string): string => {
   // On the other hand, if the whole text isn't rendered as one, footnotes will break.
   // To get round this, replace the [See more...] button with a magic string, render the
   // markdown, then mangle the resulting HTML to add an appropriate button link
-  markdown = markdown.replaceAll(/\s*\[[Ss]ee more\W*?\]\s*/g, seeMoreToken)
+  markdown = markdown.replaceAll(/\[[Ss]ee more\W*?\]/g, seeMoreToken)
   markdown = md.render(markdown)
   markdown = wrap(markdown.split(seeMoreToken))
 
