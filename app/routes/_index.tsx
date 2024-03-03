@@ -28,7 +28,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
-  const {toc} = useToC()
+  const {advanced} = useToC()
   return (
     <Page>
       <div className="page-body">
@@ -41,7 +41,7 @@ export default function App() {
         <WidgetStampy />
 
         <p className="grey large-bold padding-bottom-32">Advanced sections</p>
-        <Grid gridBoxes={toc} />
+        <Grid gridBoxes={advanced} />
       </div>
     </Page>
   )

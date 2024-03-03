@@ -66,8 +66,6 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   opacity: 0;
-  width: 522px;
-  height: 304px;
   position: absolute;
   display: inline-block;
   font: var(--baseFont);
@@ -80,6 +78,10 @@ article .link-popup {
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
+article .glossary-popup {
+  width: 522px;
+  height: 304px;
+}
 
 article .contents a.button {
   font-weight: normal;
@@ -88,13 +90,14 @@ article .link-popup .glossary-popup > .contents {
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
 article .defintion {
-  height: 160px;
+  height: 140px;
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4; /* Number of lines you want to display */
+  -webkit-line-clamp: 5; /* Number of lines you want to display */
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: var(--spacing-32);
 }
 article .link-popup .glossary-popup > img {
   width: 100%;
@@ -128,6 +131,16 @@ article .footer-comtainer {
 
 article .footer-comtainer > * {
   margin: var(--spacing-8, 8px);
+}
+
+article a.see-more:not(.visible) + div.see-more-contents {
+  display: none;
+}
+article a.see-more:after {
+  content: 'See more...';
+}
+article a.see-more.visible:after {
+  content: 'See less';
 }
 
 @media only screen and (max-width: 640px) {

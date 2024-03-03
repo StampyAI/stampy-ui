@@ -2,7 +2,10 @@ import {ReactNode} from 'react'
 import {ArrowRight} from '~/components/icons-generated'
 import ListTable from '~/components/Table'
 import Button from '~/components/Button'
+import BookCircle from '~/components/icons-generated/BookCircle'
 import SvgGroup from '~/components/icons-generated/Group'
+import IntroMobile from '~/components/icons-generated/IntroMobile'
+import GetInvolvedMobile from '~/components/icons-generated/GetInvolvedMobile'
 import {questionUrl} from '~/routesMapper'
 import './box.css'
 
@@ -53,12 +56,8 @@ export const ContentBoxMain = () => (
       </>
     }
   >
-    <img
-      loading="lazy"
-      src="/assets/book-circle.svg"
-      className="content-box-right-icon"
-      alt="AI Safety Image"
-    />
+    <BookCircle className="desktop-only" />
+    <IntroMobile className="mobile-only" />
   </ContentBox>
 )
 
@@ -94,7 +93,8 @@ export const ContentBoxThird = () => {
       actionTitle="Get involved"
       classNameTable={'content-box-table main'}
     >
-      <SvgGroup />
+      <SvgGroup className="desktop-only" />
+      <GetInvolvedMobile className="mobile-only full-width" />
     </ContentBox>
   )
 }

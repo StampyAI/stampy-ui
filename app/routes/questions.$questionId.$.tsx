@@ -93,7 +93,6 @@ export default function RenderArticle() {
   }, [setGlossary])
 
   useEffect(() => {
-    console.log('locatiopn change', location.key)
     setShowNav(false)
   }, [location.key])
 

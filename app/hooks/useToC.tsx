@@ -1,4 +1,4 @@
-import {TOCItem} from '~/routes/questions.toc'
+import {TOCItem, ADVANCED} from '~/routes/questions.toc'
 import {useToC as useCachedToC} from '~/hooks/useCachedObjects'
 
 const identity = (i: any) => i
@@ -52,6 +52,7 @@ const useToC = () => {
 
   return {
     toc: toc || [],
+    advanced: (toc || []).filter(({category}) => category === ADVANCED),
     getArticle,
     findSection,
     getPath,

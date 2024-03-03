@@ -72,7 +72,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     })
   return {
     data: data
-      .filter(({parents, children}) => (!parents || parents.length === 0) && children)
+      .filter(({tags}) => tags.includes(INTRODUCTORY) || tags.includes(ADVANCED))
       .map(formatQuestion(1)),
     timestamp,
   }
