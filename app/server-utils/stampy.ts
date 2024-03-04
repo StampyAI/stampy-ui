@@ -132,7 +132,7 @@ export type AnswersRow = CodaRowCommon & {
     Banners: '' | Entity[]
     'Rich Text': string
     Subtitle?: string
-    Icon?: string
+    Icon?: Entity | string | Entity[]
     Parents?: Entity[]
     Order?: number
   }
@@ -250,7 +250,7 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   if (!markdown) return null
 
   markdown = extractText(markdown)
-  markdown = urlToIframe(markdown)
+  markdown = urlToIframe(markdown || '')
 
   let html = convertToHtmlAndWrapInDetails(markdown)
   html = uniqueFootnotes(html, pageid)
@@ -260,8 +260,17 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   return html
 }
 
+// Icons can be returned as strings or objects
+const extractIcon = (val?: string | string[] | Entity | Entity[]): string | undefined => {
+  if (!val) return val
+  const item = head(val)
+  if (typeof item === 'string') return extractText(val as string)
+  if (item) return (item as Entity).url
+  return undefined
+}
+
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
-const head = (item: string | string[]) => {
+const head = (item: any | any[]) => {
   if (Array.isArray(item)) return item[0]
   return item
 }
@@ -291,7 +300,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   status: values['Status']?.name as QuestionStatus,
   alternatePhrasings: extractText(values['Alternate Phrasings']),
   subtitle: extractText(values.Subtitle),
-  icon: extractText(values.Icon),
+  icon: extractIcon(values.Icon),
   parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
   updatedAt: updatedAt || values['Doc Last Edited'],
   order: values.Order || 0,
