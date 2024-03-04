@@ -1,4 +1,5 @@
 import {useRef, useEffect} from 'react'
+import {questionUrl} from '~/routesMapper'
 import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
@@ -56,27 +57,19 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
  *  - use each glossary item only once
  */
 const glossaryInjecter = (pageid: string, glossary: Glossary) => {
-  const unusedGlossaryEntries = Object.values(glossary)
-    .filter((item) => item.pageid != pageid)
-    .map(({term}) => term)
-    .sort((a, b) => b.length - a.length)
-    .map(
-      (term) =>
-        [
-          new RegExp(`(^|[^\\w-])(${term})($|[^\\w-])`, 'i'),
-          '$1<span class="glossary-entry">$2</span>$3',
-        ] as const
-    )
-
-  return (html: string) => {
-    return unusedGlossaryEntries.reduce((html, [match, replacement], index) => {
-      if (html.match(match)) {
-        unusedGlossaryEntries.splice(index, 1)
-        return html.replace(match, replacement)
-      }
-      return html
-    }, html)
-  }
+  const seen = new Set()
+  return (html: string) =>
+    Object.values(glossary)
+      .filter((item) => item.pageid != pageid)
+      .sort((a, b) => b.alias.length - a.alias.length)
+      .reduce((html, {term, alias}) => {
+        const match = new RegExp(`(^|[^\\w-])(${alias})($|[^\\w-])`, 'i')
+        if (!seen.has(term) && html.search(match) >= 0) {
+          seen.add(term)
+          return html.replace(match, '$1<span class="glossary-entry">$2</span>$3')
+        }
+        return html
+      }, html)
 }
 
 const insertGlossary = (pageid: string, glossary: Glossary) => {
@@ -121,13 +114,23 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
      */
     fragment.querySelectorAll('.glossary-entry').forEach((e) => {
       const entry = glossaryEntry(e)
-      entry &&
-        addPopup(
-          e as HTMLSpanElement,
-          `glossary-${entry.term}`,
-          `<div>${entry.contents}</div>` +
-            (entry.pageid ? `<br><a href="/${entry.pageid}">See more...</a>` : '')
-        )
+      if (!entry) return undefined
+      const link =
+        entry.pageid &&
+        `<a href="${questionUrl(entry)}" class="button secondary">View full definition</a>`
+      const image = entry.image && `<img src="${entry.image}"/>`
+      addPopup(
+        e as HTMLSpanElement,
+        `glossary-${entry.term}`,
+        `<div class="glossary-popup flex-container black small">
+              <div class="contents col-8">
+                   <div class="small-bold">${entry.term}</div>
+                   <div class="defintion small">${entry.contents}</div>
+                   ${link || ''}
+              </div>
+              ${image || ''}
+          </div>`
+      )
     })
 
     return fragment
@@ -153,7 +156,7 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
 
   return (
     <div
-      className="contents"
+      className="contents large-reading padding-bottom-80"
       dangerouslySetInnerHTML={{
         __html: html,
       }}

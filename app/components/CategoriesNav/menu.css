@@ -1,0 +1,25 @@
+.categoriesGroup {
+  padding: var(--spacing-12);
+}
+.categoriesGroup > * {
+  padding: var(--spacing-16);
+}
+.categoryTitle {
+  padding: var(--spacing-24);
+  cursor: pointer;
+  display: inline-block;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .categoriesGroup {
+    width: 100%;
+    height: 100%;
+  }
+  .categoriesGroup.bordered {
+    border: 0;
+    box-shadow: none;
+  }
+  .categoryTitle.selected {
+    background: inherit;
+  }
+}

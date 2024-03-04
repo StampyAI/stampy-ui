@@ -7,10 +7,9 @@ type ButtonProps = {
   children?: ReactNode
   className?: string
   tooltip?: string
-  icon?: ReactNode
   disabled?: boolean
 }
-const Button = ({children, action, tooltip, icon, className, disabled = false}: ButtonProps) => {
+const Button = ({children, action, tooltip, className, disabled = false}: ButtonProps) => {
   const classes = ['button', className, tooltip && 'tooltip'].filter((i) => i).join(' ')
   if (typeof action === 'string') {
     return (
@@ -25,7 +24,6 @@ const Button = ({children, action, tooltip, icon, className, disabled = false}: 
         }}
       >
         {children}
-        {icon && icon}
       </Link>
     )
   }

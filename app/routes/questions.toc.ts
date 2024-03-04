@@ -16,6 +16,7 @@ export type TOCItem = {
   hasText: boolean
   children?: TOCItem[]
   category?: Category
+  order: number
 }
 type LoaderResp = {
   data: TOCItem[]
@@ -29,16 +30,19 @@ const getCategory = (tags: string[]): Category => {
   return undefined
 }
 
+const byOrder = (a: TOCItem, b: TOCItem) => a.order - b.order
 const formatQuestion =
   (level: number) =>
-  ({title, pageid, subtitle, icon, children, text, tags}: Question): TOCItem => ({
+  ({title, pageid, subtitle, icon, children, text, tags, order}: Question): TOCItem => ({
     title,
     subtitle: subtitle ? subtitle : undefined,
     pageid,
     icon: icon ? icon : undefined,
     hasText: !!text,
-    children: level < MAX_LEVELS ? children?.map(formatQuestion(level + 1)) : undefined,
+    children:
+      level < MAX_LEVELS ? children?.map(formatQuestion(level + 1)).sort(byOrder) : undefined,
     category: getCategory(tags),
+    order: order || 0,
   })
 
 const getToc = async (request: any) => {
@@ -68,7 +72,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     })
   return {
     data: data
-      .filter(({parents, children}) => parents && parents.length === 0 && children)
+      .filter(({tags}) => tags.includes(INTRODUCTORY) || tags.includes(ADVANCED))
       .map(formatQuestion(1)),
     timestamp,
   }

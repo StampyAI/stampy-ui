@@ -8,6 +8,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section1',
     pageid: 'https://google.com',
     hasText: true,
+    order: 0,
   },
   {
     title: 'Governance',
@@ -15,6 +16,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section2',
     pageid: 'https://google.com',
     hasText: true,
+    order: 0,
   },
   {
     title: 'Existential risk concepts',
@@ -22,6 +24,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section3',
     pageid: 'https://google.com',
     hasText: true,
+    order: 0,
   },
   {
     title: 'Predictions on advanced AI',
@@ -29,6 +32,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section4',
     pageid: 'https://google.com',
     hasText: true,
+    order: 0,
   },
   {
     title: 'Prominent research organizations',
@@ -36,6 +40,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section5',
     pageid: 'https://google.com',
     hasText: true,
+    order: 0,
   },
   {
     title: '6th item',
@@ -43,6 +48,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section6',
     pageid: 'https://google.com',
     hasText: true,
+    order: 10,
   },
   {
     title: '7th item',
@@ -50,6 +56,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section7',
     pageid: 'https://google.com',
     hasText: true,
+    order: 20,
   },
   {
     title: '8th item',
@@ -57,6 +64,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section8',
     pageid: 'https://google.com',
     hasText: true,
+    order: 30,
   },
 ]
 

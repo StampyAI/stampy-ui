@@ -1,9 +1,12 @@
 import {ReactNode} from 'react'
 import {ArrowRight} from '~/components/icons-generated'
-import {BottomEclipse} from '~/components/icons-generated'
-import {GroupTopEcplise} from '~/components/icons-generated'
 import ListTable from '~/components/Table'
 import Button from '~/components/Button'
+import BookCircle from '~/components/icons-generated/BookCircle'
+import SvgGroup from '~/components/icons-generated/Group'
+import IntroMobile from '~/components/icons-generated/IntroMobile'
+import GetInvolvedMobile from '~/components/icons-generated/GetInvolvedMobile'
+import {questionUrl} from '~/routesMapper'
 import './box.css'
 
 interface ContentBoxProps {
@@ -12,17 +15,25 @@ interface ContentBoxProps {
   actionTitle?: string | ReactNode
   children?: ReactNode
   className?: string
+  classNameTable?: string
 }
-export const ContentBox = ({title, action, actionTitle, children, className}: ContentBoxProps) => {
+export const ContentBox = ({
+  title,
+  action,
+  actionTitle,
+  children,
+  className,
+  classNameTable = 'content-box-table',
+}: ContentBoxProps) => {
   return (
     <div className={`main-container-box-table bordered ${className || ''}`}>
       <div className="content-box-description">
-        <h2>{title}</h2>
+        <h2 className="padding-bottom-32">{title}</h2>
         <Button action={action} className="bordered content-box-table-button teal-500">
           {actionTitle}
         </Button>
       </div>
-      <div className="content-box-table">{children}</div>
+      <div className={classNameTable}>{children}</div>
     </div>
   )
 }
@@ -30,39 +41,42 @@ export const ContentBox = ({title, action, actionTitle, children, className}: Co
 export const ContentBoxMain = () => (
   <ContentBox
     className="teal-background"
+    classNameTable={'content-box-table main'}
     title={
       <>
         <div className="white">New to AI Safety?</div>
-        <div className="teal-200">
-          Something about <br />
-          reading and quick
-        </div>
+        <div className="teal-200">Jump into the basics.</div>
       </>
     }
-    action="/9OGZ"
+    action={questionUrl({pageid: '9OGZ'})}
     actionTitle={
       <>
-        Start here
+        Start reading
         <ArrowRight />
       </>
     }
   >
-    <img
-      loading="lazy"
-      src="/assets/book-circle.svg"
-      className="content-box-right-icon"
-      alt="AI Safety Image"
-    />
+    <BookCircle className="desktop-only" />
+    <IntroMobile className="mobile-only" />
   </ContentBox>
 )
 
 export const ContentBoxSecond = () => {
+  const article = {pageid: '9TDI', title: 'Not convinced? Explore the arguments.'}
   return (
-    <ContentBox title="Explore the arguments" action="/9TDI" actionTitle="Browse all arguments">
+    <ContentBox
+      title="Not convinced?"
+      action={questionUrl(article)}
+      actionTitle="Explore the arguments"
+    >
       <ListTable
         elements={[
           {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
-          {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+          {
+            title: 'Do people seriously worry about existential risk from AI?',
+            pageid: '6953',
+            className: 'desktop-only',
+          },
           {title: 'Why would an AI do bad things?', pageid: '2400'},
         ]}
       />
@@ -71,10 +85,16 @@ export const ContentBoxSecond = () => {
 }
 
 export const ContentBoxThird = () => {
+  const article = {pageid: '8TJV', title: 'Get involved with AI safety'}
   return (
-    <ContentBox title="Get involved with AI safety" action="/8TJV" actionTitle="Learn how">
-      <GroupTopEcplise className="eclipse-individual-top" />
-      <BottomEclipse className="eclipse-team-bottom" />
+    <ContentBox
+      title="Want to help with AI safety?"
+      action={questionUrl(article)}
+      actionTitle="Get involved"
+      classNameTable={'content-box-table main'}
+    >
+      <SvgGroup className="desktop-only" />
+      <GetInvolvedMobile className="mobile-only full-width" />
     </ContentBox>
   )
 }

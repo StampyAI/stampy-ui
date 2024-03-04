@@ -1,10 +1,11 @@
 import type {TOCItem} from '~/routes/questions.toc'
+import {questionUrl} from '~/routesMapper'
 import './grid.css'
 
 export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => (
-  <a href={`/${pageid}`} className="grid-item bordered">
-    {icon && <img alt={title} width="72" height="72" src={icon} />}
-    <div className="grid-title">{title}</div>
+  <a href={questionUrl({title, pageid})} className="grid-item bordered">
+    {icon && <img alt={title} width="72" height="80" src={icon} />}
+    <p className="large-bold">{title}</p>
     <div className="grid-description grey">{subtitle}</div>
   </a>
 )
@@ -12,13 +13,14 @@ export const GridBox = ({title, subtitle, icon, pageid}: TOCItem) => (
 interface GridProps {
   gridBoxes: TOCItem[]
 }
-export const Grid = ({gridBoxes}: GridProps) => {
-  return (
-    <div className="grid">
-      {gridBoxes.slice(0, 6).map((gridBoxProps) => (
+export const Grid = ({gridBoxes}: GridProps) => (
+  <div className="grid">
+    {gridBoxes
+      .filter(({category}) => category)
+      .slice(0, 6)
+      .map((gridBoxProps) => (
         <GridBox key={gridBoxProps.title} {...gridBoxProps} />
       ))}
-    </div>
-  )
-}
+  </div>
+)
 export default Grid

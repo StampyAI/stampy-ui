@@ -1,5 +1,6 @@
 article {
-  max-width: 800px;
+  max-width: 47.43vw;
+  margin: 0 auto;
 }
 
 article .meta {
@@ -28,7 +29,7 @@ article .tags {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-8);
-  margin-top: var(--spacing-24);
+  margin-top: var(--spacing-40);
 }
 
 article .tag {
@@ -36,7 +37,7 @@ article .tag {
   background-color: var(--colors-teal-50);
   border-color: var(--colors-teal-100);
   color: var(--colors-teal-500);
-  padding: 0 var(--spacing-8);
+  padding: 0 var(--spacing-16);
 }
 
 article .tag:hover {
@@ -46,14 +47,19 @@ article .tag:hover {
 
 article .contents a {
   color: var(--colors-teal-500);
+  font-weight: 700;
 }
 
 article .contents a:visited {
   color: var(--colors-teal-800);
 }
 
+article .contents p {
+  padding-bottom: var(--spacing-32);
+}
+
 article .glossary-entry {
-  border-bottom: 2px dotted grey;
+  border-bottom: 3px dotted var(--colors-cool-grey-500);
   cursor: pointer;
 }
 
@@ -63,19 +69,41 @@ article .link-popup {
   position: absolute;
   display: inline-block;
   font: var(--baseFont);
-  padding: 5px 10px;
-  margin-left: 10px;
-  max-width: 35%;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
   z-index: 2;
+  transform: translate(-20vw, var(--spacing-40));
   transition:
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
-article .link-popup::after {
-  content: '';
-  position: absolute;
-  top: 5px;
-  right: 100%;
+article .glossary-popup {
+  width: 522px;
+  height: 304px;
+}
+
+article .contents a.button {
+  font-weight: normal;
+}
+article .link-popup .glossary-popup > .contents {
+  padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
+}
+article .defintion {
+  height: 140px;
+  display: -webkit-box;
+  /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; /* Number of lines you want to display */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: var(--spacing-32);
+}
+article .link-popup .glossary-popup > img {
+  width: 100%;
+  height: 303px;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 article .link-popup.shown {
@@ -105,4 +133,30 @@ article .footer-comtainer {
 
 article .footer-comtainer > * {
   margin: var(--spacing-8, 8px);
+}
+
+article a.see-more:not(.visible) + div.see-more-contents {
+  display: none;
+}
+article a.see-more:after {
+  content: 'See more...';
+}
+article a.see-more.visible:after {
+  content: 'See less';
+}
+
+@media only screen and (max-width: 640px) {
+  article {
+    max-width: 100%;
+  }
+  article .footer-comtainer {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  article .footer-comtainer > div:nth-child(-n + 2) {
+    flex: 1 1;
+  }
+  article {
+    margin: 0;
+  }
 }

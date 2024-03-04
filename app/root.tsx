@@ -183,6 +183,7 @@ export function ErrorBoundary() {
       <Page>
         <Error error={error as any} />
       </Page>
+      <Scripts />
     </BasePage>
   )
 }

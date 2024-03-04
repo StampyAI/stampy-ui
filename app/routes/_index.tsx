@@ -7,6 +7,7 @@ import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
 import Page from '~/components/Page'
 import {getStateEntries} from '~/hooks/stateModifiers'
+import {questionUrl} from '~/routesMapper'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
@@ -17,7 +18,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     )[0]?.[0]
     if (firstOpenId) {
       url.searchParams.delete('state')
-      url.pathname = `/${firstOpenId}`
+      url.pathname = questionUrl({pageid: firstOpenId})
       throw redirect(url.toString())
     }
   }
@@ -27,14 +28,11 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
-  const {toc} = useToC()
+  const {advanced} = useToC()
   return (
     <Page>
       <div className="page-body">
-        <h1>
-          Educational content <br />
-          on all things AI Safety
-        </h1>
+        <h1 className="padding-bottom-80 padding-top-56">Answers on all things AI safety</h1>
 
         <ContentBoxMain />
         <ContentBoxSecond />
@@ -42,9 +40,8 @@ export default function App() {
 
         <WidgetStampy />
 
-        <div className="top-margin-large" />
-        <h3 className="grey">Advanced content</h3>
-        <Grid gridBoxes={toc} />
+        <h3 className="grey large-bold padding-bottom-32">Advanced sections</h3>
+        <Grid gridBoxes={advanced} />
       </div>
     </Page>
   )

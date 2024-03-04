@@ -1,0 +1,26 @@
+.container {
+  border: 1px solid var(--colors-teal-200);
+}
+
+.entry {
+  padding: var(--spacing-32);
+  border-bottom: 1px solid var(--colors-teal-200);
+  justify-content: space-between;
+}
+.entry:hover {
+  background-color: var(--colors-teal-50);
+}
+.entry svg {
+  min-width: var(--spacing-16);
+}
+
+.container > .entry:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+.container > .entry:first-child {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}

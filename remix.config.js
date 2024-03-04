@@ -1,5 +1,12 @@
+const routes = (defineRoutes) =>
+  defineRoutes((route) => {
+    console.log(route)
+    route('/*', 'routes/$redirects.tsx')
+  })
+
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
+  routes,
   ignoredRouteFiles: ['**/.*'],
   serverConditions: ['workerd', 'worker', 'browser'],
   serverMainFields: ['browser', 'module', 'main'],

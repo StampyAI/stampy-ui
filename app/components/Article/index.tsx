@@ -6,6 +6,7 @@ import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
 import {Action, ActionType} from '~/routes/questions.actions'
 import type {Glossary, Question} from '~/server-utils/stampy'
+import {tagUrl} from '~/routesMapper'
 import Contents from './Contents'
 import './article.css'
 import FeedbackForm from '~/components/Article/FeedbackForm'
@@ -37,7 +38,7 @@ const ArticleFooter = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="footer-comtainer">
+      <div className="footer-comtainer padding-bottom-40">
         {date && <div className="grey"> {`Updated ${date}`}</div>}
         <div className="flex-double">
           <Button
@@ -48,7 +49,7 @@ const ArticleFooter = (question: Question) => {
             <EditIcon className="no-fill" />
           </Button>
         </div>
-        <span>Did this page help you?</span>
+        <span>Was this page helpful?</span>
 
         <CompositeButton className="flex-container">
           <Action
@@ -100,7 +101,7 @@ const ArticleActions = ({answerEditLink}: Question) => {
   )
 }
 
-const ArticleMeta = (question: Question) => {
+const ArticleMeta = ({question, className}: {question: Question; className?: string}) => {
   const {text} = question
 
   const ttr = (text: string, rate = 160) => {
@@ -110,8 +111,8 @@ const ArticleMeta = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="article-meta">
-        <p className="grey">{ttr(text || '')} min read</p>
+      <div className={'article-meta ' + (className || '')}>
+        <p className="grey large">{ttr(text || '')} min read</p>
 
         <ArticleActions {...question} />
       </div>
@@ -122,7 +123,7 @@ const ArticleMeta = (question: Question) => {
 const Tags = ({tags}: Question) => (
   <div className="tags">
     {tags?.map((tag) => (
-      <Link key={tag} className="tag bordered" to={`/tags/${tag}`}>
+      <Link key={tag} className="tag bordered" to={tagUrl({name: tag})}>
         {tag}
       </Link>
     ))}
@@ -132,14 +133,15 @@ const Tags = ({tags}: Question) => (
 type ArticleProps = {
   question: Question
   glossary?: Glossary
+  className?: string
 }
-export const Article = ({question, glossary}: ArticleProps) => {
+export const Article = ({question, glossary, className}: ArticleProps) => {
   const {title, text, pageid} = question
 
   return (
-    <article className="article-container">
-      <h1 className="teal">{title}</h1>
-      <ArticleMeta {...question} />
+    <article className={className}>
+      <h1 className="teal-500 padding-bottom-24">{title}</h1>
+      <ArticleMeta question={question} className="padding-bottom-56" />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
 

@@ -1,17 +1,17 @@
-.grid-description {
-  letter-spacing: -0.01em;
-}
-.grid-title {
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  line-height: 150%;
-  font-weight: 600;
+.grid {
+  display: flex;
+  gap: var(--spacing-32);
+  flex-flow: wrap;
 }
 
 .grid-item {
   cursor: pointer;
   text-align: left;
-  padding: 32.5px 32px;
+  padding: var(--spacing-40);
+  width: 21.46vw;
+  height: 21.46vw;
+  min-width: var(--spacing-288);
+  min-height: var(--spacing-288);
   text-decoration: none;
 }
 
@@ -23,13 +23,17 @@
   outline: 1px solid var(--colors-teal-200);
 }
 
-.grid-item div {
-  padding: 8px;
+.grid-item > * {
+  padding: var(--spacing-8);
 }
 
-.grid {
-  display: grid;
-  gap: 50px 50px;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: space-around;
+.grid-item > img {
+  margin-bottom: var(--spacing-24);
+}
+
+@media (max-width: 640px) {
+  .grid-item {
+    width: 100%;
+    height: 300px;
+  }
 }

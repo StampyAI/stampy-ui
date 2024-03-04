@@ -1,14 +1,14 @@
 .main-container-box-table {
   display: flex;
   justify-content: space-between;
-  margin-top: var(--spacing-80);
+  margin-bottom: var(--spacing-40);
 }
 
 .content-box-table-button {
   padding: var(--spacing-8) var(--spacing-24);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-4);
 }
 
 .eclipse-team-bottom {
@@ -40,4 +40,21 @@
   color: var(--colors-teal-800);
   border-color: var(--colors-teal-200);
   text-decoration: none;
+}
+
+.content-box-table.main {
+  overflow: hidden;
+  padding: 0 var(--spacing-8);
+}
+
+@media (max-width: 640px) {
+  .main-container-box-table {
+    flex-direction: column;
+    margin-bottom: var(--spacing-80);
+  }
+
+  .content-box-table {
+    padding: var(--spacing-80);
+    padding-top: 0;
+  }
 }

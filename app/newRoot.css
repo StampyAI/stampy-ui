@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway&display=swap');
 
 :root {
   /* colors */
@@ -28,6 +28,7 @@
   --colors-green-500: #40c075;
 
   /* spacing */
+  --border-radius: 6px;
   --spacing-4: 4px;
   --spacing-6: 6px;
   --spacing-8: 8px;
@@ -45,21 +46,26 @@
   --spacing-288: 288px;
 }
 
-.flex-container {
-  display: flex;
-  position: relative;
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.flex-double {
-  flex-grow: 2;
+body,
+html {
+  height: 100%;
 }
+
+/* body */
 
 body,
 input {
   font-size: 18px;
   font-family: Poppins;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 170%; /* 30.6px */
   letter-spacing: -0.18px;
   color: var(--colors-cool-grey-900), #1b2b3e;
@@ -75,14 +81,14 @@ body {
 
 h1 {
   font-size: 64px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 125%; /* 80px */
   letter-spacing: -1.28px;
 }
 
 h2 {
   font-size: 38px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 130%; /* 49.4px */
   letter-spacing: -0.57px;
 }
@@ -91,46 +97,66 @@ h2 {
 
 .large {
   font-size: 22px;
+  font-weight: 300;
+  line-height: 170%; /* 37.4px */
   letter-spacing: -0.44px;
 }
 
 .large-reading {
   font-size: 22px;
+  font-weight: 300;
   line-height: 190%; /* 41.8px */
   letter-spacing: -0.44px;
 }
 
 .large-bold {
   font-size: 22px;
+  font-weight: 500;
+  line-height: 170%; /* 37.4px */
   letter-spacing: -0.44px;
-  font-weight: 600;
+}
+
+.default {
+  /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .default-bold {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .small {
-  font-size: 16px !important;
-  letter-spacing: -0.16px !important;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
 .small-bold {
   font-size: 16px;
+  font-weight: 500;
+  line-height: 170%; /* 27.2px */
   letter-spacing: -0.16px;
-  font-weight: 600;
 }
 
 .xs {
   font-size: 14px;
+  font-weight: 300;
+  line-height: 170%; /* 23.8px */
   letter-spacing: -0.14px;
 }
 
 .xs-bold {
   font-size: 14px;
+  font-weight: 500;
+  line-height: 170%; /* 23.8px */
   letter-spacing: -0.14px;
-  font-weight: 600;
 }
 
 /* color classes */
@@ -155,7 +181,15 @@ h2 {
   color: var(--colors-teal-200);
 }
 
+.selected {
+  background: var(--colors-teal-50);
+}
+
 /* spacing classes */
+
+.no-padding {
+  padding: 0 !important;
+}
 
 .padding-bottom-4 {
   padding-bottom: var(--spacing-4);
@@ -205,6 +239,105 @@ h2 {
   padding-bottom: var(--spacing-288);
 }
 
+.padding-top-4 {
+  padding-top: var(--spacing-4);
+}
+
+.padding-top-8 {
+  padding-top: var(--spacing-8);
+}
+
+.padding-top-16 {
+  padding-top: var(--spacing-16);
+}
+
+.padding-top-24 {
+  padding-top: var(--spacing-24);
+}
+
+.padding-top-32 {
+  padding-top: var(--spacing-32);
+}
+
+.padding-top-40 {
+  padding-top: var(--spacing-40);
+}
+
+.padding-top-56 {
+  padding-top: var(--spacing-56);
+}
+
+.padding-top-80 {
+  padding-top: var(--spacing-80);
+}
+
+.padding-top-104 {
+  padding-top: var(--spacing-104);
+}
+
+.padding-top-128 {
+  padding-top: var(--spacing-128);
+}
+
+.padding-top-192 {
+  padding-top: var(--spacing-192);
+}
+
+.padding-top-288 {
+  padding-top: var(--spacing-288);
+}
+
+/* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
+/* note I may change these to vars later */
+
+.col-2 {
+  width: 8.54vw;
+}
+
+.col-3 {
+  width: 15vw;
+}
+
+.col-4 {
+  width: 21.46vw;
+}
+
+.col-4-5 {
+  width: 22.78vw;
+}
+
+.col-5 {
+  width: 27.99vw;
+}
+
+.col-6 {
+  width: 34.44vw;
+}
+
+.col-7 {
+  width: 40.9vw;
+}
+
+.col-8 {
+  width: 47.43vw;
+}
+
+.col-9 {
+  width: 53.89vw;
+}
+
+.col-10 {
+  width: 60.35vw;
+}
+
+.col-11 {
+  width: 66.88vw;
+}
+
+.full-width {
+  width: 100%;
+}
+
 /* other tags */
 
 a {
@@ -223,18 +356,45 @@ a:not(:hover, :focus-visible) {
 
 hr {
   border: 1px solid var(--colors-cool-grey-200);
+  border-bottom: 0;
   margin: 0;
 }
 
 ul {
   margin: 0;
   padding: 0;
+  padding-left: var(--spacing-32);
+}
+ol {
+  padding-left: var(--spacing-32);
 }
 
 /* other one-off classes */
 
 .text-align-center {
   text-align: center;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-double {
+  flex-grow: 2;
+}
+
+.centered {
+  margin: auto;
+}
+.vertically-centered {
+  margin: auto 0;
+}
+.horizontally-centered {
+  margin: 0 auto;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 /* for troubleshooting */
@@ -245,11 +405,16 @@ ul {
 }
 
 /* all other classes */
+.rounded {
+  border-radius: var(--border-radius);
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
+  box-sizing: border-box;
+}
 
 .bordered {
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   background-color: #fff;
-  box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
   border: 1px solid var(--colors-cool-grey-200);
   box-sizing: border-box;
 }
@@ -259,196 +424,11 @@ ul {
   padding: 0px 13.333vw;
 }
 
-.img-2 {
-  width: 16px;
-  height: 16px;
-}
-
-.main-container-box-table {
+.article-container {
   display: flex;
-  justify-content: space-between;
-  margin-top: var(--spacing-80);
-}
-
-.iconsMagnifyingGlass {
-  width: 16px;
-  position: relative;
-  height: 16px;
-}
-
-.widget-title {
-  margin-block-start: 0;
-  margin-block-end: 0px;
-}
-
-.widget-subtitle {
-  margin: 0;
-  color: var(--text-black);
-}
-
-.widget-header {
-  top: 0;
-  left: 0;
-  font-size: 38px;
-  letter-spacing: -0.01em;
-  line-height: 130%;
-  font-weight: 600;
-  display: inline-block;
-  max-width: 562px;
-  margin-block-end: 38px;
-}
-
-.widget-input {
-  height: 100%;
-  width: calc(100% + 45px);
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  left: 0%;
-  border-radius: 6px;
-  background-color: #fff;
-  box-shadow: 0 16px 40px #afb7c233;
-  border: 1px solid var(--colors-cool-grey-200);
-  box-sizing: border-box;
-  letter-spacing: -0.01em;
-  text-align: left;
-  color: var(--colors-cool-grey-600);
-  padding-left: 16px;
-  padding-right: 66px;
-}
-
-.input-label {
-  position: relative;
-  letter-spacing: -0.01em;
-}
-
-.input-horizontal {
-  position: absolute;
-  top: calc(50% - 15px);
-  left: 16px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.widget-textbox {
-  top: calc(50% - 32px);
-  left: calc(50% - 435px);
-  width: 100%;
-  height: 64px;
-}
-
-.send-button {
-  top: calc(50% - 24px);
-  left: 0;
-  border-radius: 6px;
-  background-color: var(--colors-teal-500);
-  box-shadow: 0 16px 40px #202c590d;
-  width: 48px;
-  height: 48px;
-}
-
-.send-button-icon {
-  position: absolute;
-  inset: 0%;
-  max-width: 100%;
-  overflow: hidden;
-  max-height: 100%;
-}
-
-.send-button-group {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  z-index: 2;
-  left: -18px;
-}
-
-.widget-ask {
-  top: calc(50% + 233px);
-  left: calc(50% - 435px);
-  width: 100%;
-  height: 64px;
-  color: var(--colors-cool-grey-600);
-  display: inline-flex;
-  align-items: center;
-}
-
-.rectangleIcon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 814px;
-  height: 319px;
-}
-
-.widget-start-conversation {
-  top: 87px;
-  left: 32px;
-  border-radius: 6px;
-  background-color: #fff;
-  box-shadow: 0 16px 40px #202c590d;
-  border: 1px solid var(--colors-cool-grey-200);
-  box-sizing: border-box;
-  height: 56px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 21px;
-  margin: 16px;
-  width: fit-content;
-}
-
-.widget-conversation-start-header {
-  top: 32px;
-  left: 32px;
-  letter-spacing: -0.01em;
-  color: var(--text-black);
-  margin: 16px;
-}
-
-.widget-chat-group {
-  top: 187px;
-  left: 56px;
-  width: 100%;
-  height: 319px;
-}
-
-.stampyIcon {
-  width: 40px;
-  height: 34.56px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-
-.widget-group {
-  margin-top: 108px;
-  width: 60vw;
-  position: relative;
-  height: 594px;
-  text-align: left;
-  color: var(--colors-teal-500);
-}
-
-.chat-message {
-  display: flex;
-  align-items: flex-end;
-}
-
-.chat-incoming-message {
-  background: #f9fafc;
-  width: 100%;
-  border-radius: 6px;
-}
-
-.group-elements {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 10.9vw;
-  margin-left: 5.56vw;
+  padding-left: 5.56vw;
+  padding-right: 2.43vw;
+  padding-top: var(--spacing-40);
 }
 
 .icon-link path {
@@ -457,3 +437,95 @@ ul {
 .icon-link.focused path {
   stroke: var(--colors-teal-600);
 }
+
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* mobile */
+
+@media (max-width: 640px) {
+  :root {
+    --spacing-24: 16px;
+    --spacing-32: 24px;
+    --spacing-40: 24px;
+    --spacing-56: 24px;
+    --spacing-80: 40px;
+    --spacing-104: 56px;
+    --spacing-128: 56px;
+    --spacing-192: 80px;
+    --spacing-288: 128px;
+  }
+
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-4-5,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11 {
+    width: 87.2vw;
+  }
+
+  .page-body {
+    padding: 0px 6.4vw;
+  }
+
+  /* typography tags */
+
+  h1 {
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 130%; /* 49.4px */
+    letter-spacing: -0.57px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 145%; /* 37.7px */
+    letter-spacing: -0.52px;
+  }
+
+  /* typography classes */
+
+  .large {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: -0.18px;
+  }
+
+  .large-reading {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 190%; /* 34.2px */
+    letter-spacing: -0.18px;
+  }
+
+  .large-bold {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: -0.18px;
+  }
+
+  /* other one-off classes */
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* other classes */
+
+  .article-container {
+    padding: var(--spacing-32);
+    flex-direction: column;
+  }
+} /* end mobile */

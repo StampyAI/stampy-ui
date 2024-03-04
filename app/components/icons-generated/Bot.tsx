@@ -1,19 +1,19 @@
 import type {SVGProps} from 'react'
 const SvgBot = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} fill="none" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
     <path
-      stroke="#788492"
+      stroke="#1D9089"
       strokeLinecap="square"
       strokeLinejoin="round"
-      d="M2 4.5a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5z"
+      d="M3 4.5a.5.5 0 0 0-.5.5v14a.5.5 0 0 0 .5.5h18a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5z"
     />
-    <path stroke="#788492" strokeLinecap="round" d="M5.5 7.5v1M10.5 7.5v1" />
+    <path stroke="#1D9089" strokeLinecap="round" d="M8 9v2M15.5 9v2" />
     <path
-      fill="#788492"
-      d="m5.146 4.354.354.353L6.207 4l-.353-.354zm-.792-2.208a.5.5 0 1 0-.708.708zm1.5 1.5-1.5-1.5-.708.708 1.5 1.5zM10.854 4.354l-.354.353L9.793 4l.353-.354zm.792-2.208a.5.5 0 0 1 .708.708zm-1.5 1.5 1.5-1.5.708.708-1.5 1.5z"
+      fill="#1D9089"
+      d="M7.646 4.354 8 4.707 8.707 4l-.353-.354zM6.354 1.646a.5.5 0 1 0-.708.708zm2 2-2-2-.708.708 2 2zM16.354 4.354 16 4.707 15.293 4l.353-.354zm1.292-2.708a.5.5 0 0 1 .708.708zm-2 2 2-2 .708.708-2 2z"
     />
-    <circle cx={12} cy={2.5} r={1} fill="#788492" />
-    <circle cx={4} cy={2.5} r={1} fill="#788492" />
+    <circle cx={18} cy={2} r={1} fill="#1D9089" />
+    <circle cx={6} cy={2} r={1} fill="#1D9089" />
   </svg>
 )
 export default SvgBot

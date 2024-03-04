@@ -1,4 +1,4 @@
-import {TOCItem} from '~/routes/questions.toc'
+import {TOCItem, ADVANCED} from '~/routes/questions.toc'
 import {useToC as useCachedToC} from '~/hooks/useCachedObjects'
 
 const identity = (i: any) => i
@@ -36,9 +36,9 @@ const useToC = () => {
       next?: TOCItem
     }
     const findNext = (prev: string | undefined, item: TOCItem): NextItem => {
-      if (pageid === prev) return {current: prev, next: item}
+      if (item.hasText && pageid === prev) return {current: prev, next: item}
 
-      let previous: string | undefined = item.pageid
+      let previous: string | undefined = item.hasText ? item.pageid : prev
       for (const child of item.children || []) {
         const {next, current} = findNext(previous, child)
         if (next) return {next, current}
@@ -47,11 +47,12 @@ const useToC = () => {
       return {current: previous}
     }
 
-    return toc && findNext('', all).next
+    return toc?.map((section) => findNext('', section).next).filter(identity)[0]
   }
 
   return {
     toc: toc || [],
+    advanced: (toc || []).filter(({category}) => category === ADVANCED),
     getArticle,
     findSection,
     getPath,

@@ -47,8 +47,10 @@ export type Banner = {
 }
 export type GlossaryEntry = {
   term: string
+  alias: string
   pageid: PageId
   contents: string
+  image: string
 }
 export type Glossary = {
   [key: string]: GlossaryEntry
@@ -78,6 +80,7 @@ export type Question = {
   icon?: string
   parents?: string[]
   children?: Question[]
+  order?: number
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -131,6 +134,7 @@ export type AnswersRow = CodaRowCommon & {
     Subtitle?: string
     Icon?: string
     Parents?: Entity[]
+    Order?: number
   }
 }
 type TagsRow = CodaRowCommon & {
@@ -147,6 +151,7 @@ type GlossaryRow = CodaRowCommon & {
     phrase: string
     aliases: string
     'UI ID': string
+    image: Entity
   }
 }
 type BannersRow = CodaRowCommon & {
@@ -289,6 +294,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   icon: extractText(values.Icon),
   parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
   updatedAt: updatedAt || values['Doc Last Edited'],
+  order: values.Order || 0,
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
@@ -326,12 +332,14 @@ export const loadGlossary = withCache('loadGlossary', async () => {
         const phrases = [values.phrase, ...values.aliases.split('\n')]
         const item = {
           pageid,
+          term: extractText(values.phrase),
+          image: values.image?.url,
           contents: renderText(pageid, extractText(values.definition)),
         }
         return phrases
-          .map((i) => extractText(i.toLowerCase()))
+          .map((i) => extractText(i))
           .filter(Boolean)
-          .map((phrase) => [phrase, {term: phrase, ...item}])
+          .map((phrase) => [phrase.toLowerCase(), {alias: phrase, ...item}])
       })
       .flat()
   )

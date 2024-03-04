@@ -1,14 +1,17 @@
 .button {
   cursor: pointer;
   display: inline-flex;
-  height: var(--spacing-56, 56px);
-  padding: 7px 21px;
+  min-height: var(--spacing-56, 56px);
+  padding: var(--spacing-8) var(--spacing-24);
   justify-content: center;
   align-items: center;
   gap: var(--spacing-4, 4px);
-  box-shadow: 0px 16px 40px 0px rgba(32, 44, 89, 0.05);
-  border-radius: 6px;
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(32, 44, 89, 0.05);
+  border-radius: var(--border-radius);
   box-sizing: border-box;
+
+  background: var(--colors-white, #ffffff);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
 }
 
 .primary {
@@ -31,7 +34,7 @@
 }
 
 .secondary {
-  color: var(--colors-cool-grey-600, #788492);
+  color: var(--colors-cool-grey-600, #788492) !important;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
 }
@@ -52,7 +55,7 @@
 
 /* #### Composite button #### */
 .composite-button {
-  box-shadow: 0px 16px 40px rgba(175, 183, 194, 0.2);
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(175, 183, 194, 0.2);
 }
 
 .composite-button > form .button,
@@ -66,16 +69,16 @@
 
 .composite-button > form:first-child .button,
 .composite-button > .button:first-child {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
   border-left-width: 1px;
   border-right: 1px solid transparent;
 }
 
 .composite-button > form:last-of-type .button,
 .composite-button > .button:last-child {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
   border-right-width: 1px;
   border-left: 1px solid transparent;
 }
@@ -95,13 +98,13 @@
   content: attr(data-tooltip);
   position: absolute;
   transform: translateY(var(--spacing-56, 56px));
-  padding: 5px;
+  padding: var(--spacing-4);
   color: var(--colors-white);
-  background: var(--text-black);
-  background: #333;
+  background: var(--colors-black);
   border-radius: 5px;
   display: none;
   z-index: 1;
+  font-size: 16px; /* hard to set via classes, what with this being a pseudoclass */
 }
 
 .button.full-width {

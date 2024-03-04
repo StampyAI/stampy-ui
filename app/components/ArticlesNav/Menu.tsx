@@ -1,4 +1,6 @@
 import {Link} from '@remix-run/react'
+import ChevronRight from '~/components/icons-generated/ChevronRight'
+import {questionUrl} from '~/routesMapper'
 import type {TOCItem} from '~/routes/questions.toc'
 import './menu.css'
 
@@ -6,38 +8,42 @@ type Article = {
   article: TOCItem
   path?: string[]
   current?: string
+  hideChildren?: boolean
+  className?: string
 }
 
 const DropdownIcon = ({article, path}: Article) => {
   if (!article?.children || article.children.length === 0 || article.pageid === (path && path[0]))
     return null
-  if (!path?.includes(article.pageid)) return <div className="dropdown-icon" />
-  return <div className="dropdown-icon active" />
+  if (!path?.includes(article.pageid)) return <ChevronRight className="dropdown-icon" />
+  return <ChevronRight className="dropdown-icon active" />
 }
 
 const Title = ({article, path, current}: Article) => {
-  const selectedClass = article?.pageid === current ? ' selected' : ''
-  if (article.pageid === (path && path[0])) {
-    return (
-      <Link to={`/${article.pageid}`}>
-        <div className={'article' + selectedClass}>
-          <div className="articles-headerLine">{article?.title}</div>
-        </div>
-      </Link>
-    )
-  }
+  const isHeader = article.pageid === (path && path[0])
+  const classes = [
+    isHeader && 'small-bold',
+    isHeader && 'header',
+    article?.pageid === current && 'selected',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <summary className={'articles-title' + selectedClass}>
-      {!article.hasText ? article.title : <Link to={`/${article.pageid}`}>{article.title}</Link>}
-      <DropdownIcon article={article} path={path} />
+    <summary className={'articles-title ' + classes}>
+      {!article.hasText ? article.title : <Link to={questionUrl(article)}>{article.title}</Link>}
+      {!isHeader && <DropdownIcon article={article} path={path} />}
     </summary>
   )
 }
 
-const ArticleLevel = ({article, path, current}: Article) => {
+const ArticleLevel = ({article, path, current, hideChildren}: Article) => {
   if (!article.hasText && (!article.children || article.children.length === 0)) return null
-  const isParentClass =
-    article.pageid !== current && (path || []).includes(article.pageid) ? ' parent' : ''
+
+  const currentPage = article.pageid === current
+  const isParent = (path || []).includes(article.pageid)
+  const isParentClass = !hideChildren && !currentPage && isParent ? ' parent' : ''
+
   return (
     <details
       key={article.pageid}
@@ -45,23 +51,28 @@ const ArticleLevel = ({article, path, current}: Article) => {
       className={'article' + isParentClass}
     >
       <Title article={article} path={path} current={current} />
-      <div className={'articles-dropdown' + (path?.includes(article.pageid) ? ' active' : '')}>
-        {article.children?.map((child) => (
-          <ArticleLevel key={child.pageid} article={child} path={path} current={current} />
-        ))}
-      </div>
+      {!hideChildren && (
+        <>
+          <div
+            className={'grey articles-dropdown' + (path?.includes(article.pageid) ? ' active' : '')}
+          >
+            {article.children?.map((child) => (
+              <ArticleLevel key={child.pageid} article={child} path={path} current={current} />
+            ))}
+          </div>
+          <hr className="mobile-only" />
+        </>
+      )}
     </details>
   )
 }
 
-export const ArticlesNav = ({article, path}: Article) => {
+export const ArticlesNav = ({article, path, className}: Article) => {
   const current = path ? path[path.length - 1] : ''
 
   return (
-    <div className="articles-group">
-      {/* Section Header */}
-      <Title article={article} path={path} current={current} />
-
+    <div className={`articles-group col-4-5 small ${className || ''}`}>
+      <ArticleLevel article={article} path={path} current={current} hideChildren />
       <hr />
 
       {article.children?.map((item) => (
@@ -69,8 +80,4 @@ export const ArticlesNav = ({article, path}: Article) => {
       ))}
     </div>
   )
-}
-
-export const EmtpyArticlesNav = () => {
-  return <div className="articles-group empty"></div>
 }

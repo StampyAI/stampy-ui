@@ -2,7 +2,8 @@ import {useState} from 'react'
 import {Link} from '@remix-run/react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
-import styles from './menu.module.css'
+import {tagUrl} from '~/routesMapper'
+import './menu.css'
 
 interface CategoriesNavProps {
   /**
@@ -13,28 +14,29 @@ interface CategoriesNavProps {
    * Id of selected category
    */
   activeCategoryId: number
+  /**
+   * Class name for the component
+   */
+  className?: string
 }
 
-export const CategoriesNav = ({categories, activeCategoryId}: CategoriesNavProps) => {
+export const CategoriesNav = ({categories, activeCategoryId, className}: CategoriesNavProps) => {
   const [search, onSearch] = useState('')
   return (
-    <div className={styles.categoriesGroup}>
+    <div className={['categoriesGroup bordered col-4-5', className].join(' ')}>
       <h4>Categories</h4>
-      <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
+      <div>
+        <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
+      </div>
       {categories
         .filter((tag) => tag.name.toLowerCase().includes(search.toLowerCase()))
         .map(({tagId, name, questions}) => (
           <Link
-            to={`/tags/${tagId}/${name}`}
             key={tagId}
-            className={[
-              styles.categoryAutoLayoutHorizontal,
-              activeCategoryId == tagId ? styles.active : '',
-            ].join(' ')}
+            to={tagUrl({tagId, name})}
+            className={['categoryTitle', activeCategoryId == tagId ? 'selected' : ''].join(' ')}
           >
-            <div className={styles.categoryTitle}>
-              {name} ({questions.length})
-            </div>
+            {name} ({questions.length})
           </Link>
         ))}
     </div>
