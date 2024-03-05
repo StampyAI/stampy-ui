@@ -1,6 +1,7 @@
 import {Link} from '@remix-run/react'
 import Paper from '~/components/icons-generated/Paper'
 import './dropdown.css'
+import useIsMobile from '~/hooks/isMobile'
 
 export interface SearchResultsProps {
   /**
@@ -22,6 +23,7 @@ export interface SearchResultsProps {
 }
 
 export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
+  const isMobile = useIsMobile()
   const noResults = results.length === 0
   if (noResults) {
     return (
@@ -37,7 +39,9 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
         <Link key={i} className="search-result" to={result.url}>
           <Paper />
           <div className="search-result-content">
-            <h5 className="search-result-title">{result.title}</h5>
+            <h5 className={['search-result-title', isMobile ? 'xs-bold' : ''].join(' ')}>
+              {result.title}
+            </h5>
             <div className="search-result-description">{result.description}</div>
             <div className="search-result-source">{result.source}</div>
           </div>

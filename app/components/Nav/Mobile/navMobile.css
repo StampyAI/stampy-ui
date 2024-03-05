@@ -67,6 +67,7 @@
     align-content: center;
     justify-content: flex-start;
     align-items: flex-start;
+    width: 100%;
   }
   .mobile-searchbar > svg {
     margin-top: var(--spacing-12);
@@ -78,9 +79,12 @@
   }
   .container-search-results-mobile {
     height: 50vh;
-    width: 82vw;
+    width: 100%;
     position: inherit;
     margin-top: var(--spacing-8);
     overflow: scroll;
+  }
+  .mobile-searchbar > div {
+    width: 100%;
   }
 }
