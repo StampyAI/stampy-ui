@@ -6,6 +6,7 @@ import {loader} from '~/routes/tags.all'
 import {CategoriesNav} from '~/components/CategoriesNav/Menu'
 import type {Tag as TagType} from '~/server-utils/stampy'
 import useIsMobile from '~/hooks/isMobile'
+import {CategoriesPage} from '~/components/CategoriesNav/Page'
 export {loader}
 
 export const sortFuncs = {
@@ -36,21 +37,29 @@ export default function Tags() {
     <Page>
       <main>
         <div className="article-container">
-          <CategoriesNav
-            categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
-            activeCategoryId={selectedTag?.tagId || 0}
-            className={mobile && selectedTag !== null ? 'desktop-only' : ''}
-          />
-          {selectedTag === null ? null : (
-            <article>
-              <h1 className="padding-bottom-40">{selectedTag.name}</h1>
-              <div className="padding-bottom-24">
-                {selectedTag.questions.length === 0
-                  ? 'No pages found'
-                  : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
-              </div>
-              {selectedTag && <ListTable className="col-8" elements={selectedTag.questions} />}
-            </article>
+          {!mobile && selectedTag === null ? (
+            <CategoriesPage
+              categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
+            />
+          ) : (
+            <>
+              <CategoriesNav
+                categories={tags.filter((tag) => tag.questions.length > 0).sort(sortFuncs[sortBy])}
+                activeCategoryId={selectedTag?.tagId || 0}
+                className={mobile && selectedTag !== null ? 'desktop-only' : ''}
+              />
+              {selectedTag === null ? null : (
+                <article>
+                  <h1 className="padding-bottom-40">{selectedTag.name}</h1>
+                  <div className="padding-bottom-24">
+                    {selectedTag.questions.length === 0
+                      ? 'No pages found'
+                      : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
+                  </div>
+                  {selectedTag && <ListTable className="col-8" elements={selectedTag.questions} />}
+                </article>
+              )}
+            </>
           )}
         </div>
       </main>

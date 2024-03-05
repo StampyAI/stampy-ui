@@ -10,6 +10,22 @@
   display: inline-block;
   width: 100%;
 }
+.categoriesPage {
+  padding: 0 var(--spacing-192);
+}
+.categoriesPage > h1 {
+  margin-bottom: var(--spacing-40);
+}
+.categories-results {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-top: var(--spacing-40);
+}
+.categories-results > .categoryTitle {
+  flex: 1;
+  flex-basis: 16vw;
+}
 @media (max-width: 640px) {
   .categoriesGroup {
     width: 100%;
