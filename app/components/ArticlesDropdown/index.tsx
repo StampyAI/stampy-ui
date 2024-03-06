@@ -50,21 +50,22 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
 
   return shown ? null : (
     <div className="articles-dropdown-container bordered col-8">
-      <div>
+      <div className="col-5 toc">
         <ArticlesSection category={INTRODUCTORY} toc={toc} className="padding-bottom-32" />
         <ArticlesSection category={ADVANCED} toc={toc} />
       </div>
-
-      <div>
+      <div className="col-4">
         {/*sorted right side*/}
         <div className="default-bold">Browse by category</div>
 
-        {categories
-          ?.sort(sortFuncs['by number of questions'])
-          .slice(0, 12)
-          .map((tag) => (
-            <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
-          ))}
+        <div className="padding-bottom-8">
+          {categories
+            ?.sort(sortFuncs['by number of questions'])
+            .slice(0, 12)
+            .map((tag) => (
+              <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
+            ))}
+        </div>
 
         <Button action={tagsUrl()} className="secondary">
           <span onClick={hide}> Browse all categories</span>
