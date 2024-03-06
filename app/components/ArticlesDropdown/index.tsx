@@ -39,7 +39,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
     className?: string
   }) => (
     <div className={className || ''}>
-      <div className="default-bold">{category}</div>
+      <div className="default-bold">{category} sections</div>
       {toc
         .filter((item) => item.category === category)
         .map((item: TOCItem) => (
