@@ -24,7 +24,7 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
       </div>
       <div className={`${styles.container} flex-container bordered ${styles.flex_dynamic}`}>
         <div className="vertically-centered white default-bold">{next.title}</div>
-        <Button action={questionUrl(next)} className="primary-alt">
+        <Button action={questionUrl(next)} className="vertically-centered primary-alt">
           {first ? 'Start' : 'Next'}
           <ArrowRight />
         </Button>

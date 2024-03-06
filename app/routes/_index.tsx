@@ -29,6 +29,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
   const {advanced} = useToC()
+  console.log(advanced)
   return (
     <Page>
       <div className="page-body">
@@ -38,6 +39,7 @@ export default function App() {
         <ContentBoxSecond />
         <ContentBoxThird />
 
+        <div className="desktop-only padding-bottom-56" />
         <WidgetStampy />
 
         <h3 className="grey large-bold padding-bottom-32">Advanced sections</h3>
