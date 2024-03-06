@@ -94,8 +94,16 @@ type Props = {
   showText?: boolean
   children?: ReactNode | ReactNode[]
   [k: string]: unknown
+  onSuccess?: () => void
 }
-export const Action = ({pageid, actionType, showText = true, children, ...props}: Props) => {
+export const Action = ({
+  pageid,
+  actionType,
+  showText = true,
+  children,
+  onSuccess,
+  ...props
+}: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
   const {Icon, title} = actions[actionType]
@@ -139,6 +147,7 @@ export const Action = ({pageid, actionType, showText = true, children, ...props}
     const response = await fetch('/questions/actions', {method: 'POST', body: searchParams})
 
     if (response.ok !== true) setActionTaken(!actionTaken)
+    else if (onSuccess) onSuccess()
   }
 
   const className = 'secondary icon-link' + (actionTaken ? ' focused' : '')

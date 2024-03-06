@@ -7,18 +7,28 @@ type ButtonProps = {
   children?: ReactNode
   className?: string
   tooltip?: string
+  disabled?: boolean
 }
-const Button = ({children, action, tooltip, className}: ButtonProps) => {
+const Button = ({children, action, tooltip, className, disabled = false}: ButtonProps) => {
   const classes = ['button', className, tooltip && 'tooltip'].filter((i) => i).join(' ')
   if (typeof action === 'string') {
     return (
-      <Link to={action} className={classes} data-tooltip={tooltip}>
+      <Link
+        to={action}
+        className={classes}
+        data-tooltip={tooltip}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault()
+          }
+        }}
+      >
         {children}
       </Link>
     )
   }
   return (
-    <button className={classes} onClick={action} data-tooltip={tooltip}>
+    <button className={classes} onClick={action} data-tooltip={tooltip} disabled={disabled}>
       {children}
     </button>
   )

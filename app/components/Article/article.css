@@ -127,6 +127,8 @@ article .link-popup p {
 article .footer-comtainer {
   display: flex;
   align-items: center;
+  margin-top: var(--spacing-56);
+  margin-bottom: var(--spacing-24);
 }
 
 article .footer-comtainer > * {
