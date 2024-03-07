@@ -26,7 +26,7 @@ export const MobileNav = ({toc, categories}: NavProps) => {
     setShowSearch(!showSearch)
   }
   return (
-    <header className="top-header">
+    <header className={['top-header', showArticles || showMenu ? 'expanded' : ''].join(' ')}>
       {!showArticles && (
         <>
           <nav className="top-nav">

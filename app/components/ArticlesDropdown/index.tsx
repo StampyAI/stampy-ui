@@ -6,6 +6,7 @@ import {sortFuncs} from '~/routes/tags.$'
 import {questionUrl, tagsUrl, tagUrl} from '~/routesMapper'
 import Button from '~/components/Button'
 import './dropdown.css'
+import useIsMobile from '~/hooks/isMobile'
 
 export type ArticlesDropdownProps = {
   toc: TOCItem[]
@@ -20,7 +21,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   const [shown, setShown] = useState(false)
   const hide = () => setShown(true)
   useEffect(() => setShown(false), [shown])
-
+  const mobile = useIsMobile()
   const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
     <div className={'articles-dropdown-entry ' + (className || '')}>
       <LinkElem to={to} onClick={hide}>
@@ -51,8 +52,16 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   return shown ? null : (
     <div className="articles-dropdown-container bordered col-8">
       <div>
-        <ArticlesSection category={INTRODUCTORY} toc={toc} className="padding-bottom-32" />
-        <ArticlesSection category={ADVANCED} toc={toc} />
+        <ArticlesSection
+          category={INTRODUCTORY}
+          toc={toc}
+          className={mobile ? 'padding-bottom-40' : 'padding-bottom-32'}
+        />
+        <ArticlesSection
+          category={ADVANCED}
+          toc={toc}
+          className={mobile ? 'padding-bottom-40' : ''}
+        />
       </div>
 
       <div>
@@ -66,7 +75,10 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
             <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
           ))}
 
-        <Button action={tagsUrl()} className="secondary">
+        <Button
+          action={tagsUrl()}
+          className={['secondary', mobile ? 'margin-top-40' : ''].join(' ')}
+        >
           <span onClick={hide}> Browse all categories</span>
         </Button>
       </div>
