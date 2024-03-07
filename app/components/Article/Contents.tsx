@@ -117,13 +117,13 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       if (!entry) return undefined
       const link =
         entry.pageid &&
-        `<a href="${questionUrl(entry)}" class="button secondary">View full definition</a>`
+        `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
       const image = entry.image && `<img src="${entry.image}"/>`
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}`,
-        `<div class="glossary-popup flex-container black small">
-              <div class="contents col-8">
+        `<div class="glossary-popup flex-container black small col-${image ? 6 : 4}">
+              <div class="contents col-6 ${image ? '' : 'full-width'}">
                    <div class="small-bold">${entry.term}</div>
                    <div class="defintion small">${entry.contents}</div>
                    ${link || ''}
@@ -161,7 +161,12 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
       const footnote = footnoteHTML(el, e as HTMLAnchorElement)
       const footnoteId = (e.getAttribute('href') || '').replace('#', '')
-      if (footnote) addPopup(e as HTMLAnchorElement, `footnote-${footnoteId}`, footnote)
+      if (footnote)
+        addPopup(
+          e as HTMLAnchorElement,
+          `footnote-${footnoteId}`,
+          `<div class="footnote">${footnote}</div>`
+        )
     })
   }, [html, glossary, pageid])
 
