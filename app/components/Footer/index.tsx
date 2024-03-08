@@ -35,7 +35,7 @@ export const FooterBar: FunctionComponent = () => {
         </div>
         <div className="partners small col-4">
           <p className="small-bold padding-bottom-16">Partner projects</p>
-          <Link to="https://www.aisafety.com/" title="AIsafety.com" />
+          <Link to="https://www.aisafety.com/" title="AISafety.com" />
           <Link to="https://alignment.dev/" title="Alignment Ecosystem Development" />
         </div>
       </div>
