@@ -3,6 +3,7 @@
   justify-content: space-between;
   padding: var(--spacing-32);
   margin-bottom: var(--spacing-56);
+  gap: var(--spacing-24);
 }
 
 @media (max-width: 640px) {

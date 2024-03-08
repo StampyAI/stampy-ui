@@ -8,12 +8,14 @@
   z-index: 100;
   top: 80px;
   position: absolute;
-  padding: var(--spacing-56);
   justify-content: space-between;
   display: flex;
 
   transition: visibility 0.2s;
   visibility: hidden;
+}
+.articles-dropdown-container > div {
+  padding: var(--spacing-56);
 }
 
 .articles-dropdown-title.top-margin-large {
@@ -21,4 +23,8 @@
 }
 .articles-dropdown-entry {
   margin: var(--spacing-12) 0;
+}
+
+.articles-dropdown-container .toc {
+  border-right: 1px solid var(--colors-cool-grey-200);
 }

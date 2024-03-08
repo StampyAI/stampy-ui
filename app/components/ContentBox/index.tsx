@@ -51,7 +51,7 @@ export const ContentBoxMain = () => (
     action={questionUrl({pageid: '9OGZ'})}
     actionTitle={
       <>
-        Start reading
+        <span className="default-bold">Start reading</span>
         <ArrowRight />
       </>
     }
@@ -70,6 +70,7 @@ export const ContentBoxSecond = () => {
       actionTitle="Explore the arguments"
     >
       <ListTable
+        sameTab
         elements={[
           {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
           {
@@ -91,7 +92,7 @@ export const ContentBoxThird = () => {
       title="Want to help with AI safety?"
       action={questionUrl(article)}
       actionTitle="Get involved"
-      classNameTable={'content-box-table main'}
+      classNameTable="content-box-table main"
     >
       <SvgGroup className="desktop-only" />
       <GetInvolvedMobile className="mobile-only full-width" />

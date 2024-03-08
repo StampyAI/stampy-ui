@@ -78,8 +78,12 @@ article .link-popup {
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
+article .link-popup .footnote {
+  padding: var(--spacing-24) var(--spacing-24) 0 var(--spacing-24);
+}
+
 article .glossary-popup {
-  width: 522px;
+  max-width: 522px;
   height: 304px;
 }
 

@@ -45,6 +45,7 @@ const ArticleFooter = (question: Question) => {
             className="secondary"
             action={question.answerEditLink || ''}
             tooltip="Edit article"
+            props={{target: '_blank', rel: 'noopener noreferrer'}}
           >
             <EditIcon className="no-fill" />
           </Button>
@@ -94,7 +95,12 @@ const ArticleActions = ({answerEditLink}: Question) => {
       <Button className="secondary" action={copyLink} tooltip={tooltip}>
         <CopyIcon />
       </Button>
-      <Button className="secondary" action={answerEditLink || ''} tooltip="Edit article">
+      <Button
+        className="secondary"
+        action={answerEditLink || ''}
+        tooltip="Edit article"
+        props={{target: '_blank', rel: 'noopener noreferrer'}}
+      >
         <EditIcon className="no-fill" />
       </Button>
     </CompositeButton>
