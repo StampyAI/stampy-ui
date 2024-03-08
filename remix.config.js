@@ -1,6 +1,5 @@
 const routes = (defineRoutes) =>
   defineRoutes((route) => {
-    console.log(route)
     route('/*', 'routes/$redirects.tsx')
   })
 

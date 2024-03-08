@@ -32,7 +32,6 @@ const FeedbackForm = ({
   hasOptions = true,
 }: FeedbackFormProps) => {
   // to be implemented.
-  console.log(pageid)
   const [selected, setSelected] = React.useState<string>()
   const options = [
     {
@@ -77,7 +76,7 @@ const FeedbackForm = ({
   const handleSubmit = () => {}
 
   return (
-    <div className={className} onBlur={handleBlur} onFocus={onFocus}>
+    <div key={pageid} className={className} onBlur={handleBlur} onFocus={onFocus}>
       <div className={'col-5 feedback-container bordered'}>
         <span className={'black small'}>What was the problem?</span>
         {hasOptions

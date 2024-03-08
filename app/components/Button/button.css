@@ -98,7 +98,7 @@
   content: attr(data-tooltip);
   position: absolute;
   transform: translateY(var(--spacing-56, 56px));
-  padding: var(--spacing-4);
+  padding: var(--spacing-16);
   color: var(--colors-white);
   background: var(--colors-black);
   border-radius: 5px;

@@ -1,6 +1,6 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {loadAllQuestions, Question, PageId} from '~/server-utils/stampy'
+import {loadAllQuestions, Question, PageId, QuestionStatus} from '~/server-utils/stampy'
 
 const MAX_LEVELS = 3
 export const INTRODUCTORY = 'Introductory'
@@ -59,7 +59,11 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
   const items = data.reduce((acc, item) => ({...acc, [item.title]: item}), {}) as {
     [k: string]: Question
   }
+  const canBeShown = ({status}: Question) =>
+    status && [QuestionStatus.LIVE_ON_SITE, QuestionStatus.NOT_STARTED].includes(status)
+
   data
+    .filter(canBeShown)
     .filter(({parents}) => parents && parents.length > 0)
     .forEach((item) => {
       item?.parents?.forEach((name) => {
@@ -72,6 +76,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     })
   return {
     data: data
+      .filter(canBeShown)
       .filter(({tags}) => tags.includes(INTRODUCTORY) || tags.includes(ADVANCED))
       .map(formatQuestion(1))
       .sort((a, b) => (a.order || 0) - (b.order || 0)),

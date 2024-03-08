@@ -17,7 +17,7 @@ type NextArticleProps = {
 const NextArticle = ({section, next, first}: NextArticleProps) =>
   next && (
     <>
-      <h2 className="padding-bottom-40">Keep reading! &#128073;</h2>
+      <h2 className="padding-bottom-40">Keep reading!</h2>
       <div className="padding-bottom-24">
         {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} entry in "
         {section?.title}"

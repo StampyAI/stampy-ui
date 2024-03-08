@@ -9,9 +9,6 @@
   .top-logo {
     padding: 0;
   }
-  .menu-button {
-    cursor: pointer;
-  }
   .composite-elements {
     display: flex;
     align-items: center;

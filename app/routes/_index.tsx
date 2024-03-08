@@ -1,7 +1,6 @@
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldRevalidateFunction, redirect} from '@remix-run/react'
 import {QuestionState} from '~/server-utils/stampy'
-import {WidgetStampy} from '~/components/Widget/Stampy'
 import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/ContentBox'
 import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
@@ -29,7 +28,6 @@ export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
   const {advanced} = useToC()
-  console.log(advanced)
   return (
     <Page>
       <div className="page-body">
@@ -40,7 +38,7 @@ export default function App() {
         <ContentBoxThird />
 
         <div className="desktop-only padding-bottom-56" />
-        <WidgetStampy />
+        {/* <WidgetStampy /> */}
 
         <h3 className="grey large-bold padding-bottom-32">Advanced sections</h3>
         <Grid gridBoxes={advanced} />
