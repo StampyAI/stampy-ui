@@ -404,6 +404,11 @@ ol {
   background: pink !important;
 }
 
+/* defines the standard left and right margins */
+.page-body {
+  padding: 0px 13.333vw;
+}
+
 /* all other classes */
 .rounded {
   border-radius: var(--border-radius);
@@ -417,11 +422,6 @@ ol {
   box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
   border: 1px solid var(--colors-cool-grey-200);
   box-sizing: border-box;
-}
-
-/* defines the standard left and right margins */
-.page-body {
-  padding: 0px 13.333vw;
 }
 
 .article-container {
@@ -481,14 +481,14 @@ ol {
 
   h1 {
     font-size: 38px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 130%; /* 49.4px */
     letter-spacing: -0.57px;
   }
 
   h2 {
     font-size: 26px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 145%; /* 37.7px */
     letter-spacing: -0.52px;
   }
@@ -497,21 +497,21 @@ ol {
 
   .large {
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
   }
 
   .large-reading {
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 190%; /* 34.2px */
     letter-spacing: -0.18px;
   }
 
   .large-bold {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
   }

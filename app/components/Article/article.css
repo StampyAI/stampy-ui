@@ -47,7 +47,7 @@ article .tag:hover {
 
 article .contents a {
   color: var(--colors-teal-500);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 article .contents a:visited {
