@@ -26,7 +26,7 @@ export const CategoriesNav = ({categories, activeCategoryId, className}: Categor
   const mobile = useIsMobile()
   return (
     <div className={['categoriesGroup bordered col-4-5', className].join(' ')}>
-      {mobile ? <h1>Categories</h1> : <h4>Categories</h4>}
+      {mobile ? <h1>Categories</h1> : <p className={'small-bold'}>Categories</p>}
       <div>
         <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
       </div>
