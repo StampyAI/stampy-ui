@@ -68,7 +68,7 @@ export default function Search({queryFromUrl, limitFromUrl, removeQueryFromUrl}:
   const handleChange = debounce(searchFn, 100)
 
   const handleBlur = () => {
-    setTimeout(() => setShowResults(false), 100)
+    setTimeout(() => setShowResults(false), 500)
   }
 
   return (
