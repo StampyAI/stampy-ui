@@ -1,4 +1,4 @@
-import {useState, useRef, useEffect} from 'react'
+import {useState} from 'react'
 import MagnifyingIcon from '~/components/icons-generated/Magnifying'
 import XIcon from '~/components/icons-generated/X'
 import './input.css'
@@ -19,16 +19,12 @@ interface SearchInputProps {
 }
 export const SearchInput = ({onChange, expandable, placeholderText}: SearchInputProps) => {
   const [search, setSearch] = useState('')
-  const inputRef = useRef<HTMLInputElement | null>(null)
   const handleSearch = (search: string) => {
     setSearch(search)
     if (onChange) {
       onChange(search)
     }
   }
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
   const clear = () => handleSearch('')
 
   return (
@@ -46,7 +42,6 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
             handleSearch(e.currentTarget.value)
           }}
           value={search}
-          ref={inputRef}
         />
         {search !== '' && <XIcon className="x-icon" onClick={clear} />}
       </div>

@@ -40,7 +40,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
     className?: string
   }) => (
     <div className={className || ''}>
-      <div className="default-bold">{category}</div>
+      <div className="default-bold">{category} sections</div>
       {toc
         .filter((item) => item.category === category)
         .map((item: TOCItem) => (
@@ -51,7 +51,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
 
   return shown ? null : (
     <div className="articles-dropdown-container bordered col-8">
-      <div>
+      <div className="col-5 toc">
         <ArticlesSection
           category={INTRODUCTORY}
           toc={toc}
@@ -63,17 +63,18 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
           className={mobile ? 'padding-bottom-40' : ''}
         />
       </div>
-
-      <div>
+      <div className="col-4">
         {/*sorted right side*/}
         <div className="default-bold">Browse by category</div>
 
-        {categories
-          ?.sort(sortFuncs['by number of questions'])
-          .slice(0, 12)
-          .map((tag) => (
-            <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
-          ))}
+        <div className="padding-bottom-8">
+          {categories
+            ?.sort(sortFuncs['by number of questions'])
+            .slice(0, 12)
+            .map((tag) => (
+              <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
+            ))}
+        </div>
 
         <Button
           action={tagsUrl()}

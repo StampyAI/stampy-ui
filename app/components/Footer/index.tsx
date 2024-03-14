@@ -31,11 +31,11 @@ export const FooterBar: FunctionComponent = () => {
           <Link to="https://www.every.org/stampy?utm_campaign=donate-link#/donate" title="Donate" />
           <Link to="https://github.com/StampyAI/stampy-ui" title="Code" />
           <Link to="https://get_involved.aisafety.info/" title="Write" />
-          <Link to="https://discord.com/invite/Bt8PaRTDQC" title="Join us on Discord" />
+          <Link to="https://discord.gg/88TbjZnNyA" title="Join us on Discord" />
         </div>
         <div className="partners small col-4">
           <p className="small-bold padding-bottom-16">Partner projects</p>
-          <Link to="https://www.aisafety.com/" title="AIsafety.com" />
+          <Link to="https://www.aisafety.com/" title="AISafety.com" />
           <Link to="https://alignment.dev/" title="Alignment Ecosystem Development" />
         </div>
       </div>

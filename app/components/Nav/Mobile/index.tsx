@@ -5,7 +5,6 @@ import {ListLarge} from '~/components/icons-generated'
 import {XLarge} from '~/components/icons-generated'
 import {CarrotLarge} from '~/components/icons-generated'
 import OpenBookIcon from '~/components/icons-generated/OpenBook'
-import BotIcon from '~/components/icons-generated/Bot'
 import MagnifyingLarge from '~/components/icons-generated/MagnifyingLarge'
 import {NavProps} from '~/components/Nav'
 import Button from '~/components/Button'
@@ -38,18 +37,18 @@ export const MobileNav = ({toc, categories}: NavProps) => {
 
                 {!showMenu ? (
                   <div>
-                    <MagnifyingLarge className={'search-icon'} onClick={toggleSearch} />
-                    <ListLarge className={'menu-button'} onClick={() => setShowMenu(true)} />
+                    <MagnifyingLarge className="search-icon pointer" onClick={toggleSearch} />
+                    <ListLarge className="pointer" onClick={() => setShowMenu(true)} />
                   </div>
                 ) : (
-                  <XLarge className={'menu-button'} onClick={toggleMenu} />
+                  <XLarge className="pointer" onClick={toggleMenu} />
                 )}
               </>
             )}
 
             {showSearch ? (
               <div className={'mobile-searchbar'}>
-                <XLarge className={'menu-button'} onClick={toggleMenu} />
+                <XLarge className="pointer" onClick={toggleMenu} />
                 <Search />
               </div>
             ) : null}
@@ -62,15 +61,9 @@ export const MobileNav = ({toc, categories}: NavProps) => {
               >
                 <p className={'composite-elements small'}>
                   <OpenBookIcon className={'icon-margin'} />
-                  Articles
+                  <span className="black">Articles</span>
                 </p>
                 <CarrotLarge />
-              </Button>
-              <Button action="https://xkcd.com/285/" className="secondary full-width flex-start">
-                <p className={'composite-elements small'}>
-                  <BotIcon className={'icon-margin'} />
-                  Stampy chatbot
-                </p>
               </Button>
             </div>
           )}
@@ -84,10 +77,10 @@ export const MobileNav = ({toc, categories}: NavProps) => {
               <OpenBookIcon className={'icon-margin'} />
               Articles
             </p>
-            <XLarge className={'menu-button'} onClick={toggleMenu} />
+            <XLarge className="pointer" onClick={toggleMenu} />
           </nav>
 
-          <div className={'articles-mobile'}>
+          <div className={'articles-mobile'} onClick={toggleMenu}>
             <ArticlesDropdown toc={toc} categories={categories || []} />
           </div>
         </>
