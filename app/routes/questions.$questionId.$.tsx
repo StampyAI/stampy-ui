@@ -82,7 +82,7 @@ export default function RenderArticle() {
   const pageid = params.questionId ?? '😱'
   const {data, tags} = useLoaderData<typeof loader>()
   const {findSection, getArticle, getPath} = useToC()
-  const section = findSection(pageid)
+  const section = findSection(location?.state?.section || pageid)
 
   useEffect(() => {
     const getGlossary = async () => {
@@ -119,11 +119,12 @@ export default function RenderArticle() {
             <ChevronRight className="dropdown-icon active" />
           </Button>
         )}
+
         {section && (
           <ArticlesNav
             current={pageid}
             article={section}
-            path={getPath(pageid)}
+            path={getPath(pageid, section?.pageid)}
             className={!showNav ? 'desktop-only bordered' : ''}
           />
         )}

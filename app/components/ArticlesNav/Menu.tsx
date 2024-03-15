@@ -31,7 +31,13 @@ const Title = ({article, path, current}: Article) => {
 
   return (
     <summary className={'articles-title ' + classes}>
-      {!article.hasText ? article.title : <Link to={questionUrl(article)}>{article.title}</Link>}
+      {!article.hasText ? (
+        article.title
+      ) : (
+        <Link to={questionUrl(article)} state={{section: path && path[0]}}>
+          {article.title}
+        </Link>
+      )}
       {!isHeader && <DropdownIcon article={article} path={path} />}
     </summary>
   )
