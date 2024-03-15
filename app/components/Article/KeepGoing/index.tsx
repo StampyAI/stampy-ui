@@ -1,3 +1,4 @@
+import {useLocation} from 'react-router-dom'
 import Button from '~/components/Button'
 import ListTable from '~/components/Table'
 import {ArrowRight} from '~/components/icons-generated'
@@ -24,7 +25,11 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
       </div>
       <div className={`${styles.container} flex-container bordered ${styles.flex_dynamic}`}>
         <div className="vertically-centered white default-bold">{next.title}</div>
-        <Button action={questionUrl(next)} className="vertically-centered primary-alt">
+        <Button
+          action={questionUrl(next)}
+          className="vertically-centered primary-alt"
+          props={{state: {section: section?.pageid}}}
+        >
           {first ? 'Start' : 'Next'}
           <ArrowRight />
         </Button>
@@ -33,9 +38,10 @@ const NextArticle = ({section, next, first}: NextArticleProps) =>
   )
 
 export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
+  const location = useLocation()
   const {findSection, getArticle, getNext} = useToC()
-  const section = findSection(pageid)
-  const next = getNext(pageid)
+  const section = findSection(location?.state?.section || pageid)
+  const next = getNext(pageid, section?.pageid)
   const hasRelated = relatedQuestions && relatedQuestions.length > 0
   const skipNext = nonContinueSections.includes(section?.pageid || '')
 

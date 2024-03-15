@@ -22,9 +22,19 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   const hide = () => setShown(true)
   useEffect(() => setShown(false), [shown])
   const mobile = useIsMobile()
-  const Link = ({to, text, className}: {to: string; text: string; className?: string}) => (
+  const Link = ({
+    to,
+    text,
+    pageid,
+    className,
+  }: {
+    to: string
+    text: string
+    pageid?: string
+    className?: string
+  }) => (
     <div className={'articles-dropdown-entry ' + (className || '')}>
-      <LinkElem to={to} onClick={hide}>
+      <LinkElem to={to} onClick={hide} state={{section: pageid}}>
         {text}
       </LinkElem>
     </div>
@@ -44,7 +54,12 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
       {toc
         .filter((item) => item.category === category)
         .map((item: TOCItem) => (
-          <Link key={`${item.pageid}-${item.title}`} to={questionUrl(item)} text={item.title} />
+          <Link
+            key={`${item.pageid}-${item.title}`}
+            to={questionUrl(item)}
+            text={item.title}
+            pageid={item.pageid}
+          />
         ))}
     </div>
   )
