@@ -23,6 +23,10 @@ export interface FeedbackFormProps {
    * Has Options
    */
   hasOptions?: boolean
+  /**
+   * onSubmit
+   */
+  onSubmit?: () => void
 }
 const FeedbackForm = ({
   pageid,
@@ -30,6 +34,7 @@ const FeedbackForm = ({
   onBlur,
   onFocus,
   hasOptions = true,
+  onSubmit,
 }: FeedbackFormProps) => {
   // to be implemented.
   const [selected, setSelected] = React.useState<string>()
@@ -47,7 +52,7 @@ const FeedbackForm = ({
       option: 'typos',
     },
   ]
-  const [enabledSubmit, setEnabledSubmit] = React.useState(false)
+  const [enabledSubmit, setEnabledSubmit] = React.useState(!hasOptions)
   const selectFeedback = (option: string) => {
     setSelected(option)
 
@@ -73,7 +78,11 @@ const FeedbackForm = ({
     [onBlur]
   )
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit()
+    }
+  }
 
   return (
     <div key={pageid} className={className} onBlur={handleBlur} onFocus={onFocus}>
