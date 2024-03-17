@@ -24,7 +24,7 @@
 }
 .categories-results > .categoryTitle {
   flex: 1;
-  flex-basis: 16vw;
+  flex-basis: 21vw;
 }
 @media (max-width: 640px) {
   .categoriesGroup {
