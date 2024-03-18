@@ -1,8 +1,8 @@
 import {useState, useRef, useEffect, useMemo, useCallback} from 'react'
-import {useSearchParams, useTransition} from '@remix-run/react'
-import {Question, QuestionState, RelatedQuestions, PageId, Glossary} from '~/server-utils/stampy'
-import {fetchAllQuestionsOnSite} from '~/routes/questions/allQuestionsOnSite'
-import {fetchGlossary} from '~/routes/questions/glossary'
+import {useSearchParams, useNavigation} from '@remix-run/react'
+import {Question, QuestionState, RelatedQuestion, PageId, Glossary} from '~/server-utils/stampy'
+import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
+import {fetchGlossary} from '~/routes/questions.glossary'
 import {
   processStateEntries,
   getStateEntries,
@@ -34,7 +34,7 @@ const emptyQuestionArray: Question[] = []
 
 export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
   const [remixSearchParams, setRemixParams] = useSearchParams()
-  const transition = useTransition()
+  const transition = useNavigation()
   const embedWithoutDetails =
     remixSearchParams.has('embed') && !remixSearchParams.has('showDetails')
   const queryFromUrl = remixSearchParams.get('q') || ''
@@ -136,7 +136,7 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
   const unshownRelatedQuestions = (
     questions: Question[],
     questionProps: Question
-  ): RelatedQuestions => {
+  ): RelatedQuestion[] => {
     const {relatedQuestions} = questionProps
 
     const onSiteQuestions = onSiteQuestionsRef.current

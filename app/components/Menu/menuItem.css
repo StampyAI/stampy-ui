@@ -1,0 +1,13 @@
+.top-menu-link {
+  display: flex;
+}
+.top-menu-icon {
+  width: var(--spacing-24);
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+}
+.top-menu-text {
+  margin-left: var(--spacing-8);
+}

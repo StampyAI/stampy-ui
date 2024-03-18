@@ -17,7 +17,6 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
   - showInitial - show initial questions as well as the search bar
   - onlyInitial - show only initial questions without the search bar
   - showDetails - open question details (answers) directly instead of just links to aisafety.info
-- more (disabled|infini|button|buttonInfini) - debug versions of load more / infinite scroll, e.g. `aisafety.info/?more=infini`
 
 ## Stampy UI Development Setup
 

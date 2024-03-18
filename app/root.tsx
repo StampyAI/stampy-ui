@@ -1,12 +1,24 @@
-import {Links, LiveReload, Meta, Outlet, Scripts} from '@remix-run/react'
+import {useEffect, ReactNode} from 'react'
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  ScrollRestoration,
+  Scripts,
+  useParams,
+  useRouteError,
+  useLoaderData,
+} from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
-import styles from '~/root.css'
-
-import {useLoaderData} from '@remix-run/react'
+import {cssBundleHref} from '@remix-run/css-bundle'
+import newStyles from '~/newRoot.css'
+import Error from '~/components/Error'
+import Page from '~/components/Page'
+import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {questionsOnPage} from '~/hooks/stateModifiers'
+import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
-import {useTheme} from './hooks/theme'
-import {useEffect} from 'react'
 
 /*
  * Transform the given text into a meta header format.
@@ -46,31 +58,35 @@ const fetchQuestion = async (request: Request) => {
 const TITLE = 'Stampy'
 const DESCRIPTION = 'AI Safety FAQ'
 const twitterCreator = '@stampyai'
-export const meta: MetaFunction<typeof loader> = ({data}) => {
+export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
   const url = new URL(data.url)
   const logo = `${url.origin}/${data.minLogo ? 'favicon-min-512.png' : 'favicon-512.png'}`
-  return {
-    title,
-    description,
-    'og:url': data.url,
-    'og:type': 'article',
-    'og:title': title,
-    'og:description': description,
-    'og:image': logo,
-    'og:image:type': 'image/png',
-    'og:image:width': '512',
-    'og:image:height': '512',
-    'twitter:card': 'summary',
-    'twitter:title': title,
-    'twitter:description': description,
-    'twitter:image': logo,
-    'twitter:creator': twitterCreator,
-    'twitter:url': data.url,
-  }
+  return [
+    {title},
+    {name: 'description', content: description},
+    {property: 'og:url', content: data.url},
+    {property: 'og:type', content: 'article'},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:image', content: logo},
+    {property: 'og:image:type', content: 'image/png'},
+    {property: 'og:image:width', content: '512'},
+    {property: 'og:image:height', content: '512'},
+    {property: 'twitter:card', content: 'summary'},
+    {property: 'twitter:title', content: title},
+    {property: 'twitter:description', content: description},
+    {property: 'twitter:image', content: logo},
+    {property: 'twitter:creator', content: twitterCreator},
+    {property: 'twitter:url', content: data.url},
+  ]
 }
-export const links: LinksFunction = () => [{rel: 'stylesheet', href: styles}]
+
+export const links: LinksFunction = () =>
+  [newStyles, cssBundleHref]
+    .filter((i) => i)
+    .map((styles) => ({rel: 'stylesheet', href: styles as string}))
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const isDomainWithFunLogo = request.url.match(/stampy.ai|localhost/) // min logo by default on aisafety.info and 127.0.0.1
@@ -81,10 +97,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const embed = !!request.url.match(/embed/)
   const showSearch = !request.url.match(/onlyInitial/)
 
-  const question = await fetchQuestion(request).catch((e) => {
-    console.error('\n\nUnexpected error in loader\n', e)
-    return null
-  })
+  const question = await fetchQuestion(request)
 
   return {
     question,
@@ -92,7 +105,32 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     minLogo,
     embed,
     showSearch,
+    gaTrackingId: GOOGLE_ANALYTICS_ID,
   }
+}
+
+const GoogleAnalytics = ({gaTrackingId}: {gaTrackingId?: string}) => {
+  if (!gaTrackingId) return null
+  return (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`} />
+      <script
+        async
+        id="gtag-init"
+        dangerouslySetInnerHTML={{
+          __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', '${gaTrackingId}', {
+                  page_path: window.location.pathname,
+                });
+        `,
+        }}
+      />
+    </>
+  )
 }
 
 function Head({minLogo}: {minLogo?: boolean}) {
@@ -102,7 +140,7 @@ function Head({minLogo}: {minLogo?: boolean}) {
       <meta name="viewport" content="width=device-width,initial-scale=1" />
       {/* don't use color-scheme because supporting transparent iframes https://fvsch.com/transparent-iframes
           is more important than dark reader https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024
-          <meta name="color-scheme" content="light dark" /> 
+          <meta name="color-scheme" content="light dark" />
        */}
       <Meta />
       <Links />
@@ -115,20 +153,38 @@ function Head({minLogo}: {minLogo?: boolean}) {
   )
 }
 
-export function ErrorBoundary({error}: {error: Error}) {
+const BasePage = ({
+  children,
+  embed,
+  savedTheme,
+  minLogo,
+}: {
+  children: ReactNode
+  embed?: boolean
+  savedTheme?: string
+  minLogo?: boolean
+}) => (
+  <CachedObjectsProvider>
+    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
+      <Head minLogo={minLogo} />
+      <body>{children}</body>
+    </html>
+  </CachedObjectsProvider>
+)
+
+export function ErrorBoundary() {
+  const error = useRouteError()
   console.error(error)
+  const params = useParams()
+  const embed = !!params.embed
 
   return (
-    <html>
-      <Head />
-      <body>
-        <h2>Oops! Something went wrong!</h2>
-        <div>
-          Please report this error to <a href="https://discord.gg/5ZFqAKBX">the Stampy Discord</a>
-        </div>
-        <Scripts />
-      </body>
-    </html>
+    <BasePage embed={embed}>
+      <Page>
+        <Error error={error as any} />
+      </Page>
+      <Scripts />
+    </BasePage>
   )
 }
 
@@ -136,7 +192,7 @@ type Loader = Awaited<ReturnType<typeof loader>>
 export type Context = Pick<Loader, 'minLogo' | 'embed' | 'showSearch'>
 
 export default function App() {
-  const {minLogo, embed, showSearch} = useLoaderData<Loader>()
+  const {minLogo, embed, showSearch, gaTrackingId} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {minLogo, embed, showSearch}
 
@@ -161,14 +217,12 @@ export default function App() {
   }, [embed])
 
   return (
-    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
-      <Head minLogo={minLogo} />
-      <body>
-        <Outlet context={context} />
-        {/* <ScrollRestoration /> wasn't doing anything useful */}
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
+    <BasePage embed={embed} savedTheme={savedTheme} minLogo={minLogo}>
+      <GoogleAnalytics gaTrackingId={gaTrackingId} />
+      <Outlet context={context} />
+      <ScrollRestoration />
+      <Scripts />
+      <LiveReload />
+    </BasePage>
   )
 }

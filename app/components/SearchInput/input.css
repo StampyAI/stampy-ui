@@ -1,0 +1,33 @@
+.search-box:focus-within {
+  border: 1px solid var(--colors-teal-500);
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+}
+.search-box.expandable:focus-within {
+  width: 21.46vw;
+}
+
+.search-box {
+  position: relative;
+  height: 48px;
+  transition: width 100ms;
+}
+
+.search-box.expandable {
+  width: var(--spacing-288);
+}
+
+.search-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  margin: var(--spacing-8);
+}
+.search-input {
+  width: 100%;
+  border: 0;
+}
+.search-input:focus-visible {
+  border: 0;
+  outline: none;
+}

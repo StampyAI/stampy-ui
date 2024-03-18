@@ -26,7 +26,7 @@ export enum QuestionState {
   COLLAPSED = '-',
   RELATED = 'r',
 }
-export type RelatedQuestions = {title: string; pageid: string}[]
+export type RelatedQuestion = {title: string; pageid: string}
 export enum QuestionStatus {
   WITHDRAWN = 'Withdrawn',
   SKETCH = 'Bulletpoint sketch',
@@ -47,8 +47,10 @@ export type Banner = {
 }
 export type GlossaryEntry = {
   term: string
+  alias: string
   pageid: PageId
   contents: string
+  image: string
 }
 export type Glossary = {
   [key: string]: GlossaryEntry
@@ -59,7 +61,7 @@ export type Tag = {
   name: string
   url: string
   internal: boolean
-  questions: RelatedQuestions
+  questions: RelatedQuestion[]
   mainQuestion: string | null
 }
 export type Question = {
@@ -67,18 +69,23 @@ export type Question = {
   pageid: string
   text: string | null
   answerEditLink: string | null
-  relatedQuestions: RelatedQuestions
+  relatedQuestions: RelatedQuestion[]
   questionState?: QuestionState
   tags: string[]
   banners: Banner[]
   status?: QuestionStatus
   updatedAt?: string
   alternatePhrasings?: string
+  subtitle?: string
+  icon?: string
+  parents?: string[]
+  children?: Question[]
+  order?: number
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
   title: string
-  relatedQuestions: RelatedQuestions
+  relatedQuestions: RelatedQuestion[]
   source?: string
 }
 type Entity = {
@@ -120,9 +127,14 @@ export type AnswersRow = CodaRowCommon & {
     'Alternate Phrasings': string
     'Related Answers': '' | Entity[]
     'Related IDs': '' | string[]
+    'Doc Last Edited': '' | string
     Tags: '' | Entity[]
     Banners: '' | Entity[]
     'Rich Text': string
+    Subtitle?: string
+    Icon?: Entity | string | Entity[]
+    Parents?: Entity[]
+    Order?: number
   }
 }
 type TagsRow = CodaRowCommon & {
@@ -139,6 +151,7 @@ type GlossaryRow = CodaRowCommon & {
     phrase: string
     aliases: string
     'UI ID': string
+    image: Entity
   }
 }
 type BannersRow = CodaRowCommon & {
@@ -198,7 +211,7 @@ export const fetchJson = async (url: string, params?: RequestInit) => {
 }
 
 export const fetchJsonList = async (url: string, params?: RequestInit) => {
-  const json = await fetchJson(url, params)
+  const json = (await fetchJson(url, params)) as any
   if (!json.items || json.items.length === 0) {
     throw Error(`Empty response for ${url}`)
   }
@@ -237,7 +250,7 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   if (!markdown) return null
 
   markdown = extractText(markdown)
-  markdown = urlToIframe(markdown)
+  markdown = urlToIframe(markdown || '')
 
   let html = convertToHtmlAndWrapInDetails(markdown)
   html = uniqueFootnotes(html, pageid)
@@ -247,18 +260,28 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   return html
 }
 
+// Icons can be returned as strings or objects
+const extractIcon = (val?: string | string[] | Entity | Entity[]): string | undefined => {
+  if (!val) return val
+  const item = head(val)
+  if (typeof item === 'string') return extractText(val as string)
+  if (item) return (item as Entity).url
+  return undefined
+}
+
 // Sometimes string fields are returned as lists. This can happen when there are duplicate entries in Coda
-const head = (item: string | string[]) => {
+const head = (item: any | any[]) => {
   if (Array.isArray(item)) return item[0]
   return item
 }
-const extractText = (markdown: string) => head(markdown)?.replace(/^```|```$/g, '')
+const extractText = (markdown: string | null | undefined) =>
+  head(markdown || '')?.replace(/^```|```$/g, '')
 const extractLink = (markdown: string) => markdown?.replace(/^.*\(|\)/g, '')
 const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
   values
     .map((e) => e.name)
-    .filter((name) => Object.prototype.hasOwnProperty.call(mapper, name))
-    .map((name) => mapper[name])
+    .map((name) => (mapper && mapper[name]) || {name})
+    .filter((i) => i)
 
 const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => ({
   title: name,
@@ -275,8 +298,12 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
         }))
       : [],
   status: values['Status']?.name as QuestionStatus,
-  updatedAt,
   alternatePhrasings: extractText(values['Alternate Phrasings']),
+  subtitle: extractText(values.Subtitle),
+  icon: extractIcon(values.Icon),
+  parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
+  updatedAt: updatedAt || values['Doc Last Edited'],
+  order: values.Order || 0,
 })
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
@@ -314,12 +341,14 @@ export const loadGlossary = withCache('loadGlossary', async () => {
         const phrases = [values.phrase, ...values.aliases.split('\n')]
         const item = {
           pageid,
+          term: extractText(values.phrase),
+          image: values.image?.url,
           contents: renderText(pageid, extractText(values.definition)),
         }
         return phrases
-          .map((i) => extractText(i.toLowerCase()))
+          .map((i) => extractText(i))
           .filter(Boolean)
-          .map((phrase) => [phrase, {term: phrase, ...item}])
+          .map((phrase) => [phrase.toLowerCase(), {alias: phrase, ...item}])
       })
       .flat()
   )
@@ -422,14 +451,14 @@ export const insertRows = async (table: string, rows: NewQuestion[]) => {
   return await sendToCoda(url, payload, 'POST', `${CODA_INCOMING_TOKEN}`)
 }
 
-export const addQuestion = async (title: string, relatedQuestions: RelatedQuestions) => {
+export const addQuestion = async (title: string, relatedQuestions: RelatedQuestion[]) => {
   return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
 }
 
 export const incAnswerColumn = async (column: string, pageid: PageId, subtract: boolean) => {
   const table = WRITES_TABLE
   const currentRowUrl = makeCodaRequest({table, queryColumn: 'UI ID', queryValue: pageid})
-  const current = await sendToCoda(currentRowUrl, '', 'GET')
+  const current = (await sendToCoda(currentRowUrl, '', 'GET')) as any
 
   const row = current?.items && current?.items[0]
   if (!row) return 'Nothing found'
@@ -441,7 +470,7 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
       cells: [{column, value: (row.values[column] || 0) + incBy}],
     },
   }
-  const result = await sendToCoda(url, payload, 'PUT')
+  const result = (await sendToCoda(url, payload, 'PUT')) as any
   return result.id ? 'ok' : result
 }
 

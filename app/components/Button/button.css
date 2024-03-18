@@ -1,0 +1,119 @@
+.button {
+  cursor: pointer;
+  display: inline-flex;
+  min-height: var(--spacing-56, 56px);
+  padding: var(--spacing-8) var(--spacing-24);
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-4, 4px);
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(32, 44, 89, 0.05);
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+
+  background: var(--colors-white, #ffffff);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+}
+
+.primary {
+  background: var(--colors-teal-500, #1d9089);
+  font-weight: 500;
+  color: var(--colors-white, #ffffff);
+}
+
+.primary:hover {
+  background: var(--colors-teal-700, #17736e);
+}
+
+.primary-alt {
+  background: var(--colors-white, #ffffff);
+  color: var(--colors-teal-500, #1d9089);
+}
+
+.primary-alt:hover {
+  color: var(--colors-teal-800, #146560);
+}
+
+.secondary {
+  color: var(--colors-cool-grey-600, #788492) !important;
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--colors-white, #fff);
+}
+
+.secondary:hover {
+  border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
+}
+
+.secondary-alt {
+  color: var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--colors-white, #fff);
+}
+
+.secondary-alt:hover {
+  border: 1px solid var(--colors-teal-200, #a6d9d7);
+}
+
+/* #### Composite button #### */
+.composite-button {
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(175, 183, 194, 0.2);
+}
+
+.composite-button > form .button,
+.composite-button > .button {
+  border-radius: 0;
+  border-radius: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  box-shadow: revert;
+}
+
+.composite-button > form:first-child .button,
+.composite-button > .button:first-child {
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-left-width: 1px;
+  border-right: 1px solid transparent;
+}
+
+.composite-button > form:last-of-type .button,
+.composite-button > .button:last-child {
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  border-right-width: 1px;
+  border-left: 1px solid transparent;
+}
+
+/* Make sure the first button doesn't have a negative margin */
+.composite-button > form:first-child .button,
+.composite-button > .button:first-child {
+  margin-left: 0;
+}
+
+.composite-button form .button:hover,
+.composite-button .button:hover {
+  border-width: 1px;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  transform: translateY(var(--spacing-56, 56px));
+  padding: var(--spacing-16);
+  color: var(--colors-white);
+  background: var(--colors-black);
+  border-radius: 5px;
+  display: none;
+  z-index: 1;
+  font-size: 16px; /* hard to set via classes, what with this being a pseudoclass */
+}
+
+.button.full-width {
+  width: 100%;
+  height: 48px;
+  border: 0;
+}
+.button:disabled,
+.button[disabled] {
+  opacity: 0.6;
+  cursor: inherit;
+}

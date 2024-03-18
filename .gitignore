@@ -1,5 +1,5 @@
 /node_modules
-/.wranler
+/.wrangler
 /.cache
 /build
 /dist
@@ -9,3 +9,5 @@
 
 .DS_store
 wrangler.toml
+*.sqlite
+.wrangler

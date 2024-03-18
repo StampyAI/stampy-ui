@@ -2,3 +2,4 @@ semi: false
 singleQuote: true
 bracketSpacing: false
 printWidth: 100
+trailingComma: es5

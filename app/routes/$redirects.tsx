@@ -1,8 +1,8 @@
-import type {LoaderArgs} from '@remix-run/cloudflare'
+import type {LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {redirect} from '@remix-run/cloudflare'
 import {loadRedirects} from '~/server-utils/stampy'
 
-export const loader = async ({request, params}: LoaderArgs) => {
+export const loader = async ({request, params}: LoaderFunctionArgs) => {
   try {
     const {data: redirects} = await loadRedirects(request)
     const to = params['*'] && redirects[params['*'].replace(/^\/+/, '')]

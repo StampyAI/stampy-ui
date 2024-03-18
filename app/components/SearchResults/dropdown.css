@@ -1,0 +1,21 @@
+.container-search-results {
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  border-top: 1px solid var(--colors-cool-grey-200);
+  padding: var(--spacing-32);
+  gap: var(--spacing-16);
+}
+.search-result:hover {
+  background-color: var(--colors-teal-50);
+}
+.search-result svg {
+  margin-top: var(--spacing-4);
+  flex-shrink: 0;
+}

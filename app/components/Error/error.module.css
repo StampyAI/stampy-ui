@@ -1,0 +1,4 @@
+.errorContainer {
+  margin: var(--spacing-24) auto;
+  height: 100%;
+}

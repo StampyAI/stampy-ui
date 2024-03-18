@@ -1,0 +1,538 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway&display=swap');
+
+:root {
+  /* colors */
+  --colors-black: #1b2b3e;
+  --colors-cool-grey-900: #1b2b3e;
+  --colors-cool-grey-800: #3a485a;
+  --colors-cool-grey-700: #596676;
+  --colors-cool-grey-600: #788492;
+  --colors-cool-grey-500: #98a2af;
+  --colors-cool-grey-400: #afb7c2;
+  --colors-cool-grey-300: #c7cdd5;
+  --colors-cool-grey-200: #dfe3e9;
+  --colors-cool-grey-100: #f9fafc;
+  --colors-white: #ffffff;
+
+  --colors-teal-900: #115652;
+  --colors-teal-800: #146560;
+  --colors-teal-700: #17736e;
+  --colors-teal-600: #1a817c;
+  --colors-teal-500: #1d9089;
+  --colors-teal-400: #4da7a6;
+  --colors-teal-300: #7ac0be;
+  --colors-teal-200: #a6d9d7;
+  --colors-teal-100: #d3f2f0;
+  --colors-teal-50: #edfaf9;
+
+  --colors-green-500: #40c075;
+
+  /* spacing */
+  --border-radius: 6px;
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-80: 80px;
+  --spacing-104: 104px;
+  --spacing-128: 128px;
+  --spacing-192: 192px;
+  --spacing-288: 288px;
+}
+
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+/* body */
+
+body,
+input {
+  font-size: 18px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+  color: var(--colors-cool-grey-900), #1b2b3e;
+  margin: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* typography tags */
+
+h1 {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 125%; /* 80px */
+  letter-spacing: -1.28px;
+}
+
+h2 {
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 130%; /* 49.4px */
+  letter-spacing: -0.57px;
+}
+
+/* typography classes */
+
+.large {
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 170%; /* 37.4px */
+  letter-spacing: -0.44px;
+}
+
+.large-reading {
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 190%; /* 41.8px */
+  letter-spacing: -0.44px;
+}
+
+.large-bold {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 170%; /* 37.4px */
+  letter-spacing: -0.44px;
+}
+
+.default {
+  /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+.default-bold {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+.small {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
+}
+
+.small-bold {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
+}
+
+.xs {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 170%; /* 23.8px */
+  letter-spacing: -0.14px;
+}
+
+.xs-bold {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 170%; /* 23.8px */
+  letter-spacing: -0.14px;
+}
+
+/* color classes */
+
+.black {
+  color: var(--colors-black, #1b2b3e);
+}
+
+.grey {
+  color: var(--colors-cool-grey-600);
+}
+
+.white {
+  color: var(--colors-white);
+}
+
+.teal-500 {
+  color: var(--colors-teal-500);
+}
+
+.teal-200 {
+  color: var(--colors-teal-200);
+}
+
+.selected {
+  background: var(--colors-teal-50);
+}
+
+/* spacing classes */
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.padding-bottom-4 {
+  padding-bottom: var(--spacing-4);
+}
+
+.padding-bottom-8 {
+  padding-bottom: var(--spacing-8);
+}
+
+.padding-bottom-16 {
+  padding-bottom: var(--spacing-16);
+}
+
+.padding-bottom-24 {
+  padding-bottom: var(--spacing-24);
+}
+
+.padding-bottom-32 {
+  padding-bottom: var(--spacing-32);
+}
+
+.padding-bottom-40 {
+  padding-bottom: var(--spacing-40);
+}
+
+.padding-bottom-56 {
+  padding-bottom: var(--spacing-56);
+}
+
+.padding-bottom-80 {
+  padding-bottom: var(--spacing-80);
+}
+
+.padding-bottom-104 {
+  padding-bottom: var(--spacing-104);
+}
+
+.padding-bottom-128 {
+  padding-bottom: var(--spacing-128);
+}
+
+.padding-bottom-192 {
+  padding-bottom: var(--spacing-192);
+}
+
+.padding-bottom-288 {
+  padding-bottom: var(--spacing-288);
+}
+
+.padding-top-4 {
+  padding-top: var(--spacing-4);
+}
+
+.padding-top-8 {
+  padding-top: var(--spacing-8);
+}
+
+.padding-top-16 {
+  padding-top: var(--spacing-16);
+}
+
+.padding-top-24 {
+  padding-top: var(--spacing-24);
+}
+
+.padding-top-32 {
+  padding-top: var(--spacing-32);
+}
+
+.padding-top-40 {
+  padding-top: var(--spacing-40);
+}
+
+.padding-top-56 {
+  padding-top: var(--spacing-56);
+}
+
+.padding-top-80 {
+  padding-top: var(--spacing-80);
+}
+
+.padding-top-104 {
+  padding-top: var(--spacing-104);
+}
+
+.padding-top-128 {
+  padding-top: var(--spacing-128);
+}
+
+.padding-top-192 {
+  padding-top: var(--spacing-192);
+}
+
+.padding-top-288 {
+  padding-top: var(--spacing-288);
+}
+
+/* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
+/* note I may change these to vars later */
+
+.col-2 {
+  width: 8.54vw;
+}
+
+.col-3 {
+  width: 15vw;
+}
+
+.col-4 {
+  width: 21.46vw;
+}
+
+.col-4-5 {
+  width: 22.78vw;
+}
+
+.col-5 {
+  width: 27.99vw;
+}
+
+.col-6 {
+  width: 34.44vw;
+}
+
+.col-7 {
+  width: 40.9vw;
+}
+
+.col-8 {
+  width: 47.43vw;
+}
+
+.col-9 {
+  width: 53.89vw;
+}
+
+.col-10 {
+  width: 60.35vw;
+}
+
+.col-11 {
+  width: 66.88vw;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* other tags */
+
+a {
+  color: inherit; /* disable link specific colours */
+  text-decoration-color: color-mix(in srgb, currentColor, white);
+}
+
+a:hover {
+  text-decoration: none;
+  color: var(--colors-teal-500, #1d9089);
+}
+
+a:not(:hover, :focus-visible) {
+  text-decoration: none;
+}
+
+hr {
+  border: 1px solid var(--colors-cool-grey-200);
+  border-bottom: 0;
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  padding-left: var(--spacing-32);
+}
+ol {
+  padding-left: var(--spacing-32);
+}
+
+/* other one-off classes */
+
+.text-align-center {
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-double {
+  flex-grow: 2;
+}
+
+.centered {
+  margin: auto;
+}
+.vertically-centered {
+  margin: auto 0;
+}
+.horizontally-centered {
+  margin: 0 auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+/* for troubleshooting */
+
+.pink {
+  color: pink !important;
+  background: pink !important;
+}
+
+/* defines the standard left and right margins */
+.page-body {
+  padding: 0px 13.333vw;
+}
+
+/* all other classes */
+.rounded {
+  border-radius: var(--border-radius);
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
+  box-sizing: border-box;
+}
+
+.bordered {
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
+  border: 1px solid var(--colors-cool-grey-200);
+  box-sizing: border-box;
+}
+
+.article-container {
+  display: flex;
+  padding-left: 5.56vw;
+  padding-right: 2.43vw;
+  padding-top: var(--spacing-40);
+}
+
+.icon-link path {
+  stroke: var(--colors-cool-grey-600);
+}
+.icon-link.focused path {
+  stroke: var(--colors-teal-600);
+}
+
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* mobile */
+
+@media (max-width: 640px) {
+  :root {
+    --spacing-24: 16px;
+    --spacing-32: 24px;
+    --spacing-40: 24px;
+    --spacing-56: 24px;
+    --spacing-80: 40px;
+    --spacing-104: 56px;
+    --spacing-128: 56px;
+    --spacing-192: 80px;
+    --spacing-288: 128px;
+  }
+
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-4-5,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11 {
+    width: 87.2vw;
+  }
+
+  .page-body {
+    padding: 0px 6.4vw;
+  }
+
+  /* typography tags */
+
+  h1 {
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 130%; /* 49.4px */
+    letter-spacing: -0.57px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 145%; /* 37.7px */
+    letter-spacing: -0.52px;
+  }
+
+  /* typography classes */
+
+  .large {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: -0.18px;
+  }
+
+  .large-reading {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 190%; /* 34.2px */
+    letter-spacing: -0.18px;
+  }
+
+  .large-bold {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: -0.18px;
+  }
+
+  /* other one-off classes */
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* other classes */
+
+  .article-container {
+    padding: var(--spacing-32);
+    flex-direction: column;
+  }
+} /* end mobile */
+p,
+button {
+  font-family: Poppins;
+}
+.margin-top-40 {
+  margin-top: var(--spacing-40);
+}
