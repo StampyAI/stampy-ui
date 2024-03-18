@@ -52,7 +52,7 @@ const ArticleFooter = (question: Question) => {
         </div>
         <span>Was this page helpful?</span>
 
-        <CompositeButton className="flex-container">
+        <CompositeButton className="flex-container relative">
           <Action
             pageid={question.pageid}
             showText={true}
@@ -74,6 +74,7 @@ const ArticleFooter = (question: Question) => {
             onBlur={() => setIsFormFocused(false)}
             onFocus={() => setIsFormFocused(true)}
             hasOptions={false}
+            onSubmit={() => setShowFeedbackForm(false)}
           />
         </CompositeButton>
       </div>

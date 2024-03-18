@@ -536,3 +536,6 @@ button {
 .margin-top-40 {
   margin-top: var(--spacing-40);
 }
+.relative {
+  position: relative;
+}
