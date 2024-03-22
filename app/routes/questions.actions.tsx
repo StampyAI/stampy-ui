@@ -1,7 +1,7 @@
 import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
 import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
-import {redirect, json} from '@remix-run/cloudflare'
+import {json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
 import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
 import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
@@ -83,9 +83,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     console.log(`Got unhandled action: ${actionType} for page ${pageid}`)
   }
 
-  const state = formData.get('stateString')
-  if (state) return redirect(`/?state=${state}`)
-  return redirect('/')
+  return {result: 'ok'}
 }
 
 type Props = {
@@ -146,8 +144,11 @@ export const Action = ({
     })
     const response = await fetch('/questions/actions', {method: 'POST', body: searchParams})
 
-    if (response.ok !== true) setActionTaken(!actionTaken)
-    else if (onSuccess) onSuccess()
+    if (response.ok !== true) {
+      setActionTaken(!actionTaken)
+    } else if (onSuccess) {
+      onSuccess()
+    }
   }
 
   const className = 'secondary icon-link' + (actionTaken ? ' focused' : '')

@@ -42,18 +42,16 @@
 .action-feedback-text {
   display: none;
   position: absolute;
-  left: 180px;
-  text-wrap: nowrap;
-  top: 13px;
+  transform: translate(-1vw, var(--spacing-56));
 }
 .action-feedback-text.show {
   display: block;
 }
 .composite-button > .feedback-form {
   position: absolute;
-  left: 90px;
-  top: -342px;
   display: none;
+  transform: translate(-11vw, var(--spacing-56));
+  margin: var(--spacing-24);
 }
 .composite-button > .feedback-form.show {
   display: block;
