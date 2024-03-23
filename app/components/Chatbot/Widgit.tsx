@@ -3,7 +3,7 @@ import {Link} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
-import './stampy.css'
+import './widgit.css'
 
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')

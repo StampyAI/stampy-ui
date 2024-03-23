@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {WidgetStampy} from '../app/components/Widget/Stampy'
+import {WidgetStampy} from '../app/components/Chatbot/Widgit'
 
 const meta = {
   title: 'Components/WidgetStampy',
