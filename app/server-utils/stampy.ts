@@ -36,6 +36,7 @@ export enum QuestionStatus {
   IN_PROGRESS = 'In progress',
   IN_REVIEW = 'In review',
   LIVE_ON_SITE = 'Live on site',
+  SUBSECTION = 'Subsection',
   UNKNOWN = 'Unknown',
 }
 export type Banner = {

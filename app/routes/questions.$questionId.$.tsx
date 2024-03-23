@@ -96,6 +96,13 @@ export default function RenderArticle() {
     setShowNav(false)
   }, [location.key])
 
+  useEffect(() => {
+    data.then((val) => {
+      const question = val as Question
+      if (question.title) document.title = question.title
+    })
+  }, [data])
+
   return (
     <Page modal={showNav}>
       <div className={`article-container ${showNav ? 'no-padding' : ''}`}>

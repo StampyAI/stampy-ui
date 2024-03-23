@@ -21,8 +21,8 @@ export const FooterBar: FunctionComponent = () => {
             <a href="/">AISafety.info</a>
           </p>
           <div>
-            We’re a global team of specialists supported by volunteers from various backgrounds who
-            are concerned about the possibility of human extinction from future AI.
+            We’re a global team of specialists and volunteers from various backgrounds who want to
+            ensure that the effects of future AI are beneficial rather than catastrophic.
           </div>
         </div>
 
