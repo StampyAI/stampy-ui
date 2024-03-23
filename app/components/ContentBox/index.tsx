@@ -62,23 +62,23 @@ export const ContentBoxMain = () => (
 )
 
 export const ContentBoxSecond = () => {
-  const article = {pageid: '9TDI', title: 'Not convinced? Explore the arguments.'}
+  const article = {pageid: '9TDI', title: 'Objections and responses'}
   return (
     <ContentBox
-      title="Not convinced?"
+      title="Objections and responses"
       action={questionUrl(article)}
-      actionTitle="Explore the arguments"
+      actionTitle="Explore the debate"
     >
       <ListTable
         sameTab
         elements={[
-          {title: 'What are the main sources of AI existential risk?', pageid: '8503'},
+          {title: 'Why can’t we just use Asimov’s Three Laws of Robotics?', pageid: '6224'},
           {
-            title: 'Do people seriously worry about existential risk from AI?',
-            pageid: '6953',
+            title: 'Why would misaligned AI pose a threat that we can’t deal with?',
+            pageid: 'MNAK',
             className: 'desktop-only',
           },
-          {title: 'Why would an AI do bad things?', pageid: '2400'},
+          {title: 'Isn’t the real concern with AI something else?', pageid: '1001'},
         ]}
       />
     </ContentBox>

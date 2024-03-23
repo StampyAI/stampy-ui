@@ -3,30 +3,17 @@ import Button from '~/components/Button'
 import './feedbackForm.css'
 
 export interface FeedbackFormProps {
-  /**
-   * Article ID
-   */
   pageid: string
-  /**
-   * Class name
-   */
   className?: string
-  /**
-   * onBlur
-   */
+  onClose?: () => void
   onBlur?: () => void
-  /**
-   * onFocus
-   */
   onFocus?: () => void
-  /**
-   * Has Options
-   */
   hasOptions?: boolean
 }
 const FeedbackForm = ({
   pageid,
   className = 'feedback-form',
+  onClose,
   onBlur,
   onFocus,
   hasOptions = true,
@@ -73,7 +60,9 @@ const FeedbackForm = ({
     [onBlur]
   )
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    onClose && onClose()
+  }
 
   return (
     <div key={pageid} className={className} onBlur={handleBlur} onFocus={onFocus}>

@@ -1,6 +1,6 @@
 import {useEffect, useState, createContext, useContext, ReactElement} from 'react'
 import type {Tag, Glossary} from '~/server-utils/stampy'
-import {fetchTags} from '~/routes/tags.all'
+import {fetchTags} from '~/routes/categories.all'
 import {fetchTOC, TOCItem} from '~/routes/questions.toc'
 import {fetchGlossary} from '~/routes/questions.glossary'
 

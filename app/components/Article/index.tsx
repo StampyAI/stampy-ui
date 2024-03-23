@@ -36,6 +36,11 @@ const ArticleFooter = (question: Question) => {
     return () => clearInterval(timeoutId)
   }, [showFeedbackForm, isFormFocused])
 
+  React.useEffect(() => {
+    const timeout = setInterval(() => setShowFeedback(false), 6000)
+    return () => clearInterval(timeout)
+  }, [showFeedback])
+
   return (
     !isLoading(question) && (
       <div className="footer-comtainer padding-bottom-40">
@@ -65,15 +70,19 @@ const ArticleFooter = (question: Question) => {
             actionType={ActionType.UNHELPFUL}
             onSuccess={() => setShowFeedbackForm(true)}
           />
-          <span className={['action-feedback-text', showFeedback ? 'show' : ''].join(' ')}>
+          <div className={['action-feedback-text', showFeedback ? 'show' : ''].join(' ')}>
             Thanks for your feedback!
-          </span>
+          </div>
           <FeedbackForm
             pageid={question.pageid}
             className={['feedback-form', showFeedbackForm ? 'show' : ''].join(' ')}
+            onClose={() => {
+              setShowFeedback(true)
+              setShowFeedbackForm(false)
+            }}
             onBlur={() => setIsFormFocused(false)}
             onFocus={() => setIsFormFocused(true)}
-            hasOptions={false}
+            hasOptions={true}
           />
         </CompositeButton>
       </div>
