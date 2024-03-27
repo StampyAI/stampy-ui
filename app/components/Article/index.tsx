@@ -68,7 +68,7 @@ const ArticleFooter = (question: Question) => {
             pageid={question.pageid}
             showText={true}
             actionType={ActionType.UNHELPFUL}
-            onSuccess={() => setShowFeedbackForm(true)}
+            onClick={() => setShowFeedbackForm(true)}
           />
           <div className={['action-feedback-text', showFeedback ? 'show' : ''].join(' ')}>
             Thanks for your feedback!

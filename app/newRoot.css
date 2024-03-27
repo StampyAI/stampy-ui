@@ -530,6 +530,7 @@ ol {
   }
 } /* end mobile */
 p,
+textarea,
 button {
   font-family: Poppins;
 }
