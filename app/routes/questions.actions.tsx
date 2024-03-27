@@ -93,6 +93,7 @@ type Props = {
   children?: ReactNode | ReactNode[]
   [k: string]: unknown
   onSuccess?: () => void
+  onClick?: () => void
 }
 export const Action = ({
   pageid,
@@ -100,6 +101,7 @@ export const Action = ({
   showText = true,
   children,
   onSuccess,
+  onClick,
   ...props
 }: Props) => {
   const [remixSearchParams] = useSearchParams()
@@ -131,7 +133,9 @@ export const Action = ({
 
   const handleAction = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
-
+    if (onClick) {
+      onClick()
+    }
     setActionTaken(!actionTaken)
 
     // This sort of cheats - if more than 1 request is sent per second (or some other such time
@@ -169,7 +173,10 @@ export const Action = ({
       {children}
       <Button className={className}>
         <Icon />
-        <span className={actionTaken ? 'teal-500' : 'grey'}> {showText && title}</span>
+        <p className={[actionTaken ? 'teal-500' : 'grey', 'small'].join(' ')}>
+          {' '}
+          {showText && title}
+        </p>
       </Button>
     </Form>
   )

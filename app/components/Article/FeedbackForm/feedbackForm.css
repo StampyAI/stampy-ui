@@ -1,4 +1,5 @@
 .feedback-container {
+  max-width: 384px;
   padding: var(--spacing-32);
 }
 .select-option {
@@ -13,7 +14,6 @@
 }
 
 .feedback-form {
-  width: 100%;
   position: relative;
   color: var(--colors-cool-grey-600);
   z-index: 2;
@@ -50,7 +50,7 @@
 .composite-button > .feedback-form {
   position: absolute;
   display: none;
-  transform: translate(-11vw, var(--spacing-56));
+  transform: translate(-9vw, var(--spacing-56));
   margin: var(--spacing-24);
 }
 .composite-button > .feedback-form.show {
