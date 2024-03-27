@@ -51,7 +51,7 @@ export const ContentBoxMain = () => (
     action={questionUrl({pageid: '9OGZ'})}
     actionTitle={
       <>
-        <span className="default-bold">Start reading</span>
+        <span className="default-bold">Start here</span>
         <ArrowRight />
       </>
     }

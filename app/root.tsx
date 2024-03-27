@@ -16,7 +16,6 @@ import newStyles from '~/newRoot.css'
 import Error from '~/components/Error'
 import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
-import {questionsOnPage} from '~/hooks/stateModifiers'
 import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 
@@ -47,15 +46,16 @@ const makeSocialPreviewText = (
  */
 const fetchQuestion = async (request: Request) => {
   const url = new URL(request.url)
-  const questions = questionsOnPage(url.searchParams.get('state') || '')
 
-  if (questions.length != 1) return null
-
-  const {data} = await loadQuestionDetail(request, questions[0][0])
-  return data
+  const [path, pageid] = url.pathname.slice(1).split('/') || []
+  if (path === 'questions') {
+    const {data} = await loadQuestionDetail(request, pageid)
+    return data
+  }
+  return null
 }
 
-const TITLE = 'Stampy'
+const TITLE = 'AISafety.info'
 const DESCRIPTION = 'AI Safety FAQ'
 const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
