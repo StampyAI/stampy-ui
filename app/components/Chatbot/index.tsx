@@ -75,7 +75,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
     <div className="widget-ask flex-container">
       <input
         type="text"
-        className="full-width bordered secondary"
+        className="full-width bordered secondary right-icon"
         placeholder="Ask Stampy a question..."
         value={question}
         onChange={(e) => handleChange(e.target.value)}
@@ -221,7 +221,7 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
   }
 
   return (
-    <div className="centered col-9 padding-bottom-128">
+    <div className="centered col-9 height-70">
       {history.length === 0 ? (
         <SplashScreen questions={questions} onQuestion={onQuestion} />
       ) : undefined}
