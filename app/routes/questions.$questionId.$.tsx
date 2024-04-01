@@ -119,7 +119,7 @@ export default function RenderArticle() {
           </div>
         ) : (
           <Button
-            className="mobile-only article-selector large-reading"
+            className="mobile-only article-selector large-reading black"
             action={() => setShowNav(true)}
           >
             {getArticle(pageid)?.title}
