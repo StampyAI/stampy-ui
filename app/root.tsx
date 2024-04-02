@@ -97,7 +97,10 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const embed = !!request.url.match(/embed/)
   const showSearch = !request.url.match(/onlyInitial/)
 
-  const question = await fetchQuestion(request)
+  const question = await fetchQuestion(request).catch((e) => {
+    console.error('\n\nUnexpected error in loader\n', e)
+    return null
+  })
 
   return {
     question,
