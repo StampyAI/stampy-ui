@@ -26,8 +26,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
   }
 
   try {
-    const dataPromise = loadQuestionDetail(request, questionId)
-      .catch(raise500)
+    const dataPromise = loadQuestionDetail(request, questionId).catch(raise500)
     const tagsPromise = loadTags(request)
       .then(({data}) => data)
       .catch(raise500)
