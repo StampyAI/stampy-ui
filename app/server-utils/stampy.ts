@@ -48,7 +48,7 @@ export type Banner = {
 }
 export type GlossaryEntry = {
   term: string
-  alias: string
+  alias?: string // not present in actual Coda response
   pageid: PageId
   contents: string
   image: string
