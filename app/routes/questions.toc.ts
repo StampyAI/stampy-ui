@@ -60,7 +60,10 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     [k: string]: Question
   }
   const canBeShown = ({status}: Question) =>
-    status && [QuestionStatus.LIVE_ON_SITE, QuestionStatus.NOT_STARTED].includes(status)
+    status &&
+    [QuestionStatus.LIVE_ON_SITE, QuestionStatus.NOT_STARTED, QuestionStatus.SUBSECTION].includes(
+      status
+    )
 
   data
     .filter(canBeShown)

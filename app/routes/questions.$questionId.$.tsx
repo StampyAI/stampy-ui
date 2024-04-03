@@ -26,34 +26,15 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
   }
 
   try {
-    const dataPromise = loadQuestionDetail(request, questionId)
-      .then(({data}) => data)
-      .catch(raise500)
+    const dataPromise = loadQuestionDetail(request, questionId).catch(raise500)
     const tagsPromise = loadTags(request)
       .then(({data}) => data)
       .catch(raise500)
-    return defer({data: dataPromise, tags: tagsPromise})
+    return defer({question: dataPromise, tags: tagsPromise})
   } catch (error: unknown) {
     const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
     throw new Response(msg, {status: 404})
   }
-}
-
-export function fetchQuestion(pageid: string) {
-  const url = `/questions/${encodeURIComponent(pageid)}`
-  return fetch(url)
-    .then(async (response) => {
-      const json: Awaited<ReturnType<typeof loadQuestionDetail>> = await response.json()
-      if ('error' in json) console.error(json.error)
-      const {data, timestamp} = json
-
-      reloadInBackgroundIfNeeded(url, timestamp)
-
-      return data
-    })
-    .catch((e) => {
-      throw raise500(e)
-    })
 }
 
 const dummyQuestion = (title: string | undefined) =>
@@ -80,7 +61,7 @@ export default function RenderArticle() {
   const [showNav, setShowNav] = useState(false) // Used on mobile
   const params = useParams()
   const pageid = params.questionId ?? '😱'
-  const {data, tags} = useLoaderData<typeof loader>()
+  const {question, tags} = useLoaderData<typeof loader>()
   const {findSection, getArticle, getPath} = useToC()
   const section = findSection(location?.state?.section || pageid)
 
@@ -95,6 +76,14 @@ export default function RenderArticle() {
   useEffect(() => {
     setShowNav(false)
   }, [location.key])
+
+  useEffect(() => {
+    question.then((val) => {
+      const {data: question, timestamp} = val as {data: Question; timestamp: string}
+      reloadInBackgroundIfNeeded(location.pathname, timestamp)
+      if (question.title) document.title = question.title
+    })
+  }, [question, location])
 
   return (
     <Page modal={showNav}>
@@ -112,7 +101,7 @@ export default function RenderArticle() {
           </div>
         ) : (
           <Button
-            className="mobile-only article-selector large-reading"
+            className="mobile-only article-selector large-reading black"
             action={() => setShowNav(true)}
           >
             {getArticle(pageid)?.title}
@@ -138,18 +127,18 @@ export default function RenderArticle() {
             />
           }
         >
-          <Await resolve={Promise.all([data, tags])}>
-            {([resolvedValue, tags]) => {
-              if (resolvedValue instanceof Response) {
-                return <Error error={resolvedValue} />
-              } else if (!(resolvedValue as any)?.pageid) {
+          <Await resolve={Promise.all([question, tags])}>
+            {([resolvedQuestion, resolvedTags]) => {
+              if (resolvedQuestion instanceof Response || !('data' in resolvedQuestion)) {
+                return <Error error={resolvedQuestion} />
+              } else if (!resolvedQuestion.data.pageid) {
                 return (
                   <Error error={{statusText: 'Could not fetch question', status: 'emptyArticle'}} />
                 )
               } else {
                 return (
                   <Article
-                    question={updateTags(resolvedValue as Question, tags as Tag[])}
+                    question={updateTags(resolvedQuestion.data as Question, resolvedTags as Tag[])}
                     glossary={glossary}
                     className={showNav ? 'desktop-only' : ''}
                   />

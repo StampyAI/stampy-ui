@@ -35,6 +35,16 @@
   cursor: pointer;
 }
 
+/* 
+  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary#default_style
+  "For Webkit-based browsers, such as Safari, it is possible to control the icon display
+  through the non-standard CSS pseudo-element ::-webkit-details-marker. 
+  To remove the disclosure triangle, use summary::-webkit-details-marker { display: none }."
+*/
+.articles-group details summary::-webkit-details-marker {
+  display: none;
+}
+
 .articles-dropdown {
   padding-left: var(--spacing-40);
 }
