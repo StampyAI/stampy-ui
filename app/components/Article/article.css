@@ -164,3 +164,11 @@ article a.see-more.visible:after {
     margin: 0;
   }
 }
+.action-feedback-text {
+  display: none;
+  position: absolute;
+  transform: translate(-1vw, var(--spacing-56));
+}
+.action-feedback-text.show {
+  display: block;
+}

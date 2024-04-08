@@ -39,14 +39,6 @@
   display: block;
 }
 
-.action-feedback-text {
-  display: none;
-  position: absolute;
-  transform: translate(-1vw, var(--spacing-56));
-}
-.action-feedback-text.show {
-  display: block;
-}
 .composite-button > .feedback-form {
   position: absolute;
   display: none;
