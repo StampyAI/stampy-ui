@@ -3,38 +3,20 @@ import Button from '~/components/Button'
 import './feedbackForm.css'
 
 export interface FeedbackFormProps {
-  /**
-   * Article ID
-   */
   pageid: string
-  /**
-   * Class name
-   */
   className?: string
-  /**
-   * onBlur
-   */
+  onClose?: () => void
   onBlur?: () => void
-  /**
-   * onFocus
-   */
   onFocus?: () => void
-  /**
-   * Has Options
-   */
   hasOptions?: boolean
-  /**
-   * onSubmit
-   */
-  onSubmit?: () => void
 }
 const FeedbackForm = ({
   pageid,
   className = 'feedback-form',
+  onClose,
   onBlur,
   onFocus,
   hasOptions = true,
-  onSubmit,
 }: FeedbackFormProps) => {
   // to be implemented.
   const [selected, setSelected] = React.useState<string>()
@@ -79,9 +61,7 @@ const FeedbackForm = ({
   )
 
   const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit()
-    }
+    onClose && onClose()
   }
 
   return (

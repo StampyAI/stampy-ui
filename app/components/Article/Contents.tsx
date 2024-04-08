@@ -61,7 +61,7 @@ const glossaryInjecter = (pageid: string, glossary: Glossary) => {
   return (html: string) =>
     Object.values(glossary)
       .filter((item) => item.pageid != pageid)
-      .sort((a, b) => b.alias.length - a.alias.length)
+      .sort((a, b) => (b.alias?.length ?? 0) - (a.alias?.length ?? 0))
       .reduce((html, {term, alias}) => {
         const match = new RegExp(`(^|[^\\w-])(${alias})($|[^\\w-])`, 'i')
         if (!seen.has(term) && html.search(match) >= 0) {

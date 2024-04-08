@@ -31,7 +31,7 @@ export default function App() {
   return (
     <Page>
       <div className="page-body">
-        <h1 className="padding-bottom-80 padding-top-56">Answers on all things AI safety</h1>
+        <h1 className="padding-bottom-80 padding-top-56">Your guide to AI safety</h1>
 
         <ContentBoxMain />
         <ContentBoxSecond />

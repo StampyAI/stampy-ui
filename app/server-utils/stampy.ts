@@ -36,6 +36,7 @@ export enum QuestionStatus {
   IN_PROGRESS = 'In progress',
   IN_REVIEW = 'In review',
   LIVE_ON_SITE = 'Live on site',
+  SUBSECTION = 'Subsection',
   UNKNOWN = 'Unknown',
 }
 export type Banner = {
@@ -47,7 +48,7 @@ export type Banner = {
 }
 export type GlossaryEntry = {
   term: string
-  alias: string
+  alias?: string // not present in actual Coda response
   pageid: PageId
   contents: string
   image: string
