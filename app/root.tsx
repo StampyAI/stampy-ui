@@ -12,7 +12,7 @@ import {
 } from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import {cssBundleHref} from '@remix-run/css-bundle'
-import newStyles from '~/newRoot.css'
+import newStyles from '~/root.css'
 import Error from '~/components/Error'
 import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'

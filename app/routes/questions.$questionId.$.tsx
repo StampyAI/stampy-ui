@@ -30,8 +30,10 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     const tagsPromise = loadTags(request)
       .then(({data}) => data)
       .catch(raise500)
+
     return defer({question: dataPromise, tags: tagsPromise})
   } catch (error: unknown) {
+    console.log(error)
     const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
     throw new Response(msg, {status: 404})
   }
