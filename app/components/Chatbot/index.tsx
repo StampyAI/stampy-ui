@@ -1,11 +1,13 @@
-import {useState} from 'react'
-import {Link} from '@remix-run/react'
-import PersonIcon from '~/components/icons-generated/Person'
+import {useEffect, useState} from 'react'
+import {Link, useFetcher} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
-import {queryLLM, Entry, AssistantEntry, Followup} from '~/hooks/useChat'
+import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup} from '~/hooks/useChat'
+import ChatEntry from './ChatEntry'
 import './widgit.css'
+import {questionUrl} from '~/routesMapper'
+import {Question} from '~/server-utils/stampy'
 
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
@@ -93,14 +95,15 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
 type FollowupsProps = {
   title?: string
   followups?: Followup[]
+  onSelect: (followup: Followup) => void
 }
-const Followups = ({title, followups}: FollowupsProps) => (
+const Followups = ({title, followups, onSelect}: FollowupsProps) => (
   <>
     {title && <div className="padding-bottom-24">{title}</div>}
 
-    {followups?.map(({text, action}, i) => (
+    {followups?.map(({text, pageid}, i) => (
       <div key={i} className="padding-bottom-16">
-        <Button className="secondary-alt" action={action}>
+        <Button className="secondary-alt" action={() => onSelect({text, pageid})}>
           {text}
         </Button>
       </div>
@@ -123,62 +126,11 @@ const SplashScreen = ({
     </div>
     <Followups
       title="Popular questions"
-      followups={questions?.map((text: string) => ({text, action: () => onQuestion(text)}))}
+      followups={questions?.map((text: string) => ({text}))}
+      onSelect={({text}: Followup) => onQuestion(text)}
     />
   </>
 )
-
-const UserQuery = ({content}: Entry) => (
-  <div>
-    <div>
-      <PersonIcon /> <span className="default-bold">You</span>
-    </div>
-    <div> {content} </div>
-  </div>
-)
-
-const ChatbotReply = ({content, phase}: AssistantEntry) => {
-  const PhaseState = () => {
-    switch (phase) {
-      case 'started':
-        return <p>Loading: Sending query...</p>
-      case 'semantic':
-        return <p>Loading: Performing semantic search...</p>
-      case 'history':
-        return <p>Loading: Processing history...</p>
-      case 'context':
-        return <p>Loading: Creating context...</p>
-      case 'prompt':
-        return <p>Loading: Creating prompt...</p>
-      case 'llm':
-        return <p>Loading: Waiting for LLM...</p>
-      case 'streaming':
-      case 'followups':
-      default:
-        return null
-    }
-  }
-
-  return (
-    <div>
-      <div>
-        <StampyIcon /> <span className="default-bold">Stampy</span>
-      </div>
-      <PhaseState />
-      <div>{content}</div>
-      {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
-    </div>
-  )
-}
-
-const ChatEntry = (props: Entry) => {
-  switch (props.role) {
-    case 'user':
-      return <UserQuery {...props} />
-    case 'assistant':
-      return <ChatbotReply {...props} />
-  }
-}
 
 export const Chatbot = ({question, questions}: {question?: string; questions?: string[]}) => {
   const [followups, setFollowups] = useState<Followup[]>()
@@ -186,14 +138,46 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
   const [sessionId] = useState('asd')
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
+  const fetcher = useFetcher({key: 'followup-fetcher'})
 
-  const showFollowup = (pageid: string) => {
-    // Fetch and display the given article
-    console.log(pageid)
+  useEffect(() => {
+    if (!fetcher.data || fetcher.state !== 'idle') return
+
+    const question = (fetcher.data as any)?.question?.data as Question
+    if (!question || !question.pageid) return
+
+    setHistory((history) =>
+      history.map((item, i) => {
+        // Ignore non human written entries
+        if ((item as StampyEntry).pageid !== question.pageid) return item
+        // this is the current entry, so update it
+        if (i === history.length - 1) {
+          setFollowups(
+            question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
+          )
+          return {...item, content: question.text || ''}
+        }
+        // this is a previous human written article that didn't load properly - don't
+        // update the text as that could cause things to jump around - the user has
+        // already moved on, anyway
+        if (!item.content) return {...item, content: '...'}
+        // Any fully loaded previous human articles should just be returned
+        return item
+      })
+    )
+  }, [fetcher.data, fetcher.state])
+
+  const showFollowup = async ({text, pageid}: Followup) => {
+    if (pageid) fetcher.load(questionUrl({pageid}))
+    setHistory((prev) => [
+      ...prev,
+      {role: 'user', content: text},
+      {pageid, role: 'stampy'} as StampyEntry,
+    ])
+    setFollowups(undefined)
   }
 
-  const abortSearch = () => controller.abort()
-  console.log(abortSearch) // to stop the linter from complaining
+  const abortSearch = () => controller.abort() // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const onQuestion = async (question: string) => {
     const message = {content: question, role: 'user'} as Entry
@@ -212,12 +196,7 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
       controller
     )
     updateReply(result)
-    setFollowups(
-      followups?.map(({text, pageid}: Followup) => ({
-        text,
-        action: () => pageid && showFollowup(pageid),
-      }))
-    )
+    setFollowups(followups)
   }
 
   return (
@@ -229,7 +208,11 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
       {followups ? (
-        <Followups title="continue the conversation" followups={followups} />
+        <Followups
+          title="continue the conversation"
+          followups={followups}
+          onSelect={showFollowup}
+        />
       ) : undefined}
       <QuestionInput initial={question} onAsk={onQuestion} />
     </div>

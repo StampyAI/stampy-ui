@@ -5,11 +5,14 @@ export type Citation = {
   authors: string[]
   date: string
   url: string
+  source: string
   index: number
   text: string
+  reference: string
+  id?: string
 }
 
-export type Entry = UserEntry | AssistantEntry | ErrorMessage | StampyMessage
+export type Entry = UserEntry | AssistantEntry | ErrorMessage | StampyEntry
 export type ChatPhase =
   | 'started'
   | 'semantic'
@@ -41,14 +44,17 @@ export type ErrorMessage = {
   deleted?: boolean
 }
 
-export type StampyMessage = {
+export type StampyEntry = {
   role: 'stampy'
+  pageid: string
   content: string
-  url: string
   deleted?: boolean
 }
 
-export type Followup = {text: string; pageid?: string; action: string | (() => void)}
+export type Followup = {
+  text: string
+  pageid?: string
+}
 export type SearchResult = {
   followups?: Followup[]
   result: Entry
