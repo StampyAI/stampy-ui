@@ -8,7 +8,7 @@ import Button from '~/components/Button'
 import Error from '~/components/Error'
 import XIcon from '~/components/icons-generated/X'
 import ChevronRight from '~/components/icons-generated/ChevronRight'
-import {ArticlesNav} from '~/components/ArticlesNav/Menu'
+import {ArticlesNav} from '~/components/ArticlesNav/ArticleNav'
 import {fetchGlossary} from '~/routes/questions.glossary'
 import {loadQuestionDetail, loadTags} from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
@@ -62,7 +62,7 @@ export default function RenderArticle() {
   const params = useParams()
   const pageid = params.questionId ?? '😱'
   const {question, tags} = useLoaderData<typeof loader>()
-  const {findSection, getArticle, getPath} = useToC()
+  const {toc, findSection, getArticle, getPath} = useToC()
   const section = findSection(location?.state?.section || pageid)
 
   useEffect(() => {
@@ -100,29 +100,34 @@ export default function RenderArticle() {
             />
           </div>
         ) : (
-          <Button
-            className="mobile-only article-selector large-reading black"
-            action={() => setShowNav(true)}
-          >
-            {getArticle(pageid)?.title}
-            <ChevronRight className="dropdown-icon active" />
-          </Button>
+          section && (
+            <Button
+              className="mobile-only article-selector large-reading black"
+              action={() => setShowNav(true)}
+            >
+              {getArticle(pageid)?.title}
+              <ChevronRight className="dropdown-icon active" />
+            </Button>
+          )
         )}
 
-        {section && (
-          <ArticlesNav
-            current={pageid}
-            article={section}
-            path={getPath(pageid, section?.pageid)}
-            className={!showNav ? 'desktop-only bordered' : ''}
-          />
-        )}
+        <ArticlesNav
+          tocLoaded={toc.length > 0}
+          current={pageid}
+          article={section}
+          path={getPath(pageid, section?.pageid)}
+          className={!showNav ? 'desktop-only bordered' : ''}
+        />
 
         <Suspense
           key={pageid}
           fallback={
             <Article
-              question={dummyQuestion(getArticle(pageid)?.title)}
+              question={
+                'data' in question
+                  ? (question.data as Question)
+                  : dummyQuestion(getArticle(pageid)?.title)
+              }
               className={showNav ? 'desktop-only' : ''}
             />
           }

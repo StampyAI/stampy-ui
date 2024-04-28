@@ -3,15 +3,15 @@ const SvgBookCircle = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={511}
-    height={361.868}
+    height={350}
     fill="none"
-    viewBox="518.5 -6.713 511 361.868"
+    viewBox="518.5 0 511 350"
     {...props}
   >
     <mask
       id="book-circle_svg__a"
       width={1056}
-      height={348}
+      height={360}
       x={0}
       y={0}
       maskUnits="userSpaceOnUse"
@@ -19,7 +19,7 @@ const SvgBookCircle = (props: SVGProps<SVGSVGElement>) => (
         maskType: 'alpha',
       }}
     >
-      <rect width={1056} height={348} fill="#1A817C" rx={6} />
+      <rect width={1056} height={360} fill="#1A817C" rx={6} />
     </mask>
     <g mask="url(#book-circle_svg__a)">
       <path

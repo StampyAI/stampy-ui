@@ -122,8 +122,8 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}`,
-        `<div class="glossary-popup flex-container black small col-${image ? 6 : 4}">
-              <div class="contents col-6 ${image ? '' : 'full-width'}">
+        `<div class="glossary-popup flex-container black small">
+              <div class="contents ${image ? '' : 'full-width'}">
                    <div class="small-bold">${entry.term}</div>
                    <div class="defintion small">${entry.contents}</div>
                    ${link || ''}

@@ -32,7 +32,7 @@ function updateQuestionMap(question: Question, map: Map<PageId, Question>): Map<
 
 const emptyQuestionArray: Question[] = []
 
-export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions: Question[]) {
+export default function useQuestionStateInUrl(initialQuestions: Question[]) {
   const [remixSearchParams, setRemixParams] = useSearchParams()
   const transition = useNavigation()
   const embedWithoutDetails =
@@ -101,23 +101,6 @@ export default function useQuestionStateInUrl(minLogo: boolean, initialQuestions
       ...questionMap.get(pageid),
     }))
   }, [stateString, initialCollapsedState, questionMap])
-
-  useEffect(() => {
-    const mainQuestions = questions.filter(
-      ({questionState}) => questionState != QuestionState.RELATED
-    )
-    let title
-    if (minLogo) {
-      title = 'AI Safety FAQ'
-    } else if (mainQuestions.length == 1) {
-      title = mainQuestions[0].title
-    } else {
-      const suffix = stateString ? ` - ${stateString}` : ''
-      title = `Stampy ${suffix}`
-    }
-    if (title.length > 150) title = title.slice(0, 150 - 3) + '...'
-    document.title = title
-  }, [stateString, minLogo, questions])
 
   const moveToTop = (currentState: string, {pageid}: Question) => {
     setTimeout(() => {

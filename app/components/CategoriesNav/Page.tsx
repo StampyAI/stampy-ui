@@ -3,7 +3,7 @@ import {Link} from '@remix-run/react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
 import {tagUrl} from '~/routesMapper'
-import './menu.css'
+import './categoriesnav.css'
 
 interface CategoriesPageProps {
   /**
@@ -15,7 +15,7 @@ interface CategoriesPageProps {
 export const CategoriesPage = ({categories}: CategoriesPageProps) => {
   const [search, onSearch] = useState('')
   return (
-    <div className={'categoriesPage col-12'}>
+    <div className={'categoriesPage fcol-12'}>
       <h1>Categories</h1>
       <div>
         <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
