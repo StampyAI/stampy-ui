@@ -1,5 +1,6 @@
 import {ComponentType} from 'react'
 import {Link} from '@remix-run/react'
+import MarkdownIt from 'markdown-it'
 import QuestionMarkIcon from '~/components/icons-generated/QuestionMark'
 import BotIcon from '~/components/icons-generated/Bot'
 import PersonIcon from '~/components/icons-generated/Person'
@@ -7,15 +8,17 @@ import StampyIcon from '~/components/icons-generated/Stampy'
 import Contents from '~/components/Article/Contents'
 import useGlossary from '~/hooks/useGlossary'
 import './chat_entry.css'
-import type {Entry, AssistantEntry, StampyEntry, Citation} from '~/hooks/useChat'
+import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
 
+const MAX_REFERENCES = 10
 const hints = {
   bot: 'bla bla bla something bot',
   human: 'bla bla bla by humans',
+  error: null,
 }
 
-const AnswerInfo = ({answerType}: {answerType?: 'human' | 'bot'}) => {
-  if (!answerType) return null
+const AnswerInfo = ({answerType}: {answerType?: 'human' | 'bot' | 'error'}) => {
+  if (!answerType || !hints[answerType]) return null
   return (
     <span className="info">
       {answerType === 'human' ? <PersonIcon /> : <BotIcon />}
@@ -31,7 +34,7 @@ const AnswerInfo = ({answerType}: {answerType?: 'human' | 'bot'}) => {
 type TitleProps = {
   title: string
   Icon: ComponentType
-  answerType?: 'human' | 'bot'
+  answerType?: 'human' | 'bot' | 'error'
 }
 const Title = ({title, Icon, answerType}: TitleProps) => (
   <div className="flex-container title">
@@ -48,14 +51,29 @@ const UserQuery = ({content}: Entry) => (
   </div>
 )
 
-// FIXME: this id should be unique across the page - I doubt it will be now
-const ReferenceLink = ({id, reference}: {id: string; reference: string}) => (
-  <Link id={`#${id}-ref`} to={`#${id}`} className="reference-link">
-    {reference}
-  </Link>
-)
+const md = new MarkdownIt({html: true})
+const ReferenceLink = ({id, index, text}: Citation) => {
+  if (!index || index > MAX_REFERENCES) return ''
 
-const Reference = ({id, title, authors, source, url, reference}: Citation) => {
+  const parsed = text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
+  return (
+    <>
+      <Link id={`${id}-ref`} to={`#${id}`} className={`reference-link ref-${index}`}>
+        <span>{index}</span>
+      </Link>
+      {parsed && (
+        <div
+          className="reference-contents rounded"
+          dangerouslySetInnerHTML={{
+            __html: md.render(parsed[1]),
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+const Reference = ({id, title, authors, source, url, index}: Citation) => {
   const referenceSources = {
     arxiv: 'Scientific paper',
     blogs: 'Blogpost',
@@ -65,6 +83,7 @@ const Reference = ({id, title, authors, source, url, reference}: Citation) => {
     arbital: 'Arbital',
     distill: 'Distill',
     'aisafety.info': 'AISafety.info',
+    youtube: 'YouTube',
   }
 
   const Authors = ({authors}: {authors?: string[]}) => {
@@ -78,8 +97,8 @@ const Reference = ({id, title, authors, source, url, reference}: Citation) => {
   }
 
   return (
-    <div key={id} id={`#${id}`} className="reference padding-bottom-32">
-      <div className="reference-num small">{reference}</div>
+    <div key={id} id={id} className="reference padding-bottom-32">
+      <div className={`reference-num small ref-${index}`}>{index}</div>
       <div>
         <div className="title">{title}</div>
         <div>
@@ -99,9 +118,7 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
   citationsMap?.forEach((v) => {
     citations.push(v)
   })
-
-  const references = citations.map(({reference}) => reference).join('')
-  const referencesRegex = new RegExp(`(\\[[${references}]\\])`)
+  citations.sort((a, b) => a.index - b.index)
 
   const PhaseState = () => {
     switch (phase) {
@@ -128,17 +145,20 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
     <div>
       <Title title="Stampy" Icon={StampyIcon} answerType="bot" />
       <PhaseState />
-      <div>
-        {content?.split(referencesRegex).map((chunk, i) => {
-          if (chunk.match(referencesRegex)) {
-            const ref = citationsMap?.get(chunk[1])
-            return <ReferenceLink key={i} id={ref?.id || chunk[i]} reference={chunk[1]} />
+      <div className="padding-bottom-24">
+        {content?.split(/(\[\d+\])|(\n)/).map((chunk, i) => {
+          if (chunk?.match(/(\[\d+\])/)) {
+            const refId = chunk.slice(1, chunk.length - 1)
+            const ref = citationsMap?.get(refId)
+            return ref && <ReferenceLink key={i} {...ref} />
+          } else if (chunk === '\n') {
+            return <br key={i} />
           } else {
             return <span key={i}>{chunk}</span>
           }
         })}
       </div>
-      {citations?.map(Reference)}
+      {citations?.slice(0, MAX_REFERENCES).map(Reference)}
       {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
     </div>
   )
@@ -157,11 +177,21 @@ const StampyArticle = ({pageid, content}: StampyEntry) => {
   )
 }
 
+const ErrorReply = ({content}: ErrorMessage) => {
+  return (
+    <div>
+      <Title title="Error" Icon={StampyIcon} answerType="error" />
+      <div>{content}</div>
+    </div>
+  )
+}
+
 const ChatEntry = (props: Entry) => {
   const roles = {
     user: UserQuery,
     stampy: StampyArticle,
     assistant: ChatbotReply,
+    error: ErrorReply,
   } as {[k: string]: ComponentType<Entry>}
   const Role = roles[props.role] as ComponentType<Entry>
   if (!Role) return null

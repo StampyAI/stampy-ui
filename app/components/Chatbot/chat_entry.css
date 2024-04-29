@@ -30,10 +30,66 @@ article.stampy {
 }
 
 .chat-entry .reference-link {
-  background: red;
-  width: var(--spacing-16);
-  height: var(--spacing-16);
+  font-size: smaller;
+  vertical-align: super;
+  padding: 2px 4px;
+  margin-left: 2px;
+  border-radius: var(--border-radius);
+}
+.chat-entry .reference-link span {
+  min-width: 10px;
   display: inline-block;
+  text-align: center;
+}
+
+.ref-1 {
+  background: rgb(211, 255, 253);
+  color: rgb(24, 185, 71);
+}
+
+.ref-2 {
+  background: rgb(255, 221, 244);
+  color: rgb(251, 0, 158);
+}
+
+.ref-3 {
+  background: rgb(217, 253, 254);
+  color: rgb(23, 184, 197);
+}
+
+.ref-4 {
+  background: rgb(254, 230, 202);
+  color: rgb(230, 107, 9);
+}
+
+.ref-5 {
+  background: rgb(244, 223, 255);
+  color: rgb(164, 3, 254);
+}
+
+.ref-6 {
+  background: rgb(231, 255, 178);
+  color: rgb(99, 159, 4);
+}
+
+.ref-7 {
+  background: rgb(231, 232, 255);
+  color: rgb(77, 75, 254);
+}
+
+.ref-8 {
+  background: rgb(255, 254, 156);
+  color: rgb(144, 140, 5);
+}
+
+.ref-9 {
+  background: rgb(254, 226, 226);
+  color: rgb(200, 0, 5);
+}
+
+.ref-10 {
+  background: rgb(214, 240, 255);
+  color: rgb(18, 144, 254);
 }
 
 .reference {
@@ -43,11 +99,28 @@ article.stampy {
 .reference .reference-num {
   width: var(--spacing-32);
   height: var(--spacing-32);
-  background: red;
   border-radius: 6px;
   text-align: center;
 }
 
 .reference .source-link {
   color: var(--colors-teal-500);
+}
+
+.reference-contents {
+  visibility: hidden;
+  transition: visibility 0.2s;
+  max-width: 600px;
+  word-wrap: break-word;
+  background-color: var(--colors-cool-grey-300);
+  padding: var(--spacing-16) var(--spacing-24);
+  position: absolute;
+  transform: translateX(50%);
+  text-decoration: unset;
+}
+
+.reference-contents:hover,
+.reference-link:hover + .reference-contents {
+  visibility: visible;
+  transition-delay: 0s;
 }
