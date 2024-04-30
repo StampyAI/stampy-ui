@@ -1,4 +1,5 @@
-import {useState, useEffect, useRef, MutableRefObject} from 'react'
+import {useState, useEffect, useRef} from 'react'
+import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import {Question} from '~/server-utils/stampy'
 
 const NUM_RESULTS = 8
@@ -20,6 +21,23 @@ export type WorkerMessage =
       searchResults: SearchResult[]
       userQuery?: string
     }
+
+const waitForCondition = async (conditionFn: () => boolean, interval = 100, timeout = 5000) => {
+  const startTime = Date.now()
+
+  async function loop() {
+    // If the condition is met, resolve.
+    if (conditionFn()) return true
+
+    // If the timeout has elapsed, reject.
+    if (Date.now() - startTime > timeout) throw new Error('Timeout waiting for condition')
+
+    // Wait for the specified interval, then try again.
+    await new Promise((resolve) => setTimeout(resolve, interval))
+    return loop()
+  }
+  return loop()
+}
 
 /**
  * Sort function for the highest score on top
@@ -112,15 +130,25 @@ const normalize = (question: string) =>
  * use baseline search over the list of questions already loaded on the site.
  * Searches containing only one or two words will also use the baseline search
  */
-export const useSearch = (
-  onSiteQuestions: MutableRefObject<Question[]>,
-  numResults = NUM_RESULTS
-) => {
+export const useSearch = (numResults = NUM_RESULTS) => {
   const tfWorkerRef = useRef<Worker>()
   const runningQueryRef = useRef<string>() // detect current query in search function from previous render => ref
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>() // cancel previous timeout => ref
-  const [isPendingSearch, setIsPendingSearch] = useState(false) // re-render loading indicator => state
+  const isPendingSearch = useRef(false)
+  const resultsRef = useRef<SearchResult[]>([])
+  const resultsForRef = useRef<string>()
   const [results, setResults] = useState([] as SearchResult[])
+
+  const onSiteAnswersRef = useRef<Question[]>([])
+  useEffect(() => {
+    // not needed for initial screen => lazy load on client
+    fetchAllQuestionsOnSite().then(({data, backgroundPromiseIfReloaded}) => {
+      onSiteAnswersRef.current = data
+      backgroundPromiseIfReloaded.then((x) => {
+        if (x) onSiteAnswersRef.current = x.data
+      })
+    })
+  }, [])
 
   useEffect(() => {
     const makeWorker = async () => {
@@ -130,8 +158,12 @@ export const useSearch = (
           tfWorkerRef.current = worker
         } else if (data.userQuery == runningQueryRef.current) {
           runningQueryRef.current = undefined
-          if (data.searchResults) setResults(data.searchResults)
-          setIsPendingSearch(false)
+          if (data.searchResults) {
+            resultsRef.current = data.searchResults
+            resultsForRef.current = data.userQuery
+            setResults(data.searchResults)
+          }
+          isPendingSearch.current = false
         }
       })
     }
@@ -148,7 +180,7 @@ export const useSearch = (
   }
 
   const search = (userQuery: string) => {
-    setIsPendingSearch(true)
+    isPendingSearch.current = true
     const wordCount = userQuery.split(' ').length
     if (wordCount > 2) {
       if (runningQueryRef.current || !tfWorkerRef.current) {
@@ -158,22 +190,35 @@ export const useSearch = (
       runningQueryRef.current = userQuery
       tfWorkerRef.current.postMessage({userQuery, numResults})
     } else {
-      if (runningQueryRef.current || onSiteQuestions.current.length == 0) {
+      if (runningQueryRef.current || onSiteAnswersRef.current.length == 0) {
         searchLater(userQuery)
         return
       }
       runningQueryRef.current = userQuery
-      baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) => {
+      baselineSearch(userQuery, onSiteAnswersRef.current, numResults).then((searchResults) => {
         runningQueryRef.current = undefined
+        resultsRef.current = searchResults
+        resultsForRef.current = userQuery
+        isPendingSearch.current = false
         setResults(searchResults)
-        setIsPendingSearch(false)
       })
     }
+  }
+
+  const waitForResults = async (interval?: number, timeout?: number) => {
+    try {
+      await waitForCondition(() => !isPendingSearch.current, interval, timeout)
+    } catch (e) {
+      console.info('Timeout')
+    }
+    return resultsRef.current
   }
 
   return {
     search,
     results,
-    isPendingSearch,
+    resultsForRef,
+    isPendingSearch: isPendingSearch.current,
+    waitForResults,
   }
 }

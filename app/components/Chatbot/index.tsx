@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {Link, useFetcher} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
@@ -8,16 +8,17 @@ import ChatEntry from './ChatEntry'
 import './widgit.css'
 import {questionUrl} from '~/routesMapper'
 import {Question} from '~/server-utils/stampy'
+import {useSearch} from '~/hooks/useSearch'
 
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
   const questions = [
-    'Why couldn’t we just turn the AI off?',
+    'What is AI Safety?',
     'How would the AI even get out in the world?',
     'Do people seriously worry about existential risk from AI?',
   ]
 
-  const stampyUrl = (question: string) => `https://chat.aisafety.info/?question=${question.trim()}`
+  const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
     <div className="centered col-9 padding-bottom-128">
       <div className="col-6 padding-bottom-56">
@@ -68,6 +69,11 @@ type QuestionInputProps = {
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
 
+  const handleAsk = (val: string) => {
+    onAsk && onAsk(val)
+    setQuestion('')
+  }
+
   const handleChange = (val: string) => {
     setQuestion(val)
     onChange && onChange(val)
@@ -83,11 +89,11 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && question.trim() && onAsk) {
-            onAsk(question)
+            handleAsk(question)
           }
         }}
       />
-      <SendIcon className="pointer" onClick={() => onAsk && onAsk(question)} />
+      <SendIcon className="pointer" onClick={() => handleAsk(question)} />
     </div>
   )
 }
@@ -135,10 +141,12 @@ const SplashScreen = ({
 export const Chatbot = ({question, questions}: {question?: string; questions?: string[]}) => {
   const [followups, setFollowups] = useState<Followup[]>()
 
+  // FIXME: Generate session id
   const [sessionId] = useState('asd')
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
   const fetcher = useFetcher({key: 'followup-fetcher'})
+  const {search, resultsForRef, waitForResults} = useSearch(1)
 
   useEffect(() => {
     if (!fetcher.data || fetcher.state !== 'idle') return
@@ -177,27 +185,67 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
     setFollowups(undefined)
   }
 
-  const abortSearch = () => controller.abort() // eslint-disable-line @typescript-eslint/no-unused-vars
-
   const onQuestion = async (question: string) => {
+    // Cancel any previous queries
+    controller.abort()
+    const newController = new AbortController()
+    setController(newController)
+
+    // Add a new history entry, replacing the previous one if it was canceled
     const message = {content: question, role: 'user'} as Entry
-    const controller = new AbortController()
-    setController(controller)
+    setHistory((current) => {
+      const last = current[current.length - 1]
+      if (
+        (last?.role === 'assistant' && ['streaming', 'followups'].includes(last?.phase || '')) ||
+        (last?.role === 'stampy' && last?.content) ||
+        ['error'].includes(last?.role)
+      ) {
+        return [...current, message, {role: 'assistant'} as AssistantEntry]
+      } else if (last?.role === 'user' && last?.content === question) {
+        return [...current.slice(0, current.length - 1), {role: 'assistant'} as AssistantEntry]
+      }
+      return [
+        ...current.slice(0, current.length - 2),
+        message,
+        {role: 'assistant'} as AssistantEntry,
+      ]
+    })
 
     setFollowups(undefined)
-    setHistory((current) => [...current, message, {role: 'assistant'} as AssistantEntry])
     const updateReply = (reply: Entry) =>
       setHistory((current) => [...current.slice(0, current.length - 2), message, reply])
+
+    search(question)
+    const [humanWritten] = await waitForResults(100, 1000)
+    if (newController.signal.aborted) {
+      return
+    }
+
+    if (humanWritten && humanWritten.score > 0.85 && question === resultsForRef.current) {
+      fetcher.load(questionUrl({pageid: humanWritten.pageid}))
+      updateReply({pageid: humanWritten.pageid, role: 'stampy'} as StampyEntry)
+      return
+    }
 
     const {followups, result} = await queryLLM(
       [...history, message],
       updateReply,
       sessionId,
-      controller
+      newController
     )
-    updateReply(result)
-    setFollowups(followups)
+    if (!newController.signal.aborted) {
+      updateReply(result)
+      setFollowups(followups)
+    }
   }
+
+  const fetchFlag = useRef(false)
+  useEffect(() => {
+    if (question && !fetchFlag.current) {
+      fetchFlag.current = true
+      onQuestion(question)
+    }
+  })
 
   return (
     <div className="centered col-9 padding-bottom-128">
@@ -214,7 +262,7 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
           onSelect={showFollowup}
         />
       ) : undefined}
-      <QuestionInput initial={question} onAsk={onQuestion} />
+      <QuestionInput onAsk={onQuestion} />
     </div>
   )
 }
