@@ -3,7 +3,7 @@ import {Link, useFetcher} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
-import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup} from '~/hooks/useChat'
+import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings} from '~/hooks/useChat'
 import ChatEntry from './ChatEntry'
 import './widgit.css'
 import {questionUrl} from '~/routesMapper'
@@ -138,7 +138,12 @@ const SplashScreen = ({
   </>
 )
 
-export const Chatbot = ({question, questions}: {question?: string; questions?: string[]}) => {
+type ChatbotProps = {
+  question?: string
+  questions?: string[]
+  settings?: ChatSettings
+}
+export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [followups, setFollowups] = useState<Followup[]>()
 
   // FIXME: Generate session id
@@ -231,7 +236,8 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
       [...history, message],
       updateReply,
       sessionId,
-      newController
+      newController,
+      settings
     )
     if (!newController.signal.aborted) {
       updateReply(result)

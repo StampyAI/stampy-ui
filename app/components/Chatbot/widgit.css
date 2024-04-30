@@ -20,3 +20,16 @@
     width: 100%;
   }
 }
+
+.settings-container {
+  position: absolute;
+  bottom: var(--spacing-16);
+  left: var(--spacing-16);
+}
+
+.settings {
+  padding: var(--spacing-32);
+  margin-bottom: var(--spacing-24);
+  flex-direction: column;
+  gap: var(--spacing-24);
+}

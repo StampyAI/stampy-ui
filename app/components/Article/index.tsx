@@ -49,7 +49,7 @@ const ArticleFooter = (question: Question) => {
           <Button
             className="secondary"
             action={question.answerEditLink || ''}
-            tooltip="Edit article"
+            tooltip="Suggest changes in Google Docs"
             props={{target: '_blank', rel: 'noopener noreferrer'}}
           >
             <EditIcon className="no-fill" />
@@ -107,7 +107,7 @@ const ArticleActions = ({answerEditLink}: Question) => {
       <Button
         className="secondary"
         action={answerEditLink || ''}
-        tooltip="Edit article"
+        tooltip="Suggest changes in Google Docs"
         props={{target: '_blank', rel: 'noopener noreferrer'}}
       >
         <EditIcon className="no-fill" />
