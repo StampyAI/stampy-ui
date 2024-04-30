@@ -1,6 +1,6 @@
-<svg width="511" height="361.86773" viewBox="518.5 -6.712815 511 361.86773" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="mask0_1264_4885" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1056" height="348">
-<rect width="1056" height="348" rx="6" fill="#1A817C"/>
+<svg width="511" height="350" viewBox="518.5 0 511 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_1264_4885" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1056" height="360">
+<rect width="1056" height="360" rx="6" fill="#1A817C"/>
 </mask>
 <g mask="url(#mask0_1264_4885)">
 <path d="M869.5 175.233C869.5 228.598 826.738 271.849 774 271.849C721.262 271.849 678.5 228.598 678.5 175.233C678.5 121.867 721.262 78.6163 774 78.6163C826.738 78.6163 869.5 121.867 869.5 175.233Z" stroke="#7AC0BE"/>

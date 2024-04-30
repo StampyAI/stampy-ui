@@ -15,7 +15,7 @@
   padding: var(--spacing-8) var(--spacing-24);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .button {
     width: 100%;
   }

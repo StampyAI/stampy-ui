@@ -154,7 +154,7 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
   const {title, text, pageid} = question
 
   return (
-    <article className={className}>
+    <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
       <h1 className="teal-500 padding-bottom-24">{title}</h1>
       <ArticleMeta question={question} className="padding-bottom-56" />
 

@@ -2,7 +2,7 @@ import {Link} from '@remix-run/react'
 import ChevronRight from '~/components/icons-generated/ChevronRight'
 import {questionUrl} from '~/routesMapper'
 import type {TOCItem} from '~/routes/questions.toc'
-import './menu.css'
+import './articlenav.css'
 
 type Article = {
   article: TOCItem
@@ -73,11 +73,16 @@ const ArticleLevel = ({article, path, current, hideChildren}: Article) => {
   )
 }
 
-export const ArticlesNav = ({article, path, className}: Article) => {
+export const ArticlesNav = ({
+  tocLoaded,
+  article,
+  path,
+  className,
+}: {tocLoaded: boolean} & Partial<Article>) => {
   const current = path ? path[path.length - 1] : ''
 
-  return (
-    <div className={`articles-group col-4-5 small ${className || ''}`}>
+  return article ? (
+    <div className={`articles-group small ${className || ''}`}>
       <ArticleLevel article={article} path={path} current={current} hideChildren />
       <hr />
 
@@ -85,5 +90,7 @@ export const ArticlesNav = ({article, path, className}: Article) => {
         <ArticleLevel key={item.pageid} article={item} path={path} current={current} />
       ))}
     </div>
+  ) : (
+    <div className={`articles-group ${tocLoaded ? 'none' : 'loading'}`}></div>
   )
 }

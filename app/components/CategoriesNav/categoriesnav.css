@@ -1,5 +1,7 @@
 .categoriesGroup {
   padding: var(--spacing-12);
+  flex: none;
+  width: clamp(230px, 30vw, 400px);
 }
 .categoriesGroup > * {
   padding: var(--spacing-16);
@@ -26,7 +28,7 @@
   flex: 1;
   flex-basis: 21vw;
 }
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .categoriesGroup {
     width: 100%;
     height: 100%;

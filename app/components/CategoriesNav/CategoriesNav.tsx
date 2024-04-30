@@ -3,7 +3,7 @@ import {Link} from '@remix-run/react'
 import {SearchInput} from '../SearchInput/Input'
 import {Tag as TagType} from '~/server-utils/stampy'
 import {tagUrl} from '~/routesMapper'
-import './menu.css'
+import './categoriesnav.css'
 import useIsMobile from '~/hooks/isMobile'
 
 interface CategoriesNavProps {
@@ -25,7 +25,7 @@ export const CategoriesNav = ({categories, activeCategoryId, className}: Categor
   const [search, onSearch] = useState('')
   const mobile = useIsMobile()
   return (
-    <div className={['categoriesGroup bordered col-4-5', className].join(' ')}>
+    <div className={['categoriesGroup bordered', className].join(' ')}>
       {mobile ? <h1>Categories</h1> : <p className={'small-bold'}>Categories</p>}
       <div>
         <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />
