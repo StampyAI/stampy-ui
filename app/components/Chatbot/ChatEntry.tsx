@@ -3,6 +3,7 @@ import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import QuestionMarkIcon from '~/components/icons-generated/QuestionMark'
 import BotIcon from '~/components/icons-generated/Bot'
+import LinkIcon from '~/components/icons-generated/Link'
 import PersonIcon from '~/components/icons-generated/Person'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import Contents from '~/components/Article/Contents'
@@ -104,8 +105,9 @@ const Reference = ({id, title, authors, source, url, index}: Citation) => {
         <div>
           <Authors authors={authors} />
           <span>{'  ·  '}</span>
-          <Link className="source-link" to={url}>
-            {referenceSources[source as keyof typeof referenceSources] || new URL(url).host}
+          <Link className="source-link" to={url} target="_blank" rel="noopener noreferrer">
+            {referenceSources[source as keyof typeof referenceSources] || new URL(url).host}{' '}
+            <LinkIcon width="16" height="16" />
           </Link>
         </div>
       </div>
@@ -158,7 +160,12 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
           }
         })}
       </div>
-      {citations?.slice(0, MAX_REFERENCES).map(Reference)}
+      {citations && citations.length > 0 && (
+        <>
+          <hr />
+          <div className="padding-top-32">{citations?.slice(0, MAX_REFERENCES).map(Reference)}</div>
+        </>
+      )}
       {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
     </div>
   )
