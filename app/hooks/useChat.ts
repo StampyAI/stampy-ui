@@ -1,15 +1,19 @@
-export const CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
+// export const CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
+export const CHATBOT_URL = 'http://127.0.0.1:3001/chat'
 
 export type Citation = {
   title: string
   authors: string[]
   date: string
   url: string
+  source: string
   index: number
   text: string
+  reference: string
+  id?: string
 }
 
-export type Entry = UserEntry | AssistantEntry | ErrorMessage | StampyMessage
+export type Entry = UserEntry | AssistantEntry | ErrorMessage | StampyEntry
 export type ChatPhase =
   | 'started'
   | 'semantic'
@@ -41,14 +45,17 @@ export type ErrorMessage = {
   deleted?: boolean
 }
 
-export type StampyMessage = {
+export type StampyEntry = {
   role: 'stampy'
+  pageid: string
   content: string
-  url: string
   deleted?: boolean
 }
 
-export type Followup = {text: string; pageid?: string; action: string | (() => void)}
+export type Followup = {
+  text: string
+  pageid?: string
+}
 export type SearchResult = {
   followups?: Followup[]
   result: Entry
@@ -71,9 +78,9 @@ export const formatCitations: (text: string) => string = (text) => {
   // well to almost everything the LLM emits. We won't ever reach five nines,
   // but the domain is one where occasionally failing isn't catastrophic.
 
-  // transform all things that look like [a, b, c] into [a][b][c]
+  // transform all things that look like [1, 2, 3] into [1][2][3]
   let response = text.replace(
-    /\[((?:[a-z]+,\s*)*[a-z]+)\]/g, // identify groups of this form
+    /\[((?:\d+,\s*)*\d+)\]/g, // identify groups of this form
 
     (block: string) =>
       block
@@ -82,9 +89,9 @@ export const formatCitations: (text: string) => string = (text) => {
         .join('][')
   )
 
-  // transform all things that look like [(a), (b), (c)] into [(a)][(b)][(c)]
+  // transform all things that look like [(1), (2), (3)] into [(1)][(2)][(3)]
   response = response.replace(
-    /\[((?:\([a-z]+\),\s*)*\([a-z]+\))\]/g, // identify groups of this form
+    /\[((?:\(\d+\),\s*)*\(\d+\))\]/g, // identify groups of this form
 
     (block: string) =>
       block
@@ -93,11 +100,11 @@ export const formatCitations: (text: string) => string = (text) => {
         .join('][')
   )
 
-  // transform all things that look like [(a)] into [a]
-  response = response.replace(/\[\(([a-z]+)\)\]/g, (_match: string, x: string) => `[${x}]`)
+  // transform all things that look like [(3)] into [3]
+  response = response.replace(/\[\((\d+)\)\]/g, (_match: string, x: string) => `[${x}]`)
 
-  // transform all things that look like [ a ] into [a]
-  response = response.replace(/\[\s*([a-z]+)\s*\]/g, (_match: string, x: string) => `[${x}]`)
+  // transform all things that look like [ 12 ] into [12]
+  response = response.replace(/\[\s*(\d+)\s*\]/g, (_match: string, x: string) => `[${x}]`)
   return response
 }
 
@@ -107,20 +114,22 @@ export const findCitations: (text: string, citations: Citation[]) => Map<string,
 ) => {
   // figure out what citations are in the response, and map them appropriately
   const cite_map = new Map<string, Citation>()
+  let index = 1
 
   // scan a regex for [x] over the response. If x isn't in the map, add it.
   // (note: we're actually doing this twice - once on parsing, once on render.
   // if that looks like a problem, we could swap from strings to custom ropes).
-  const regex = /\[([a-z]+)\]/g
+  const regex = /\[(\d+)\]/g
   let match
   while ((match = regex.exec(text)) !== null) {
-    const letter = match[1]
-    if (!letter || cite_map.has(letter!)) continue
+    const ref = match[1]
+    if (!ref || cite_map.has(ref!)) continue
 
-    const citation = citations[letter.charCodeAt(0) - 'a'.charCodeAt(0)]
+    const citation = citations[parseInt(ref, 10)]
     if (!citation) continue
 
-    cite_map.set(letter!, citation)
+    cite_map.set(ref!, {...citation, index})
+    index++
   }
   return cite_map
 }

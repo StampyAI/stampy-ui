@@ -339,7 +339,13 @@ export const loadGlossary = withCache('loadGlossary', async () => {
     rows
       .map(({values}) => {
         const pageid = extractText(values['UI ID'])
-        const phrases = [values.phrase, ...values.aliases.split('\n')]
+        const phrases = [
+          values.phrase,
+          ...values.aliases
+            .split(/[,\n]/)
+            .map((v) => v.trim())
+            .filter(Boolean),
+        ]
         const item = {
           pageid,
           term: extractText(values.phrase),

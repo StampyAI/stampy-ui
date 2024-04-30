@@ -1,21 +1,24 @@
-import {useState} from 'react'
-import {Link} from '@remix-run/react'
-import PersonIcon from '~/components/icons-generated/Person'
+import {useEffect, useRef, useState} from 'react'
+import {Link, useFetcher} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
-import {queryLLM, Entry, AssistantEntry, Followup} from '~/hooks/useChat'
+import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup} from '~/hooks/useChat'
+import ChatEntry from './ChatEntry'
 import './widgit.css'
+import {questionUrl} from '~/routesMapper'
+import {Question} from '~/server-utils/stampy'
+import {useSearch} from '~/hooks/useSearch'
 
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
   const questions = [
-    'Why couldn’t we just turn the AI off?',
+    'What is AI Safety?',
     'How would the AI even get out in the world?',
     'Do people seriously worry about existential risk from AI?',
   ]
 
-  const stampyUrl = (question: string) => `https://chat.aisafety.info/?question=${question.trim()}`
+  const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
     <div className="centered col-9 padding-bottom-128">
       <div className="col-6 padding-bottom-56">
@@ -66,6 +69,11 @@ type QuestionInputProps = {
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
 
+  const handleAsk = (val: string) => {
+    onAsk && onAsk(val)
+    setQuestion('')
+  }
+
   const handleChange = (val: string) => {
     setQuestion(val)
     onChange && onChange(val)
@@ -81,11 +89,11 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && question.trim() && onAsk) {
-            onAsk(question)
+            handleAsk(question)
           }
         }}
       />
-      <SendIcon className="pointer" onClick={() => onAsk && onAsk(question)} />
+      <SendIcon className="pointer" onClick={() => handleAsk(question)} />
     </div>
   )
 }
@@ -93,14 +101,15 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
 type FollowupsProps = {
   title?: string
   followups?: Followup[]
+  onSelect: (followup: Followup) => void
 }
-const Followups = ({title, followups}: FollowupsProps) => (
+const Followups = ({title, followups, onSelect}: FollowupsProps) => (
   <>
     {title && <div className="padding-bottom-24">{title}</div>}
 
-    {followups?.map(({text, action}, i) => (
+    {followups?.map(({text, pageid}, i) => (
       <div key={i} className="padding-bottom-16">
-        <Button className="secondary-alt" action={action}>
+        <Button className="secondary-alt" action={() => onSelect({text, pageid})}>
           {text}
         </Button>
       </div>
@@ -123,102 +132,120 @@ const SplashScreen = ({
     </div>
     <Followups
       title="Popular questions"
-      followups={questions?.map((text: string) => ({text, action: () => onQuestion(text)}))}
+      followups={questions?.map((text: string) => ({text}))}
+      onSelect={({text}: Followup) => onQuestion(text)}
     />
   </>
 )
 
-const UserQuery = ({content}: Entry) => (
-  <div>
-    <div>
-      <PersonIcon /> <span className="default-bold">You</span>
-    </div>
-    <div> {content} </div>
-  </div>
-)
-
-const ChatbotReply = ({content, phase}: AssistantEntry) => {
-  const PhaseState = () => {
-    switch (phase) {
-      case 'started':
-        return <p>Loading: Sending query...</p>
-      case 'semantic':
-        return <p>Loading: Performing semantic search...</p>
-      case 'history':
-        return <p>Loading: Processing history...</p>
-      case 'context':
-        return <p>Loading: Creating context...</p>
-      case 'prompt':
-        return <p>Loading: Creating prompt...</p>
-      case 'llm':
-        return <p>Loading: Waiting for LLM...</p>
-      case 'streaming':
-      case 'followups':
-      default:
-        return null
-    }
-  }
-
-  return (
-    <div>
-      <div>
-        <StampyIcon /> <span className="default-bold">Stampy</span>
-      </div>
-      <PhaseState />
-      <div>{content}</div>
-      {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
-    </div>
-  )
-}
-
-const ChatEntry = (props: Entry) => {
-  switch (props.role) {
-    case 'user':
-      return <UserQuery {...props} />
-    case 'assistant':
-      return <ChatbotReply {...props} />
-  }
-}
-
 export const Chatbot = ({question, questions}: {question?: string; questions?: string[]}) => {
   const [followups, setFollowups] = useState<Followup[]>()
 
+  // FIXME: Generate session id
   const [sessionId] = useState('asd')
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
+  const fetcher = useFetcher({key: 'followup-fetcher'})
+  const {search, resultsForRef, waitForResults} = useSearch(1)
 
-  const showFollowup = (pageid: string) => {
-    // Fetch and display the given article
-    console.log(pageid)
+  useEffect(() => {
+    if (!fetcher.data || fetcher.state !== 'idle') return
+
+    const question = (fetcher.data as any)?.question?.data as Question
+    if (!question || !question.pageid) return
+
+    setHistory((history) =>
+      history.map((item, i) => {
+        // Ignore non human written entries
+        if ((item as StampyEntry).pageid !== question.pageid) return item
+        // this is the current entry, so update it
+        if (i === history.length - 1) {
+          setFollowups(
+            question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
+          )
+          return {...item, content: question.text || ''}
+        }
+        // this is a previous human written article that didn't load properly - don't
+        // update the text as that could cause things to jump around - the user has
+        // already moved on, anyway
+        if (!item.content) return {...item, content: '...'}
+        // Any fully loaded previous human articles should just be returned
+        return item
+      })
+    )
+  }, [fetcher.data, fetcher.state])
+
+  const showFollowup = async ({text, pageid}: Followup) => {
+    if (pageid) fetcher.load(questionUrl({pageid}))
+    setHistory((prev) => [
+      ...prev,
+      {role: 'user', content: text},
+      {pageid, role: 'stampy'} as StampyEntry,
+    ])
+    setFollowups(undefined)
   }
 
-  const abortSearch = () => controller.abort()
-  console.log(abortSearch) // to stop the linter from complaining
-
   const onQuestion = async (question: string) => {
+    // Cancel any previous queries
+    controller.abort()
+    const newController = new AbortController()
+    setController(newController)
+
+    // Add a new history entry, replacing the previous one if it was canceled
     const message = {content: question, role: 'user'} as Entry
-    const controller = new AbortController()
-    setController(controller)
+    setHistory((current) => {
+      const last = current[current.length - 1]
+      if (
+        (last?.role === 'assistant' && ['streaming', 'followups'].includes(last?.phase || '')) ||
+        (last?.role === 'stampy' && last?.content) ||
+        ['error'].includes(last?.role)
+      ) {
+        return [...current, message, {role: 'assistant'} as AssistantEntry]
+      } else if (last?.role === 'user' && last?.content === question) {
+        return [...current.slice(0, current.length - 1), {role: 'assistant'} as AssistantEntry]
+      }
+      return [
+        ...current.slice(0, current.length - 2),
+        message,
+        {role: 'assistant'} as AssistantEntry,
+      ]
+    })
 
     setFollowups(undefined)
-    setHistory((current) => [...current, message, {role: 'assistant'} as AssistantEntry])
     const updateReply = (reply: Entry) =>
       setHistory((current) => [...current.slice(0, current.length - 2), message, reply])
+
+    search(question)
+    const [humanWritten] = await waitForResults(100, 1000)
+    if (newController.signal.aborted) {
+      return
+    }
+
+    if (humanWritten && humanWritten.score > 0.85 && question === resultsForRef.current) {
+      fetcher.load(questionUrl({pageid: humanWritten.pageid}))
+      updateReply({pageid: humanWritten.pageid, role: 'stampy'} as StampyEntry)
+      return
+    }
 
     const {followups, result} = await queryLLM(
       [...history, message],
       updateReply,
       sessionId,
-      controller
+      newController
     )
-    updateReply(result)
-    setFollowups(
-      followups?.map(({text, pageid}: Followup) => ({
-        text,
-        action: () => pageid && showFollowup(pageid),
-      }))
-    )
+    if (!newController.signal.aborted) {
+      updateReply(result)
+      setFollowups(followups)
+    }
   }
+
+  const fetchFlag = useRef(false)
+  useEffect(() => {
+    if (question && !fetchFlag.current) {
+      fetchFlag.current = true
+      onQuestion(question)
+    }
+  })
 
   return (
     <div className="centered col-9 height-70">
@@ -229,9 +256,13 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
       {followups ? (
-        <Followups title="continue the conversation" followups={followups} />
+        <Followups
+          title="continue the conversation"
+          followups={followups}
+          onSelect={showFollowup}
+        />
       ) : undefined}
-      <QuestionInput initial={question} onAsk={onQuestion} />
+      <QuestionInput onAsk={onQuestion} />
     </div>
   )
 }

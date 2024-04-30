@@ -1,10 +1,8 @@
 import {useState, useEffect, useRef} from 'react'
 import debounce from 'lodash/debounce'
 import {useSearch} from '~/hooks/useSearch'
-import {Question} from '~/server-utils/stampy'
 import {SearchInput} from './SearchInput/Input'
 import {SearchResults} from './SearchResults/Dropdown'
-import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import {questionUrl} from '~/routesMapper'
 
 type Props = {
@@ -13,24 +11,11 @@ type Props = {
   removeQueryFromUrl?: () => void
 }
 
-const empty: [] = []
-
 export default function Search({queryFromUrl, limitFromUrl, removeQueryFromUrl}: Props) {
   const [showResults, setShowResults] = useState(!!queryFromUrl)
   const searchInputRef = useRef('')
 
-  const onSiteAnswersRef = useRef<Question[]>(empty)
-  useEffect(() => {
-    // not needed for initial screen => lazy load on client
-    fetchAllQuestionsOnSite().then(({data, backgroundPromiseIfReloaded}) => {
-      onSiteAnswersRef.current = data
-      backgroundPromiseIfReloaded.then((x) => {
-        if (x) onSiteAnswersRef.current = x.data
-      })
-    })
-  }, [])
-
-  const {search, isPendingSearch, results} = useSearch(onSiteAnswersRef, limitFromUrl)
+  const {search, isPendingSearch, results} = useSearch(limitFromUrl)
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()

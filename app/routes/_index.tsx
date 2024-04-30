@@ -7,6 +7,7 @@ import Grid from '~/components/Grid'
 import Page from '~/components/Page'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import {questionUrl} from '~/routesMapper'
+import {WidgetStampy} from '~/components/Chatbot'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
@@ -38,7 +39,7 @@ export default function App() {
         <ContentBoxThird />
 
         <div className="desktop-only padding-bottom-56" />
-        {/* <WidgetStampy /> */}
+        <WidgetStampy />
 
         <h3 className="grey large-bold padding-bottom-32">Advanced sections</h3>
         <Grid gridBoxes={advanced} />
