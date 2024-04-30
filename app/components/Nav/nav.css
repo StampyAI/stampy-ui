@@ -1,5 +1,5 @@
 .top-header {
-  padding: var(--spacing-32) 5.56vw;
+  padding: var(--spacing-32);
 }
 .top-nav {
   display: flex;
@@ -28,8 +28,6 @@
 }
 
 .top-menu svg {
-  width: var(--spacing-24);
-  max-width: 100%;
   aspect-ratio: 1;
   object-fit: contain;
   object-position: center;

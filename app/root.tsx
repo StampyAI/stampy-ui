@@ -61,8 +61,7 @@ const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
-  const url = new URL(data.url)
-  const logo = `${url.origin}/${data.minLogo ? 'favicon-min-512.png' : 'favicon-512.png'}`
+  const logo = 'favicon-512.png'
   return [
     {title},
     {name: 'description', content: description},
@@ -89,11 +88,6 @@ export const links: LinksFunction = () =>
     .map((styles) => ({rel: 'stylesheet', href: styles as string}))
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
-  const isDomainWithFunLogo = request.url.match(/stampy.ai|localhost/) // min logo by default on aisafety.info and 127.0.0.1
-  const isFunLogoForcedOff = request.url.match(/minLogo/)
-  const isFunLogoForcedOn = request.url.match(/funLogo/)
-  const minLogo = isDomainWithFunLogo ? !!isFunLogoForcedOff : !isFunLogoForcedOn
-
   const embed = !!request.url.match(/embed/)
   const showSearch = !request.url.match(/onlyInitial/)
 
@@ -105,7 +99,6 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   return {
     question,
     url: request.url,
-    minLogo,
     embed,
     showSearch,
     gaTrackingId: GOOGLE_ANALYTICS_ID,
@@ -136,7 +129,7 @@ const GoogleAnalytics = ({gaTrackingId}: {gaTrackingId?: string}) => {
   )
 }
 
-function Head({minLogo}: {minLogo?: boolean}) {
+function Head() {
   return (
     <head>
       <meta charSet="utf-8" />
@@ -147,11 +140,7 @@ function Head({minLogo}: {minLogo?: boolean}) {
        */}
       <Meta />
       <Links />
-      {minLogo ? (
-        <link id="favicon" rel="icon" href="/favicon-min.ico" />
-      ) : (
-        <link id="favicon" rel="icon" href="/favicon.ico" />
-      )}
+      <link id="favicon" rel="icon" href="/favicon.ico" />
     </head>
   )
 }
@@ -160,16 +149,14 @@ const BasePage = ({
   children,
   embed,
   savedTheme,
-  minLogo,
 }: {
   children: ReactNode
   embed?: boolean
   savedTheme?: string
-  minLogo?: boolean
 }) => (
   <CachedObjectsProvider>
     <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
-      <Head minLogo={minLogo} />
+      <Head />
       <body>{children}</body>
     </html>
   </CachedObjectsProvider>
@@ -192,12 +179,12 @@ export function ErrorBoundary() {
 }
 
 type Loader = Awaited<ReturnType<typeof loader>>
-export type Context = Pick<Loader, 'minLogo' | 'embed' | 'showSearch'>
+export type Context = Pick<Loader, 'embed' | 'showSearch'>
 
 export default function App() {
-  const {minLogo, embed, showSearch, gaTrackingId} = useLoaderData<Loader>()
+  const {embed, showSearch, gaTrackingId} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
-  const context: Context = {minLogo, embed, showSearch}
+  const context: Context = {embed, showSearch}
 
   useEffect(() => {
     if (embed) {
@@ -220,7 +207,7 @@ export default function App() {
   }, [embed])
 
   return (
-    <BasePage embed={embed} savedTheme={savedTheme} minLogo={minLogo}>
+    <BasePage embed={embed} savedTheme={savedTheme}>
       <GoogleAnalytics gaTrackingId={gaTrackingId} />
       <Outlet context={context} />
       <ScrollRestoration />

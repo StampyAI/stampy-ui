@@ -20,7 +20,7 @@
   transform: translate(-52px, 4px);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .button {
     width: 100%;
   }

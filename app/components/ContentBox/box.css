@@ -25,6 +25,7 @@
 
 .content-box-table {
   padding: var(--spacing-16);
+  display: flex; /* avoid space around svg inline-block elements */
 }
 
 .teal-background {
@@ -44,17 +45,12 @@
 
 .content-box-table.main {
   overflow: hidden;
-  padding: 0 var(--spacing-8);
+  padding: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .main-container-box-table {
     flex-direction: column;
     margin-bottom: var(--spacing-80);
-  }
-
-  .content-box-table {
-    padding: var(--spacing-80);
-    padding-top: 0;
   }
 }

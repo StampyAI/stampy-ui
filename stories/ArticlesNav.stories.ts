@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import {ArticlesNav} from '../app/components/ArticlesNav/Menu'
+import {ArticlesNav} from '../app/components/ArticlesNav/ArticleNav'
 
 const meta = {
   title: 'Components/ArticlesNav',

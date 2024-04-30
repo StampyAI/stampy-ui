@@ -1,16 +1,13 @@
 .grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--spacing-32);
-  flex-flow: wrap;
 }
 
 .grid-item {
   cursor: pointer;
   text-align: left;
   padding: var(--spacing-40);
-  width: 21.46vw;
-  min-width: var(--spacing-288);
-  min-height: var(--spacing-288);
   text-decoration: none;
 }
 
@@ -30,7 +27,7 @@
   margin-bottom: var(--spacing-24);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .grid-item {
     width: 100%;
     height: 300px;
