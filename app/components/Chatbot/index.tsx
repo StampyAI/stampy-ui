@@ -68,10 +68,11 @@ type QuestionInputProps = {
 }
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
-
+  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const handleAsk = (val: string) => {
     onAsk && onAsk(val)
     setQuestion('')
+    setPlaceholder('Message Stampy')
   }
 
   const handleChange = (val: string) => {
@@ -84,7 +85,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
       <input
         type="text"
         className="full-width bordered secondary right-icon"
-        placeholder="Ask Stampy a question..."
+        placeholder={placeholder}
         value={question}
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
@@ -263,6 +264,14 @@ export const Chatbot = ({question, questions}: {question?: string; questions?: s
         />
       ) : undefined}
       <QuestionInput onAsk={onQuestion} />
+
+      <div className={'warning-floating'}>
+        <p className={'xs'}>
+          <span className={'red xs-bold'}>Caution! </span>
+          This is an early prototype. Don’t automatically trust what it says, and make sure to
+          follow its sources.
+        </p>
+      </div>
     </div>
   )
 }
