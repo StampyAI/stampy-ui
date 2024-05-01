@@ -49,6 +49,7 @@ export type StampyEntry = {
   pageid: string
   content: string
   deleted?: boolean
+  title?: string
 }
 
 export type Followup = {

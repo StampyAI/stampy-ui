@@ -169,7 +169,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           setFollowups(
             question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
           )
-          return {...item, content: question.text || ''}
+          return {...item, title: question.title, content: question.text || ''}
         }
         // this is a previous human written article that didn't load properly - don't
         // update the text as that could cause things to jump around - the user has

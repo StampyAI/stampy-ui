@@ -175,6 +175,10 @@ article a.see-more.visible:after {
   content: 'See less';
 }
 
+.feedback {
+  width: fit-content;
+}
+
 @media only screen and (max-width: 780px) {
   article {
     max-width: 100%;
