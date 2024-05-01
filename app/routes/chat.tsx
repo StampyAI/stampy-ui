@@ -11,10 +11,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = () => false
 export default function App() {
   const [params] = useSearchParams()
   const [showSettings, setShowSettings] = useState(false)
-  const [chatSettings, setChatSettings] = useState({
-    mode: 'default',
-    completions: 'gpt-3.5-turbo',
-  } as ChatSettings)
+  const [chatSettings, setChatSettings] = useState({mode: 'default', completions: 'gpt-3.5-turbo'} as ChatSettings)
   const question = params.get('question') || undefined
 
   const ModeButton = ({name, mode}: {name: string; mode: Mode}) => (
