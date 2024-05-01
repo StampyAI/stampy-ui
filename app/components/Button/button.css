@@ -33,9 +33,15 @@
   color: var(--colors-teal-800, #146560);
 }
 
+.primary-selected {
+  background: var(--colors-white, #ffffff);
+  color: var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+}
+
 .secondary {
   color: var(--colors-cool-grey-600, #788492) !important;
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  border: 1px solid var(--colors-teal-500, #1d9089);
   background: var(--colors-white, #fff);
 }
 

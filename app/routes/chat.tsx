@@ -16,7 +16,7 @@ export default function App() {
 
   const ModeButton = ({name, mode}: {name: string; mode: Mode}) => (
     <Button
-      className={chatSettings.mode === mode ? 'primary-alt' : ''}
+      className={chatSettings.mode === mode ? 'primary-selected' : ''}
       action={() => setChatSettings({...chatSettings, mode})}
     >
       {name}
@@ -51,8 +51,8 @@ export default function App() {
             </div>
           )}
           <SettingsIcon
-            width="32"
-            height="32"
+            width="24"
+            height="24"
             className="pointer"
             onClick={() => setShowSettings((current) => !current)}
           />

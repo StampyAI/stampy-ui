@@ -23,13 +23,14 @@
 
 .settings-container {
   position: absolute;
-  bottom: var(--spacing-16);
-  left: var(--spacing-16);
+  bottom: var(--spacing-32);
+  left: var(--spacing-32);
 }
 
 .settings {
   padding: var(--spacing-32);
-  margin-bottom: var(--spacing-24);
+  margin-bottom: var(--spacing-8);
   flex-direction: column;
-  gap: var(--spacing-24);
+  gap: var(--spacing-16);
+  width: 384px;
 }
