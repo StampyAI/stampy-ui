@@ -10,6 +10,11 @@
   border-radius: var(--border-radius);
   box-sizing: border-box;
 
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
+
   background: var(--colors-white, #ffffff);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
 }
@@ -33,20 +38,20 @@
   color: var(--colors-teal-800, #146560);
 }
 
-.primary-selected {
-  background: var(--colors-white, #ffffff);
-  color: var(--colors-teal-500, #1d9089);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-}
-
 .secondary {
   color: var(--colors-cool-grey-600, #788492) !important;
-  border: 1px solid var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
 }
 
 .secondary:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
+}
+
+.secondary-selected {
+  background: var(--colors-white, #ffffff);
+  color: var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-teal-500, #1d9089);
 }
 
 .secondary-alt {
