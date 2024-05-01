@@ -254,7 +254,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   })
 
   return (
-    <div className="centered col-9 padding-bottom-128">
+    <div className="centered col-10 padding-bottom-128">
       {history.length === 0 ? (
         <SplashScreen questions={questions} onQuestion={onQuestion} />
       ) : undefined}
@@ -263,7 +263,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
       ))}
       {followups ? (
         <Followups
-          title="continue the conversation"
+          title="Continue the conversation"
           followups={followups}
           onSelect={showFollowup}
         />
