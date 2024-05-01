@@ -41,7 +41,7 @@
 
 .secondary {
   color: var(--colors-cool-grey-600, #788492) !important;
-  border: 1px solid var(--colors-teal-500, #1D9089);
+  border: 1px solid var(--colors-teal-500, #1d9089);
   background: var(--colors-white, #fff);
 }
 

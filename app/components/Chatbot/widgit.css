@@ -32,5 +32,5 @@
   margin-bottom: var(--spacing-8);
   flex-direction: column;
   gap: var(--spacing-16);
-  width: 384px
+  width: 384px;
 }
