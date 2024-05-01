@@ -21,6 +21,33 @@
   }
 }
 
+.height-70 {
+  height: 70vh;
+  overflow-x: hidden;
+}
+.widget-ask {
+  position: sticky;
+  bottom: 0;
+}
+.pointer {
+  position: absolute;
+  right: 0;
+  margin: 4px;
+}
+.right-icon {
+  padding-right: var(--spacing-56);
+}
+.warning-floating {
+  position: fixed;
+  right: 7vw;
+  z-index: 100;
+  bottom: 5vw;
+  width: 11vw;
+}
+.red {
+  color: #d40000;
+}
+
 .settings-container {
   position: absolute;
   bottom: var(--spacing-32);
