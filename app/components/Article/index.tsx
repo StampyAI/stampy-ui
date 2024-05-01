@@ -49,7 +49,7 @@ const ArticleFooter = (question: Question) => {
           <Button
             className="secondary"
             action={question.answerEditLink || ''}
-            tooltip="Edit article"
+            tooltip="Suggest changes in Google Docs"
             props={{target: '_blank', rel: 'noopener noreferrer'}}
           >
             <EditIcon className="no-fill" />
@@ -107,7 +107,7 @@ const ArticleActions = ({answerEditLink}: Question) => {
       <Button
         className="secondary"
         action={answerEditLink || ''}
-        tooltip="Edit article"
+        tooltip="Suggest changes in Google Docs"
         props={{target: '_blank', rel: 'noopener noreferrer'}}
       >
         <EditIcon className="no-fill" />
@@ -154,7 +154,7 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
   const {title, text, pageid} = question
 
   return (
-    <article className={className}>
+    <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
       <h1 className="teal-500 padding-bottom-24">{title}</h1>
       <ArticleMeta question={question} className="padding-bottom-56" />
 

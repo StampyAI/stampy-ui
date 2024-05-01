@@ -4,14 +4,15 @@
 
 .footer-contents {
   display: flex;
+  gap: var(--spacing-32);
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: baseline;
-  margin: var(--spacing-104) 13.33vw var(--spacing-80) 13.33vw;
+  margin: var(--spacing-104) var(--spacing-80) var(--spacing-80) var(--spacing-80);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .footer-contents {
     flex-direction: column;
     gap: 32px;

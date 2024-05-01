@@ -29,7 +29,7 @@
   border-right: 1px solid var(--colors-cool-grey-200);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .articles-dropdown-container .toc {
     border-right: 0;
   }

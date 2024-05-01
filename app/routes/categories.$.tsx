@@ -3,7 +3,7 @@ import {useLoaderData} from '@remix-run/react'
 import Page from '~/components/Page'
 import ListTable from '~/components/Table'
 import {loader} from '~/routes/categories.all'
-import {CategoriesNav} from '~/components/CategoriesNav/Menu'
+import {CategoriesNav} from '~/components/CategoriesNav/CategoriesNav'
 import type {Tag as TagType} from '~/server-utils/stampy'
 import useIsMobile from '~/hooks/isMobile'
 import {CategoriesPage} from '~/components/CategoriesNav/Page'
@@ -19,7 +19,7 @@ export default function Tags() {
   const mobile = useIsMobile()
   const {data} = useLoaderData<ReturnType<typeof loader>>()
   const {currentTag, tags} = data
-  const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
+  const [selectedTag, setSelectedTag] = useState<TagType | null>(currentTag ?? null)
 
   const [sortBy] = useState<keyof typeof sortFuncs>('alphabetically')
 
@@ -56,7 +56,7 @@ export default function Tags() {
                       ? 'No pages found'
                       : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
                   </div>
-                  {selectedTag && <ListTable className="col-8" elements={selectedTag.questions} />}
+                  {selectedTag && <ListTable className="fcol-8" elements={selectedTag.questions} />}
                 </article>
               )}
             </>

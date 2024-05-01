@@ -1,6 +1,27 @@
 article {
-  max-width: 47.43vw;
-  margin: 0 auto;
+  flex: 100;
+  max-width: 800px;
+  min-height: 100vh;
+  padding-left: var(--spacing-80);
+}
+
+article.loading .contents {
+  overflow: hidden;
+  max-width: 100%;
+  animation: infinite-loader 3s ease-in infinite;
+}
+@keyframes infinite-loader {
+  0% {
+    opacity: 0;
+    max-width: 80px;
+  }
+  30% {
+    opacity: 1;
+    max-width: 100px;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 article .meta {
@@ -58,9 +79,13 @@ article .contents p {
   padding-bottom: var(--spacing-32);
 }
 
+article .contents img {
+  max-width: 100%;
+}
+
 article .glossary-entry {
   border-bottom: 3px dotted var(--colors-cool-grey-500);
-  cursor: pointer;
+  cursor: default;
 }
 
 article .link-popup {
@@ -73,7 +98,8 @@ article .link-popup {
   font-weight: 300;
   line-height: 170%; /* 30.6px */
   z-index: 2;
-  transform: translate(-20vw, var(--spacing-40));
+  left: calc(50% - 200px);
+  transform: translateY(var(--spacing-40));
   transition:
     visibility 0s 300ms,
     opacity cubic-bezier(1, 0, 1, 1) 300ms;
@@ -83,7 +109,7 @@ article .link-popup .footnote {
 }
 
 article .glossary-popup {
-  max-width: 522px;
+  width: 522px;
   height: 304px;
 }
 
@@ -149,9 +175,10 @@ article a.see-more.visible:after {
   content: 'See less';
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 780px) {
   article {
     max-width: 100%;
+    padding: 0;
   }
   article .footer-comtainer {
     flex-direction: row;

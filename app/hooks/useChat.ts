@@ -61,7 +61,18 @@ export type SearchResult = {
   result: Entry
 }
 
-export type Mode = 'rookie' | 'concise' | 'default' | 'discord'
+type Model =
+  | 'gpt-3.5-turbo'
+  | 'gpt-4'
+  | 'gpt-4-turbo-preview'
+  | 'claude-3-opus-20240229'
+  | 'claude-3-sonnet-20240229'
+  | 'claude-3-haiku-20240307'
+export type Mode = 'rookie' | 'concise' | 'default'
+export type ChatSettings = {
+  mode?: Mode
+  completions?: Model
+}
 
 const DATA_HEADER = 'data: '
 const EVENT_END_HEADER = 'event: close'
@@ -229,7 +240,8 @@ export const extractAnswer = async (
 const fetchLLM = async (
   sessionId: string | undefined,
   history: HistoryEntry[],
-  controller: AbortController
+  controller: AbortController,
+  settings?: ChatSettings
 ): Promise<Response | void> =>
   fetch(CHATBOT_URL, {
     signal: controller.signal,
@@ -240,18 +252,19 @@ const fetchLLM = async (
       'Content-Type': 'application/json',
       Accept: 'text/event-stream',
     },
-    body: JSON.stringify({sessionId, history, settings: {mode: 'default'}}),
+    body: JSON.stringify({sessionId, history, settings}),
   }).catch(ignoreAbort)
 
 export const queryLLM = async (
   history: HistoryEntry[],
   setCurrent: (e: AssistantEntry) => void,
   sessionId: string | undefined,
-  controller: AbortController
+  controller: AbortController,
+  settings?: ChatSettings
 ): Promise<SearchResult> => {
   setCurrent({...makeEntry(), phase: 'started'})
   // do SSE on a POST request.
-  const res = await fetchLLM(sessionId, history, controller)
+  const res = await fetchLLM(sessionId, history, controller, settings)
 
   if (!res) {
     return {result: {role: 'error', content: 'No response from server'}}

@@ -18,9 +18,9 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   // it, so it's always shown (until the mouse is moved out, of course). To get around
   // this, use this variable to simply not render the dropdown for one render, which
   // will reset the CSS onHover checker.
-  const [shown, setShown] = useState(false)
-  const hide = () => setShown(true)
-  useEffect(() => setShown(false), [shown])
+  const [hidden, setHidden] = useState(false)
+  const hide = () => setHidden(true)
+  useEffect(() => setHidden(false), [hidden])
   const mobile = useIsMobile()
   const Link = ({
     to,
@@ -64,9 +64,9 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
     </div>
   )
 
-  return shown ? null : (
-    <div className="articles-dropdown-container bordered col-8">
-      <div className="col-5 toc">
+  return hidden ? null : (
+    <div className="articles-dropdown-container bordered fcol-8">
+      <div className="fcol-5 toc">
         <ArticlesSection
           category={INTRODUCTORY}
           toc={toc}
@@ -78,7 +78,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
           className={mobile ? 'padding-bottom-40' : ''}
         />
       </div>
-      <div className="col-4">
+      <div className="fcol-4">
         {/*sorted right side*/}
         <div className="default-bold">Browse by category</div>
 

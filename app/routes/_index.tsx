@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldRevalidateFunction, redirect} from '@remix-run/react'
 import {QuestionState} from '~/server-utils/stampy'
@@ -5,9 +6,9 @@ import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/Co
 import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
 import Page from '~/components/Page'
+import {WidgetStampy} from '~/components/Chatbot'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import {questionUrl} from '~/routesMapper'
-import {WidgetStampy} from '~/components/Chatbot'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
@@ -29,6 +30,11 @@ export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
   const {advanced} = useToC()
+
+  useEffect(() => {
+    document.title = 'AISafety.info'
+  }, [])
+
   return (
     <Page>
       <div className="page-body">

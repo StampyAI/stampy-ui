@@ -2,11 +2,25 @@
   display: none;
 }
 .articles-group {
+  flex: none;
+  width: clamp(230px, 30vw, 400px);
   height: fit-content;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   overflow-y: scroll;
   overflow-x: hidden;
+  opacity: 1;
+  transition:
+    opacity 200ms,
+    width 200ms;
+}
+
+.articles-group.loading {
+  opacity: 0;
+}
+
+.articles-group.none {
+  width: clamp(0px, calc(100vw - 1100px), 400px);
 }
 
 .articles-title {
@@ -35,10 +49,10 @@
   cursor: pointer;
 }
 
-/* 
+/*
   https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary#default_style
   "For Webkit-based browsers, such as Safari, it is possible to control the icon display
-  through the non-standard CSS pseudo-element ::-webkit-details-marker. 
+  through the non-standard CSS pseudo-element ::-webkit-details-marker.
   To remove the disclosure triangle, use summary::-webkit-details-marker { display: none }."
 */
 .articles-group details summary::-webkit-details-marker {
@@ -57,10 +71,10 @@
   height: 8px;
   position: relative;
   top: 25px;
-  left: -5px;
+  left: -8px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   .articles-group {
     width: 100%;
   }

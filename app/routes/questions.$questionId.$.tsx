@@ -8,12 +8,13 @@ import Button from '~/components/Button'
 import Error from '~/components/Error'
 import XIcon from '~/components/icons-generated/X'
 import ChevronRight from '~/components/icons-generated/ChevronRight'
-import {ArticlesNav} from '~/components/ArticlesNav/Menu'
-import {fetchGlossary} from '~/routes/questions.glossary'
-import {loadQuestionDetail, loadTags} from '~/server-utils/stampy'
+import {ArticlesNav} from '~/components/ArticlesNav/ArticleNav'
+import {QuestionStatus, loadQuestionDetail} from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
-import type {Question, Glossary, Tag} from '~/server-utils/stampy'
+import useGlossary from '~/hooks/useGlossary'
+import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
+import {useOnSiteQuestions, useTags} from '~/hooks/useCachedObjects'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
@@ -27,11 +28,7 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
 
   try {
     const dataPromise = loadQuestionDetail(request, questionId).catch(raise500)
-    const tagsPromise = loadTags(request)
-      .then(({data}) => data)
-      .catch(raise500)
-
-    return defer({question: dataPromise, tags: tagsPromise})
+    return defer({question: dataPromise})
   } catch (error: unknown) {
     console.log(error)
     const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
@@ -46,8 +43,8 @@ const dummyQuestion = (title: string | undefined) =>
     tags: [],
   }) as any as Question
 
-const updateTags = (question: Question, tags: Tag[]) => {
-  const mappedTags = tags.reduce((acc, t) => ({...acc, [t.name]: t}), {})
+const updateTags = (question: Question, tags?: Tag[]) => {
+  const mappedTags = tags?.reduce((acc, t) => ({...acc, [t.name]: t}), {}) || {}
   return {
     ...question,
     tags: question.tags
@@ -57,23 +54,31 @@ const updateTags = (question: Question, tags: Tag[]) => {
   }
 }
 
+const updateRelated = (question: Question, allQuestions?: Question[]) => {
+  const live =
+    allQuestions
+      ?.filter(({status}) => status === QuestionStatus.LIVE_ON_SITE)
+      .map(({pageid}) => pageid) || []
+  return {
+    ...question,
+    relatedQuestions: question.relatedQuestions.filter(({pageid}) => live.includes(pageid)),
+  }
+}
+
+const updateFields = (question: Question, tags?: Tag[], allQuestions?: Question[]) =>
+  updateTags(updateRelated(question, allQuestions), tags)
+
 export default function RenderArticle() {
   const location = useLocation()
-  const [glossary, setGlossary] = useState<Glossary>({} as Glossary)
   const [showNav, setShowNav] = useState(false) // Used on mobile
   const params = useParams()
+  const {items: onSiteQuestions} = useOnSiteQuestions()
+  const {items: tags} = useTags()
+  const glossary = useGlossary()
   const pageid = params.questionId ?? '😱'
-  const {question, tags} = useLoaderData<typeof loader>()
-  const {findSection, getArticle, getPath} = useToC()
+  const {question} = useLoaderData<typeof loader>()
+  const {toc, findSection, getArticle, getPath} = useToC()
   const section = findSection(location?.state?.section || pageid)
-
-  useEffect(() => {
-    const getGlossary = async () => {
-      const {data} = await fetchGlossary()
-      setGlossary(data)
-    }
-    getGlossary()
-  }, [setGlossary])
 
   useEffect(() => {
     setShowNav(false)
@@ -102,35 +107,40 @@ export default function RenderArticle() {
             />
           </div>
         ) : (
-          <Button
-            className="mobile-only article-selector large-reading black"
-            action={() => setShowNav(true)}
-          >
-            {getArticle(pageid)?.title}
-            <ChevronRight className="dropdown-icon active" />
-          </Button>
+          section && (
+            <Button
+              className="mobile-only article-selector large-reading black"
+              action={() => setShowNav(true)}
+            >
+              {getArticle(pageid)?.title}
+              <ChevronRight className="dropdown-icon active" />
+            </Button>
+          )
         )}
 
-        {section && (
-          <ArticlesNav
-            current={pageid}
-            article={section}
-            path={getPath(pageid, section?.pageid)}
-            className={!showNav ? 'desktop-only bordered' : ''}
-          />
-        )}
+        <ArticlesNav
+          tocLoaded={toc.length > 0}
+          current={pageid}
+          article={section}
+          path={getPath(pageid, section?.pageid)}
+          className={!showNav ? 'desktop-only bordered' : ''}
+        />
 
         <Suspense
           key={pageid}
           fallback={
             <Article
-              question={dummyQuestion(getArticle(pageid)?.title)}
+              question={
+                'data' in question
+                  ? (question.data as Question)
+                  : dummyQuestion(getArticle(pageid)?.title)
+              }
               className={showNav ? 'desktop-only' : ''}
             />
           }
         >
-          <Await resolve={Promise.all([question, tags])}>
-            {([resolvedQuestion, resolvedTags]) => {
+          <Await resolve={question}>
+            {(resolvedQuestion) => {
               if (resolvedQuestion instanceof Response || !('data' in resolvedQuestion)) {
                 return <Error error={resolvedQuestion} />
               } else if (!resolvedQuestion.data.pageid) {
@@ -140,7 +150,11 @@ export default function RenderArticle() {
               } else {
                 return (
                   <Article
-                    question={updateTags(resolvedQuestion.data as Question, resolvedTags as Tag[])}
+                    question={updateFields(
+                      resolvedQuestion.data as Question,
+                      tags,
+                      onSiteQuestions
+                    )}
                     glossary={glossary}
                     className={showNav ? 'desktop-only' : ''}
                   />

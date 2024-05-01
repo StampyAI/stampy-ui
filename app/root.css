@@ -35,16 +35,16 @@
   --spacing-8: 8px;
   --spacing-12: 12px;
   --spacing-16: 16px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-56: 56px;
-  --spacing-80: 80px;
-  --spacing-104: 104px;
-  --spacing-128: 128px;
-  --spacing-192: 192px;
-  --spacing-288: 288px;
+  --spacing-24: clamp(16px, 2.6vw, 24px);
+  --spacing-32: clamp(24px, 3.4vw, 32px);
+  --spacing-40: clamp(24px, 4.2vw, 40px);
+  --spacing-48: clamp(24px, 5vw, 48px);
+  --spacing-56: clamp(24px, 6vw, 56px);
+  --spacing-80: clamp(40px, 7.4vw, 80px);
+  --spacing-104: clamp(56px, 10.6vw, 104px);
+  --spacing-128: clamp(56px, 13.8vw, 128px);
+  --spacing-192: clamp(80px, 17vw, 192px);
+  --spacing-288: clamp(128px, 25.6vw, 288px);
 }
 
 /* CSS Reset */
@@ -73,22 +73,22 @@ input {
   margin: 0;
 }
 body {
-  display: flex;
-  flex-direction: column;
+  margin: auto;
+  max-width: 1600px;
   min-height: 100vh;
 }
 
 /* typography tags */
 
 h1 {
-  font-size: 64px;
+  font-size: clamp(40px, 4vw, 52px);
   font-weight: 500;
   line-height: 125%; /* 80px */
   letter-spacing: -1.28px;
 }
 
 h2 {
-  font-size: 38px;
+  font-size: clamp(24px, 2.6vw, 32px);
   font-weight: 500;
   line-height: 130%; /* 49.4px */
   letter-spacing: -0.57px;
@@ -291,48 +291,38 @@ h2 {
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
-.col-2 {
-  width: 8.54vw;
+.fcol-2 {
+  flex: 2;
 }
-
-.col-3 {
-  width: 15vw;
+.fcol-3 {
+  flex: 3;
 }
-
-.col-4 {
-  width: 21.46vw;
+.fcol-4 {
+  flex: 4;
 }
-
-.col-4-5 {
-  width: 22.78vw;
+.fcol-5 {
+  flex: 5;
 }
-
-.col-5 {
-  width: 27.99vw;
+.fcol-6 {
+  flex: 6;
 }
-
-.col-6 {
-  width: 34.44vw;
+.fcol-7 {
+  flex: 7;
 }
-
-.col-7 {
-  width: 40.9vw;
+.fcol-8 {
+  flex: 8;
 }
-
-.col-8 {
-  width: 47.43vw;
+.fcol-9 {
+  flex: 9;
 }
-
-.col-9 {
-  width: 53.89vw;
+.fcol-10 {
+  flex: 10;
 }
-
-.col-10 {
-  width: 60.35vw;
+.fcol-11 {
+  flex: 11;
 }
-
-.col-11 {
-  width: 66.88vw;
+.fcol-12 {
+  flex: 12;
 }
 
 .full-width {
@@ -370,6 +360,10 @@ ol {
   padding-left: var(--spacing-32);
 }
 
+svg {
+  flex: none;
+}
+
 /* other one-off classes */
 
 .text-align-center {
@@ -398,6 +392,10 @@ ol {
   cursor: pointer;
 }
 
+.full-height {
+  height: 100%;
+}
+
 /* for troubleshooting */
 
 .pink {
@@ -407,7 +405,7 @@ ol {
 
 /* defines the standard left and right margins */
 .page-body {
-  padding: 0px 13.333vw;
+  padding: 0 var(--spacing-104);
 }
 
 /* all other classes */
@@ -427,9 +425,7 @@ ol {
 
 .article-container {
   display: flex;
-  padding-left: 5.56vw;
-  padding-right: 2.43vw;
-  padding-top: var(--spacing-40);
+  padding: var(--spacing-32);
 }
 
 .icon-link path {
@@ -439,7 +435,7 @@ ol {
   stroke: var(--colors-teal-600);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 780px) {
   .mobile-only {
     display: none !important;
   }
@@ -447,7 +443,7 @@ ol {
 
 /* mobile */
 
-@media (max-width: 640px) {
+@media (max-width: 780px) {
   :root {
     --spacing-24: 16px;
     --spacing-32: 24px;
@@ -458,20 +454,6 @@ ol {
     --spacing-128: 56px;
     --spacing-192: 80px;
     --spacing-288: 128px;
-  }
-
-  .col-2,
-  .col-3,
-  .col-4,
-  .col-4-5,
-  .col-5,
-  .col-6,
-  .col-7,
-  .col-8,
-  .col-9,
-  .col-10,
-  .col-11 {
-    width: 87.2vw;
   }
 
   .page-body {
