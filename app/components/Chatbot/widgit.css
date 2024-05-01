@@ -21,18 +21,9 @@
   }
 }
 
-.height-70 {
-  height: 70vh;
-  overflow-x: hidden;
-}
 .widget-ask {
   position: sticky;
   bottom: 0;
-}
-.pointer {
-  position: absolute;
-  right: 0;
-  margin: 4px;
 }
 .right-icon {
   padding-right: var(--spacing-56);

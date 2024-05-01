@@ -328,6 +328,11 @@ h2 {
   width: 100%;
 }
 
+.full-height {
+  height: fit-content;
+  min-height: 100%;
+}
+
 /* other tags */
 
 a {
@@ -389,10 +394,6 @@ svg {
 
 .pointer {
   cursor: pointer;
-}
-
-.full-height {
-  height: 100%;
 }
 
 /* for troubleshooting */
