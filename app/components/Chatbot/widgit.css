@@ -10,17 +10,33 @@
   background: var(--colors-cool-grey-100);
 }
 
-.widget-ask input {
-  height: 56px;
-  padding: var(--spacing-8) var(--spacing-24);
-}
-
 @media (max-width: 780px) {
   .button {
     width: 100%;
   }
 }
 
+<<<<<<< Updated upstream
+=======
+.widget-ask {
+  position: sticky;
+  bottom: 0;
+}
+.right-icon {
+  padding-right: var(--spacing-56);
+}
+.warning-floating {
+  position: fixed;
+  right: 4.44vw;
+  z-index: 100;
+  bottom: 4.44vw;
+  width: 10.13vw;
+}
+.red {
+  color: #d40000;
+}
+
+>>>>>>> Stashed changes
 .settings-container {
   position: fixed;
   bottom: var(--spacing-32);

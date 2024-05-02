@@ -9,6 +9,7 @@ import './widgit.css'
 import {questionUrl} from '~/routesMapper'
 import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
+import Input from '~/components/Input'
 
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
@@ -32,7 +33,7 @@ export const WidgetStampy = () => {
           <div className="padding-bottom-24">Try asking me...</div>
           {questions.map((question, i) => (
             <div key={i} className="padding-bottom-16">
-              <Button className="secondary-alt" action={stampyUrl(question)}>
+              <Button className="secondary-alt-large" action={stampyUrl(question)}>
                 {question}
               </Button>
             </div>
@@ -68,7 +69,11 @@ type QuestionInputProps = {
 }
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
+<<<<<<< Updated upstream
 
+=======
+  const [, setPlaceholder] = useState('Ask Stampy a question...')
+>>>>>>> Stashed changes
   const handleAsk = (val: string) => {
     onAsk && onAsk(val)
     setQuestion('')
@@ -81,10 +86,16 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
 
   return (
     <div className="widget-ask flex-container">
+<<<<<<< Updated upstream
       <input
         type="text"
         className="full-width bordered secondary"
         placeholder="Ask Stampy a question..."
+=======
+      <Input
+        placeHolder="Ask Stampy a question..."
+        className="large col-10"
+>>>>>>> Stashed changes
         value={question}
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
@@ -102,10 +113,11 @@ type FollowupsProps = {
   title?: string
   followups?: Followup[]
   onSelect: (followup: Followup) => void
+  className?: string
 }
-const Followups = ({title, followups, onSelect}: FollowupsProps) => (
+const Followups = ({title, followups, onSelect, className}: FollowupsProps) => (
   <>
-    {title && <div className="padding-bottom-24">{title}</div>}
+    {title && <div className={'padding-bottom-24 color-grey ' + (className || '')}>{title}</div>}
 
     {followups?.map(({text, pageid}, i) => (
       <div key={i} className="padding-bottom-16">
@@ -125,16 +137,18 @@ const SplashScreen = ({
   onQuestion: (v: string) => void
 }) => (
   <>
-    <StampyIcon />
-    <div className="col-6 padding-bottom-56">
-      <h2 className="teal-500">Hi there, I'm Stampy.</h2>
-      <h2>I can answer your questions about AI safety</h2>
+    <div className="padding-top-40">
+      <StampyIcon />
+      <div className="col-6 padding-bottom-40 padding-top-40">
+        <h2 className="teal-500">Hi there, I'm Stampy.</h2>
+        <h2>I can answer your questions about AI Safety</h2>
+      </div>
+      <Followups
+        title="Popular questions"
+        followups={questions?.map((text: string) => ({text}))}
+        onSelect={({text}: Followup) => onQuestion(text)}
+      />
     </div>
-    <Followups
-      title="Popular questions"
-      followups={questions?.map((text: string) => ({text}))}
-      onSelect={({text}: Followup) => onQuestion(text)}
-    />
   </>
 )
 
