@@ -10,6 +10,22 @@ import {questionUrl} from '~/routesMapper'
 import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 
+// to be replaced with actual pool questions
+const poolQuestions = [
+  {
+    title: 'What is AI Safety? - from pool',
+    pageid: '1b',
+  },
+  {
+    title: 'How would the AI even get out in the world? -- from pool',
+    pageid: '2b',
+  },
+  {
+    title: 'Do people seriously worry about existential risk from AI? --- from pool',
+    pageid: '3b',
+  },
+]
+
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
   const questions = [
@@ -166,6 +182,12 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         if ((item as StampyEntry).pageid !== question.pageid) return item
         // this is the current entry, so update it
         if (i === history.length - 1) {
+          // check proper insertion of pool questions
+          // question.relatedQuestions - question.relatedQuestions.slice(0,2);
+          if (question.relatedQuestions.length <= 2) {
+            question.relatedQuestions.push(...poolQuestions)
+          }
+          console.log('related questions:: ', question.relatedQuestions)
           setFollowups(
             question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
           )
