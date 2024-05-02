@@ -202,7 +202,8 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     setHistory((current) => {
       const last = current[current.length - 1]
       if (
-        (last?.role === 'assistant' && ['streaming', 'followups'].includes(last?.phase || '')) ||
+        (last?.role === 'assistant' &&
+          ['streaming', 'followups', 'done'].includes(last?.phase || '')) ||
         (last?.role === 'stampy' && last?.content) ||
         ['error'].includes(last?.role)
       ) {

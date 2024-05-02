@@ -396,6 +396,15 @@ svg {
   cursor: pointer;
 }
 
+.hidden {
+  visibility: hidden;
+  transition: visibility 0.2s;
+}
+.shown {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 /* for troubleshooting */
 
 .pink {

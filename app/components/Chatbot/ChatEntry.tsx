@@ -7,10 +7,10 @@ import LinkIcon from '~/components/icons-generated/Link'
 import PersonIcon from '~/components/icons-generated/Person'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import Contents from '~/components/Article/Contents'
+import Feedback from '~/components/Feedback'
 import useGlossary from '~/hooks/useGlossary'
 import './chat_entry.css'
 import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
-import Feedback from '../Article/Feedback'
 
 const MAX_REFERENCES = 10
 
@@ -190,6 +190,21 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
           <div className="padding-top-32">{citations?.slice(0, MAX_REFERENCES).map(Reference)}</div>
         </>
       )}
+      {['followups', 'done'].includes(phase || '') ? (
+        <Feedback
+          showForm
+          pageid="chatbot"
+          upHint="This response was helpful"
+          downHint="This response was unhelpful"
+          options={[
+            'Making things up',
+            'Wrong subject',
+            'Confusing',
+            'Issues with sources',
+            'Other',
+          ]}
+        />
+      ) : undefined}
       {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
     </div>
   )
@@ -211,9 +226,17 @@ const StampyArticle = ({pageid, content, title}: StampyEntry) => {
           />
         </article>
         <Feedback
+          showForm
           pageid={pageid}
           upHint="This response was helpful"
           downHint="This response was unhelpful"
+          options={[
+            'Making things up',
+            'Wrong subject',
+            'Confusing',
+            'Issues with sources',
+            'Other',
+          ]}
         />
       </div>
     </div>
