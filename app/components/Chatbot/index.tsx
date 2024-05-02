@@ -14,15 +14,15 @@ import {useSearch} from '~/hooks/useSearch'
 const poolQuestions = [
   {
     title: 'What is AI Safety? - from pool',
-    pageid: '1b',
+    pageid: '5633',
   },
   {
     title: 'How would the AI even get out in the world? -- from pool',
-    pageid: '2b',
+    pageid: '7638',
   },
   {
     title: 'Do people seriously worry about existential risk from AI? --- from pool',
-    pageid: '3b',
+    pageid: '7639',
   },
 ]
 
@@ -187,7 +187,6 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           if (question.relatedQuestions.length <= 2) {
             question.relatedQuestions.push(...poolQuestions)
           }
-          console.log('related questions:: ', question.relatedQuestions)
           setFollowups(
             question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
           )
