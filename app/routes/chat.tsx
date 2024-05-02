@@ -44,9 +44,9 @@ export default function App() {
           ]}
           settings={chatSettings}
         />
-        <div className="settings-container" onClick={stopBubbling}>
+        <div className="settings-container">
           {showSettings && (
-            <div className="settings bordered flex-container">
+            <div className="settings bordered flex-container" onClick={stopBubbling}>
               <div>Answer detail</div>
               <ModeButton mode="default" name="Default" />
               <ModeButton mode="rookie" name="Detailed" />
@@ -57,7 +57,10 @@ export default function App() {
             width="24"
             height="24"
             className="pointer"
-            onClick={() => setShowSettings((current) => !current)}
+            onClick={(e) => {
+              stopBubbling(e)
+              setShowSettings((current) => !current)
+            }}
           />
         </div>
       </div>
