@@ -1,5 +1,4 @@
-// export const CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
-export const CHATBOT_URL = 'http://127.0.0.1:3001/chat'
+export const CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
 
 export type Citation = {
   title: string
