@@ -16,8 +16,6 @@
   }
 }
 
-<<<<<<< Updated upstream
-=======
 .widget-ask {
   position: sticky;
   bottom: 0;
@@ -32,11 +30,11 @@
   bottom: 4.44vw;
   width: 10.13vw;
 }
+
 .red {
   color: #d40000;
 }
 
->>>>>>> Stashed changes
 .settings-container {
   position: fixed;
   bottom: var(--spacing-32);

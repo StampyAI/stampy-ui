@@ -69,11 +69,6 @@ type QuestionInputProps = {
 }
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
-<<<<<<< Updated upstream
-
-=======
-  const [, setPlaceholder] = useState('Ask Stampy a question...')
->>>>>>> Stashed changes
   const handleAsk = (val: string) => {
     onAsk && onAsk(val)
     setQuestion('')
@@ -86,16 +81,9 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
 
   return (
     <div className="widget-ask flex-container">
-<<<<<<< Updated upstream
-      <input
-        type="text"
-        className="full-width bordered secondary"
-        placeholder="Ask Stampy a question..."
-=======
       <Input
         placeHolder="Ask Stampy a question..."
         className="large col-10"
->>>>>>> Stashed changes
         value={question}
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
