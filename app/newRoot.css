@@ -73,7 +73,7 @@ input {
 }
 body {
   margin: auto;
-  max-width: 1600px;
+  max-width: 1608px; /* multiple of 12 for .col-x, 1 col at max width = 134px */
   min-height: 100vh;
 }
 
@@ -290,17 +290,18 @@ h2 {
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
-.fcol-2  {flex: 2;}
-.fcol-3  {flex: 3;}
-.fcol-4  {flex: 4;}
-.fcol-5  {flex: 5;}
-.fcol-6  {flex: 6;}
-.fcol-7  {flex: 7;}
-.fcol-8  {flex: 8;}
-.fcol-9  {flex: 9;}
-.fcol-10 {flex: 10;}
-.fcol-11 {flex: 11;}
-.fcol-12 {flex: 12;}
+.col-1  {width: clamp( 65px,  8.25vw,  134px);}
+.col-2  {width: clamp(130px, 16.50vw,  268px);}
+.col-3  {width: clamp(195px, 24.75vw,  402px);}
+.col-4  {width: clamp(260px, 33.00vw,  536px);}
+.col-5  {width: clamp(325px, 41.25vw,  670px);}
+.col-6  {width: clamp(390px, 49.50vw,  804px);}
+.col-7  {width: clamp(455px, 57.75vw,  938px);}
+.col-8  {width: clamp(520px, 66.00vw, 1072px);}
+.col-9  {width: clamp(585px, 74.25vw, 1206px);}
+.col-10 {width: clamp(650px, 82.50vw, 1340px);}
+.col-11 {width: clamp(715px, 90.75vw, 1474px);}
+.col-12 {width: clamp(780px, 99.00vw, 1608px);}
 
 .full-width {
   width: 100%;

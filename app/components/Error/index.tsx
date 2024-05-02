@@ -88,7 +88,7 @@ const errorName = (error?: ErrorType) => {
 
 const Error = ({error}: {error?: ErrorType}) => {
   return (
-    <div className={styles.errorContainer + ' fcol-10'}>
+    <div className={styles.errorContainer + ' col-10'}>
       <h1 className="padding-bottom-24">{errorName(error)}</h1>
       {error?.status && <div>{errors[error.status as keyof typeof errors] || ''}</div>}
     </div>
