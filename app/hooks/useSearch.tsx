@@ -54,6 +54,7 @@ const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
 export const baselineSearch = async (
   searchQueryRaw: string,
   questions: Question[],
+  minSimilarity = 0,
   numResults = NUM_RESULTS
 ): Promise<SearchResult[]> => {
   if (!searchQueryRaw) {
@@ -107,7 +108,7 @@ export const baselineSearch = async (
     })
     .sort(byScore)
     .slice(0, numResults)
-    .filter(({score}) => score > 0)
+    .filter(({score}) => score >= minSimilarity)
 }
 
 /**
@@ -170,38 +171,40 @@ export const useSearch = (numResults = NUM_RESULTS) => {
     makeWorker()
   }, [])
 
-  const searchLater = (userQuery: string) => {
+  const searchLater = (userQuery: string, minSimilarity?: number) => {
     if (typeof window === 'undefined') return
 
     clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
-      search(userQuery)
+      search(userQuery, minSimilarity)
     }, 100)
   }
 
-  const search = (userQuery: string) => {
+  const search = (userQuery: string, minSimilarity?: number) => {
     isPendingSearch.current = true
     const wordCount = userQuery.split(' ').length
     if (wordCount > 2) {
       if (runningQueryRef.current || !tfWorkerRef.current) {
-        searchLater(userQuery)
+        searchLater(userQuery, minSimilarity)
         return
       }
       runningQueryRef.current = userQuery
-      tfWorkerRef.current.postMessage({userQuery, numResults})
+      tfWorkerRef.current.postMessage({userQuery, numResults, minSimilarity})
     } else {
       if (runningQueryRef.current || onSiteAnswersRef.current.length == 0) {
-        searchLater(userQuery)
+        searchLater(userQuery, minSimilarity)
         return
       }
       runningQueryRef.current = userQuery
-      baselineSearch(userQuery, onSiteAnswersRef.current, numResults).then((searchResults) => {
-        runningQueryRef.current = undefined
-        resultsRef.current = searchResults
-        resultsForRef.current = userQuery
-        isPendingSearch.current = false
-        setResults(searchResults)
-      })
+      baselineSearch(userQuery, onSiteAnswersRef.current, minSimilarity, numResults).then(
+        (searchResults) => {
+          runningQueryRef.current = undefined
+          resultsRef.current = searchResults
+          resultsForRef.current = userQuery
+          isPendingSearch.current = false
+          setResults(searchResults)
+        }
+      )
     }
   }
 
@@ -214,8 +217,17 @@ export const useSearch = (numResults = NUM_RESULTS) => {
     return resultsRef.current
   }
 
+  const clear = () => {
+    runningQueryRef.current = undefined
+    isPendingSearch.current = false
+    resultsForRef.current = undefined
+    resultsRef.current = []
+    setResults([])
+  }
+
   return {
     search,
+    clear,
     results,
     resultsForRef,
     isPendingSearch: isPendingSearch.current,
