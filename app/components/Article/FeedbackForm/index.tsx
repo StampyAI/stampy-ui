@@ -66,7 +66,7 @@ const FeedbackForm = ({
 
   return (
     <div key={pageid} className={className} onBlur={handleBlur} onFocus={onFocus}>
-      <div className={'fcol-5 feedback-container bordered'}>
+      <div className={'col-5 feedback-container bordered'}>
         <span className={'black small'}>What was the problem?</span>
         {hasOptions
           ? options.map((option, index) => (
