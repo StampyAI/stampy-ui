@@ -112,7 +112,7 @@ type QuestionInputProps = {
 }
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
-  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
+  const [_placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const handleAsk = (val: string) => {
     onAsk && onAsk(val)
     setQuestion('')
@@ -129,7 +129,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
       <input
         type="text"
         className="full-width bordered secondary right-icon"
-        placeholder={placeholder}
+        placeholder={_placeholder}
         value={question}
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
