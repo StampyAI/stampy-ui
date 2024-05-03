@@ -90,6 +90,7 @@ type Props = {
   pageid: string
   actionType: ActionType
   showText?: boolean
+  hint?: string
   children?: ReactNode | ReactNode[]
   [k: string]: unknown
   onSuccess?: () => void
@@ -99,6 +100,7 @@ export const Action = ({
   pageid,
   actionType,
   showText = true,
+  hint,
   children,
   onSuccess,
   onClick,
@@ -162,7 +164,7 @@ export const Action = ({
       replace
       action="/questions/actions"
       method="post"
-      title={title}
+      title={hint || title}
       onClick={handleAction}
       {...props}
     >
@@ -175,7 +177,7 @@ export const Action = ({
         <Icon />
         <p className={[actionTaken ? 'teal-500' : 'grey', 'small'].join(' ')}>
           {' '}
-          {showText && title}
+          {showText && (hint || title)}
         </p>
       </Button>
     </Form>

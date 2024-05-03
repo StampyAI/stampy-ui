@@ -1,45 +1,24 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
-import {Action, ActionType} from '~/routes/questions.actions'
+import Feedback from '~/components/Feedback'
 import type {Glossary, Question} from '~/server-utils/stampy'
 import {tagUrl} from '~/routesMapper'
 import Contents from './Contents'
 import './article.css'
-import FeedbackForm from '~/components/Article/FeedbackForm'
 
 const isLoading = ({text}: Question) => !text || text === 'Loading...'
 
 const ArticleFooter = (question: Question) => {
-  const [showFeedback, setShowFeedback] = useState(false)
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
-  const [isFormFocused, setIsFormFocused] = useState(false)
   const date =
     question.updatedAt &&
     new Date(question.updatedAt).toLocaleDateString('en-GB', {
       year: 'numeric',
       month: 'short',
     })
-
-  React.useEffect(() => {
-    // Hide the form after 10 seconds if the user hasn't interacted with it
-    const timeoutId = setInterval(() => {
-      if (!isFormFocused) {
-        setShowFeedbackForm(false)
-      }
-    }, 10000)
-
-    // Clear the timeout to prevent it from running if the component unmounts
-    return () => clearInterval(timeoutId)
-  }, [showFeedbackForm, isFormFocused])
-
-  React.useEffect(() => {
-    const timeout = setInterval(() => setShowFeedback(false), 6000)
-    return () => clearInterval(timeout)
-  }, [showFeedback])
 
   return (
     !isLoading(question) && (
@@ -57,34 +36,7 @@ const ArticleFooter = (question: Question) => {
         </div>
         <span>Was this page helpful?</span>
 
-        <CompositeButton className="flex-container relative">
-          <Action
-            pageid={question.pageid}
-            showText={true}
-            actionType={ActionType.HELPFUL}
-            onSuccess={() => setShowFeedback(true)}
-          />
-          <Action
-            pageid={question.pageid}
-            showText={true}
-            actionType={ActionType.UNHELPFUL}
-            onClick={() => setShowFeedbackForm(true)}
-          />
-          <div className={['action-feedback-text', showFeedback ? 'show' : ''].join(' ')}>
-            Thanks for your feedback!
-          </div>
-          <FeedbackForm
-            pageid={question.pageid}
-            className={['feedback-form', showFeedbackForm ? 'show' : ''].join(' ')}
-            onClose={() => {
-              setShowFeedback(true)
-              setShowFeedbackForm(false)
-            }}
-            onBlur={() => setIsFormFocused(false)}
-            onFocus={() => setIsFormFocused(true)}
-            hasOptions={false}
-          />
-        </CompositeButton>
+        <Feedback pageid={question.pageid} labels />
       </div>
     )
   )
