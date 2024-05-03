@@ -45,7 +45,7 @@ export default function App() {
         <ContentBoxThird />
 
         <div className="desktop-only padding-bottom-56" />
-        <WidgetStampy />
+        <WidgetStampy className="desktop-only" />
 
         <h3 className="grey large-bold padding-bottom-32">Advanced sections</h3>
         <Grid gridBoxes={advanced} />
