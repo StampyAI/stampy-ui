@@ -10,11 +10,6 @@
   background: var(--colors-cool-grey-100);
 }
 
-.widget-ask input {
-  height: 56px;
-  padding: var(--spacing-8) var(--spacing-24);
-}
-
 @media (max-width: 780px) {
   .button {
     width: 100%;
@@ -30,11 +25,12 @@
 }
 .warning-floating {
   position: fixed;
-  right: 7vw;
+  right: 4.44vw;
   z-index: 100;
-  bottom: 5vw;
-  width: 11vw;
+  bottom: 4.44vw;
+  width: 10.13vw;
 }
+
 .red {
   color: #d40000;
 }
