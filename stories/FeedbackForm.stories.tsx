@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react'
-import FeedbackForm from '../app/components/Article/FeedbackForm'
+import FeedbackForm from '../app/components/Feedback'
 const meta = {
   title: 'Components/Article/FeedbackForm',
   component: FeedbackForm,

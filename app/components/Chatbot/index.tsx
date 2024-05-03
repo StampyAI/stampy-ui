@@ -172,7 +172,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           setFollowups(
             question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
           )
-          return {...item, content: question.text || ''}
+          return {...item, title: question.title, content: question.text || ''}
         }
         // this is a previous human written article that didn't load properly - don't
         // update the text as that could cause things to jump around - the user has
@@ -205,7 +205,8 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     setHistory((current) => {
       const last = current[current.length - 1]
       if (
-        (last?.role === 'assistant' && ['streaming', 'followups'].includes(last?.phase || '')) ||
+        (last?.role === 'assistant' &&
+          ['streaming', 'followups', 'done'].includes(last?.phase || '')) ||
         (last?.role === 'stampy' && last?.content) ||
         ['error'].includes(last?.role)
       ) {

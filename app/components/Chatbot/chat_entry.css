@@ -24,9 +24,12 @@ article.stampy {
   visibility: hidden;
 }
 
+.chat-entry .hint-contents:hover,
 .chat-entry .hint:hover + .hint-contents {
   visibility: visible;
-  background: red;
+  background: var(--colors-cool-grey-800);
+  color: white;
+  padding: var(--spacing-16);
 }
 
 .chat-entry .reference-link {
@@ -112,8 +115,9 @@ article.stampy {
   transition: visibility 0.2s;
   max-width: 600px;
   word-wrap: break-word;
-  background-color: var(--colors-cool-grey-300);
-  padding: var(--spacing-16) var(--spacing-24);
+  background-color: white;
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  padding: var(--spacing-24) var(--spacing-32);
   position: absolute;
   transform: translateX(50%);
   text-decoration: unset;
