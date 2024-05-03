@@ -290,6 +290,54 @@ h2 {
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
+.col-1 {
+  width: clamp(0, 3.07vw, 53px);
+}
+
+.col-2 {
+  width: clamp(0, 8.54vw, 171px);
+}
+
+.col-3 {
+  width: clamp(0, 15vw, 288px);
+}
+
+.col-4 {
+  width: clamp(0, 21.46vw, 405px);
+}
+
+.col-5 {
+  width: clamp(0, 27.99vw, 523px);
+}
+
+.col-6 {
+  width: clamp(0, 34.44vw, 640px);
+}
+
+.col-7 {
+  width: clamp(0, 40.9vw, 757px);
+}
+
+.col-8 {
+  width: clamp(0, 47.43vw, 875px);
+}
+
+.col-9 {
+  width: clamp(0, 53.89vw, 992px);
+}
+
+.col-10 {
+  width: clamp(0, 60.35vw, 1109px);
+}
+
+.col-11 {
+  width: clamp(0, 66.88vw, 1227px);
+}
+
+.col-12 {
+  width: clamp(0, 73.33vw, 1344px);
+}
+
 .fcol-2 {
   flex: 2;
 }
@@ -396,6 +444,15 @@ svg {
   cursor: pointer;
 }
 
+.hidden {
+  visibility: hidden;
+  transition: visibility 0.2s;
+}
+.shown {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 /* for troubleshooting */
 
 .pink {
@@ -405,7 +462,7 @@ svg {
 
 /* defines the standard left and right margins */
 .page-body {
-  padding: 0 var(--spacing-104);
+  padding: 0px 13.333vw;
 }
 
 /* all other classes */
@@ -465,12 +522,14 @@ svg {
   h1 {
     font-size: 38px;
     font-weight: 500;
+    font-weight: 500;
     line-height: 130%; /* 49.4px */
     letter-spacing: -0.57px;
   }
 
   h2 {
     font-size: 26px;
+    font-weight: 500;
     font-weight: 500;
     line-height: 145%; /* 37.7px */
     letter-spacing: -0.52px;
@@ -481,6 +540,7 @@ svg {
   .large {
     font-size: 18px;
     font-weight: 300;
+    font-weight: 300;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
   }
@@ -488,12 +548,14 @@ svg {
   .large-reading {
     font-size: 18px;
     font-weight: 300;
+    font-weight: 300;
     line-height: 190%; /* 34.2px */
     letter-spacing: -0.18px;
   }
 
   .large-bold {
     font-size: 18px;
+    font-weight: 500;
     font-weight: 500;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;

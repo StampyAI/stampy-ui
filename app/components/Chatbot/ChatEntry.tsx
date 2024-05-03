@@ -3,23 +3,25 @@ import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import QuestionMarkIcon from '~/components/icons-generated/QuestionMark'
 import BotIcon from '~/components/icons-generated/Bot'
-import LinkIcon from '~/components/icons-generated/Link'
+import LinkIcon from '~/components/icons-generated/LinkOut'
 import PersonIcon from '~/components/icons-generated/Person'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import Contents from '~/components/Article/Contents'
+import Feedback from '~/components/Feedback'
 import useGlossary from '~/hooks/useGlossary'
 import './chat_entry.css'
 import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
 
 const MAX_REFERENCES = 10
-const hints = {
-  bot: 'bla bla bla something bot',
-  human: 'bla bla bla by humans',
-  error: null,
-}
 
-const AnswerInfo = ({answerType}: {answerType?: 'human' | 'bot' | 'error'}) => {
-  if (!answerType || !hints[answerType]) return null
+const AnswerInfo = ({
+  answerType,
+  hint,
+}: {
+  hint?: string
+  answerType?: 'human' | 'bot' | 'error'
+}) => {
+  if (!answerType || !hint) return null
   return (
     <span className="info">
       {answerType === 'human' ? <PersonIcon /> : <BotIcon />}
@@ -27,7 +29,7 @@ const AnswerInfo = ({answerType}: {answerType?: 'human' | 'bot' | 'error'}) => {
         {answerType === 'human' ? 'Human-written' : 'Bot-generated'} response
       </span>
       <QuestionMarkIcon className="hint" />
-      <div className="hint-contents">{hints[answerType]}</div>
+      <div className="hint-contents rounded">{hint}</div>
     </span>
   )
 }
@@ -36,12 +38,13 @@ type TitleProps = {
   title: string
   Icon: ComponentType
   answerType?: 'human' | 'bot' | 'error'
+  hint?: string
 }
-const Title = ({title, Icon, answerType}: TitleProps) => (
+const Title = ({title, Icon, answerType, hint}: TitleProps) => (
   <div className="flex-container title">
     <Icon />
     <span className="default-bold flex-double">{title}</span>
-    <AnswerInfo answerType={answerType} />
+    <AnswerInfo answerType={answerType} hint={hint} />
   </div>
 )
 
@@ -52,29 +55,13 @@ const UserQuery = ({content}: Entry) => (
   </div>
 )
 
-const md = new MarkdownIt({html: true})
-const ReferenceLink = ({id, index, text}: Citation) => {
-  if (!index || index > MAX_REFERENCES) return ''
-
-  const parsed = text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
-  return (
-    <>
-      <Link id={`${id}-ref`} to={`#${id}`} className={`reference-link ref-${index}`}>
-        <span>{index}</span>
-      </Link>
-      {parsed && (
-        <div
-          className="reference-contents rounded"
-          dangerouslySetInnerHTML={{
-            __html: md.render(parsed[1]),
-          }}
-        />
-      )}
-    </>
-  )
-}
-
-const Reference = ({id, title, authors, source, url, index}: Citation) => {
+const ReferenceSummary = ({
+  title,
+  authors,
+  source,
+  url,
+  titleClass,
+}: Citation & {titleClass?: string}) => {
   const referenceSources = {
     arxiv: 'Scientific paper',
     blogs: 'Blogpost',
@@ -98,19 +85,56 @@ const Reference = ({id, title, authors, source, url, index}: Citation) => {
   }
 
   return (
-    <div key={id} id={id} className="reference padding-bottom-32">
-      <div className={`reference-num small ref-${index}`}>{index}</div>
+    <div>
+      <div className={`title ${titleClass}`}>{title}</div>
       <div>
-        <div className="title">{title}</div>
-        <div>
-          <Authors authors={authors} />
-          <span>{'  ·  '}</span>
-          <Link className="source-link" to={url} target="_blank" rel="noopener noreferrer">
-            {referenceSources[source as keyof typeof referenceSources] || new URL(url).host}{' '}
-            <LinkIcon width="16" height="16" />
-          </Link>
-        </div>
+        <Authors authors={authors} />
+        <span>{'  ·  '}</span>
+        <Link className="source-link teal-500" to={url} target="_blank" rel="noopener noreferrer">
+          {referenceSources[source as keyof typeof referenceSources] || new URL(url).host}{' '}
+          <LinkIcon width="16" height="16" />
+        </Link>
       </div>
+    </div>
+  )
+}
+
+const md = new MarkdownIt({html: true})
+const ReferencePopup = (citation: Citation) => {
+  const parsed = citation.text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
+  if (!parsed) return undefined
+  return (
+    <div className="reference-contents rounded">
+      <ReferenceSummary {...citation} titleClass="large-bold" />
+      <div className="grey padding-bottom-16 padding-top-24">Referenced excerpt</div>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: md.render(parsed[1]),
+        }}
+      />
+    </div>
+  )
+}
+
+const ReferenceLink = (citation: Citation) => {
+  const {id, index} = citation
+  if (!index || index > MAX_REFERENCES) return ''
+
+  return (
+    <>
+      <Link id={`${id}-ref`} to={`#${id}`} className={`reference-link ref-${index}`}>
+        <span>{index}</span>
+      </Link>
+      <ReferencePopup {...citation} />
+    </>
+  )
+}
+
+const Reference = (citation: Citation) => {
+  return (
+    <div key={citation.id} id={citation.id} className="reference padding-bottom-32">
+      <div className={`reference-num small ref-${citation.index}`}>{citation.index}</div>
+      <ReferenceSummary {...citation} />
     </div>
   )
 }
@@ -145,7 +169,7 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
 
   return (
     <div>
-      <Title title="Stampy" Icon={StampyIcon} answerType="bot" />
+      <Title title="Stampy" Icon={StampyIcon} answerType="bot" hint="Generated by an AI model" />
       <PhaseState />
       <div className="padding-bottom-24">
         {content?.split(/(\[\d+\])|(\n)/).map((chunk, i) => {
@@ -166,29 +190,65 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
           <div className="padding-top-32">{citations?.slice(0, MAX_REFERENCES).map(Reference)}</div>
         </>
       )}
+      {['followups', 'done'].includes(phase || '') ? (
+        <Feedback
+          showForm
+          pageid="chatbot"
+          upHint="This response was helpful"
+          downHint="This response was unhelpful"
+          options={[
+            'Making things up',
+            'Wrong subject',
+            'Confusing',
+            'Issues with sources',
+            'Other',
+          ]}
+        />
+      ) : undefined}
       {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
     </div>
   )
 }
 
-const StampyArticle = ({pageid, content}: StampyEntry) => {
+const StampyArticle = ({pageid, content, title}: StampyEntry) => {
   const glossary = useGlossary()
+  const hint = `This response is pulled from our article "${title}" which was written by members of AISafety.info`
 
   return (
     <div>
-      <Title title="Stampy" Icon={StampyIcon} answerType="human" />
-      <article className="stampy">
-        <Contents pageid={pageid || ''} html={content || 'Loading...'} glossary={glossary || {}} />
-      </article>
+      <Title title="Stampy" Icon={StampyIcon} answerType="human" hint={hint} />
+      <div className="answer">
+        <article className="stampy">
+          <Contents
+            pageid={pageid || ''}
+            html={content || 'Loading...'}
+            glossary={glossary || {}}
+          />
+        </article>
+        <Feedback
+          showForm
+          pageid={pageid}
+          upHint="This response was helpful"
+          downHint="This response was unhelpful"
+          options={[
+            'Making things up',
+            'Wrong subject',
+            'Confusing',
+            'Issues with sources',
+            'Other',
+          ]}
+        />
+      </div>
     </div>
   )
 }
 
 const ErrorReply = ({content}: ErrorMessage) => {
+  console.error(content)
   return (
     <div>
       <Title title="Error" Icon={StampyIcon} answerType="error" />
-      <div>{content}</div>
+      <div>Sorry, something has gone wrong. Please ask your question again!</div>
     </div>
   )
 }

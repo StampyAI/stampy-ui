@@ -22,6 +22,7 @@ export type ChatPhase =
   | 'llm'
   | 'streaming'
   | 'followups'
+  | 'done'
 
 export type UserEntry = {
   role: 'user'
@@ -49,6 +50,7 @@ export type StampyEntry = {
   pageid: string
   content: string
   deleted?: boolean
+  title?: string
 }
 
 export type Followup = {
@@ -228,6 +230,7 @@ export const extractAnswer = async (
         followups = data.followups.map((value: any) => value as Followup)
         break
       case 'done':
+        result = {...result, phase: 'done'}
         break
       case 'error':
         throw data.error

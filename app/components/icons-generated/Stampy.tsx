@@ -1,6 +1,6 @@
 import type {SVGProps} from 'react'
 const SvgStampy = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={40} height={35} fill="none" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={80} height={69} fill="none" {...props}>
     <g clipPath="url(#stampy_svg__a)">
       <path
         fill="#ECA680"
@@ -31,7 +31,7 @@ const SvgStampy = (props: SVGProps<SVGSVGElement>) => (
     </g>
     <defs>
       <clipPath id="stampy_svg__a">
-        <path fill="#fff" d="M0 0h40v34.56H0z" />
+        <path fill="#fff" d="M0 0h80v69H0z" />
       </clipPath>
     </defs>
   </svg>
