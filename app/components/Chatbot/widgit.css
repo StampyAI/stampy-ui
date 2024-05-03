@@ -25,9 +25,11 @@
   position: sticky;
   bottom: 0;
 }
+
 .right-icon {
   padding-right: var(--spacing-56);
 }
+
 .warning-floating {
   position: fixed;
   right: 7vw;
@@ -35,6 +37,16 @@
   bottom: 5vw;
   width: 11vw;
 }
+
+.warning {
+  width: 157px;
+  height: 144px;
+  top: 815px;
+  left: 1219px;
+  gap: 0px;
+  opacity: 0px;
+}
+
 .red {
   color: #d40000;
 }
@@ -51,4 +63,26 @@
   flex-direction: column;
   gap: var(--spacing-16);
   width: 384px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  flex-grow: 1;
+  padding-right: 40px;
+  /* Adjust based on the size of the send icon */
+}
+
+.send-icon-link {
+  position: absolute;
+  width: Fixed (48px)px;
+  height: Fixed (48px)px;
+  border-radius: 6px 0px 0px 0px;
+  opacity: 0px;
+  right: 4px;
+  top: 4px
 }

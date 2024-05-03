@@ -1,14 +1,14 @@
-import {useEffect, useRef, useState} from 'react'
-import {Link, useFetcher} from '@remix-run/react'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useFetcher } from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
-import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings} from '~/hooks/useChat'
+import { queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings } from '~/hooks/useChat'
 import ChatEntry from './ChatEntry'
 import './widgit.css'
-import {questionUrl} from '~/routesMapper'
-import {Question} from '~/server-utils/stampy'
-import {useSearch} from '~/hooks/useSearch'
+import { questionUrl } from '~/routesMapper'
+import { Question } from '~/server-utils/stampy'
+import { useSearch } from '~/hooks/useSearch'
 
 // to be replaced with actual pool questions
 const poolQuestions = [
@@ -30,49 +30,60 @@ export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
   const questions = [
     'What is AI Safety?',
-    'How would the AI even get out in the world?',
-    'Do people seriously worry about existential risk from AI?',
+    'Do people seriously worry about AI killing us all?',
+    'How powerful might a superintelligence become?',
   ]
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
-    <div className="centered col-9 padding-bottom-128">
-      <div className="col-6 padding-bottom-56">
-        <h2 className="teal-500">Questions?</h2>
-        <h2>Ask Stampy, our chatbot, any question about AI safety</h2>
-      </div>
-
-      <div className="sample-messages-container padding-bottom-24">
+    <div>
+      <div className="centered col-9 padding-bottom-128">
         <StampyIcon />
-        <div className="sample-messages rounded">
-          <div className="padding-bottom-24">Try asking me...</div>
-          {questions.map((question, i) => (
-            <div key={i} className="padding-bottom-16">
-              <Button className="secondary-alt" action={stampyUrl(question)}>
-                {question}
-              </Button>
-            </div>
-          ))}
+        <div className="col-6 padding-bottom-56">
+          <h2 className="teal-500">Hi there, I’m Stampy.</h2>
+          <h2>I can answer your questions about AI Safety.</h2>
         </div>
-      </div>
 
-      <div className="widget-ask">
-        <input
-          type="text"
-          className="full-width bordered secondary"
-          placeholder="Ask Stampy a question..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && question.trim()) {
-              window.location = stampyUrl(question) as any
-            }
-          }}
-        />
-        <Link to={stampyUrl(question)}>
-          <SendIcon />
-        </Link>
-      </div>
+        <div className="sample-messages-container padding-bottom-24">
+          <div className="sample-messages rounded">
+            <div className="padding-bottom-24"><p>Not sure where to start? Try these:</p></div>
+            {questions.map((question, i) => (
+              <div key={i} className="padding-bottom-16">
+                <Button className="secondary-alt" action={stampyUrl(question)}>
+                  {question}
+                </Button>
+              </div>
+            ))}
+          </div>
+          <div className={'warning'}>
+            <p className={'xs'}>
+              <span className={'red xs-bold'}>Caution! </span>
+              This is an early prototype. Don’t automatically trust what it says, and make sure to
+              follow its sources.
+            </p>
+          </div>
+        </div>
+        <div className="widget-ask">
+          <div className="input-wrapper">
+            <input
+              type="text"
+              className="full-width bordered secondary"
+              placeholder="Ask Stampy a question..."
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && question.trim()) {
+                  window.location = stampyUrl(question) as any
+                }
+              }}
+            />
+            <Link to={stampyUrl(question)} className="send-icon-link">
+              <SendIcon />
+            </Link>
+          </div>
+        </div>
+
+      </div >
     </div>
   )
 }
@@ -82,7 +93,7 @@ type QuestionInputProps = {
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
 }
-const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
+const QuestionInput = ({ initial, onChange, onAsk }: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
   const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const handleAsk = (val: string) => {
@@ -120,13 +131,13 @@ type FollowupsProps = {
   followups?: Followup[]
   onSelect: (followup: Followup) => void
 }
-const Followups = ({title, followups, onSelect}: FollowupsProps) => (
+const Followups = ({ title, followups, onSelect }: FollowupsProps) => (
   <>
     {title && <div className="padding-bottom-24">{title}</div>}
 
-    {followups?.map(({text, pageid}, i) => (
+    {followups?.map(({ text, pageid }, i) => (
       <div key={i} className="padding-bottom-16">
-        <Button className="secondary-alt" action={() => onSelect({text, pageid})}>
+        <Button className="secondary-alt" action={() => onSelect({ text, pageid })}>
           {text}
         </Button>
       </div>
@@ -149,8 +160,8 @@ const SplashScreen = ({
     </div>
     <Followups
       title="Popular questions"
-      followups={questions?.map((text: string) => ({text}))}
-      onSelect={({text}: Followup) => onQuestion(text)}
+      followups={questions?.map((text: string) => ({ text }))}
+      onSelect={({ text }: Followup) => onQuestion(text)}
     />
   </>
 )
@@ -160,15 +171,15 @@ type ChatbotProps = {
   questions?: string[]
   settings?: ChatSettings
 }
-export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
+export const Chatbot = ({ question, questions, settings }: ChatbotProps) => {
   const [followups, setFollowups] = useState<Followup[]>()
 
   // FIXME: Generate session id
   const [sessionId] = useState('asd')
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
-  const fetcher = useFetcher({key: 'followup-fetcher'})
-  const {search, resultsForRef, waitForResults} = useSearch(1)
+  const fetcher = useFetcher({ key: 'followup-fetcher' })
+  const { search, resultsForRef, waitForResults } = useSearch(1)
 
   useEffect(() => {
     if (!fetcher.data || fetcher.state !== 'idle') return
@@ -188,26 +199,26 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
             question.relatedQuestions.push(...poolQuestions)
           }
           setFollowups(
-            question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
+            question.relatedQuestions?.slice(0, 3).map(({ title, pageid }) => ({ text: title, pageid }))
           )
-          return {...item, content: question.text || ''}
+          return { ...item, content: question.text || '' }
         }
         // this is a previous human written article that didn't load properly - don't
         // update the text as that could cause things to jump around - the user has
         // already moved on, anyway
-        if (!item.content) return {...item, content: '...'}
+        if (!item.content) return { ...item, content: '...' }
         // Any fully loaded previous human articles should just be returned
         return item
       })
     )
   }, [fetcher.data, fetcher.state])
 
-  const showFollowup = async ({text, pageid}: Followup) => {
-    if (pageid) fetcher.load(questionUrl({pageid}))
+  const showFollowup = async ({ text, pageid }: Followup) => {
+    if (pageid) fetcher.load(questionUrl({ pageid }))
     setHistory((prev) => [
       ...prev,
-      {role: 'user', content: text},
-      {pageid, role: 'stampy'} as StampyEntry,
+      { role: 'user', content: text },
+      { pageid, role: 'stampy' } as StampyEntry,
     ])
     setFollowups(undefined)
   }
@@ -219,7 +230,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     setController(newController)
 
     // Add a new history entry, replacing the previous one if it was canceled
-    const message = {content: question, role: 'user'} as Entry
+    const message = { content: question, role: 'user' } as Entry
     setHistory((current) => {
       const last = current[current.length - 1]
       if (
@@ -227,14 +238,14 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         (last?.role === 'stampy' && last?.content) ||
         ['error'].includes(last?.role)
       ) {
-        return [...current, message, {role: 'assistant'} as AssistantEntry]
+        return [...current, message, { role: 'assistant' } as AssistantEntry]
       } else if (last?.role === 'user' && last?.content === question) {
-        return [...current.slice(0, current.length - 1), {role: 'assistant'} as AssistantEntry]
+        return [...current.slice(0, current.length - 1), { role: 'assistant' } as AssistantEntry]
       }
       return [
         ...current.slice(0, current.length - 2),
         message,
-        {role: 'assistant'} as AssistantEntry,
+        { role: 'assistant' } as AssistantEntry,
       ]
     })
 
@@ -249,12 +260,12 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     }
 
     if (humanWritten && humanWritten.score > 0.85 && question === resultsForRef.current) {
-      fetcher.load(questionUrl({pageid: humanWritten.pageid}))
-      updateReply({pageid: humanWritten.pageid, role: 'stampy'} as StampyEntry)
+      fetcher.load(questionUrl({ pageid: humanWritten.pageid }))
+      updateReply({ pageid: humanWritten.pageid, role: 'stampy' } as StampyEntry)
       return
     }
 
-    const {followups, result} = await queryLLM(
+    const { followups, result } = await queryLLM(
       [...history, message],
       updateReply,
       sessionId,

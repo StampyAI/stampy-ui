@@ -66,11 +66,13 @@ input {
   font-family: Poppins;
   font-style: normal;
   font-weight: 300;
-  line-height: 170%; /* 30.6px */
+  line-height: 170%;
+  /* 30.6px */
   letter-spacing: -0.18px;
   color: var(--colors-cool-grey-900), #1b2b3e;
   margin: 0;
 }
+
 body {
   margin: auto;
   max-width: 1600px;
@@ -82,14 +84,16 @@ body {
 h1 {
   font-size: clamp(40px, 4vw, 52px);
   font-weight: 500;
-  line-height: 125%; /* 80px */
+  line-height: 125%;
+  /* 80px */
   letter-spacing: -1.28px;
 }
 
 h2 {
   font-size: clamp(24px, 2.6vw, 32px);
   font-weight: 500;
-  line-height: 130%; /* 49.4px */
+  line-height: 130%;
+  /* 49.4px */
   letter-spacing: -0.57px;
 }
 
@@ -98,21 +102,24 @@ h2 {
 .large {
   font-size: 22px;
   font-weight: 300;
-  line-height: 170%; /* 37.4px */
+  line-height: 170%;
+  /* 37.4px */
   letter-spacing: -0.44px;
 }
 
 .large-reading {
   font-size: 22px;
   font-weight: 300;
-  line-height: 190%; /* 41.8px */
+  line-height: 190%;
+  /* 41.8px */
   letter-spacing: -0.44px;
 }
 
 .large-bold {
   font-size: 22px;
   font-weight: 500;
-  line-height: 170%; /* 37.4px */
+  line-height: 170%;
+  /* 37.4px */
   letter-spacing: -0.44px;
 }
 
@@ -120,42 +127,48 @@ h2 {
   /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
   font-size: 18px;
   font-weight: 300;
-  line-height: 170%; /* 30.6px */
+  line-height: 170%;
+  /* 30.6px */
   letter-spacing: -0.18px;
 }
 
 .default-bold {
   font-size: 18px;
   font-weight: 500;
-  line-height: 170%; /* 30.6px */
+  line-height: 170%;
+  /* 30.6px */
   letter-spacing: -0.18px;
 }
 
 .small {
   font-size: 16px;
   font-weight: 300;
-  line-height: 170%; /* 27.2px */
+  line-height: 170%;
+  /* 27.2px */
   letter-spacing: -0.16px;
 }
 
 .small-bold {
   font-size: 16px;
   font-weight: 500;
-  line-height: 170%; /* 27.2px */
+  line-height: 170%;
+  /* 27.2px */
   letter-spacing: -0.16px;
 }
 
 .xs {
   font-size: 14px;
   font-weight: 300;
-  line-height: 170%; /* 23.8px */
+  line-height: 170%;
+  /* 23.8px */
   letter-spacing: -0.14px;
 }
 
 .xs-bold {
   font-size: 14px;
   font-weight: 500;
-  line-height: 170%; /* 23.8px */
+  line-height: 170%;
+  /* 23.8px */
   letter-spacing: -0.14px;
 }
 
@@ -293,33 +306,43 @@ h2 {
 .fcol-2 {
   flex: 2;
 }
+
 .fcol-3 {
   flex: 3;
 }
+
 .fcol-4 {
   flex: 4;
 }
+
 .fcol-5 {
   flex: 5;
 }
+
 .fcol-6 {
   flex: 6;
 }
+
 .fcol-7 {
   flex: 7;
 }
+
 .fcol-8 {
   flex: 8;
 }
+
 .fcol-9 {
   flex: 9;
 }
+
 .fcol-10 {
   flex: 10;
 }
+
 .fcol-11 {
   flex: 11;
 }
+
 .fcol-12 {
   flex: 12;
 }
@@ -336,7 +359,8 @@ h2 {
 /* other tags */
 
 a {
-  color: inherit; /* disable link specific colours */
+  color: inherit;
+  /* disable link specific colours */
   text-decoration-color: color-mix(in srgb, currentColor, white);
 }
 
@@ -360,6 +384,7 @@ ul {
   padding: 0;
   padding-left: var(--spacing-32);
 }
+
 ol {
   padding-left: var(--spacing-32);
 }
@@ -385,9 +410,11 @@ svg {
 .centered {
   margin: auto;
 }
+
 .vertically-centered {
   margin: auto 0;
 }
+
 .horizontally-centered {
   margin: 0 auto;
 }
@@ -431,6 +458,7 @@ svg {
 .icon-link path {
   stroke: var(--colors-cool-grey-600);
 }
+
 .icon-link.focused path {
   stroke: var(--colors-teal-600);
 }
@@ -465,15 +493,19 @@ svg {
   h1 {
     font-size: 38px;
     font-weight: 500;
-    line-height: 130%; /* 49.4px */
+    line-height: 130%;
+    /* 49.4px */
     letter-spacing: -0.57px;
   }
 
   h2 {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 145%; /* 37.7px */
-    letter-spacing: -0.52px;
+    font-family: Poppins;
+    font-style: normal;
+    letter-spacing: -0.57px;
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 130%;
+    /* 37.7px */
   }
 
   /* typography classes */
@@ -481,21 +513,24 @@ svg {
   .large {
     font-size: 18px;
     font-weight: 300;
-    line-height: 170%; /* 30.6px */
+    line-height: 170%;
+    /* 30.6px */
     letter-spacing: -0.18px;
   }
 
   .large-reading {
     font-size: 18px;
     font-weight: 300;
-    line-height: 190%; /* 34.2px */
+    line-height: 190%;
+    /* 34.2px */
     letter-spacing: -0.18px;
   }
 
   .large-bold {
     font-size: 18px;
     font-weight: 500;
-    line-height: 170%; /* 30.6px */
+    line-height: 170%;
+    /* 30.6px */
     letter-spacing: -0.18px;
   }
 
@@ -511,15 +546,19 @@ svg {
     padding: var(--spacing-32);
     flex-direction: column;
   }
-} /* end mobile */
+}
+
+/* end mobile */
 p,
 textarea,
 button {
   font-family: Poppins;
 }
+
 .margin-top-40 {
   margin-top: var(--spacing-40);
 }
+
 .relative {
   position: relative;
 }
