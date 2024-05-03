@@ -81,7 +81,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   }
 
   return (
-    <div className="widget-ask col-10">
+    <div className="widget-ask fcol-10">
       {results.length > 0 ? (
         <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
           {results[0].title}
@@ -116,8 +116,8 @@ export const WidgetStampy = () => {
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
-    <div className="centered col-9 padding-bottom-128">
-      <div className="col-6 padding-bottom-56">
+    <div className="centered fcol-9 padding-bottom-128">
+      <div className="fcol-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
         <h2>Ask Stampy, our chatbot, any question about AI safety</h2>
       </div>
@@ -180,7 +180,7 @@ const SplashScreen = ({
   <>
     <div className="padding-top-40">
       <StampyIcon />
-      <div className="col-6 padding-bottom-40 padding-top-40">
+      <div className="fcol-6 padding-bottom-40 padding-top-40">
         <h2 className="teal-500">Hi there, I'm Stampy.</h2>
         <h2>I can answer your questions about AI Safety</h2>
       </div>
@@ -314,7 +314,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   })
 
   return (
-    <div className="centered col-10 height-70">
+    <div className="centered fcol-10 height-70">
       {history.length === 0 ? (
         <SplashScreen questions={questions} onQuestion={onQuestion} />
       ) : undefined}

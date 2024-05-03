@@ -15,7 +15,7 @@ interface CategoriesPageProps {
 export const CategoriesPage = ({categories}: CategoriesPageProps) => {
   const [search, onSearch] = useState('')
   return (
-    <div className={'categoriesPage fcol-12'}>
+    <div className={'categoriesPage col-12'}>
       <h1>Categories</h1>
       <div>
         <SearchInput onChange={onSearch} placeholderText="Filter by keyword" />

@@ -1,5 +1,5 @@
 import type {SVGProps} from 'react'
-const PersonInCircle = (props: SVGProps<SVGSVGElement>) => (
+const SvgPersonInCircle = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={40} height={40} fill="none" {...props}>
     <circle cx={20} cy={20} r={20} fill="#EDFAF9" />
     <path
@@ -10,4 +10,4 @@ const PersonInCircle = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 )
-export default PersonInCircle
+export default SvgPersonInCircle

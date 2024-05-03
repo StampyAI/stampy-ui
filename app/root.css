@@ -73,7 +73,7 @@ input {
 }
 body {
   margin: auto;
-  max-width: 1600px;
+  max-width: 1608px; /* multiple of 12 for .col-x, 1 col at max width = 134px */
   min-height: 100vh;
 }
 
