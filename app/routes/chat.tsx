@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <Page noFooter>
-      <div className="page-body full-height" onClick={() => setShowSettings(false)}>
+      <div className="page-body full-height padding-top-32" onClick={() => setShowSettings(false)}>
         <Chatbot
           question={question}
           questions={[

@@ -2,14 +2,17 @@ import {ComponentType} from 'react'
 import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import QuestionMarkIcon from '~/components/icons-generated/QuestionMark'
-import BotIcon from '~/components/icons-generated/Bot'
-import LinkIcon from '~/components/icons-generated/Link'
-import PersonIcon from '~/components/icons-generated/Person'
-import StampyIcon from '~/components/icons-generated/Stampy'
 import Contents from '~/components/Article/Contents'
 import useGlossary from '~/hooks/useGlossary'
 import './chat_entry.css'
 import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
+
+// icons
+import IconBotSmall from '~/components/icons-generated/BotSmall'
+import LinkIcon from '~/components/icons-generated/Link'
+import PersonIcon from '~/components/icons-generated/Person'
+import StampyIcon from '~/components/icons-generated/Stampy'
+import PersonInCircleIcon from '~/components/icons-generated/PersonInCircle'
 
 const MAX_REFERENCES = 10
 const hints = {
@@ -22,7 +25,7 @@ const AnswerInfo = ({answerType}: {answerType?: 'human' | 'bot' | 'error'}) => {
   if (!answerType || !hints[answerType]) return null
   return (
     <span className="info">
-      {answerType === 'human' ? <PersonIcon /> : <BotIcon />}
+      {answerType === 'human' ? <PersonIcon /> : <IconBotSmall />}
       <span className="small grey">
         {answerType === 'human' ? 'Human-written' : 'Bot-generated'} response
       </span>
@@ -38,7 +41,7 @@ type TitleProps = {
   answerType?: 'human' | 'bot' | 'error'
 }
 const Title = ({title, Icon, answerType}: TitleProps) => (
-  <div className="flex-container title">
+  <div className="flex-container title padding-bottom-16">
     <Icon />
     <span className="default-bold flex-double">{title}</span>
     <AnswerInfo answerType={answerType} />
@@ -47,8 +50,8 @@ const Title = ({title, Icon, answerType}: TitleProps) => (
 
 const UserQuery = ({content}: Entry) => (
   <div>
-    <Title title="You" Icon={PersonIcon} />
-    <div>{content}</div>
+    <Title title="You" Icon={PersonInCircleIcon} />
+    <div className="padding-left-56 large-reading">{content}</div>
   </div>
 )
 
@@ -99,7 +102,7 @@ const Reference = ({id, title, authors, source, url, index}: Citation) => {
 
   return (
     <div key={id} id={id} className="reference padding-bottom-32">
-      <div className={`reference-num small ref-${index}`}>{index}</div>
+      <div className={`reference-num small-bold ref-${index}`}>{index}</div>
       <div>
         <div className="title">{title}</div>
         <div>
@@ -147,7 +150,7 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
     <div>
       <Title title="Stampy" Icon={StampyIcon} answerType="bot" />
       <PhaseState />
-      <div className="padding-bottom-24">
+      <div className="padding-bottom-56 padding-left-56 large-reading">
         {content?.split(/(\[\d+\])|(\n)/).map((chunk, i) => {
           if (chunk?.match(/(\[\d+\])/)) {
             const refId = chunk.slice(1, chunk.length - 1)
@@ -163,7 +166,7 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
       {citations && citations.length > 0 && (
         <>
           <hr />
-          <div className="padding-top-32">{citations?.slice(0, MAX_REFERENCES).map(Reference)}</div>
+          <div className="padding-top-56">{citations?.slice(0, MAX_REFERENCES).map(Reference)}</div>
         </>
       )}
       {phase === 'followups' ? <p>Checking for followups...</p> : undefined}

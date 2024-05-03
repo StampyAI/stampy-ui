@@ -262,13 +262,17 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
       {history.map((item, i) => (
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
-      {followups ? (
-        <Followups
-          title="Continue the conversation"
-          followups={followups}
-          onSelect={showFollowup}
-        />
-      ) : undefined}
+
+      <div className="padding-bottom-56">
+        {followups ? (
+          <Followups
+            title="Continue the conversation"
+            followups={followups}
+            onSelect={showFollowup}
+          />
+        ) : undefined}
+      </div>
+
       <QuestionInput onAsk={onQuestion} />
 
       <div className={'warning-floating'}>
