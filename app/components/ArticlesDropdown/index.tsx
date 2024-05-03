@@ -65,8 +65,8 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   )
 
   return hidden ? null : (
-    <div className="articles-dropdown-container bordered col-8">
-      <div className="col-5 toc">
+    <div className="articles-dropdown-container bordered fcol-8">
+      <div className="fcol-5 toc">
         <ArticlesSection
           category={INTRODUCTORY}
           toc={toc}
@@ -78,7 +78,7 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
           className={mobile ? 'padding-bottom-40' : ''}
         />
       </div>
-      <div className="col-4">
+      <div className="fcol-4">
         {/*sorted right side*/}
         <div className="default-bold">Browse by category</div>
 

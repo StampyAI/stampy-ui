@@ -29,11 +29,11 @@ export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
   const {advanced} = useToC()
-
+  
   useEffect(() => {
     document.title = 'AISafety.info'
   }, [])
-
+  
   return (
     <Page>
       <div className="page-body">

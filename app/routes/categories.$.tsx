@@ -56,7 +56,7 @@ export default function Tags() {
                       ? 'No pages found'
                       : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
                   </div>
-                  {selectedTag && <ListTable className="col-8" elements={selectedTag.questions} />}
+                  {selectedTag && <ListTable className="fcol-8" elements={selectedTag.questions} />}
                 </article>
               )}
             </>
