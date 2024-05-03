@@ -10,11 +10,12 @@ article.stampy {
 .chat-entry .title {
   display: flex;
   gap: var(--spacing-16);
+  align-items: center;
 }
 
 .chat-entry .info {
   display: flex;
-  gap: var(--spacing-6);
+  gap: var(--spacing-8);
   align-items: center;
 }
 
@@ -33,7 +34,9 @@ article.stampy {
 }
 
 .chat-entry .reference-link {
-  font-size: smaller;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
   vertical-align: super;
   padding: 2px 4px;
   margin-left: 2px;
@@ -102,8 +105,9 @@ article.stampy {
 .reference .reference-num {
   width: var(--spacing-32);
   height: var(--spacing-32);
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   text-align: center;
+  line-height: 32px;
 }
 
 .reference .source-link {

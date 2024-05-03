@@ -113,7 +113,7 @@ type QuestionInputProps = {
 }
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
-  const [_placeholder, setPlaceholder] = useState('Ask Stampy a question...')
+  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const handleAsk = (val: string) => {
     onAsk && onAsk(val)
     setQuestion('')
@@ -128,7 +128,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   return (
     <div className="widget-ask flex-container">
       <Input
-        placeholder={_placeholder}
+        placeHolder={placeholder}
         className="large col-10"
         value={question}
         onChange={(e) => handleChange(e.target.value)}
@@ -314,13 +314,17 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
       {history.map((item, i) => (
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
-      {followups ? (
-        <Followups
-          title="Continue the conversation"
-          followups={followups}
-          onSelect={showFollowup}
-        />
-      ) : undefined}
+
+      <div className="padding-bottom-56">
+        {followups ? (
+          <Followups
+            title="Continue the conversation"
+            followups={followups}
+            onSelect={showFollowup}
+          />
+        ) : undefined}
+      </div>
+
       <QuestionInput onAsk={onQuestion} />
 
       <div className={'warning-floating'}>

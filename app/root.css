@@ -192,99 +192,133 @@ h2 {
 }
 
 .padding-bottom-4 {
-  padding-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-4) !important;
 }
 
 .padding-bottom-8 {
-  padding-bottom: var(--spacing-8);
+  padding-bottom: var(--spacing-8) !important;
 }
 
 .padding-bottom-16 {
-  padding-bottom: var(--spacing-16);
+  padding-bottom: var(--spacing-16) !important;
 }
 
 .padding-bottom-24 {
-  padding-bottom: var(--spacing-24);
+  padding-bottom: var(--spacing-24) !important;
 }
 
 .padding-bottom-32 {
-  padding-bottom: var(--spacing-32);
+  padding-bottom: var(--spacing-32) !important;
 }
 
 .padding-bottom-40 {
-  padding-bottom: var(--spacing-40);
+  padding-bottom: var(--spacing-40) !important;
 }
 
 .padding-bottom-56 {
-  padding-bottom: var(--spacing-56);
+  padding-bottom: var(--spacing-56) !important;
 }
 
 .padding-bottom-80 {
-  padding-bottom: var(--spacing-80);
+  padding-bottom: var(--spacing-80) !important;
 }
 
 .padding-bottom-104 {
-  padding-bottom: var(--spacing-104);
+  padding-bottom: var(--spacing-104) !important;
 }
 
 .padding-bottom-128 {
-  padding-bottom: var(--spacing-128);
+  padding-bottom: var(--spacing-128) !important;
 }
 
 .padding-bottom-192 {
-  padding-bottom: var(--spacing-192);
+  padding-bottom: var(--spacing-192) !important;
 }
 
 .padding-bottom-288 {
-  padding-bottom: var(--spacing-288);
+  padding-bottom: var(--spacing-288) !important;
 }
 
 .padding-top-4 {
-  padding-top: var(--spacing-4);
+  padding-top: var(--spacing-4) !important;
 }
 
 .padding-top-8 {
-  padding-top: var(--spacing-8);
+  padding-top: var(--spacing-8) !important;
 }
 
 .padding-top-16 {
-  padding-top: var(--spacing-16);
+  padding-top: var(--spacing-16) !important;
 }
 
 .padding-top-24 {
-  padding-top: var(--spacing-24);
+  padding-top: var(--spacing-24) !important;
 }
 
 .padding-top-32 {
-  padding-top: var(--spacing-32);
+  padding-top: var(--spacing-32) !important;
 }
 
 .padding-top-40 {
-  padding-top: var(--spacing-40);
+  padding-top: var(--spacing-40) !important;
 }
 
 .padding-top-56 {
-  padding-top: var(--spacing-56);
+  padding-top: var(--spacing-56) !important;
 }
 
 .padding-top-80 {
-  padding-top: var(--spacing-80);
+  padding-top: var(--spacing-80) !important;
 }
 
 .padding-top-104 {
-  padding-top: var(--spacing-104);
+  padding-top: var(--spacing-104) !important;
 }
 
 .padding-top-128 {
-  padding-top: var(--spacing-128);
+  padding-top: var(--spacing-128) !important;
 }
 
 .padding-top-192 {
-  padding-top: var(--spacing-192);
+  padding-top: var(--spacing-192) !important;
 }
 
 .padding-top-288 {
-  padding-top: var(--spacing-288);
+  padding-top: var(--spacing-288) !important;
+}
+
+/* padding left */
+
+.padding-left-4 {
+  padding-left: var(--spacing-4) !important;
+}
+
+.padding-left-8 {
+  padding-left: var(--spacing-8) !important;
+}
+
+.padding-left-16 {
+  padding-left: var(--spacing-16) !important;
+}
+
+.padding-left-24 {
+  padding-left: var(--spacing-24) !important;
+}
+
+.padding-left-32 {
+  padding-left: var(--spacing-32) !important;
+}
+
+.padding-left-40 {
+  padding-left: var(--spacing-40) !important;
+}
+
+.padding-left-56 {
+  padding-left: var(--spacing-56) !important;
+}
+
+.padding-left-80 {
+  padding-left: var(--spacing-80) !important;
 }
 
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
