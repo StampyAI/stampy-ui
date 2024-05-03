@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react'
-import {Link, useFetcher} from '@remix-run/react'
+import {useFetcher, useNavigate} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
@@ -55,8 +55,59 @@ const poolQuestions = [
   },
 ]
 
+const MIN_SIMILARITY = 0.85
+
+type QuestionInputProps = {
+  initial?: string
+  onChange?: (val: string) => void
+  onAsk?: (val: string) => void
+}
+const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
+  const [question, setQuestion] = useState(initial || '')
+  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
+  const {results, search, clear} = useSearch(1)
+
+  const handleAsk = (val: string) => {
+    clear()
+    onAsk && onAsk(val)
+    setQuestion('')
+    setPlaceholder('Message Stampy')
+  }
+
+  const handleChange = (val: string) => {
+    search(val, MIN_SIMILARITY)
+    setQuestion(val)
+    onChange && onChange(val)
+  }
+
+  return (
+    <div className="widget-ask col-10">
+      {results.length > 0 ? (
+        <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
+          {results[0].title}
+        </Button>
+      ) : undefined}
+      <div className="flex-container">
+        <Input
+          placeHolder={placeholder}
+          className="large full-width"
+          value={question}
+          onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && question.trim() && onAsk) {
+              handleAsk(question)
+            }
+          }}
+        />
+        <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
+      </div>
+    </div>
+  )
+}
+
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
+  const navigate = useNavigate()
   const questions = [
     'What is AI Safety?',
     'How would the AI even get out in the world?',
@@ -85,60 +136,16 @@ export const WidgetStampy = () => {
         </div>
       </div>
 
-      <div className="widget-ask">
-        <input
-          type="text"
-          className="full-width bordered secondary"
-          placeholder="Ask Stampy a question..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && question.trim()) {
-              window.location = stampyUrl(question) as any
-            }
-          }}
-        />
-        <Link to={stampyUrl(question)}>
-          <SendIcon />
-        </Link>
-      </div>
-    </div>
-  )
-}
-
-type QuestionInputProps = {
-  initial?: string
-  onChange?: (val: string) => void
-  onAsk?: (val: string) => void
-}
-const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
-  const [question, setQuestion] = useState(initial || '')
-  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
-  const handleAsk = (val: string) => {
-    onAsk && onAsk(val)
-    setQuestion('')
-    setPlaceholder('Message Stampy')
-  }
-
-  const handleChange = (val: string) => {
-    setQuestion(val)
-    onChange && onChange(val)
-  }
-
-  return (
-    <div className="widget-ask flex-container">
-      <Input
-        placeHolder={placeholder}
-        className="large col-10"
-        value={question}
-        onChange={(e) => handleChange(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && question.trim() && onAsk) {
-            handleAsk(question)
-          }
+      <QuestionInput
+        initial={question}
+        onChange={setQuestion}
+        onAsk={(question) => {
+          navigate({
+            pathname: '/chat/',
+            search: `?question=${question.trim()}`,
+          })
         }}
       />
-      <SendIcon className="pointer" onClick={() => handleAsk(question)} />
     </div>
   )
 }
@@ -273,13 +280,13 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     const updateReply = (reply: Entry) =>
       setHistory((current) => [...current.slice(0, current.length - 2), message, reply])
 
-    search(question)
+    search(question, MIN_SIMILARITY)
     const [humanWritten] = await waitForResults(100, 1000)
     if (newController.signal.aborted) {
       return
     }
 
-    if (humanWritten && humanWritten.score > 0.85 && question === resultsForRef.current) {
+    if (humanWritten && question === resultsForRef.current) {
       fetcher.load(questionUrl({pageid: humanWritten.pageid}))
       updateReply({pageid: humanWritten.pageid, role: 'stampy'} as StampyEntry)
       return

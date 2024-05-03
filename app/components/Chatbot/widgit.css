@@ -48,3 +48,14 @@
   gap: var(--spacing-16);
   width: 384px;
 }
+
+.widget-ask .suggestion {
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  justify-content: start;
+}
+
+.widget-ask .send {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+}
