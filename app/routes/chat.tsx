@@ -5,12 +5,14 @@ import Page from '~/components/Page'
 import Chatbot from '~/components/Chatbot'
 import {ChatSettings, Mode} from '~/hooks/useChat'
 import Button from '~/components/Button'
+import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
 export default function App() {
   const [params] = useSearchParams()
   const [showSettings, setShowSettings] = useState(false)
+  const clickDetectorRef = useOutsideOnClick(() => setShowSettings(false))
   const [chatSettings, setChatSettings] = useState({
     mode: 'default',
     completions: 'gpt-3.5-turbo',
@@ -26,15 +28,9 @@ export default function App() {
     </Button>
   )
 
-  const stopBubbling = (e: any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    e.nativeEvent.stopImmediatePropagation()
-  }
-
   return (
     <Page noFooter>
-      <div className="page-body full-height padding-top-32" onClick={() => setShowSettings(false)}>
+      <div className="page-body full-height padding-top-32">
         <Chatbot
           question={question}
           questions={[
@@ -44,9 +40,9 @@ export default function App() {
           ]}
           settings={chatSettings}
         />
-        <div className="settings-container">
+        <div className="settings-container" ref={clickDetectorRef}>
           {showSettings && (
-            <div className="settings bordered flex-container" onClick={stopBubbling}>
+            <div className="settings bordered flex-container">
               <div>Answer detail</div>
               <ModeButton mode="default" name="Default" />
               <ModeButton mode="rookie" name="Detailed" />
@@ -57,10 +53,7 @@ export default function App() {
             width="24"
             height="24"
             className="pointer"
-            onClick={(e) => {
-              stopBubbling(e)
-              setShowSettings((current) => !current)
-            }}
+            onClick={() => setShowSettings((current) => !current)}
           />
         </div>
       </div>
