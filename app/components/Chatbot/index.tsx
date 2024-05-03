@@ -11,6 +11,50 @@ import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 import Input from '~/components/Input'
 
+// to be replaced with actual pool questions
+const poolQuestions = [
+  {
+    title: 'What is AI Safety? - from pool',
+    pageid: '8486',
+  },
+  {
+    title: 'How would the AI even get out in the world? -- from pool',
+    pageid: '7638',
+  },
+  {
+    title: 'What is the AI alignment problem? -- from pool',
+    pageid: '8EL9',
+  },
+  {
+    title: 'What are existential risks (x-risks)? -- from pool',
+    pageid: '89LL',
+  },
+  {
+    title: "Isn't the real concern misuse? -- from pool",
+    pageid: '9B85',
+  },
+  {
+    title: "Aren't there easy solutions to AI alignment? -- from pool",
+    pageid: '6172',
+  },
+  {
+    title: 'Will we ever build superintelligence? -- from pool',
+    pageid: '7565',
+  },
+  {
+    title: 'Will the first AGI be an LLM? -- from pool',
+    pageid: '85E2',
+  },
+  {
+    title: 'Why not just raise AI like kids? -- from pool',
+    pageid: '93R9',
+  },
+  {
+    title: 'Why is AI alignment a hard problem? -- from pool',
+    pageid: '8163',
+  },
+]
+
 export const WidgetStampy = () => {
   const [question, setQuestion] = useState('')
   const questions = [
@@ -69,7 +113,7 @@ type QuestionInputProps = {
 }
 const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
-  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
+  const [_placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const handleAsk = (val: string) => {
     onAsk && onAsk(val)
     setQuestion('')
@@ -84,7 +128,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   return (
     <div className="widget-ask flex-container">
       <Input
-        placeHolder="Ask Stampy a question..."
+        placeholder={_placeholder}
         className="large col-10"
         value={question}
         onChange={(e) => handleChange(e.target.value)}
@@ -169,8 +213,12 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         if ((item as StampyEntry).pageid !== question.pageid) return item
         // this is the current entry, so update it
         if (i === history.length - 1) {
+          // check proper insertion of pool questions
+          // question.relatedQuestions = question.relatedQuestions.slice(0,2);
           setFollowups(
-            question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
+            [...(question.relatedQuestions || []), ...poolQuestions.sort(() => Math.random() - 0.5)]
+              .slice(0, 3)
+              .map(({title, pageid}) => ({text: title, pageid}))
           )
           return {...item, title: question.title, content: question.text || ''}
         }
