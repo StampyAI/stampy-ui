@@ -246,6 +246,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
 
     // Add a new history entry, replacing the previous one if it was canceled
     const message = {content: question, role: 'user'} as Entry
+    const answer = {role: 'assistant', question} as AssistantEntry
     setHistory((current) => {
       const last = current[current.length - 1]
       if (
@@ -254,15 +255,11 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         (last?.role === 'stampy' && last?.content) ||
         ['error'].includes(last?.role)
       ) {
-        return [...current, message, {role: 'assistant'} as AssistantEntry]
+        return [...current, message, answer]
       } else if (last?.role === 'user' && last?.content === question) {
-        return [...current.slice(0, current.length - 1), {role: 'assistant'} as AssistantEntry]
+        return [...current.slice(0, current.length - 1), answer]
       }
-      return [
-        ...current.slice(0, current.length - 2),
-        message,
-        {role: 'assistant'} as AssistantEntry,
-      ]
+      return [...current.slice(0, current.length - 2), message, answer]
     })
 
     setFollowups(undefined)

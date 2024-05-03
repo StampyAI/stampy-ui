@@ -3,7 +3,7 @@ import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import QuestionMarkIcon from '~/components/icons-generated/QuestionMark'
 import Contents from '~/components/Article/Contents'
-import Feedback from '~/components/Feedback'
+import Feedback, {logFeedback} from '~/components/Feedback'
 import useGlossary from '~/hooks/useGlossary'
 import './chat_entry.css'
 import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
@@ -136,7 +136,7 @@ const Reference = (citation: Citation) => {
   )
 }
 
-const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
+const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) => {
   const citations = [] as Citation[]
   citationsMap?.forEach((v) => {
     citations.push(v)
@@ -193,6 +193,9 @@ const ChatbotReply = ({phase, content, citationsMap}: AssistantEntry) => {
           pageid="chatbot"
           upHint="This response was helpful"
           downHint="This response was unhelpful"
+          onSubmit={async (message: string, option?: string) =>
+            logFeedback({message, option, type: 'bot', question, answer: content, citations})
+          }
           options={[
             'Making things up',
             'Wrong subject',
@@ -227,6 +230,9 @@ const StampyArticle = ({pageid, content, title}: StampyEntry) => {
           pageid={pageid}
           upHint="This response was helpful"
           downHint="This response was unhelpful"
+          onSubmit={async (message: string, option?: string) =>
+            logFeedback({message, option, type: 'human', question: title, answer: content, pageid})
+          }
           options={[
             'Making things up',
             'Wrong subject',
