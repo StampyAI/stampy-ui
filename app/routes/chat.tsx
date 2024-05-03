@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {ShouldRevalidateFunction, useSearchParams} from '@remix-run/react'
 import SettingsIcon from '~/components/icons-generated/Settings'
 import Page from '~/components/Page'
@@ -13,11 +13,15 @@ export default function App() {
   const [params] = useSearchParams()
   const [showSettings, setShowSettings] = useState(false)
   const clickDetectorRef = useOutsideOnClick(() => setShowSettings(false))
-  const [chatSettings, setChatSettings] = useState({
-    mode: 'default',
-    completions: 'gpt-3.5-turbo',
-  } as ChatSettings)
+  const [chatSettings, setChatSettings] = useState({mode: 'default'} as ChatSettings)
   const question = params.get('question') || undefined
+
+  useEffect(() => {
+    setChatSettings(
+      (settings) =>
+        ({...settings, completions: params.get('model') || settings.completions}) as ChatSettings
+    )
+  }, [params])
 
   const ModeButton = ({name, mode}: {name: string; mode: Mode}) => (
     <Button
