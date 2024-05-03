@@ -462,7 +462,7 @@ svg {
 
 /* defines the standard left and right margins */
 .page-body {
-  padding: 0 var(--spacing-104);
+  padding: 0px 13.333vw;
 }
 
 /* all other classes */
@@ -522,12 +522,14 @@ svg {
   h1 {
     font-size: 38px;
     font-weight: 500;
+    font-weight: 500;
     line-height: 130%; /* 49.4px */
     letter-spacing: -0.57px;
   }
 
   h2 {
     font-size: 26px;
+    font-weight: 500;
     font-weight: 500;
     line-height: 145%; /* 37.7px */
     letter-spacing: -0.52px;
@@ -538,6 +540,7 @@ svg {
   .large {
     font-size: 18px;
     font-weight: 300;
+    font-weight: 300;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
   }
@@ -545,12 +548,14 @@ svg {
   .large-reading {
     font-size: 18px;
     font-weight: 300;
+    font-weight: 300;
     line-height: 190%; /* 34.2px */
     letter-spacing: -0.18px;
   }
 
   .large-bold {
     font-size: 18px;
+    font-weight: 500;
     font-weight: 500;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
