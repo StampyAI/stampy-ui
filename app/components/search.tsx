@@ -39,7 +39,7 @@ export default function Search({limitFromUrl}: Props) {
       {isPendingSearch && results.length == 0 && (
         <div className="result-item-box no-questions">Searching for questions...</div>
       )}
-      {searchPhrase && showResults && (
+      {!isPendingSearch && searchPhrase && showResults && (
         <SearchResults
           results={results.map((r) => ({
             title: r.title,

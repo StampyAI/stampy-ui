@@ -13,46 +13,35 @@ import Input from '~/components/Input'
 
 // to be replaced with actual pool questions
 const poolQuestions = [
+  {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+  {title: 'Is AI safety about systems becoming malevolent or conscious?', pageid: '6194'},
+  {title: 'When do experts think human-level AI will be created?', pageid: '5633'},
+  {title: 'Why is AI alignment a hard problem?', pageid: '8163'},
   {
-    title: 'What is AI Safety? - from pool',
-    pageid: '8486',
+    title: 'Why can’t we just “put the AI in a box” so that it can’t influence the outside world?',
+    pageid: '6176',
   },
   {
-    title: 'How would the AI even get out in the world? -- from pool',
-    pageid: '7638',
+    title: 'What are the differences between AGI, transformative AI, and superintelligence?',
+    pageid: '5864',
   },
+  {title: 'What are large language models?', pageid: '5864'},
+  {title: "Why can't we just turn the AI off if it starts to misbehave?", pageid: '3119'},
+  {title: 'What is instrumental convergence?', pageid: '897I'},
+  {title: "What is Goodhart's law?", pageid: '8185'},
+  {title: 'What is the orthogonality thesis?', pageid: '6568'},
+  {title: 'How powerful would a superintelligence become?', pageid: '7755'},
+  {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
+  {title: "Isn't the real concern misuse?", pageid: '9B85'},
+  {title: 'Are AIs conscious?', pageid: '8V5J'},
   {
-    title: 'What is the AI alignment problem? -- from pool',
-    pageid: '8EL9',
+    title:
+      'What are the differences between a singularity, an intelligence explosion, and a hard takeoff?',
+    pageid: '8IHO',
   },
-  {
-    title: 'What are existential risks (x-risks)? -- from pool',
-    pageid: '89LL',
-  },
-  {
-    title: "Isn't the real concern misuse? -- from pool",
-    pageid: '9B85',
-  },
-  {
-    title: "Aren't there easy solutions to AI alignment? -- from pool",
-    pageid: '6172',
-  },
-  {
-    title: 'Will we ever build superintelligence? -- from pool',
-    pageid: '7565',
-  },
-  {
-    title: 'Will the first AGI be an LLM? -- from pool',
-    pageid: '85E2',
-  },
-  {
-    title: 'Why not just raise AI like kids? -- from pool',
-    pageid: '93R9',
-  },
-  {
-    title: 'Why is AI alignment a hard problem? -- from pool',
-    pageid: '8163',
-  },
+  {title: 'What is an intelligence explosion?', pageid: '6306'},
+  {title: 'How might AGI kill people?', pageid: '5943'},
+  {title: 'What is a "warning shot"?', pageid: '7748'},
 ]
 
 const MIN_SIMILARITY = 0.85
@@ -105,7 +94,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   )
 }
 
-export const WidgetStampy = () => {
+export const WidgetStampy = ({className}: {className?: string}) => {
   const [question, setQuestion] = useState('')
   const navigate = useNavigate()
   const questions = [
@@ -116,7 +105,7 @@ export const WidgetStampy = () => {
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
-    <div className="centered fcol-9 padding-bottom-128">
+    <div className={`centered fcol-9 padding-bottom-128 ${className || ''}`}>
       <div className="fcol-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
         <h2>Ask Stampy, our chatbot, any question about AI safety</h2>
@@ -257,6 +246,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
 
     // Add a new history entry, replacing the previous one if it was canceled
     const message = {content: question, role: 'user'} as Entry
+    const answer = {role: 'assistant', question} as AssistantEntry
     setHistory((current) => {
       const last = current[current.length - 1]
       if (
@@ -265,15 +255,11 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         (last?.role === 'stampy' && last?.content) ||
         ['error'].includes(last?.role)
       ) {
-        return [...current, message, {role: 'assistant'} as AssistantEntry]
+        return [...current, message, answer]
       } else if (last?.role === 'user' && last?.content === question) {
-        return [...current.slice(0, current.length - 1), {role: 'assistant'} as AssistantEntry]
+        return [...current.slice(0, current.length - 1), answer]
       }
-      return [
-        ...current.slice(0, current.length - 2),
-        message,
-        {role: 'assistant'} as AssistantEntry,
-      ]
+      return [...current.slice(0, current.length - 2), message, answer]
     })
 
     setFollowups(undefined)

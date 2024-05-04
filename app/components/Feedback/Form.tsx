@@ -4,11 +4,13 @@ import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import './feedback.css'
 
 export type FeedbackFormProps = {
+  onSubmit?: (msg: string, option?: string) => Promise<any>
   onClose?: () => void
   options?: string[]
 }
-const FeedbackForm = ({onClose, options}: FeedbackFormProps) => {
+const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
   const [selected, setSelected] = useState<string>()
+  const [message, setMessage] = useState('')
   const [enabledSubmit, setEnabledSubmit] = useState(!options)
   const [numClicks, setNumClicks] = useState(0)
   const clickCheckerRef = useOutsideOnClick(onClose)
@@ -28,7 +30,8 @@ const FeedbackForm = ({onClose, options}: FeedbackFormProps) => {
     setEnabledSubmit(true)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    onSubmit && (await onSubmit(message, selected))
     onClose && onClose()
   }
 
@@ -56,6 +59,7 @@ const FeedbackForm = ({onClose, options}: FeedbackFormProps) => {
         name="feedback-text"
         className={['feedback-text bordered', !options ? 'no-options' : ''].join(' ')}
         placeholder="Leave a comment (optional)"
+        onChange={(e) => setMessage(e.target.value)}
       />
       <Button className="primary full-width" action={handleSubmit} disabled={!enabledSubmit}>
         <p>Submit feedback</p>
