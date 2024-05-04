@@ -1,3 +1,5 @@
+export const CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
+
 export type Citation = {
   title: string
   authors: string[]
@@ -248,7 +250,7 @@ const fetchLLM = async (
   controller: AbortController,
   settings?: ChatSettings
 ): Promise<Response | void> =>
-  fetch(`${CHATBOT_URL}`, {
+  fetch(CHATBOT_URL, {
     signal: controller.signal,
     method: 'POST',
     cache: 'no-cache',
