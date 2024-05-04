@@ -25,7 +25,8 @@ jobs:
             | sed s/{CODA_INCOMING_TOKEN}/${{ secrets.CODA_INCOMING_TOKEN }}/ \
             | sed s/{CODA_WRITES_TOKEN}/${{ secrets.CODA_WRITES_TOKEN }}/ \
             | sed s/{GOOGLE_ANALYTICS_ID}/${{ secrets.GOOGLE_ANALYTICS_ID }}/ \
-            | sed s/{DISCORD_LOGGING_URL}/${{ secrets.DISCORD_LOGGING_URL }}/ \
+            | sed s/{DISCORD_LOGGING_CHANNEL_ID}/${{ secrets.DISCORD_LOGGING_CHANNEL_ID }}/ \
+            | sed s/{DISCORD_LOGGING_TOKEN}/${{ secrets.DISCORD_LOGGING_TOKEN }}/ \
             > wrangler.toml
           npm ci
           npm run deploy

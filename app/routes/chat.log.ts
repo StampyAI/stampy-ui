@@ -43,6 +43,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
       .join('\n')
     formData.append('payload_json', JSON.stringify({content: `Chat feedback:\n${info}`}))
 
+    const DISCORD_LOGGING_URL = `https://discord.com/api/webhooks/${DISCORD_LOGGING_CHANNEL_ID}/${DISCORD_LOGGING_TOKEN}`
     const response = await fetch(`${DISCORD_LOGGING_URL}`, {method: 'POST', body: formData})
     if (!response.ok) {
       throw new Error(`Failed to post message: ${response.status} ${response.statusText}`)
