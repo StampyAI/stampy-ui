@@ -71,6 +71,7 @@ input {
   color: var(--colors-cool-grey-900), #1b2b3e;
   margin: 0;
 }
+
 body {
   margin: auto;
   max-width: 1600px;
@@ -390,7 +391,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: var(--colors-teal-500, #1d9089);
+  /* color: var(--colors-teal-500, #1d9089); */
 }
 
 a:not(:hover, :focus-visible) {
@@ -408,6 +409,7 @@ ul {
   padding: 0;
   padding-left: var(--spacing-32);
 }
+
 ol {
   padding-left: var(--spacing-32);
 }
@@ -479,6 +481,11 @@ svg {
 .icon-link path {
   stroke: var(--colors-cool-grey-600);
 }
+
+.icon-link:hover path {
+  stroke: var(--colors-teal-500);
+}
+
 .icon-link.focused path {
   stroke: var(--colors-teal-600);
 }

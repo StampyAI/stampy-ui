@@ -19,7 +19,7 @@ export default function App() {
 
   const ModeButton = ({name, mode}: {name: string; mode: Mode}) => (
     <Button
-      className={chatSettings.mode === mode ? 'secondary-selected' : ''}
+      className={chatSettings.mode === mode ? 'secondary-selected' : 'secondary'}
       action={() => setChatSettings({...chatSettings, mode})}
     >
       {name}

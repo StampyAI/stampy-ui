@@ -1,6 +1,8 @@
 import {useEffect, useRef, useState} from 'react'
 import {Link, useFetcher} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
+import IconStampyLarge from '~/components/icons-generated/StampyLarge'
+import IconStampySmall from '~/components/icons-generated/StampySmall'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
 import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings} from '~/hooks/useChat'
@@ -28,7 +30,7 @@ export const WidgetStampy = () => {
       </div>
 
       <div className="sample-messages-container padding-bottom-24">
-        <StampyIcon />
+        <IconStampySmall />
         <div className="sample-messages rounded">
           <div className="padding-bottom-24">Try asking me...</div>
           {questions.map((question, i) => (
@@ -107,11 +109,11 @@ type FollowupsProps = {
 }
 const Followups = ({title, followups, onSelect, className}: FollowupsProps) => (
   <>
-    {title && <div className={'padding-bottom-24 color-grey ' + (className || '')}>{title}</div>}
+    {title && <div className={'padding-bottom-24 grey' + (className || '')}>{title}</div>}
 
     {followups?.map(({text, pageid}, i) => (
       <div key={i} className="padding-bottom-16">
-        <Button className="secondary-alt" action={() => onSelect({text, pageid})}>
+        <Button className="secondary-alt-large" action={() => onSelect({text, pageid})}>
           {text}
         </Button>
       </div>
@@ -127,18 +129,16 @@ const SplashScreen = ({
   onQuestion: (v: string) => void
 }) => (
   <>
-    <div className="padding-top-40">
-      <StampyIcon />
-      <div className="col-6 padding-bottom-40 padding-top-40">
+      <IconStampyLarge />
+      <div className="col-6 padding-bottom-40 padding-top-24">
         <h2 className="teal-500">Hi there, I'm Stampy.</h2>
         <h2>I can answer your questions about AI Safety</h2>
       </div>
       <Followups
-        title="Popular questions"
+        title="Not sure where to start? Try these:"
         followups={questions?.map((text: string) => ({text}))}
         onSelect={({text}: Followup) => onQuestion(text)}
       />
-    </div>
   </>
 )
 
