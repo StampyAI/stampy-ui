@@ -134,19 +134,23 @@
 
 /* state */
 
-.primary:hover, .primary-large:hover {
+.primary:hover,
+.primary-large:hover {
   background: var(--colors-teal-700, #17736e);
 }
 
-.primary-alt:hover, .primary-alt-large:hover {
+.primary-alt:hover,
+.primary-alt-large:hover {
   color: var(--colors-teal-800, #146560);
 }
 
-.secondary:hover, .secondary-large:hover {
+.secondary:hover,
+.secondary-large:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
 }
 
-.secondary-alt:hover, .secondary-alt-large:hover {
+.secondary-alt:hover,
+.secondary-alt-large:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7);
 }
 

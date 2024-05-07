@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from 'react'
 import {useFetcher, useNavigate} from '@remix-run/react'
-import StampyIcon from '~/components/icons-generated/Stampy'
 import IconStampyLarge from '~/components/icons-generated/StampyLarge'
 import IconStampySmall from '~/components/icons-generated/StampySmall'
 import SendIcon from '~/components/icons-generated/PlaneSend'
@@ -168,17 +167,17 @@ const SplashScreen = ({
   questions?: string[]
   onQuestion: (v: string) => void
 }) => (
-    <div className="padding-top-40">
-      <IconStampyLarge />
-      <div className="fcol-6 padding-bottom-40 padding-top-40">n
-        <h2 className="teal-500">Hi there, I'm Stampy.</h2>
-        <h2>I can answer your questions about AI Safety</h2>
-      </div>
-      <Followups
-        title="Not sure where to start? Try these:"
-        followups={questions?.map((text: string) => ({text}))}
-        onSelect={({text}: Followup) => onQuestion(text)}
-      />
+  <div className="padding-top-40">
+    <IconStampyLarge />
+    <div className="fcol-6 padding-bottom-40 padding-top-40">
+      n<h2 className="teal-500">Hi there, I'm Stampy.</h2>
+      <h2>I can answer your questions about AI Safety</h2>
+    </div>
+    <Followups
+      title="Not sure where to start? Try these:"
+      followups={questions?.map((text: string) => ({text}))}
+      onSelect={({text}: Followup) => onQuestion(text)}
+    />
   </div>
 )
 
