@@ -326,7 +326,7 @@ h2 {
 /* note I may change these to vars later */
 
 .col-1 {
-  width: clamp(0px, 3.07vw, 53px);
+  width: clamp(0px, 3.07vw, 53px); 
 }
 
 .col-2 {
