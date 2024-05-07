@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react'
-import {Link, useFetcher} from '@remix-run/react'
+import {useFetcher, useNavigate} from '@remix-run/react'
 import StampyIcon from '~/components/icons-generated/Stampy'
 import IconStampyLarge from '~/components/icons-generated/StampyLarge'
 import IconStampySmall from '~/components/icons-generated/StampySmall'
@@ -13,8 +13,92 @@ import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 import Input from '~/components/Input'
 
-export const WidgetStampy = () => {
+// to be replaced with actual pool questions
+const poolQuestions = [
+  {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+  {title: 'Is AI safety about systems becoming malevolent or conscious?', pageid: '6194'},
+  {title: 'When do experts think human-level AI will be created?', pageid: '5633'},
+  {title: 'Why is AI alignment a hard problem?', pageid: '8163'},
+  {
+    title: 'Why can’t we just “put the AI in a box” so that it can’t influence the outside world?',
+    pageid: '6176',
+  },
+  {
+    title: 'What are the differences between AGI, transformative AI, and superintelligence?',
+    pageid: '5864',
+  },
+  {title: 'What are large language models?', pageid: '5864'},
+  {title: "Why can't we just turn the AI off if it starts to misbehave?", pageid: '3119'},
+  {title: 'What is instrumental convergence?', pageid: '897I'},
+  {title: "What is Goodhart's law?", pageid: '8185'},
+  {title: 'What is the orthogonality thesis?', pageid: '6568'},
+  {title: 'How powerful would a superintelligence become?', pageid: '7755'},
+  {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
+  {title: "Isn't the real concern misuse?", pageid: '9B85'},
+  {title: 'Are AIs conscious?', pageid: '8V5J'},
+  {
+    title:
+      'What are the differences between a singularity, an intelligence explosion, and a hard takeoff?',
+    pageid: '8IHO',
+  },
+  {title: 'What is an intelligence explosion?', pageid: '6306'},
+  {title: 'How might AGI kill people?', pageid: '5943'},
+  {title: 'What is a "warning shot"?', pageid: '7748'},
+]
+
+const MIN_SIMILARITY = 0.85
+
+type QuestionInputProps = {
+  initial?: string
+  onChange?: (val: string) => void
+  onAsk?: (val: string) => void
+}
+const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
+  const [question, setQuestion] = useState(initial || '')
+  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
+  const {results, search, clear} = useSearch(1)
+
+  const handleAsk = (val: string) => {
+    clear()
+    onAsk && onAsk(val)
+    setQuestion('')
+    setPlaceholder('Message Stampy')
+  }
+
+  const handleChange = (val: string) => {
+    search(val, MIN_SIMILARITY)
+    setQuestion(val)
+    onChange && onChange(val)
+  }
+
+  return (
+    <div className="widget-ask fcol-10">
+      {results.length > 0 ? (
+        <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
+          {results[0].title}
+        </Button>
+      ) : undefined}
+      <div className="flex-container">
+        <Input
+          placeHolder={placeholder}
+          className="large full-width"
+          value={question}
+          onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && question.trim() && onAsk) {
+              handleAsk(question)
+            }
+          }}
+        />
+        <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
+      </div>
+    </div>
+  )
+}
+
+export const WidgetStampy = ({className}: {className?: string}) => {
   const [question, setQuestion] = useState('')
+  const navigate = useNavigate()
   const questions = [
     'What is AI Safety?',
     'How would the AI even get out in the world?',
@@ -23,8 +107,8 @@ export const WidgetStampy = () => {
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
-    <div className="centered col-9 padding-bottom-128">
-      <div className="col-6 padding-bottom-56">
+    <div className={`centered fcol-9 padding-bottom-128 ${className || ''}`}>
+      <div className="fcol-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
         <h2>Ask Stampy, our chatbot, any question about AI safety</h2>
       </div>
@@ -43,60 +127,16 @@ export const WidgetStampy = () => {
         </div>
       </div>
 
-      <div className="widget-ask">
-        <input
-          type="text"
-          className="full-width bordered secondary"
-          placeholder="Ask Stampy a question..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && question.trim()) {
-              window.location = stampyUrl(question) as any
-            }
-          }}
-        />
-        <Link to={stampyUrl(question)}>
-          <SendIcon />
-        </Link>
-      </div>
-    </div>
-  )
-}
-
-type QuestionInputProps = {
-  initial?: string
-  onChange?: (val: string) => void
-  onAsk?: (val: string) => void
-}
-const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
-  const [question, setQuestion] = useState(initial || '')
-  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
-  const handleAsk = (val: string) => {
-    onAsk && onAsk(val)
-    setQuestion('')
-    setPlaceholder('Message Stampy')
-  }
-
-  const handleChange = (val: string) => {
-    setQuestion(val)
-    onChange && onChange(val)
-  }
-
-  return (
-    <div className="widget-ask flex-container">
-      <Input
-        placeHolder="Ask Stampy a question..."
-        className="large col-10"
-        value={question}
-        onChange={(e) => handleChange(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && question.trim() && onAsk) {
-            handleAsk(question)
-          }
+      <QuestionInput
+        initial={question}
+        onChange={setQuestion}
+        onAsk={(question) => {
+          navigate({
+            pathname: '/chat/',
+            search: `?question=${question.trim()}`,
+          })
         }}
       />
-      <SendIcon className="pointer" onClick={() => handleAsk(question)} />
     </div>
   )
 }
@@ -128,9 +168,9 @@ const SplashScreen = ({
   questions?: string[]
   onQuestion: (v: string) => void
 }) => (
-  <>
+    <div className="padding-top-40">
       <IconStampyLarge />
-      <div className="col-6 padding-bottom-40 padding-top-24">
+      <div className="fcol-6 padding-bottom-40 padding-top-40">n
         <h2 className="teal-500">Hi there, I'm Stampy.</h2>
         <h2>I can answer your questions about AI Safety</h2>
       </div>
@@ -139,7 +179,7 @@ const SplashScreen = ({
         followups={questions?.map((text: string) => ({text}))}
         onSelect={({text}: Followup) => onQuestion(text)}
       />
-  </>
+  </div>
 )
 
 type ChatbotProps = {
@@ -169,10 +209,14 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         if ((item as StampyEntry).pageid !== question.pageid) return item
         // this is the current entry, so update it
         if (i === history.length - 1) {
+          // check proper insertion of pool questions
+          // question.relatedQuestions = question.relatedQuestions.slice(0,2);
           setFollowups(
-            question.relatedQuestions?.slice(0, 3).map(({title, pageid}) => ({text: title, pageid}))
+            [...(question.relatedQuestions || []), ...poolQuestions.sort(() => Math.random() - 0.5)]
+              .slice(0, 3)
+              .map(({title, pageid}) => ({text: title, pageid}))
           )
-          return {...item, content: question.text || ''}
+          return {...item, title: question.title, content: question.text || ''}
         }
         // this is a previous human written article that didn't load properly - don't
         // update the text as that could cause things to jump around - the user has
@@ -202,35 +246,33 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
 
     // Add a new history entry, replacing the previous one if it was canceled
     const message = {content: question, role: 'user'} as Entry
+    const answer = {role: 'assistant', question} as AssistantEntry
     setHistory((current) => {
       const last = current[current.length - 1]
       if (
-        (last?.role === 'assistant' && ['streaming', 'followups'].includes(last?.phase || '')) ||
+        (last?.role === 'assistant' &&
+          ['streaming', 'followups', 'done'].includes(last?.phase || '')) ||
         (last?.role === 'stampy' && last?.content) ||
         ['error'].includes(last?.role)
       ) {
-        return [...current, message, {role: 'assistant'} as AssistantEntry]
+        return [...current, message, answer]
       } else if (last?.role === 'user' && last?.content === question) {
-        return [...current.slice(0, current.length - 1), {role: 'assistant'} as AssistantEntry]
+        return [...current.slice(0, current.length - 1), answer]
       }
-      return [
-        ...current.slice(0, current.length - 2),
-        message,
-        {role: 'assistant'} as AssistantEntry,
-      ]
+      return [...current.slice(0, current.length - 2), message, answer]
     })
 
     setFollowups(undefined)
     const updateReply = (reply: Entry) =>
       setHistory((current) => [...current.slice(0, current.length - 2), message, reply])
 
-    search(question)
+    search(question, MIN_SIMILARITY)
     const [humanWritten] = await waitForResults(100, 1000)
     if (newController.signal.aborted) {
       return
     }
 
-    if (humanWritten && humanWritten.score > 0.85 && question === resultsForRef.current) {
+    if (humanWritten && question === resultsForRef.current) {
       fetcher.load(questionUrl({pageid: humanWritten.pageid}))
       updateReply({pageid: humanWritten.pageid, role: 'stampy'} as StampyEntry)
       return
@@ -258,20 +300,24 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   })
 
   return (
-    <div className="centered col-10 height-70">
+    <div className="centered fcol-10 height-70">
       {history.length === 0 ? (
         <SplashScreen questions={questions} onQuestion={onQuestion} />
       ) : undefined}
       {history.map((item, i) => (
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
-      {followups ? (
-        <Followups
-          title="Continue the conversation"
-          followups={followups}
-          onSelect={showFollowup}
-        />
-      ) : undefined}
+
+      <div className="padding-bottom-56">
+        {followups ? (
+          <Followups
+            title="Continue the conversation"
+            followups={followups}
+            onSelect={showFollowup}
+          />
+        ) : undefined}
+      </div>
+
       <QuestionInput onAsk={onQuestion} />
 
       <div className={'warning-floating'}>

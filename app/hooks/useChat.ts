@@ -22,6 +22,7 @@ export type ChatPhase =
   | 'llm'
   | 'streaming'
   | 'followups'
+  | 'done'
 
 export type UserEntry = {
   role: 'user'
@@ -31,6 +32,7 @@ export type UserEntry = {
 
 export type AssistantEntry = {
   role: 'assistant'
+  question?: string
   content: string
   citations?: Citation[]
   citationsMap?: Map<string, Citation>
@@ -49,6 +51,7 @@ export type StampyEntry = {
   pageid: string
   content: string
   deleted?: boolean
+  title?: string
 }
 
 export type Followup = {
@@ -80,6 +83,7 @@ export type EntryRole = 'error' | 'stampy' | 'assistant' | 'user' | 'deleted'
 export type HistoryEntry = {
   role: EntryRole
   content: string
+  question?: string
 }
 
 export const formatCitations: (text: string) => string = (text) => {
@@ -179,15 +183,17 @@ export async function* iterateData(res: Response) {
   }
 }
 
-const makeEntry = () =>
+const makeEntry = (question?: string) =>
   ({
     role: 'assistant',
+    question,
     content: '',
     citations: [],
     citationsMap: new Map(),
   }) as AssistantEntry
 
 export const extractAnswer = async (
+  question: string | undefined,
   res: Response,
   setCurrent: (e: AssistantEntry) => void
 ): Promise<SearchResult> => {
@@ -195,13 +201,14 @@ export const extractAnswer = async (
     const content = formatCitations((result?.content || '') + data.content)
     return {
       content,
+      question,
       role: 'assistant',
       citations: result?.citations || [],
       citationsMap: findCitations(content, result?.citations || []),
     } as AssistantEntry
   }
 
-  let result: AssistantEntry = makeEntry()
+  let result: AssistantEntry = makeEntry(question)
   let followups: Followup[] = []
   for await (const data of iterateData(res)) {
     switch (data.state) {
@@ -228,6 +235,7 @@ export const extractAnswer = async (
         followups = data.followups.map((value: any) => value as Followup)
         break
       case 'done':
+        result = {...result, phase: 'done'}
         break
       case 'error':
         throw data.error
@@ -261,7 +269,8 @@ export const queryLLM = async (
   controller: AbortController,
   settings?: ChatSettings
 ): Promise<SearchResult> => {
-  setCurrent({...makeEntry(), phase: 'started'})
+  const question = history[history.length - 1]?.content
+  setCurrent({...makeEntry(question), phase: 'started'})
   // do SSE on a POST request.
   const res = await fetchLLM(sessionId, history, controller, settings)
 
@@ -272,7 +281,7 @@ export const queryLLM = async (
   }
 
   try {
-    return await extractAnswer(res, setCurrent)
+    return await extractAnswer(question, res, setCurrent)
   } catch (e) {
     if ((e as Error)?.name === 'AbortError') {
       return {result: {role: 'error', content: 'aborted'}}

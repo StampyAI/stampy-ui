@@ -1,80 +1,54 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState} from 'react'
 import debounce from 'lodash/debounce'
 import {useSearch} from '~/hooks/useSearch'
 import {SearchInput} from './SearchInput/Input'
 import {SearchResults} from './SearchResults/Dropdown'
 import {questionUrl} from '~/routesMapper'
+import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 
 type Props = {
-  queryFromUrl?: string
   limitFromUrl?: number
-  removeQueryFromUrl?: () => void
 }
 
-export default function Search({queryFromUrl, limitFromUrl, removeQueryFromUrl}: Props) {
-  const [showResults, setShowResults] = useState(!!queryFromUrl)
-  const searchInputRef = useRef('')
+export default function Search({limitFromUrl}: Props) {
+  const [showResults, setShowResults] = useState(false)
+  const [searchPhrase, setSearchPhrase] = useState('')
 
-  const {search, isPendingSearch, results} = useSearch(limitFromUrl)
+  const {search, isPendingSearch, results, clear} = useSearch(limitFromUrl)
+  const clickDetectorRef = useOutsideOnClick(() => setShowResults(false))
 
   const searchFn = (rawValue: string) => {
     const value = rawValue.trim()
-    if (value === searchInputRef.current) return
+    if (value === searchPhrase) return
+    setSearchPhrase(value)
 
-    searchInputRef.current = value
-
-    search(value)
-    logSearch(value)
-  }
-
-  // run search if queryFromUrl is provided initially or if it pops from browser history after it was removed,
-  // update url if searchInput changes,
-  // and use current version of functions without affecting deps
-  const searchInput = searchInputRef.current
-  const searchFnRef = useRef(searchFn)
-  searchFnRef.current = searchFn
-  const removeQueryFromUrlRef = useRef(removeQueryFromUrl)
-  removeQueryFromUrlRef.current = removeQueryFromUrl
-  const queryFromUrlWasRemoved = useRef(false)
-  useEffect(() => {
-    if (queryFromUrl) {
-      if (!searchInput || queryFromUrlWasRemoved.current) {
-        searchFnRef.current(queryFromUrl)
-        queryFromUrlWasRemoved.current = false
-        const inputEl = document.querySelector('input[name="searchbar"]') as HTMLInputElement
-        inputEl.value = queryFromUrl
-      } else if (queryFromUrl !== searchInput) {
-        removeQueryFromUrlRef.current?.()
-        queryFromUrlWasRemoved.current = true
-      }
+    if (value) {
+      search(value)
+      logSearch(value)
+    } else {
+      clear()
     }
-  }, [queryFromUrl, searchInput])
+  }
 
   const handleChange = debounce(searchFn, 100)
 
-  const handleBlur = () => {
-    setTimeout(() => setShowResults(false), 500)
-  }
-
   return (
-    <>
-      <div onFocus={() => setShowResults(true)} onBlur={handleBlur}>
-        <SearchInput expandable onChange={handleChange} />
-        <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
-        {isPendingSearch && results.length == 0 && (
-          <div className="result-item-box no-questions">Searching for questions...</div>
-        )}
-        {searchInput && showResults && (
-          <SearchResults
-            results={results.map((r) => ({
-              title: r.title,
-              url: questionUrl(r),
-              description: '', // TODO: fetch descriptions 🤔
-            }))}
-          />
-        )}
-      </div>
-    </>
+    <div onFocus={() => setShowResults(true)} ref={clickDetectorRef}>
+      <SearchInput expandable onChange={handleChange} />
+      <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
+      {isPendingSearch && results.length == 0 && (
+        <div className="result-item-box no-questions">Searching for questions...</div>
+      )}
+      {!isPendingSearch && searchPhrase && showResults && (
+        <SearchResults
+          results={results.map((r) => ({
+            title: r.title,
+            url: questionUrl(r),
+            description: '', // TODO: fetch descriptions 🤔
+          }))}
+        />
+      )}
+    </div>
   )
 }
 /**

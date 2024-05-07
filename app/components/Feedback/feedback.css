@@ -1,4 +1,10 @@
-.feedback-container {
+.feedback .composite-button {
+  width: fit-content;
+}
+
+.feedback-form {
+  position: relative;
+  z-index: 2;
   max-width: 384px;
   padding: var(--spacing-32);
   margin-top: var(--spacing-8);
@@ -14,12 +20,6 @@
 }
 .select-option.selected {
   border: 1px solid var(--colors-teal-500);
-}
-
-.feedback-form {
-  position: relative;
-  color: var(--colors-cool-grey-600);
-  z-index: 2;
 }
 
 .feedback-text {
@@ -38,24 +38,8 @@
   opacity: 1;
 }
 
-.tooltip:hover::after {
-  display: block;
-}
-
-.action-feedback-text {
-  display: none;
-  position: absolute;
-  transform: translate(-1vw, var(--spacing-56));
-}
-.action-feedback-text.show {
-  display: block;
-}
 .composite-button > .feedback-form {
   position: absolute;
-  display: none;
   transform: translate(-9vw, var(--spacing-56));
   margin: var(--spacing-24);
-}
-.composite-button > .feedback-form.show {
-  display: block;
 }

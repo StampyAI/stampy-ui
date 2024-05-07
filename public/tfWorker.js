@@ -34,7 +34,7 @@ self.onmessage = (e) => {
 }
 
 const maxAttempts = 10
-const runSemanticSearch = ({userQuery, numResults}, attempt = 1) => {
+const runSemanticSearch = ({userQuery, numResults, minSimilarity}, attempt = 1) => {
   if (!userQuery || attempt >= maxAttempts) {
     return
   }
@@ -66,6 +66,7 @@ const runSemanticSearch = ({userQuery, numResults}, attempt = 1) => {
     const seen = new Set()
     const searchResults = questionsScored
       .filter(({pageid}) => !seen.has(pageid) && seen.add(pageid))
+      .filter(({score}) => score >= (minSimilarity || 0))
       .slice(0, numResults)
 
     self.postMessage({searchResults, userQuery})

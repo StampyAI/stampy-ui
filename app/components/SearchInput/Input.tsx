@@ -43,7 +43,7 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
           }}
           value={search}
         />
-        {search !== '' && <XIcon className="x-icon" onClick={clear} />}
+        {search !== '' && <XIcon className="x-icon pointer" onClick={clear} />}
       </div>
     </div>
   )
