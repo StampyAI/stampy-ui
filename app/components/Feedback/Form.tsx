@@ -41,7 +41,7 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
       onClick={() => setNumClicks((current) => current + 1)}
       className="fcol-5 feedback-form bordered"
     >
-      <span className="black small">What was the problem?</span>
+      <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (
         <Button
           key={option}

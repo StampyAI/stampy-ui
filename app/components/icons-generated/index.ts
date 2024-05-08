@@ -1,3 +1,5 @@
+export {default as StampyLarge} from './StampyLarge'
+export {default as StampySmall} from './StampySmall'
 export {default as Aisafety} from './Aisafety'
 export {default as ArrowRight} from './ArrowRight'
 export {default as ArrowUpRight} from './ArrowUpRight'

@@ -7,11 +7,14 @@
   z-index: 2;
   max-width: 384px;
   padding: var(--spacing-32);
+  margin-top: var(--spacing-8);
 }
+
+/* Comment to Nemo when he reviews: why didn't you just do this the way you did the settings buttons? */
 .select-option {
   height: var(--spacing-48);
   padding: var(--spacing-8) var(--spacing-16);
-  margin: var(--spacing-8) 0;
+  margin-bottom: var(--spacing-16);
   cursor: pointer;
   width: 100%;
 }
@@ -22,10 +25,10 @@
 .feedback-text {
   width: calc(100% - var(--spacing-24));
   max-width: calc(100% - var(--spacing-24));
-  height: 128px;
   padding: var(--spacing-12);
   margin: var(--spacing-40) 0;
   box-sizing: content-box;
+  background: pink;
 }
 .feedback-text.no-options {
   margin: var(--spacing-16) 0;

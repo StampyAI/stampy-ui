@@ -134,25 +134,30 @@
 
 /* state */
 
-.primary:hover {
+.primary:hover,
+.primary-large:hover {
   background: var(--colors-teal-700, #17736e);
 }
 
-.primary-alt:hover {
+.primary-alt:hover,
+.primary-alt-large:hover {
   color: var(--colors-teal-800, #146560);
 }
 
-.secondary:hover {
+.secondary:hover,
+.secondary-large:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
 }
 
-.secondary-alt:hover {
+.secondary-alt:hover,
+.secondary-alt-large:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7);
 }
 
 /* #### Composite button #### */
 .composite-button {
   box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(175, 183, 194, 0.2);
+  cursor: pointer;
 }
 
 .composite-button > form .button,
