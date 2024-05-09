@@ -33,6 +33,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     formData.append('file', fileBlob, 'question_and_response.html')
 
     const info = [
+      option?.length > 0 ? ['Feedback type', 'Thumbs down'] : ['Feedback type', 'Thumbs UP'],
       ['Type', type],
       ['Pageid', pageid && `[${pageid}](https://aisafety.info/questions/${pageid}/${question})`],
       ['Selected option', option],
@@ -42,7 +43,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
       .map(([item, val]) => `* ${item} - ${val}`)
       .join('\n')
     formData.append('payload_json', JSON.stringify({content: `Chat feedback:\n${info}`}))
-
     const DISCORD_LOGGING_URL = `https://discord.com/api/webhooks/${DISCORD_LOGGING_CHANNEL_ID}/${DISCORD_LOGGING_TOKEN}`
     const response = await fetch(`${DISCORD_LOGGING_URL}`, {method: 'POST', body: formData})
     if (!response.ok) {

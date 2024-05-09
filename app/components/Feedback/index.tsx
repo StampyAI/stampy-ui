@@ -57,7 +57,10 @@ const Feedback = ({
           showText={!!labels}
           actionType={ActionType.HELPFUL}
           hint={upHint}
-          onClick={() => setShowFeedback(true)}
+          onClick={() => {
+            setShowFeedback(true)
+            onSubmit && onSubmit('', '')
+          }}
         />
         <Action
           pageid={pageid}
