@@ -52,6 +52,11 @@
 .widget-ask .suggestion {
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   justify-content: start;
+  padding: var(--spacing-8) var(--spacing-12);
+}
+
+.widget-ask .suggestion:hover {
+  background: var(--colors-teal-50);
 }
 
 .widget-ask .send {
