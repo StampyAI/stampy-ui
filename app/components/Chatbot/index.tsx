@@ -73,11 +73,9 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   return (
     <div className="widget-ask fcol-10">
       {results.length > 0 ? (
-          <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
-            <p className="default">
-            {results[0].title}
-            </p>
-          </Button>
+        <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
+          <p className="default">{results[0].title}</p>
+        </Button>
       ) : undefined}
       <div className="flex-container">
         <Input
