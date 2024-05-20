@@ -18,13 +18,25 @@ article.stampy {
   align-items: center;
 }
 
+.chat-entry .feedback {
+  width: 84px;
+  height: 48px;
+  top: 1672px;
+  left: 341px;
+  gap: 0px;
+  border-radius: 6px 0px 0px 0px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+}
+
+
 .chat-entry .hint-contents {
   position: absolute;
   transform: translateY(var(--spacing-24));
   visibility: hidden;
 }
 
-.chat-entry .hint:hover + .hint-contents {
+.chat-entry .hint:hover+.hint-contents {
   visibility: visible;
   background: red;
 }
@@ -36,6 +48,7 @@ article.stampy {
   margin-left: 2px;
   border-radius: var(--border-radius);
 }
+
 .chat-entry .reference-link span {
   min-width: 10px;
   display: inline-block;
@@ -96,6 +109,7 @@ article.stampy {
   display: flex;
   gap: var(--spacing-16);
 }
+
 .reference .reference-num {
   width: var(--spacing-32);
   height: var(--spacing-32);
@@ -120,7 +134,7 @@ article.stampy {
 }
 
 .reference-contents:hover,
-.reference-link:hover + .reference-contents {
+.reference-link:hover+.reference-contents {
   visibility: visible;
   transition-delay: 0s;
 }

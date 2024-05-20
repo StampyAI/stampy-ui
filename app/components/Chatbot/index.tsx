@@ -305,7 +305,7 @@ export const Chatbot = ({ question, questions, settings }: ChatbotProps) => {
 
       <div className={'warning-floating'}>
         <p className={'xs'}>
-          <span className={'red xs-bold'}>Caution! </span>
+          <span className={'red xs-bold'}>Warning:</span>
           This is an early prototype. Don’t automatically trust what it says, and make sure to
           follow its sources.
         </p>

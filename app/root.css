@@ -157,11 +157,13 @@ h2 {
 }
 
 .xs {
+  font-family: Poppins;
   font-size: 14px;
-  font-weight: 300;
-  line-height: 170%;
-  /* 23.8px */
-  letter-spacing: -0.14px;
+  font-weight: 400;
+  line-height: 23.8px;
+  letter-spacing: -0.01em;
+  text-align: left;
+
 }
 
 .xs-bold {
@@ -519,19 +521,23 @@ svg {
   }
 
   .large-reading {
-    font-size: 18px;
-    font-weight: 300;
-    line-height: 190%;
-    /* 34.2px */
-    letter-spacing: -0.18px;
+    font-family: Poppins;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 41.8px;
+    letter-spacing: -0.02em;
+    text-align: left;
+
   }
 
   .large-bold {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 170%;
-    /* 30.6px */
-    letter-spacing: -0.18px;
+    font-family: Poppins;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 37.4px;
+    letter-spacing: -0.02em;
+    text-align: left;
+
   }
 
   /* other one-off classes */
