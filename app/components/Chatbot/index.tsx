@@ -170,7 +170,7 @@ const SplashScreen = ({
   <div className="padding-top-40">
     <IconStampyLarge />
     <div className="fcol-6 padding-bottom-40 padding-top-40">
-      n<h2 className="teal-500">Hi there, I'm Stampy.</h2>
+      <h2 className="teal-500">Hi there, I'm Stampy.</h2>
       <h2>I can answer your questions about AI Safety</h2>
     </div>
     <Followups
@@ -190,7 +190,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [followups, setFollowups] = useState<Followup[]>()
 
   // FIXME: Generate session id
-  const [sessionId] = useState('asd')
+  const [sessionId] = useState(crypto.randomUUID())
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
   const fetcher = useFetcher({key: 'followup-fetcher'})

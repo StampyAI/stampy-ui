@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
-import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 import {Question} from '~/server-utils/stampy'
+import {useOnSiteQuestions} from './useCachedObjects'
 
 const NUM_RESULTS = 8
 
@@ -140,16 +140,7 @@ export const useSearch = (numResults = NUM_RESULTS) => {
   const resultsForRef = useRef<string>()
   const [results, setResults] = useState([] as SearchResult[])
 
-  const onSiteAnswersRef = useRef<Question[]>([])
-  useEffect(() => {
-    // not needed for initial screen => lazy load on client
-    fetchAllQuestionsOnSite().then(({data, backgroundPromiseIfReloaded}) => {
-      onSiteAnswersRef.current = data
-      backgroundPromiseIfReloaded.then((x) => {
-        if (x) onSiteAnswersRef.current = x.data
-      })
-    })
-  }, [])
+  const {items} = useOnSiteQuestions()
 
   useEffect(() => {
     const makeWorker = async () => {
@@ -183,7 +174,7 @@ export const useSearch = (numResults = NUM_RESULTS) => {
   const search = (userQuery: string, minSimilarity?: number) => {
     isPendingSearch.current = true
     const wordCount = userQuery.split(' ').length
-    if (wordCount > 2) {
+    if (wordCount > 2 && tfWorkerRef.current) {
       if (runningQueryRef.current || !tfWorkerRef.current) {
         searchLater(userQuery, minSimilarity)
         return
@@ -191,20 +182,18 @@ export const useSearch = (numResults = NUM_RESULTS) => {
       runningQueryRef.current = userQuery
       tfWorkerRef.current.postMessage({userQuery, numResults, minSimilarity})
     } else {
-      if (runningQueryRef.current || onSiteAnswersRef.current.length == 0) {
+      if (!items || items?.length == 0) {
         searchLater(userQuery, minSimilarity)
         return
       }
       runningQueryRef.current = userQuery
-      baselineSearch(userQuery, onSiteAnswersRef.current, minSimilarity, numResults).then(
-        (searchResults) => {
-          runningQueryRef.current = undefined
-          resultsRef.current = searchResults
-          resultsForRef.current = userQuery
-          isPendingSearch.current = false
-          setResults(searchResults)
-        }
-      )
+      baselineSearch(userQuery, items, minSimilarity, numResults).then((searchResults) => {
+        runningQueryRef.current = undefined
+        resultsRef.current = searchResults
+        resultsForRef.current = userQuery
+        isPendingSearch.current = false
+        setResults(searchResults)
+      })
     }
   }
 
