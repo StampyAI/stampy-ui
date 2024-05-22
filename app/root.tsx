@@ -101,31 +101,31 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     url: request.url,
     embed,
     showSearch,
-    gaTrackingId: GOOGLE_ANALYTICS_ID,
+    matomoDomain: MATOMO_DOMAIN,
   }
 }
 
-const GoogleAnalytics = ({gaTrackingId}: {gaTrackingId?: string}) => {
-  if (!gaTrackingId) return null
+const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
+  if (!matomoDomain) return null
   return (
-    <>
-      <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`} />
-      <script
-        async
-        id="gtag-init"
-        dangerouslySetInnerHTML={{
-          __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-
-                gtag('config', '${gaTrackingId}', {
-                  page_path: window.location.pathname,
-                });
-        `,
-        }}
-      />
-    </>
+    <script
+      async
+      dangerouslySetInnerHTML={{
+        __html: `
+                        var _paq = window._paq = window._paq || [];
+                        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                        _paq.push(["disableCookies"]);
+                        _paq.push(['trackPageView']);
+                        _paq.push(['enableLinkTracking']);
+                        (function() {
+                            var u="https://${matomoDomain}.matomo.cloud/";
+                            _paq.push(['setTrackerUrl', u+'matomo.php']);
+                            _paq.push(['setSiteId', '3']);
+                            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                            g.async=true; g.src='https://cdn.matomo.cloud/${matomoDomain}.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+                        })();`,
+      }}
+    />
   )
 }
 
@@ -182,7 +182,7 @@ type Loader = Awaited<ReturnType<typeof loader>>
 export type Context = Pick<Loader, 'embed' | 'showSearch'>
 
 export default function App() {
-  const {embed, showSearch, gaTrackingId} = useLoaderData<Loader>()
+  const {embed, showSearch, matomoDomain} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {embed, showSearch}
 
@@ -208,7 +208,7 @@ export default function App() {
 
   return (
     <BasePage embed={embed} savedTheme={savedTheme}>
-      <GoogleAnalytics gaTrackingId={gaTrackingId} />
+      <AnaliticsTag matomoDomain={matomoDomain} />
       <Outlet context={context} />
       <ScrollRestoration />
       <Scripts />
