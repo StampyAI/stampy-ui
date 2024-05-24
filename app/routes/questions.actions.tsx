@@ -3,10 +3,20 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
-import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
-import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
 import Button from '~/components/Button'
-import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
+import {
+  DarkLight,
+  Edit,
+  Flag,
+  Followup,
+  Hide,
+  Like,
+  Search,
+  ThumbDown,
+  ThumbUp,
+  ThumbDownLarge,
+  ThumbUpLarge,
+} from '~/components/icons-generated'
 
 export enum ActionType {
   DARKLIGHT = 'darkLight',
@@ -50,12 +60,12 @@ const actions = {
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {
-    Icon: ThumbUpIcon,
+    Icon: ThumbUpLarge,
     title: 'Yes',
     handler: makeColumnIncrementer('Helpful'),
   },
   unhelpful: {
-    Icon: ThumbDownIcon,
+    Icon: ThumbDownLarge,
     title: 'No',
     handler: makeColumnIncrementer('Unhelpful'),
   },

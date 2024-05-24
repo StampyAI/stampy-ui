@@ -197,8 +197,6 @@ const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) 
         <Feedback
           showForm
           pageid="chatbot"
-          upHint="This response was helpful"
-          downHint="This response was unhelpful"
           onSubmit={async (message: string, option?: string) =>
             logFeedback({message, option, type: 'bot', question, answer: content, citations})
           }
@@ -234,8 +232,6 @@ const StampyArticle = ({pageid, content, title}: StampyEntry) => {
         <Feedback
           showForm
           pageid={pageid}
-          upHint="This response was helpful"
-          downHint="This response was unhelpful"
           onSubmit={async (message: string, option?: string) =>
             logFeedback({message, option, type: 'human', question: title, answer: content, pageid})
           }

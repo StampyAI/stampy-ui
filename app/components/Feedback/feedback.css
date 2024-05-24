@@ -1,13 +1,6 @@
-.feedback .composite-button {
-  width: fit-content;
-}
-
 .feedback-form {
-  position: relative;
   z-index: 2;
-  max-width: 384px;
   padding: var(--spacing-32);
-  margin-top: var(--spacing-8);
 }
 
 /* Comment to Nemo when he reviews: why didn't you just do this the way you did the settings buttons? */
@@ -28,7 +21,7 @@
   padding: var(--spacing-12);
   margin: var(--spacing-40) 0;
   box-sizing: content-box;
-  background: pink;
+  background: white;
 }
 .feedback-text.no-options {
   margin: var(--spacing-16) 0;
@@ -38,8 +31,7 @@
   opacity: 1;
 }
 
-.composite-button > .feedback-form {
-  position: absolute;
-  transform: translate(-9vw, var(--spacing-56));
-  margin: var(--spacing-24);
+.thanks {
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out; /* Transition effect */
 }

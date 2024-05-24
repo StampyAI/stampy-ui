@@ -16,10 +16,10 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
   const clickCheckerRef = useOutsideOnClick(onClose)
 
   useEffect(() => {
-    // Hide the form after 10 seconds if the user hasn't interacted with it
+    // Hide the form after 15 seconds if the user hasn't interacted with it
     const timeoutId = setInterval(() => {
       onClose && onClose()
-    }, 10000)
+    }, 15000)
 
     // Clear the timeout to prevent it from running if the component unmounts
     return () => clearInterval(timeoutId)
@@ -39,9 +39,9 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
     <div
       ref={clickCheckerRef}
       onClick={() => setNumClicks((current) => current + 1)}
-      className="fcol-5 feedback-form bordered"
+      className="flex flex-col feedback-form bordered fixed top-[50px] left-[calc(13.333vw+85px)] w-[384px]"
     >
-      <span className="black small padding-bottom-32">What was the problem?</span>
+      <span className="black small pb-8">What was the problem?</span>
       {options?.map((option) => (
         <Button
           key={option}
