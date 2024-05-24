@@ -35,3 +35,19 @@
   opacity: 0;
   transition: opacity 0.25s ease-in-out; /* Transition effect */
 }
+
+.vote-button .tool-tip {
+  opacity: 0;
+}
+
+.vote-button:hover .tool-tip {
+  opacity: 1;
+}
+
+.thumb path {
+  stroke: #788492;
+}
+
+.thumb-active path {
+  stroke: var(--colors-teal-600);
+}

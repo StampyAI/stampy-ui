@@ -6,9 +6,10 @@ import './feedback.css'
 export type FeedbackFormProps = {
   onSubmit?: (msg: string, option?: string) => Promise<any>
   onClose?: () => void
+  className?: string
   options?: string[]
 }
-const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
+const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps) => {
   const [selected, setSelected] = useState<string>()
   const [message, setMessage] = useState('')
   const [enabledSubmit, setEnabledSubmit] = useState(!options)
@@ -39,7 +40,10 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
     <div
       ref={clickCheckerRef}
       onClick={() => setNumClicks((current) => current + 1)}
-      className="flex flex-col feedback-form bordered fixed top-[50px] left-[calc(13.333vw+85px)] w-[384px]"
+      className={
+        'flex flex-col feedback-form bordered fixed top-[50px] left-[calc(13.333vw+85px)] w-[384px] ' +
+        (className ?? '')
+      }
     >
       <span className="black small pb-8">What was the problem?</span>
       {options?.map((option) => (

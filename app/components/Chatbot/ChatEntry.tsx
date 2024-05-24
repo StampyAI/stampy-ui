@@ -200,6 +200,7 @@ const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) 
           onSubmit={async (message: string, option?: string) =>
             logFeedback({message, option, type: 'bot', question, answer: content, citations})
           }
+          voteLabels={['This response was helpful', 'This response was unhelpful']}
           options={[
             'Making things up',
             'Wrong subject',

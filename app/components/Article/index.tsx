@@ -4,7 +4,7 @@ import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
-import Feedback from '~/components/Feedback'
+import Feedback, {logFeedback} from '~/components/Feedback'
 import type {Glossary, Question} from '~/server-utils/stampy'
 import {tagUrl} from '~/routesMapper'
 import Contents from './Contents'
@@ -22,21 +22,34 @@ const ArticleFooter = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="footer-comtainer padding-bottom-40">
+      <div className="footer-comtainer padding-bottom-40 space-x-4">
         {date && <div className="grey"> {`Updated ${date}`}</div>}
-        <div className="flex-double">
+        <div>
           <Button
-            className="secondary"
+            className="!bg-[#fdfdfd] !min-h-0 !py-[10px] !px-[12px] !rounded-md"
             action={question.answerEditLink || ''}
             tooltip="Suggest changes in Google Docs"
             props={{target: '_blank', rel: 'noopener noreferrer'}}
           >
-            <EditIcon className="no-fill" />
+            <EditIcon className="bg-transparent" />
           </Button>
         </div>
-        <span>Was this page helpful?</span>
-
-        <Feedback pageid={question.pageid} labels />
+        <Feedback
+          pageid={question.pageid}
+          showForm
+          onSubmit={async (message: string, option?: string) =>
+            logFeedback({
+              message,
+              option,
+              type: 'bot',
+              question: question.title,
+              answer: question.text || '',
+            })
+          }
+          formClassName="left-[845px]"
+          voteLabels={['This page was helpful', 'This page was unhelpful']}
+          options={['Incorrect', 'Confusing', 'Too wordy', 'Other']}
+        />
       </div>
     )
   )
