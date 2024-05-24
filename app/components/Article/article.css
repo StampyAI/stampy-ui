@@ -175,6 +175,21 @@ article a.see-more.visible:after {
   content: 'See less';
 }
 
+article .banner {
+  padding: var(--spacing-12) var(--spacing-24);
+  margin-bottom: var(--spacing-12);
+}
+article .banner h3 {
+  display: flex;
+  align-items: center;
+}
+article .banner h3 img {
+  width: 2em;
+}
+article .banner h3 .title {
+  padding-left: 10px;
+}
+
 @media only screen and (max-width: 780px) {
   article {
     max-width: 100%;
