@@ -7,6 +7,7 @@ import Button, {CompositeButton} from '~/components/Button'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import type {Glossary, Question} from '~/server-utils/stampy'
 import {tagUrl} from '~/routesMapper'
+import type {Glossary, Question, Banner as BannerType} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
 
@@ -100,6 +101,30 @@ const ArticleMeta = ({question, className}: {question: Question; className?: str
   )
 }
 
+const Banner = ({title, text, icon, backgroundColour, textColour}: BannerType) => {
+  return (
+    <div
+      key={title}
+      className="banner rounded"
+      style={{
+        backgroundColor: backgroundColour || 'inherit',
+        color: textColour || 'inherit',
+      }}
+    >
+      <h3>
+        <img src={icon?.url} alt={icon?.name} />
+        <span className="title">{title}</span>
+      </h3>
+      <div
+        className="banner-contents"
+        dangerouslySetInnerHTML={{
+          __html: text,
+        }}
+      ></div>
+    </div>
+  )
+}
+
 const Tags = ({tags}: Question) => (
   <div className="tags">
     {tags?.map((tag) => (
@@ -121,6 +146,7 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
       <h1 className="teal-500 padding-bottom-24">{title}</h1>
+      {question.banners?.map(Banner)}
       <ArticleMeta question={question} className="padding-bottom-56" />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
