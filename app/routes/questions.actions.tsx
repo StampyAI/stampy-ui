@@ -14,8 +14,6 @@ import {
   Search,
   ThumbDown,
   ThumbUp,
-  ThumbDownLarge,
-  ThumbUpLarge,
 } from '~/components/icons-generated'
 
 export enum ActionType {
@@ -60,12 +58,12 @@ const actions = {
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {
-    Icon: ThumbUpLarge,
+    Icon: ThumbUp,
     title: 'Yes',
     handler: makeColumnIncrementer('Helpful'),
   },
   unhelpful: {
-    Icon: ThumbDownLarge,
+    Icon: ThumbDown,
     title: 'No',
     handler: makeColumnIncrementer('Unhelpful'),
   },
