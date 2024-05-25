@@ -1,4 +1,4 @@
-import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
+import {useState, useEffect, MouseEvent, useCallback} from 'react'
 import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {json} from '@remix-run/cloudflare'
@@ -97,7 +97,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
 type Props = {
   pageid: string
   actionType: ActionType
-  showText?: boolean
   hint?: string
   dissabled?: boolean
   active?: boolean
@@ -108,7 +107,6 @@ type Props = {
 export const Action = ({
   pageid,
   actionType,
-  showText = true,
   dissabled = false,
   active = false,
   hint,
@@ -118,7 +116,7 @@ export const Action = ({
 }: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
-  const {Icon, title} = actions[actionType]
+  const {Icon} = actions[actionType]
 
   // Get the state of this action for the given `pageid` from localstorage. This
   // will result in each action only being allowed once per browser
