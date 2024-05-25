@@ -1,0 +1,15 @@
+.button-secondary .tool-tip {
+  opacity: 0;
+}
+
+.button-secondary:hover .tool-tip {
+  opacity: 1;
+}
+
+.thumb path {
+  stroke: #788492;
+}
+
+.active path {
+  stroke: var(--colors-teal-600);
+}

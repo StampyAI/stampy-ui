@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react'
-import {CompositeButton} from '~/components/Button'
+import {useEffect, useState, useRef} from 'react'
 import {Action, ActionType} from '~/routes/questions.actions'
 import './feedback.css'
 import FeedbackForm from './Form'
 import type {Citation} from '~/hooks/useChat'
+import {ButtonSecondaryWrapper} from '../ButtonSecondary'
 
 type FeedbackType = {
   option?: string
@@ -29,8 +29,9 @@ type FeedbackProps = {
   labels?: boolean
   upHint?: string
   downHint?: string
+  formClassName?: string
   options?: string[]
-  onSubmit?: (message: string, option?: string) => Promise<any>
+  onSubmit: (message: string, option?: string) => Promise<any>
 }
 const Feedback = ({
   pageid,
@@ -39,48 +40,69 @@ const Feedback = ({
   upHint,
   downHint,
   options,
+  formClassName,
   onSubmit,
 }: FeedbackProps) => {
-  const [showFeedback, setShowFeedback] = useState(false)
+  const [showThanks, setShowThanks] = useState(false)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  const [vote, setVote]: any = useState(undefined)
+
+  const thanksRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const timeout = setInterval(() => setShowFeedback(false), 6000)
-    return () => clearInterval(timeout)
-  }, [showFeedback])
+    if (showThanks && thanksRef.current) {
+      thanksRef.current.style.opacity = '1'
+      setTimeout(() => {
+        if (thanksRef.current) thanksRef.current.style.opacity = '0'
+      }, 6000)
+    }
+  }, [showThanks])
 
   return (
-    <div className="feedback relative">
-      <CompositeButton className="flex-container">
+    <div className="flex items-center">
+      <ButtonSecondaryWrapper>
         <Action
           pageid={pageid}
           showText={!!labels}
           actionType={ActionType.HELPFUL}
+          active={vote === 'helpful'}
+          dissabled={!!vote}
           hint={upHint}
-          onClick={() => setShowFeedback(true)}
+          onClick={() => {
+            setVote('helpful')
+            setShowThanks(true)
+          }}
         />
         <Action
           pageid={pageid}
           showText={!!labels}
           hint={downHint}
           actionType={ActionType.UNHELPFUL}
+          active={vote === 'unhelpful'}
+          dissabled={!!vote}
           onClick={() => {
-            setShowFeedback(!showForm)
+            setVote('unhelpful')
+            setShowThanks(!showForm)
             setShowFeedbackForm(!!showForm)
           }}
         />
-      </CompositeButton>
+      </ButtonSecondaryWrapper>
 
-      {showFeedback && <div className="thanks">Thanks for your feedback!</div>}
+      <div ref={thanksRef} className="thanks ml-2 opacity-0 pointer-events-none">
+        Thank you for your feedback!
+      </div>
 
       {showFeedbackForm && (
         <FeedbackForm
-          onSubmit={onSubmit}
+          onSubmit={(att) => {
+            setShowThanks(true)
+            return onSubmit(att)
+          }}
           onClose={() => {
-            setShowFeedback(true)
             setShowFeedbackForm(false)
           }}
           options={options}
+          className={formClassName}
         />
       )}
     </div>

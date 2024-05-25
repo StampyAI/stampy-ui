@@ -28,7 +28,6 @@
   padding: var(--spacing-12);
   margin: var(--spacing-40) 0;
   box-sizing: content-box;
-  background: pink;
 }
 .feedback-text.no-options {
   margin: var(--spacing-16) 0;
@@ -36,6 +35,11 @@
 .submit-feedback.enabled {
   cursor: pointer;
   opacity: 1;
+}
+
+.thanks {
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out; /* Transition effect */
 }
 
 .composite-button > .feedback-form {

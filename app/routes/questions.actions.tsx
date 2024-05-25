@@ -3,10 +3,18 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
-import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
-import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
-import Button from '~/components/Button'
-import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
+import ButtonSecondary from '~/components/ButtonSecondary'
+import {
+  DarkLight,
+  Edit,
+  Flag,
+  Followup,
+  Hide,
+  Like,
+  Search,
+  ThumbDownLarge,
+  ThumbUpLarge,
+} from '~/components/icons-generated'
 
 export enum ActionType {
   DARKLIGHT = 'darkLight',
@@ -50,12 +58,12 @@ const actions = {
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {
-    Icon: ThumbUpIcon,
+    Icon: ThumbUpLarge,
     title: 'Yes',
     handler: makeColumnIncrementer('Helpful'),
   },
   unhelpful: {
-    Icon: ThumbDownIcon,
+    Icon: ThumbDownLarge,
     title: 'No',
     handler: makeColumnIncrementer('Unhelpful'),
   },
@@ -91,7 +99,8 @@ type Props = {
   actionType: ActionType
   showText?: boolean
   hint?: string
-  children?: ReactNode | ReactNode[]
+  dissabled?: boolean
+  active?: boolean
   [k: string]: unknown
   onSuccess?: () => void
   onClick?: () => void
@@ -100,8 +109,9 @@ export const Action = ({
   pageid,
   actionType,
   showText = true,
+  dissabled = false,
+  active = false,
   hint,
-  children,
   onSuccess,
   onClick,
   ...props
@@ -157,14 +167,12 @@ export const Action = ({
     }
   }
 
-  const className = 'secondary icon-link' + (actionTaken ? ' focused' : '')
-
   return (
     <Form
+      className="!leading-[0px]"
       replace
       action="/questions/actions"
       method="post"
-      title={hint || title}
       onClick={handleAction}
       {...props}
     >
@@ -172,14 +180,9 @@ export const Action = ({
       <input type="hidden" name="pageid" value={pageid} />
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
-      {children}
-      <Button className={className}>
+      <ButtonSecondary disabled={dissabled} active={active} tooltip={hint}>
         <Icon />
-        <p className={[actionTaken ? 'teal-500' : 'grey', 'small'].join(' ')}>
-          {' '}
-          {showText && (hint || title)}
-        </p>
-      </Button>
+      </ButtonSecondary>
     </Form>
   )
 }

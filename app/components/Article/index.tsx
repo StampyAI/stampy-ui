@@ -4,7 +4,8 @@ import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
-import Feedback from '~/components/Feedback'
+import ButtonSecondary, {ButtonSecondaryWrapper} from '../ButtonSecondary'
+import Feedback, {logFeedback} from '~/components/Feedback'
 import {tagUrl} from '~/routesMapper'
 import type {Glossary, Question, Banner as BannerType} from '~/server-utils/stampy'
 import Contents from './Contents'
@@ -22,21 +23,34 @@ const ArticleFooter = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="footer-comtainer padding-bottom-40">
+      <div className="footer-comtainer padding-bottom-40 space-x-4">
         {date && <div className="grey"> {`Updated ${date}`}</div>}
-        <div className="flex-double">
-          <Button
-            className="secondary"
+        <ButtonSecondaryWrapper>
+          <ButtonSecondary
             action={question.answerEditLink || ''}
-            tooltip="Suggest changes in Google Docs"
+            tooltip="Google Doc"
             props={{target: '_blank', rel: 'noopener noreferrer'}}
           >
-            <EditIcon className="no-fill" />
-          </Button>
-        </div>
-        <span>Was this page helpful?</span>
-
-        <Feedback pageid={question.pageid} labels />
+            <EditIcon />
+          </ButtonSecondary>
+        </ButtonSecondaryWrapper>
+        <Feedback
+          showForm
+          formClassName="left-[845px]"
+          pageid={question.pageid}
+          onSubmit={async (message: string, option?: string) =>
+            logFeedback({
+              message,
+              option,
+              type: 'bot',
+              question: question.title || '',
+              answer: question.text || '',
+            })
+          }
+          options={['Unclear', 'Too wordy', 'Confusing', 'Incorrect', 'Other']}
+          upHint="This page was helpful"
+          downHint="This page was unhelpful"
+        />
       </div>
     )
   )
