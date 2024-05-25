@@ -11,4 +11,3 @@
 wrangler.toml
 *.sqlite
 .wrangler
-pnpm-lock.yaml
