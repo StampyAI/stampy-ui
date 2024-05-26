@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from 'react'
+import {useState, useRef} from 'react'
 import {Action, ActionType} from '~/routes/questions.actions'
 import './feedback.css'
 import FeedbackForm from './Form'
@@ -43,20 +43,18 @@ const Feedback = ({
   formClassName,
   onSubmit,
 }: FeedbackProps) => {
-  const [showThanks, setShowThanks] = useState(false)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
-  const [vote, setVote]: any = useState(undefined)
+  const [voted, setVoted]: any = useState(false)
 
   const thanksRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    if (showThanks && thanksRef.current) {
-      thanksRef.current.style.opacity = '1'
-      setTimeout(() => {
-        if (thanksRef.current) thanksRef.current.style.opacity = '0'
-      }, 6000)
-    }
-  }, [showThanks])
+  function showThanks() {
+    if (thanksRef.current) thanksRef.current.style.opacity = '1'
+    const timeout = setInterval(() => {
+      if (thanksRef.current) thanksRef.current.style.opacity = '0'
+    }, 6000)
+    return () => clearInterval(timeout)
+  }
 
   return (
     <div className="flex items-center">
@@ -65,12 +63,11 @@ const Feedback = ({
           pageid={pageid}
           showText={!!labels}
           actionType={ActionType.HELPFUL}
-          active={vote === 'helpful'}
-          dissabled={!!vote}
+          disabled={voted}
           hint={upHint}
+          setVoted={setVoted}
           onClick={() => {
-            setVote('helpful')
-            setShowThanks(true)
+            showThanks()
           }}
         />
         <Action
@@ -78,11 +75,10 @@ const Feedback = ({
           showText={!!labels}
           hint={downHint}
           actionType={ActionType.UNHELPFUL}
-          active={vote === 'unhelpful'}
-          dissabled={!!vote}
+          disabled={voted}
+          setVoted={setVoted}
           onClick={() => {
-            setVote('unhelpful')
-            setShowThanks(!showForm)
+            if (!showForm) showThanks()
             setShowFeedbackForm(!!showForm)
           }}
         />
@@ -95,7 +91,7 @@ const Feedback = ({
       {showFeedbackForm && (
         <FeedbackForm
           onSubmit={(att) => {
-            setShowThanks(true)
+            showThanks()
             return onSubmit(att)
           }}
           onClose={() => {

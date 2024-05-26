@@ -1,4 +1,4 @@
-import {useState, useEffect, MouseEvent, useCallback} from 'react'
+import {useState, useEffect, MouseEvent, useCallback, ReactNode} from 'react'
 import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {json} from '@remix-run/cloudflare'
@@ -98,20 +98,22 @@ type Props = {
   pageid: string
   actionType: ActionType
   hint?: string
-  dissabled?: boolean
-  active?: boolean
+  children?: ReactNode | ReactNode[]
+  disabled?: boolean
   [k: string]: unknown
   onSuccess?: () => void
   onClick?: () => void
+  setVoted?: (v: boolean) => void
 }
 export const Action = ({
   pageid,
   actionType,
-  dissabled = false,
-  active = false,
+  disabled = false,
   hint,
+  children,
   onSuccess,
   onClick,
+  setVoted,
   ...props
 }: Props) => {
   const [remixSearchParams] = useSearchParams()
@@ -132,6 +134,7 @@ export const Action = ({
   }, [actionId])
   useEffect(() => setActionTaken(loadActionTaken()), [loadActionTaken])
   useEffect(() => {
+    if (actionTaken && setVoted) setVoted(true)
     if (loadActionTaken() || actionTaken) {
       try {
         localStorage.setItem(actionId, actionTaken.toString())
@@ -139,7 +142,7 @@ export const Action = ({
         // This will happen when local storage is disabled
       }
     }
-  }, [actionTaken, loadActionTaken, actionId])
+  }, [actionTaken, loadActionTaken, actionId, setVoted])
 
   const handleAction = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -159,7 +162,9 @@ export const Action = ({
     const response = await fetch('/questions/actions', {method: 'POST', body: searchParams})
 
     if (response.ok !== true) {
-      setActionTaken(!actionTaken)
+      // don't ask
+      setActionTaken(actionTaken)
+      if (!actionTaken && setVoted) setVoted(false)
     } else if (onSuccess) {
       onSuccess()
     }
@@ -178,7 +183,8 @@ export const Action = ({
       <input type="hidden" name="pageid" value={pageid} />
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
-      <ButtonSecondary disabled={dissabled} active={active} tooltip={hint}>
+      {children}
+      <ButtonSecondary disabled={disabled} active={actionTaken} tooltip={hint}>
         <Icon />
       </ButtonSecondary>
     </Form>
