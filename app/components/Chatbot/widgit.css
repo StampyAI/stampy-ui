@@ -56,7 +56,7 @@
 }
 
 .widget-ask .suggestion:hover {
-  background: var(--colors-teal-50); 
+  background: var(--colors-teal-50);
 }
 
 .widget-ask .send {
