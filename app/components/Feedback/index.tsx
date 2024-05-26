@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react'
+import {useEffect, useState, useRef} from 'react'
 import {Action, ActionType} from '~/routes/questions.actions'
 import './feedback.css'
 import FeedbackForm from './Form'
@@ -43,18 +43,14 @@ const Feedback = ({
   formClassName,
   onSubmit,
 }: FeedbackProps) => {
+  const [showThanks, setShowThanks] = useState(false)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [voted, setVoted]: any = useState(false)
 
-  const thanksRef = useRef<HTMLDivElement | null>(null)
-
-  function showThanks() {
-    if (thanksRef.current) thanksRef.current.style.opacity = '1'
-    const timeout = setInterval(() => {
-      if (thanksRef.current) thanksRef.current.style.opacity = '0'
-    }, 6000)
+  useEffect(() => {
+    const timeout = setTimeout(() => setShowThanks(false), 6000)
     return () => clearInterval(timeout)
-  }
+  }, [showThanks])
 
   return (
     <div className="flex items-center">
@@ -67,7 +63,7 @@ const Feedback = ({
           hint={upHint}
           setVoted={setVoted}
           onClick={() => {
-            showThanks()
+            setShowThanks(true)
           }}
         />
         <Action
@@ -78,20 +74,25 @@ const Feedback = ({
           disabled={voted}
           setVoted={setVoted}
           onClick={() => {
-            if (!showForm) showThanks()
+            if (!showForm) setShowThanks(true)
             setShowFeedbackForm(!!showForm)
           }}
         />
       </ButtonSecondaryWrapper>
 
-      <div ref={thanksRef} className="thanks ml-2 opacity-0 pointer-events-none">
+      <p
+        className={
+          'transition-opacity duration-200 ease-in-out ml-2 pointer-events-none ' +
+          (showThanks ? 'opacity-100' : 'opacity-0')
+        }
+      >
         Thank you for your feedback!
-      </div>
+      </p>
 
       {showFeedbackForm && (
         <FeedbackForm
           onSubmit={(att) => {
-            showThanks()
+            setShowThanks(true)
             return onSubmit(att)
           }}
           onClose={() => {

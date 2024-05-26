@@ -37,11 +37,6 @@
   opacity: 1;
 }
 
-.thanks {
-  opacity: 0;
-  transition: opacity 0.25s ease-in-out; /* Transition effect */
-}
-
 .composite-button > .feedback-form {
   position: absolute;
   transform: translate(-9vw, var(--spacing-56));
