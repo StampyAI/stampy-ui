@@ -64,7 +64,7 @@
 }
 
 .articles-group .parent::before {
-  content: ' ';
+  content: " ";
   background-image: url(/assets/green-dot.svg);
   background-repeat: no-repeat;
   width: var(--spacing-32);

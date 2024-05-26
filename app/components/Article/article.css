@@ -164,10 +164,10 @@ article a.see-more:not(.visible) + div.see-more-contents {
   display: none;
 }
 article a.see-more:after {
-  content: 'See more...';
+  content: "See more...";
 }
 article a.see-more.visible:after {
-  content: 'See less';
+  content: "See less";
 }
 
 article .banner {
