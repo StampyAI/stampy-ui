@@ -160,11 +160,6 @@ article .footer-comtainer {
   margin-top: var(--spacing-56);
   margin-bottom: var(--spacing-24);
 }
-
-article .footer-comtainer > * {
-  margin: var(--spacing-8, 8px);
-}
-
 article a.see-more:not(.visible) + div.see-more-contents {
   display: none;
 }
