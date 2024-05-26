@@ -3,13 +3,5 @@
     "singleQuote": true,
     "bracketSpacing": false,
     "printWidth": 100,
-    "trailingComma": "es5",
-    "overrides": [
-        {
-          "files": "*.css",
-          "options": {
-            "singleQuote": false
-          }
-        }
-      ]
+    "trailingComma": "es5"
 }
