@@ -1,5 +1,6 @@
 .top-menu-link {
   display: flex;
+  white-space: nowrap;
 }
 .top-menu-icon {
   width: var(--spacing-24);
