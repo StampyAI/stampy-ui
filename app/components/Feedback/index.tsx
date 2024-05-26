@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from 'react'
+import {useEffect, useState} from 'react'
 import {Action, ActionType} from '~/routes/questions.actions'
 import './feedback.css'
 import FeedbackForm from './Form'
