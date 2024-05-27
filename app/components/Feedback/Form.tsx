@@ -39,7 +39,7 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
     <div
       ref={clickCheckerRef}
       onClick={() => setNumClicks((current) => current + 1)}
-      className="fcol-5 feedback-form bordered"
+      className="col-5 feedback-form bordered"
     >
       <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (

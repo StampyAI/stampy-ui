@@ -43,7 +43,7 @@
   --spacing-104: clamp(56px, 10.6vw, 104px);
   --spacing-128: clamp(56px, 13.8vw, 128px);
   --spacing-192: clamp(80px, 17vw, 192px);
-  --spacing-288: clamp(128px, 25.6vw, 288px);
+  --spacing-288: clamp(128px, 20vw, 288px);
 }
 
 /* CSS Reset */
@@ -373,40 +373,6 @@ h2 {
   width: clamp(0px, 73.33vw, 1344px);
 }
 
-.fcol-2 {
-  flex: 2;
-}
-.fcol-3 {
-  flex: 3;
-}
-.fcol-4 {
-  flex: 4;
-}
-.fcol-5 {
-  flex: 5;
-}
-.fcol-6 {
-  flex: 6;
-}
-.fcol-7 {
-  flex: 7;
-}
-.fcol-8 {
-  flex: 8;
-}
-.fcol-9 {
-  flex: 9;
-}
-.fcol-10 {
-  flex: 10;
-}
-.fcol-11 {
-  flex: 11;
-}
-.fcol-12 {
-  flex: 12;
-}
-
 .full-width {
   width: 100%;
 }
@@ -498,7 +464,7 @@ svg {
 
 /* defines the standard left and right margins */
 .page-body {
-  padding: 0px 13.333vw;
+  padding: 0px var(--spacing-128);
 }
 
 /* all other classes */
@@ -542,20 +508,8 @@ svg {
 /* mobile */
 
 @media (max-width: 780px) {
-  :root {
-    --spacing-24: 16px;
-    --spacing-32: 24px;
-    --spacing-40: 24px;
-    --spacing-56: 24px;
-    --spacing-80: 40px;
-    --spacing-104: 56px;
-    --spacing-128: 56px;
-    --spacing-192: 80px;
-    --spacing-288: 128px;
-  }
-
   .page-body {
-    padding: 0px 6.4vw;
+    padding: 0px var(--spacing-48);
   }
 
   /* typography tags */

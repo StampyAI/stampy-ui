@@ -27,7 +27,7 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
   const noResults = results.length === 0
   if (noResults) {
     return (
-      <div className="full-width container-search-results bordered fcol-5 container-search-results-mobile">
+      <div className="full-width container-search-results bordered col-5 container-search-results-mobile">
         <div className="search-result">No results found</div>
       </div>
     )
