@@ -132,7 +132,7 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
       <h1 className="teal-500 padding-bottom-24">{title}</h1>
-      {question.banners?.map(Banner)}
+      {question.banners?.filter((b) => b.title).map(Banner)}
       <ArticleMeta question={question} className="padding-bottom-56" />
 
       <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
