@@ -172,7 +172,7 @@ export const Action = ({
 
   return (
     <Form
-      className="!leading-[0px]"
+      className="leading-0"
       replace
       action="/questions/actions"
       method="post"

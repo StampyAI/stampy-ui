@@ -40,12 +40,9 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
     <div
       ref={clickCheckerRef}
       onClick={() => setNumClicks((current) => current + 1)}
-      className={
-        'flex flex-col feedback-form bordered !fixed top-[50px] left-[calc(13.333vw+85px)] w-[384px] ' +
-        (className ?? '')
-      }
+      className={'feedback-form bordered ' + (className ?? '')}
     >
-      <span className="black small pb-8">What was the problem?</span>
+      <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (
         <Button
           key={option}
@@ -61,7 +58,7 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
 
       <textarea
         name="feedback-text"
-        className={['feedback-text bordered', !options ? 'no-options' : ''].join(' ')}
+        className={['feedback-text small bordered', !options ? 'no-options' : ''].join(' ')}
         placeholder="Leave a comment (optional)"
         onChange={(e) => setMessage(e.target.value)}
       />

@@ -25,8 +25,8 @@ const ButtonSecondary = ({
       <Link
         to={action}
         className={
-          'button-secondary relative leading-7 p-1 rounded-[6px] ' +
-          (active ? 'bg-[#EDFAF9] active' : disabled ? '' : 'hover:bg-[#F9FAFC]') +
+          'button-secondary ' +
+          (active ? 'active' : disabled ? '' : 'inactive') +
           (className ? ' ' + className : '')
         }
         onClick={(e) => {
@@ -37,19 +37,15 @@ const ButtonSecondary = ({
         {...props}
       >
         {children}
-        {tooltip && !disabled && (
-          <p className="tool-tip absolute top-[-42px] left-1/2 transform -translate-x-1/2 bg-[#1B2B3E] text-[14px] text-[#f2f2f2] py-[5px] px-[15px] rounded-[8px] whitespace-nowrap pointer-events-none">
-            {tooltip}
-          </p>
-        )}
+        {tooltip && !disabled && <p className="tool-tip">{tooltip}</p>}
       </Link>
     )
   }
   return (
     <button
       className={
-        'button-secondary relative leading-7 p-1 rounded-[6px] ' +
-        (active ? 'bg-[#EDFAF9] active' : disabled ? '' : 'hover:bg-[#F9FAFC]') +
+        'button-secondary ' +
+        (active ? 'active' : disabled ? '' : 'inactive') +
         (className ? ' ' + className : '')
       }
       onClick={action}
@@ -57,11 +53,7 @@ const ButtonSecondary = ({
       {...props}
     >
       {children}
-      {tooltip && !disabled && (
-        <p className="tool-tip absolute top-[-42px] left-1/2 transform -translate-x-1/2 bg-[#1B2B3E] text-[14px] text-[#f2f2f2] py-[5px] px-[15px] rounded-[8px] whitespace-nowrap pointer-events-none">
-          {tooltip}
-        </p>
-      )}
+      {tooltip && !disabled && <p className="tool-tip">{tooltip}</p>}
     </button>
   )
 }
@@ -71,11 +63,7 @@ export interface ButtonSecondaryWrapperProps {
   className?: string
 }
 export const ButtonSecondaryWrapper = ({children, className}: ButtonSecondaryWrapperProps) => (
-  <div
-    className={`flex border-[var(--colors-cool-grey-200)] border-[1px] rounded-[6px] space-x-[4px] p-[7px] justify-center items-center size-min ${className || ''}`}
-  >
-    {children}
-  </div>
+  <div className={`wrapper ${className || ''}`}>{children}</div>
 )
 
 export default ButtonSecondary

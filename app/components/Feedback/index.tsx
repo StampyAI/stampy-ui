@@ -53,7 +53,7 @@ const Feedback = ({
   }, [showThanks])
 
   return (
-    <div className="flex items-center">
+    <div className="feedback">
       <ButtonSecondaryWrapper>
         <Action
           pageid={pageid}
@@ -80,14 +80,7 @@ const Feedback = ({
         />
       </ButtonSecondaryWrapper>
 
-      <p
-        className={
-          'transition-opacity duration-200 ease-in-out ml-2 pointer-events-none ' +
-          (showThanks ? 'opacity-100' : 'opacity-0')
-        }
-      >
-        Thank you for your feedback!
-      </p>
+      <p className={'thanks ' + (showThanks ? 'show' : 'hide')}>Thank you for your feedback!</p>
 
       {showFeedbackForm && (
         <FeedbackForm

@@ -23,7 +23,7 @@ const ArticleFooter = (question: Question) => {
 
   return (
     !isLoading(question) && (
-      <div className="footer-comtainer padding-bottom-40 space-x-4">
+      <div className="footer-comtainer padding-bottom-40">
         {date && <div className="grey"> {`Updated ${date}`}</div>}
         <ButtonSecondaryWrapper>
           <ButtonSecondary
@@ -36,7 +36,7 @@ const ArticleFooter = (question: Question) => {
         </ButtonSecondaryWrapper>
         <Feedback
           showForm
-          formClassName="left-[845px]"
+          formClassName="form"
           pageid={question.pageid}
           onSubmit={async (message: string, option?: string) =>
             logFeedback({
