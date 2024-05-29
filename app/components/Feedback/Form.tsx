@@ -62,7 +62,7 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
         placeholder="Leave a comment (optional)"
         onChange={(e) => setMessage(e.target.value)}
       />
-      <Button className="primary full-width" action={handleSubmit} disabled={!enabledSubmit}>
+      <Button className="primary full-width submit" action={handleSubmit} disabled={!enabledSubmit}>
         <p>Submit feedback</p>
       </Button>
     </div>
