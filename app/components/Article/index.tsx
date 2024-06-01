@@ -4,7 +4,6 @@ import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
-import ButtonSecondary, {ButtonSecondaryWrapper} from '../ButtonSecondary'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import {tagUrl} from '~/routesMapper'
 import type {Glossary, Question, Banner as BannerType} from '~/server-utils/stampy'
@@ -25,15 +24,16 @@ const ArticleFooter = (question: Question) => {
     !isLoading(question) && (
       <div className="footer-comtainer padding-bottom-40">
         {date && <div className="grey"> {`Updated ${date}`}</div>}
-        <ButtonSecondaryWrapper>
-          <ButtonSecondary
+        <CompositeButton secondary>
+          <Button
+            secondary
             action={question.answerEditLink || ''}
             tooltip="Google Doc"
             props={{target: '_blank', rel: 'noopener noreferrer'}}
           >
             <EditIcon />
-          </ButtonSecondary>
-        </ButtonSecondaryWrapper>
+          </Button>
+        </CompositeButton>
         <Feedback
           showForm
           formClassName="form"

@@ -30,7 +30,7 @@
 /* Comment to Nemo when he reviews: why didn't you just do this the way you did the settings buttons? */
 .select-option {
   height: var(--spacing-48);
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   margin-bottom: var(--spacing-16);
   cursor: pointer;
   width: 100%;
@@ -38,7 +38,7 @@
 
 .submit {
   height: var(--spacing-48);
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   font-weight: 500 !important;
   cursor: pointer;
   width: 100%;

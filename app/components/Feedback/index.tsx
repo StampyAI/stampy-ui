@@ -3,7 +3,7 @@ import {Action, ActionType} from '~/routes/questions.actions'
 import './feedback.css'
 import FeedbackForm from './Form'
 import type {Citation} from '~/hooks/useChat'
-import {ButtonSecondaryWrapper} from '../ButtonSecondary'
+import {CompositeButton} from '../Button'
 
 type FeedbackType = {
   option?: string
@@ -54,7 +54,7 @@ const Feedback = ({
 
   return (
     <div className="feedback">
-      <ButtonSecondaryWrapper>
+      <CompositeButton secondary>
         <Action
           pageid={pageid}
           showText={!!labels}
@@ -78,15 +78,15 @@ const Feedback = ({
             setShowFeedbackForm(!!showForm)
           }}
         />
-      </ButtonSecondaryWrapper>
+      </CompositeButton>
 
       <p className={'thanks ' + (showThanks ? 'show' : 'hide')}>Thank you for your feedback!</p>
 
       {showFeedbackForm && (
         <FeedbackForm
-          onSubmit={(att) => {
+          onSubmit={(message, option) => {
             setShowThanks(true)
-            return onSubmit(att)
+            return onSubmit(message, option)
           }}
           onClose={() => {
             setShowFeedbackForm(false)

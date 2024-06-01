@@ -3,7 +3,7 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
-import ButtonSecondary from '~/components/ButtonSecondary'
+import Button from '~/components/Button'
 import {
   DarkLight,
   Edit,
@@ -184,9 +184,9 @@ export const Action = ({
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
       {children}
-      <ButtonSecondary disabled={disabled} active={actionTaken} tooltip={hint}>
+      <Button secondary disabled={disabled} active={actionTaken} tooltip={hint}>
         <Icon />
-      </ButtonSecondary>
+      </Button>
     </Form>
   )
 }
