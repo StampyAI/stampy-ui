@@ -172,11 +172,11 @@
 }
 
 .active {
-  background-color: #edfaf9;
+  background-color: var(----colors-teal-50);
 }
 
 .inactive:hover {
-  background-color: #f9fafc;
+  background-color: var(--colors-light-grey);
 }
 
 /* #### Composite button #### */
