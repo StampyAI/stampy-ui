@@ -21,7 +21,7 @@
 }
 .widget-ask.fixed {
   position: fixed;
-  bottom: 50px;
+  bottom: var(--spacing-48);
 }
 
 .right-icon {
