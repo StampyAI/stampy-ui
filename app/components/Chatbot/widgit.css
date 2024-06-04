@@ -18,7 +18,7 @@
 
 .widget-ask {
   position: fixed;
-  bottom: 10px;
+  bottom: 50px;
 }
 .right-icon {
   padding-right: var(--spacing-56);
@@ -63,4 +63,14 @@
   position: absolute;
   right: 4px;
   bottom: 4px;
+}
+
+.white-space {
+  position: absolute;
+  left: -1000px;
+  width: calc(100% + 2000px);
+  height: 100px;
+  top: 100%;
+  z-index: 1000;
+  background: #ffffff;
 }

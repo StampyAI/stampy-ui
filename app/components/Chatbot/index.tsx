@@ -51,8 +51,9 @@ type QuestionInputProps = {
   initial?: string
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
+  whiteSpace?: boolean
 }
-const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
+const QuestionInput = ({initial, onChange, onAsk, whiteSpace}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
   const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const {results, search, clear} = useSearch(1)
@@ -91,6 +92,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
         />
         <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
       </div>
+      {whiteSpace && <div className="white-space"></div>}
     </div>
   )
 }
@@ -307,7 +309,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
 
-      <div className="padding-bottom-56">
+      <div className="padding-bottom-192">
         {followups ? (
           <Followups
             title="Continue the conversation"
@@ -317,7 +319,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         ) : undefined}
       </div>
 
-      <QuestionInput onAsk={onQuestion} />
+      <QuestionInput onAsk={onQuestion} whiteSpace />
 
       <div className={'warning-floating'}>
         <p className={'xs'}>
