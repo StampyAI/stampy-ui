@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import Button from '~/components/Button'
 import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import './feedback.css'
@@ -13,7 +13,6 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
   const [selected, setSelected] = useState<string>()
   const [message, setMessage] = useState('')
   const [enabledSubmit, setEnabledSubmit] = useState(!options)
-  const [numClicks, setNumClicks] = useState(0)
   const clickCheckerRef = useOutsideOnClick(onClose)
 
   const selectFeedback = (option: string) => {
@@ -27,11 +26,7 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
   }
 
   return (
-    <div
-      ref={clickCheckerRef}
-      onClick={() => setNumClicks((current) => current + 1)}
-      className={'feedback-form bordered ' + (className ?? '')}
-    >
+    <div ref={clickCheckerRef} className={'feedback-form bordered ' + (className ?? '')}>
       <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (
         <Button
