@@ -52,8 +52,9 @@ type QuestionInputProps = {
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
   whiteSpace?: boolean
+  shadow?: boolean
 }
-const QuestionInput = ({initial, onChange, onAsk, whiteSpace}: QuestionInputProps) => {
+const QuestionInput = ({initial, onChange, onAsk, whiteSpace, shadow}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
   const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const {results, search, clear} = useSearch(1)
@@ -81,7 +82,7 @@ const QuestionInput = ({initial, onChange, onAsk, whiteSpace}: QuestionInputProp
       <div className="flex-container">
         <Input
           placeHolder={placeholder}
-          className="large full-width"
+          className={'large full-width ' + (shadow ? 'shadow' : '')}
           value={question}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
@@ -129,6 +130,7 @@ export const WidgetStampy = ({className}: {className?: string}) => {
       </div>
 
       <QuestionInput
+        shadow
         initial={question}
         onChange={setQuestion}
         onAsk={(question) => {

@@ -29,6 +29,10 @@
   letter-spacing: -0.18px;
 }
 
+.input.shadow {
+  box-shadow: 0px 16px 40px 0px rgba(175, 183, 194, 0.2);
+}
+
 /* states */
 
 .input:hover {
