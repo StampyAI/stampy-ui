@@ -154,10 +154,6 @@ article .link-popup p {
   gap: var(--spacing-32);
 }
 
-.form {
-  left: 845px;
-}
-
 article .footer-comtainer {
   display: flex;
   align-items: center;

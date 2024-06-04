@@ -36,7 +36,6 @@ const ArticleFooter = (question: Question) => {
         </CompositeButton>
         <Feedback
           showForm
-          formClassName="form"
           pageid={question.pageid}
           onSubmit={async (message: string, option?: string) =>
             logFeedback({

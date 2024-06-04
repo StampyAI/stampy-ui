@@ -1,6 +1,7 @@
 .feedback {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .thanks {
@@ -19,12 +20,13 @@
 .feedback-form {
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 50px;
-  left: calc(13.333vw + 85px);
+  position: absolute;
+  z-index: 200;
+  left: 0px;
+  bottom: calc(100% + 4px);
   width: 384px;
-  padding: 30px;
-  border-radius: 6px;
+  padding: var(--spacing-32);
+  border-radius: var(--border-radius);
 }
 
 /* Comment to Nemo when he reviews: why didn't you just do this the way you did the settings buttons? */

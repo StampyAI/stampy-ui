@@ -16,16 +16,6 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
   const [numClicks, setNumClicks] = useState(0)
   const clickCheckerRef = useOutsideOnClick(onClose)
 
-  useEffect(() => {
-    // Hide the form after 15 seconds if the user hasn't interacted with it
-    const timeoutId = setInterval(() => {
-      onClose && onClose()
-    }, 15000)
-
-    // Clear the timeout to prevent it from running if the component unmounts
-    return () => clearInterval(timeoutId)
-  }, [numClicks, onClose])
-
   const selectFeedback = (option: string) => {
     setSelected(option)
     setEnabledSubmit(true)
