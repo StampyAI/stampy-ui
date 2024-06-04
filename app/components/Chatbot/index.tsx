@@ -5,6 +5,7 @@ import IconStampySmall from '~/components/icons-generated/StampySmall'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
 import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings} from '~/hooks/useChat'
+import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import ChatEntry from './ChatEntry'
 import './widgit.css'
 import {questionUrl} from '~/routesMapper'
@@ -52,27 +53,33 @@ type QuestionInputProps = {
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
   sticky?: boolean
+  placeholder?: string
 }
-const QuestionInput = ({initial, onChange, onAsk, sticky}: QuestionInputProps) => {
+const QuestionInput = ({
+  initial,
+  onChange,
+  onAsk,
+  sticky,
+  placeholder = 'Ask Stampy a question...',
+}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
-  const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const {results, search, clear} = useSearch(1)
+  const clickDetectorRef = useOutsideOnClick(() => handleChange(''))
 
   const handleAsk = (val: string) => {
     clear()
     onAsk && onAsk(val)
     setQuestion('')
-    setPlaceholder('Message Stampy')
   }
 
   const handleChange = (val: string) => {
-    search(val, MIN_SIMILARITY)
+    search(val, 0.7)
     setQuestion(val)
     onChange && onChange(val)
   }
 
   return (
-    <div className={`widget-ask col-10 ${sticky ? 'sticky' : ''}`}>
+    <div className={`widget-ask col-10 ${sticky ? 'sticky' : ''}`} ref={clickDetectorRef}>
       {results.length > 0 ? (
         <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
           <p className="default">{results[0].title}</p>
@@ -80,12 +87,14 @@ const QuestionInput = ({initial, onChange, onAsk, sticky}: QuestionInputProps) =
       ) : undefined}
       <div className="flex-container">
         <Input
-          placeHolder={placeholder}
+          placeholder={placeholder}
           className="large full-width"
           value={question}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && question.trim() && onAsk) {
+            if (e.key === 'Escape') {
+              handleChange('')
+            } else if (e.key === 'Enter' && question.trim() && onAsk) {
               handleAsk(question)
             }
           }}
@@ -153,7 +162,10 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => (
 
     {followups?.map(({text, pageid}, i) => (
       <div key={i} className="padding-bottom-16">
-        <Button className="secondary-alt-large" action={() => onSelect({text, pageid})}>
+        <Button
+          className="secondary-alt-large text-align-left"
+          action={() => onSelect({text, pageid})}
+        >
           {text}
         </Button>
       </div>
@@ -195,7 +207,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
   const fetcher = useFetcher({key: 'followup-fetcher'})
-  const {search, resultsForRef, waitForResults} = useSearch(1)
+  const {search, resultsForRef, waitForResults, loadedQuestions} = useSearch(1)
 
   useEffect(() => {
     if (!fetcher.data || fetcher.state !== 'idle') return
@@ -293,11 +305,12 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
 
   const fetchFlag = useRef(false)
   useEffect(() => {
-    if (question && !fetchFlag.current) {
+    if (loadedQuestions && question && !fetchFlag.current) {
       fetchFlag.current = true
       onQuestion(question)
     }
-  })
+    // eslint-disable-next-line
+  }, [loadedQuestions, question])
 
   return (
     <div className="centered col-10 height-70">
@@ -318,7 +331,11 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         ) : undefined}
       </div>
 
-      <QuestionInput onAsk={onQuestion} sticky />
+      <QuestionInput
+        onAsk={onQuestion}
+        placeholder={history.length > 0 ? 'Message Stampy' : undefined}
+        sticky
+      />
 
       <div className={'warning-floating'}>
         <p className={'xs'}>

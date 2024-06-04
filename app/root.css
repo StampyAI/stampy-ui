@@ -420,6 +420,10 @@ svg {
 
 /* other one-off classes */
 
+.text-align-left {
+  text-align: left;
+}
+
 .text-align-center {
   text-align: center;
 }

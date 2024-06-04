@@ -1,4 +1,4 @@
-import {ComponentType} from 'react'
+import {ComponentType, ReactNode} from 'react'
 import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import Contents from '~/components/Article/Contents'
@@ -40,13 +40,13 @@ const AnswerInfo = ({
 
 type TitleProps = {
   title: string
-  Icon: ComponentType
+  Icon: ({width, height}: {width: string; height: string}) => ReactNode
   answerType?: 'human' | 'bot' | 'error'
   hint?: string
 }
 const Title = ({title, Icon, answerType, hint}: TitleProps) => (
   <div className="flex-container title padding-bottom-16">
-    <Icon />
+    <Icon width="40" height="40" />
     <span className="default-bold flex-double">{title}</span>
     <AnswerInfo answerType={answerType} hint={hint} />
   </div>

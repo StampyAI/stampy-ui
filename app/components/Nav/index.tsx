@@ -29,7 +29,13 @@ export const Nav = ({toc, categories}: NavProps) => {
             id="showArticles"
           />
           <ArticlesDropdown toc={toc} categories={categories || []} />
-          <MenuItem primary={true} link="/chat/" icon={<BotIcon />} text="AI Safety Chatbot" />
+          <MenuItem
+            primary={true}
+            link="/chat/"
+            icon={<BotIcon />}
+            text="AI Safety Chatbot"
+            reload
+          />
           <li className="top-menu-item">
             <div className="top-menu-divider"></div>
           </li>
