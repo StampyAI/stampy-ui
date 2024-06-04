@@ -15,35 +15,34 @@ import Input from '~/components/Input'
 
 // to be replaced with actual pool questions
 const poolQuestions = [
-  {title: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
-  {title: 'Is AI safety about systems becoming malevolent or conscious?', pageid: '6194'},
-  {title: 'When do experts think human-level AI will be created?', pageid: '5633'},
-  {title: 'Why is AI alignment a hard problem?', pageid: '8163'},
+  {text: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+  {text: 'Is AI safety about systems becoming malevolent or conscious?', pageid: '6194'},
+  {text: 'When do experts think human-level AI will be created?', pageid: '5633'},
+  {text: 'Why is AI alignment a hard problem?', pageid: '8163'},
   {
-    title: 'Why can’t we just “put the AI in a box” so that it can’t influence the outside world?',
+    text: 'Why can’t we just “put the AI in a box” so that it can’t influence the outside world?',
     pageid: '6176',
   },
   {
-    title: 'What are the differences between AGI, transformative AI, and superintelligence?',
+    text: 'What are the differences between AGI, transformative AI, and superintelligence?',
     pageid: '5864',
   },
-  {title: 'What are large language models?', pageid: '5864'},
-  {title: "Why can't we just turn the AI off if it starts to misbehave?", pageid: '3119'},
-  {title: 'What is instrumental convergence?', pageid: '897I'},
-  {title: "What is Goodhart's law?", pageid: '8185'},
-  {title: 'What is the orthogonality thesis?', pageid: '6568'},
-  {title: 'How powerful would a superintelligence become?', pageid: '7755'},
-  {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
-  {title: "Isn't the real concern misuse?", pageid: '9B85'},
-  {title: 'Are AIs conscious?', pageid: '8V5J'},
+  {text: 'What are large language models?', pageid: '5864'},
+  {text: "Why can't we just turn the AI off if it starts to misbehave?", pageid: '3119'},
+  {text: 'What is instrumental convergence?', pageid: '897I'},
+  {text: "What is Goodhart's law?", pageid: '8185'},
+  {text: 'What is the orthogonality thesis?', pageid: '6568'},
+  {text: 'How powerful would a superintelligence become?', pageid: '7755'},
+  {text: 'Will AI be able to think faster than humans?', pageid: '8E41'},
+  {text: "Isn't the real concern misuse?", pageid: '9B85'},
+  {text: 'Are AIs conscious?', pageid: '8V5J'},
   {
-    title:
-      'What are the differences between a singularity, an intelligence explosion, and a hard takeoff?',
+    text: 'What are the differences between a singularity, an intelligence explosion, and a hard takeoff?',
     pageid: '8IHO',
   },
-  {title: 'What is an intelligence explosion?', pageid: '6306'},
-  {title: 'How might AGI kill people?', pageid: '5943'},
-  {title: 'What is a "warning shot"?', pageid: '7748'},
+  {text: 'What is an intelligence explosion?', pageid: '6306'},
+  {text: 'How might AGI kill people?', pageid: '5943'},
+  {text: 'What is a "warning shot"?', pageid: '7748'},
 ]
 
 const MIN_SIMILARITY = 0.85
@@ -156,22 +155,28 @@ type FollowupsProps = {
   onSelect: (followup: Followup) => void
   className?: string
 }
-const Followups = ({title, followups, onSelect, className}: FollowupsProps) => (
-  <>
-    {title && <div className={'padding-bottom-24 grey' + (className || '')}>{title}</div>}
+const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
+  const items =
+    (followups?.length || 0) >= 3
+      ? followups
+      : [...(followups || []), ...poolQuestions.sort(() => Math.random() - 0.5)].slice(0, 3)
+  return (
+    <>
+      {title && <div className={'padding-bottom-24 grey' + (className || '')}>{title}</div>}
 
-    {followups?.map(({text, pageid}, i) => (
-      <div key={i} className="padding-bottom-16">
-        <Button
-          className="secondary-alt-large text-align-left"
-          action={() => onSelect({text, pageid})}
-        >
-          {text}
-        </Button>
-      </div>
-    ))}
-  </>
-)
+      {items?.map(({text, pageid}, i) => (
+        <div key={i} className="padding-bottom-16">
+          <Button
+            className="secondary-alt-large text-align-left"
+            action={() => onSelect({text, pageid})}
+          >
+            {text}
+          </Button>
+        </div>
+      ))}
+    </>
+  )
+}
 
 const SplashScreen = ({
   questions,
@@ -202,7 +207,6 @@ type ChatbotProps = {
 export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [followups, setFollowups] = useState<Followup[]>()
 
-  // FIXME: Generate session id
   const [sessionId] = useState(crypto.randomUUID())
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
@@ -224,7 +228,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           // check proper insertion of pool questions
           // question.relatedQuestions = question.relatedQuestions.slice(0,2);
           setFollowups(
-            [...(question.relatedQuestions || []), ...poolQuestions.sort(() => Math.random() - 0.5)]
+            (question.relatedQuestions || [])
               .slice(0, 3)
               .map(({title, pageid}) => ({text: title, pageid}))
           )
