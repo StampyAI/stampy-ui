@@ -1,4 +1,4 @@
-import {ComponentType} from 'react'
+import {ComponentType, ReactNode} from 'react'
 import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import Contents from '~/components/Article/Contents'
@@ -33,20 +33,20 @@ const AnswerInfo = ({
         {answerType === 'human' ? 'Human-written' : 'Bot-generated'} response
       </span>
       <QuestionMarkIcon className="hint" />
-      <div className="hint-contents rounded">{hint}</div>
+      <div className="hint-contents bordered">{hint}</div>
     </span>
   )
 }
 
 type TitleProps = {
   title: string
-  Icon: ComponentType
+  Icon: ({width, height}: {width: string; height: string}) => ReactNode
   answerType?: 'human' | 'bot' | 'error'
   hint?: string
 }
 const Title = ({title, Icon, answerType, hint}: TitleProps) => (
   <div className="flex-container title padding-bottom-16">
-    <Icon />
+    <Icon width="40" height="40" />
     <span className="default-bold flex-double">{title}</span>
     <AnswerInfo answerType={answerType} hint={hint} />
   </div>
@@ -102,7 +102,7 @@ const ReferencePopup = (citation: Citation) => {
   const parsed = citation.text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
   if (!parsed) return undefined
   return (
-    <div className="reference-contents rounded">
+    <div className="reference-contents bordered">
       <ReferenceSummary {...citation} titleClass="large-bold" />
       <div className="grey padding-bottom-16 padding-top-24">Referenced excerpt</div>
       <div

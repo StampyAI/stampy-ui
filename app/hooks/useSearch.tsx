@@ -173,7 +173,7 @@ export const useSearch = (numResults = NUM_RESULTS) => {
 
   const search = (userQuery: string, minSimilarity?: number) => {
     isPendingSearch.current = true
-    const wordCount = userQuery.split(' ').length
+    const wordCount = userQuery.trim().split(' ').length
     if (wordCount > 2 && tfWorkerRef.current) {
       if (runningQueryRef.current || !tfWorkerRef.current) {
         searchLater(userQuery, minSimilarity)
@@ -215,6 +215,8 @@ export const useSearch = (numResults = NUM_RESULTS) => {
   }
 
   return {
+    loadedQuestions: !!items,
+    loadedEmbeddings: !!runningQueryRef.current,
     search,
     clear,
     results,

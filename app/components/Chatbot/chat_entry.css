@@ -23,6 +23,7 @@ article.stampy {
   position: absolute;
   transform: translateY(var(--spacing-24));
   visibility: hidden;
+  width: 256px;
 }
 
 .chat-entry .hint-contents:hover,

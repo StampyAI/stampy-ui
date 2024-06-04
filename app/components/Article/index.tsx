@@ -91,7 +91,7 @@ const Banner = ({title, text, icon, backgroundColour, textColour}: BannerType) =
   return (
     <div
       key={title}
-      className="banner rounded"
+      className="banner rounded shadowed"
       style={{
         backgroundColor: backgroundColour || 'inherit',
         color: textColour || 'inherit',
