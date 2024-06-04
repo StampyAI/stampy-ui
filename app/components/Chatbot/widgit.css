@@ -17,9 +17,13 @@
 }
 
 .widget-ask {
+  position: relative;
+}
+.widget-ask.fixed {
   position: fixed;
   bottom: 50px;
 }
+
 .right-icon {
   padding-right: var(--spacing-56);
 }

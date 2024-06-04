@@ -51,10 +51,9 @@ type QuestionInputProps = {
   initial?: string
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
-  whiteSpace?: boolean
-  shadow?: boolean
+  fixed?: boolean
 }
-const QuestionInput = ({initial, onChange, onAsk, whiteSpace, shadow}: QuestionInputProps) => {
+const QuestionInput = ({initial, onChange, onAsk, fixed}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
   const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const {results, search, clear} = useSearch(1)
@@ -73,7 +72,7 @@ const QuestionInput = ({initial, onChange, onAsk, whiteSpace, shadow}: QuestionI
   }
 
   return (
-    <div className="widget-ask col-10">
+    <div className={'widget-ask ' + (fixed ? 'fixed col-10' : 'col-9')}>
       {results.length > 0 ? (
         <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
           <p className="default">{results[0].title}</p>
@@ -82,7 +81,7 @@ const QuestionInput = ({initial, onChange, onAsk, whiteSpace, shadow}: QuestionI
       <div className="flex-container">
         <Input
           placeHolder={placeholder}
-          className={'large full-width ' + (shadow ? 'shadow' : '')}
+          className={'large full-width ' + (fixed ? '' : 'shadow')}
           value={question}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
@@ -93,7 +92,7 @@ const QuestionInput = ({initial, onChange, onAsk, whiteSpace, shadow}: QuestionI
         />
         <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
       </div>
-      {whiteSpace && <div className="white-space"></div>}
+      {fixed && <div className="white-space"></div>}
     </div>
   )
 }
@@ -130,7 +129,6 @@ export const WidgetStampy = ({className}: {className?: string}) => {
       </div>
 
       <QuestionInput
-        shadow
         initial={question}
         onChange={setQuestion}
         onAsk={(question) => {
@@ -321,7 +319,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         ) : undefined}
       </div>
 
-      <QuestionInput onAsk={onQuestion} whiteSpace />
+      <QuestionInput onAsk={onQuestion} fixed />
 
       <div className={'warning-floating'}>
         <p className={'xs'}>
