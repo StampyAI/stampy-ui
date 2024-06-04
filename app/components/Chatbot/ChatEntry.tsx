@@ -33,7 +33,7 @@ const AnswerInfo = ({
         {answerType === 'human' ? 'Human-written' : 'Bot-generated'} response
       </span>
       <QuestionMarkIcon className="hint" />
-      <div className="hint-contents rounded">{hint}</div>
+      <div className="hint-contents bordered">{hint}</div>
     </span>
   )
 }
@@ -102,7 +102,7 @@ const ReferencePopup = (citation: Citation) => {
   const parsed = citation.text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
   if (!parsed) return undefined
   return (
-    <div className="reference-contents rounded">
+    <div className="reference-contents bordered">
       <ReferenceSummary {...citation} titleClass="large-bold" />
       <div className="grey padding-bottom-16 padding-top-24">Referenced excerpt</div>
       <div

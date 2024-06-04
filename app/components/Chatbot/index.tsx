@@ -51,8 +51,9 @@ type QuestionInputProps = {
   initial?: string
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
+  sticky?: boolean
 }
-const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
+const QuestionInput = ({initial, onChange, onAsk, sticky}: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
   const [placeholder, setPlaceholder] = useState('Ask Stampy a question...')
   const {results, search, clear} = useSearch(1)
@@ -71,7 +72,7 @@ const QuestionInput = ({initial, onChange, onAsk}: QuestionInputProps) => {
   }
 
   return (
-    <div className="widget-ask col-10">
+    <div className={`widget-ask col-10 ${sticky ? 'sticky' : ''}`}>
       {results.length > 0 ? (
         <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
           <p className="default">{results[0].title}</p>
@@ -317,7 +318,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         ) : undefined}
       </div>
 
-      <QuestionInput onAsk={onQuestion} />
+      <QuestionInput onAsk={onQuestion} sticky />
 
       <div className={'warning-floating'}>
         <p className={'xs'}>
