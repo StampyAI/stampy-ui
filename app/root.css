@@ -160,6 +160,9 @@ h2 {
   letter-spacing: -0.14px;
 }
 
+.leading-0 {
+  line-height: 0 !important;
+}
 /* color classes */
 
 .black {

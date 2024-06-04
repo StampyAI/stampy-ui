@@ -3,10 +3,18 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {Form, useSearchParams} from '@remix-run/react'
 import {json} from '@remix-run/cloudflare'
 import {makeColumnIncrementer} from '~/server-utils/stampy'
-import ThumbUpIcon from '~/components/icons-generated/ThumbUp'
-import ThumbDownIcon from '~/components/icons-generated/ThumbDown'
 import Button from '~/components/Button'
-import {DarkLight, Edit, Flag, Followup, Hide, Like, Search} from '~/components/icons-generated'
+import {
+  DarkLight,
+  Edit,
+  Flag,
+  Followup,
+  Hide,
+  Like,
+  Search,
+  ThumbDownLarge,
+  ThumbUpLarge,
+} from '~/components/icons-generated'
 
 export enum ActionType {
   DARKLIGHT = 'darkLight',
@@ -50,12 +58,12 @@ const actions = {
     handler: makeColumnIncrementer('Request Count'),
   },
   helpful: {
-    Icon: ThumbUpIcon,
+    Icon: ThumbUpLarge,
     title: 'Yes',
     handler: makeColumnIncrementer('Helpful'),
   },
   unhelpful: {
-    Icon: ThumbDownIcon,
+    Icon: ThumbDownLarge,
     title: 'No',
     handler: makeColumnIncrementer('Unhelpful'),
   },
@@ -89,26 +97,28 @@ export const action = async ({request}: ActionFunctionArgs) => {
 type Props = {
   pageid: string
   actionType: ActionType
-  showText?: boolean
   hint?: string
   children?: ReactNode | ReactNode[]
+  disabled?: boolean
   [k: string]: unknown
   onSuccess?: () => void
   onClick?: () => void
+  setVoted?: (v: boolean) => void
 }
 export const Action = ({
   pageid,
   actionType,
-  showText = true,
+  disabled = false,
   hint,
   children,
   onSuccess,
   onClick,
+  setVoted,
   ...props
 }: Props) => {
   const [remixSearchParams] = useSearchParams()
   const [stateString] = useState(() => remixSearchParams.get('state') ?? '')
-  const {Icon, title} = actions[actionType]
+  const {Icon} = actions[actionType]
 
   // Get the state of this action for the given `pageid` from localstorage. This
   // will result in each action only being allowed once per browser
@@ -124,6 +134,7 @@ export const Action = ({
   }, [actionId])
   useEffect(() => setActionTaken(loadActionTaken()), [loadActionTaken])
   useEffect(() => {
+    if (actionTaken && setVoted) setVoted(true)
     if (loadActionTaken() || actionTaken) {
       try {
         localStorage.setItem(actionId, actionTaken.toString())
@@ -131,7 +142,7 @@ export const Action = ({
         // This will happen when local storage is disabled
       }
     }
-  }, [actionTaken, loadActionTaken, actionId])
+  }, [actionTaken, loadActionTaken, actionId, setVoted])
 
   const handleAction = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -151,20 +162,20 @@ export const Action = ({
     const response = await fetch('/questions/actions', {method: 'POST', body: searchParams})
 
     if (response.ok !== true) {
-      setActionTaken(!actionTaken)
+      // don't ask
+      setActionTaken(actionTaken)
+      if (!actionTaken && setVoted) setVoted(false)
     } else if (onSuccess) {
       onSuccess()
     }
   }
 
-  const className = 'secondary icon-link' + (actionTaken ? ' focused' : '')
-
   return (
     <Form
+      className="leading-0"
       replace
       action="/questions/actions"
       method="post"
-      title={hint || title}
       onClick={handleAction}
       {...props}
     >
@@ -173,12 +184,8 @@ export const Action = ({
       <input type="hidden" name="incBy" value={actionTaken ? -1 : 1} />
       <input type="hidden" name="stateString" value={stateString} />
       {children}
-      <Button className={className}>
+      <Button secondary disabled={disabled} active={actionTaken} tooltip={hint}>
         <Icon />
-        <p className={[actionTaken ? 'teal-500' : 'grey', 'small'].join(' ')}>
-          {' '}
-          {showText && (hint || title)}
-        </p>
       </Button>
     </Form>
   )

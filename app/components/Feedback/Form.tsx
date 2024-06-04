@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import Button from '~/components/Button'
 import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import './feedback.css'
@@ -6,24 +6,14 @@ import './feedback.css'
 export type FeedbackFormProps = {
   onSubmit?: (msg: string, option?: string) => Promise<any>
   onClose?: () => void
+  className?: string
   options?: string[]
 }
-const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
+const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps) => {
   const [selected, setSelected] = useState<string>()
   const [message, setMessage] = useState('')
   const [enabledSubmit, setEnabledSubmit] = useState(!options)
-  const [numClicks, setNumClicks] = useState(0)
   const clickCheckerRef = useOutsideOnClick(onClose)
-
-  useEffect(() => {
-    // Hide the form after 10 seconds if the user hasn't interacted with it
-    const timeoutId = setInterval(() => {
-      onClose && onClose()
-    }, 10000)
-
-    // Clear the timeout to prevent it from running if the component unmounts
-    return () => clearInterval(timeoutId)
-  }, [numClicks, onClose])
 
   const selectFeedback = (option: string) => {
     setSelected(option)
@@ -36,11 +26,7 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
   }
 
   return (
-    <div
-      ref={clickCheckerRef}
-      onClick={() => setNumClicks((current) => current + 1)}
-      className="col-5 feedback-form bordered"
-    >
+    <div ref={clickCheckerRef} className={'feedback-form bordered ' + (className ?? '')}>
       <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (
         <Button
@@ -57,11 +43,11 @@ const FeedbackForm = ({onSubmit, onClose, options}: FeedbackFormProps) => {
 
       <textarea
         name="feedback-text"
-        className={['feedback-text bordered', !options ? 'no-options' : ''].join(' ')}
+        className={['feedback-text small bordered', !options ? 'no-options' : ''].join(' ')}
         placeholder="Leave a comment (optional)"
         onChange={(e) => setMessage(e.target.value)}
       />
-      <Button className="primary full-width" action={handleSubmit} disabled={!enabledSubmit}>
+      <Button className="primary full-width submit" action={handleSubmit} disabled={!enabledSubmit}>
         <p>Submit feedback</p>
       </Button>
     </div>

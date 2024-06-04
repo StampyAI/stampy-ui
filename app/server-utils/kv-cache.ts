@@ -37,7 +37,9 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
 export async function reloadInBackgroundIfNeeded(url: string, timestamp: string) {
   const ageInMilliseconds = new Date().getTime() - new Date(timestamp).getTime()
   if (ageInMilliseconds > 10 * 60 * 1000) {
-    const text = await (await fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)).text()
+    const text = await (
+      (await fetch(`${url}${url.includes('?') ? '&' : '?'}reload`)) as Response
+    ).text()
     try {
       const json = JSON.parse(text)
       return json

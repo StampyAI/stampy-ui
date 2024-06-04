@@ -200,7 +200,7 @@ const sendToCoda = async (
 export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
-    json = await (await fetch(url, params)).json()
+    json = await ((await fetch(url, params)) as Response).json()
   } catch (e: unknown) {
     // forward debug message to HTTP Response
     if (e && typeof e === 'object' && 'message' in e) {

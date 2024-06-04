@@ -1,23 +1,51 @@
-.feedback .composite-button {
-  width: fit-content;
+.feedback {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.thanks {
+  transition: opacity 200ms ease-in-out;
+  margin-left: 0.5rem;
+  pointer-events: none;
+}
+.show {
+  opacity: 1;
+}
+
+.hide {
+  opacity: 0;
 }
 
 .feedback-form {
-  position: relative;
-  z-index: 2;
-  max-width: 384px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 200;
+  left: 0px;
+  bottom: calc(100% + 4px);
+  width: 384px;
   padding: var(--spacing-32);
-  margin-top: var(--spacing-8);
+  border-radius: var(--border-radius);
 }
 
 /* Comment to Nemo when he reviews: why didn't you just do this the way you did the settings buttons? */
 .select-option {
   height: var(--spacing-48);
-  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: var(--border-radius);
   margin-bottom: var(--spacing-16);
   cursor: pointer;
   width: 100%;
 }
+
+.submit {
+  height: var(--spacing-48);
+  border-radius: var(--border-radius);
+  font-weight: 500 !important;
+  cursor: pointer;
+  width: 100%;
+}
+
 .select-option.selected {
   border: 1px solid var(--colors-teal-500);
 }
@@ -28,7 +56,6 @@
   padding: var(--spacing-12);
   margin: var(--spacing-40) 0;
   box-sizing: content-box;
-  background: pink;
 }
 .feedback-text.no-options {
   margin: var(--spacing-16) 0;
