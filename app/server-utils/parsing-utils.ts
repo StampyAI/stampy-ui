@@ -42,6 +42,12 @@ interface HostConfig {
 }
 
 const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
+md.renderer.rules.footnote_caption = (tokens, idx) => {
+  let n = Number(tokens[idx].meta.id + 1).toString()
+  if (tokens[idx].meta.subId > 0) n += `:${tokens[idx].meta.subId}`
+  return n
+}
+
 export const convertToHtmlAndWrapInDetails = (markdown: string): string => {
   // Recursively wrap any [See more...] segments in HTML Details
   const seeMoreToken = 'SEE-MORE-BUTTON'
