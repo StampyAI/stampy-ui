@@ -18,6 +18,7 @@
 
 .widget-ask {
   position: relative;
+  
 }
 .widget-ask.fixed {
   position: fixed;
@@ -57,6 +58,8 @@
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   justify-content: start;
   padding: var(--spacing-8) var(--spacing-12);
+  position: absolute;
+  top: calc(-1 * var(--spacing-56));
 }
 
 .widget-ask .suggestion:hover {

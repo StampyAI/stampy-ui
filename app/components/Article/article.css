@@ -92,6 +92,7 @@ article .link-popup {
   visibility: hidden;
   opacity: 0;
   position: absolute;
+  max-width: 400px;
   display: inline-block;
   font: var(--baseFont);
   font-style: normal;

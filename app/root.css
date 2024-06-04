@@ -420,6 +420,10 @@ svg {
 
 /* other one-off classes */
 
+.text-align-left {
+  text-align: left;
+}
+
 .text-align-center {
   text-align: center;
 }
@@ -470,6 +474,9 @@ svg {
 /* all other classes */
 .rounded {
   border-radius: var(--border-radius);
+}
+
+.shadowed {
   box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
   box-sizing: border-box;
 }
