@@ -350,7 +350,7 @@ h2 {
 }
 
 .col-7 {
-  width: clamp(443px, 41.60vw, 669px);
+  width: clamp(443px, 41.6vw, 669px);
 }
 
 .col-8 {
