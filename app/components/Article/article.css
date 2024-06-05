@@ -91,20 +91,9 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   opacity: 0;
-  position: absolute;
-  max-width: 400px;
-  display: inline-block;
-  font: var(--baseFont);
-  font-style: normal;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
   z-index: 2;
-  left: calc(50% - 200px);
-  transform: translateY(var(--spacing-40));
-  transition:
-    visibility 0s 300ms,
-    opacity cubic-bezier(1, 0, 1, 1) 300ms;
 }
+
 article .link-popup .footnote {
   padding: var(--spacing-24) var(--spacing-24) 0 var(--spacing-24);
 }
@@ -187,6 +176,20 @@ article .banner h3 .title {
   padding-left: 10px;
 }
 
+@media (min-width: 780px) {
+  article .link-popup {
+    position: absolute;
+    max-width: 400px;
+    display: inline-block;
+    z-index: 2;
+    left: calc(50% - 200px);
+    transform: translateY(var(--spacing-40));
+    transition:
+      visibility 0s 300ms,
+      opacity cubic-bezier(1, 0, 1, 1) 300ms;
+  }
+}
+
 @media only screen and (max-width: 780px) {
   article {
     max-width: 100%;
@@ -201,5 +204,20 @@ article .banner h3 .title {
   }
   article {
     margin: 0;
+  }
+
+  article .link-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ff000033;
+    overflow: scroll;
+  }
+  article .link-popup .footnote {
+    margin: auto;
+    background-color: white;
+    width: 80%;
   }
 }
