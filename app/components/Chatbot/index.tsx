@@ -51,14 +51,14 @@ type QuestionInputProps = {
   initial?: string
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
-  sticky?: boolean
+  fixed?: boolean
   placeholder?: string
 }
 const QuestionInput = ({
   initial,
   onChange,
   onAsk,
-  sticky,
+  fixed,
   placeholder = 'Ask Stampy a question...',
 }: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
@@ -78,7 +78,7 @@ const QuestionInput = ({
   }
 
   return (
-    <div className={`widget-ask col-10 ${sticky ? 'sticky' : ''}`} ref={clickDetectorRef}>
+    <div className={'widget-ask ' + (fixed ? 'fixed col-10' : 'col-9')} ref={clickDetectorRef}>
       {results.length > 0 ? (
         <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
           <p className="default">{results[0].title}</p>
@@ -87,7 +87,7 @@ const QuestionInput = ({
       <div className="flex-container">
         <Input
           placeholder={placeholder}
-          className="large full-width"
+          className={'large full-width ' + (fixed ? '' : 'shadowed')}
           value={question}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
@@ -100,6 +100,7 @@ const QuestionInput = ({
         />
         <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
       </div>
+      {fixed && <div className="white-space"></div>}
     </div>
   )
 }
@@ -325,7 +326,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
 
-      <div className="padding-bottom-56">
+      <div className="padding-bottom-192">
         {followups ? (
           <Followups
             title="Continue the conversation"
@@ -338,7 +339,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
       <QuestionInput
         onAsk={onQuestion}
         placeholder={history.length > 0 ? 'Message Stampy' : undefined}
-        sticky
+        fixed
       />
 
       <div className={'warning-floating'}>

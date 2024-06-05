@@ -16,10 +16,14 @@
   }
 }
 
-.sticky {
-  position: sticky;
-  bottom: 0;
+.widget-ask {
+  position: relative;
 }
+.widget-ask.fixed {
+  position: fixed;
+  bottom: var(--spacing-48);
+}
+
 .right-icon {
   padding-right: var(--spacing-56);
 }
@@ -65,4 +69,14 @@
   position: absolute;
   right: 4px;
   bottom: 4px;
+}
+
+.white-space {
+  position: absolute;
+  left: -1000px;
+  width: calc(100% + 2000px);
+  height: 100px;
+  top: 100%;
+  z-index: 1000;
+  background: #ffffff;
 }
