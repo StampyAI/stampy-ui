@@ -87,7 +87,7 @@ const QuestionInput = ({
       <div className="flex-container">
         <Input
           placeholder={placeholder}
-          className={'large full-width ' + (fixed ? '' : 'shadow')}
+          className={'large full-width ' + (fixed ? '' : 'shadowed')}
           value={question}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
