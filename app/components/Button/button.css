@@ -172,7 +172,7 @@
 }
 
 .active {
-  background-color: var(----colors-teal-50);
+  background-color: var(--colors-teal-50);
 }
 
 .inactive:hover {

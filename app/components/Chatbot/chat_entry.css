@@ -13,6 +13,16 @@ article.stampy {
   align-items: center;
 }
 
+.phase-message {
+  margin-left: 57px;
+  color: var(--colors-cool-grey-600);
+}
+
+.followups {
+  margin-top: var(--spacing-4);
+  color: var(--colors-cool-grey-600);
+}
+
 .chat-entry .info {
   display: flex;
   gap: var(--spacing-8);
