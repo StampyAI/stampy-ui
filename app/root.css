@@ -462,6 +462,10 @@ svg {
   transition-delay: 0s;
 }
 
+.noscroll {
+  overflow: hidden;
+}
+
 /* for troubleshooting */
 
 .pink {

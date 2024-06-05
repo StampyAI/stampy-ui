@@ -1,4 +1,5 @@
 import {useRef, useEffect} from 'react'
+import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 
@@ -18,7 +19,14 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.innerHTML
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string): HTMLElement => {
+const scrollToElement = (e: HTMLElement, offset?: number) => {
+  const elementPosition = e.getBoundingClientRect().top + window.pageYOffset
+  const offsetPosition = elementPosition - (offset || 0)
+
+  window.scrollTo({top: offsetPosition, behavior: 'smooth'})
+}
+
+const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
@@ -29,10 +37,21 @@ const addPopup = (e: HTMLElement, id: string, contents: string): HTMLElement => 
 
   e.insertAdjacentElement('afterend', popup)
 
-  e.addEventListener('mouseover', () => popup.classList.add('shown'))
-  e.addEventListener('mouseout', () => popup.classList.remove('shown'))
-  popup.addEventListener('mouseover', () => popup.classList.add('shown'))
-  popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
+  if (!mobile) {
+    e.addEventListener('mouseover', () => popup.classList.add('shown'))
+    e.addEventListener('mouseout', () => popup.classList.remove('shown'))
+    popup.addEventListener('mouseover', () => popup.classList.add('shown'))
+    popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
+  } else {
+    const togglePopup = (event: Event) => {
+      event.preventDefault()
+      popup.classList.toggle('shown')
+      document.body.classList.toggle('noscroll')
+      scrollToElement(e, 16)
+    }
+    popup.addEventListener('click', togglePopup)
+    e.addEventListener('click', togglePopup)
+  }
 
   return popup
 }
@@ -139,6 +158,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
 
 const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) => {
   const elementRef = useRef<HTMLDivElement>(null)
+  const mobile = useIsMobile()
 
   useEffect(() => {
     const el = elementRef.current
@@ -161,14 +181,16 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
       const footnote = footnoteHTML(el, e as HTMLAnchorElement)
       const footnoteId = (e.getAttribute('href') || '').replace('#', '')
-      if (footnote)
+      if (footnote) {
         addPopup(
           e as HTMLAnchorElement,
           `footnote-${footnoteId}`,
-          `<div class="footnote">${footnote}</div>`
+          `<div class="footnote">${footnote}</div>`,
+          mobile
         )
+      }
     })
-  }, [html, glossary, pageid])
+  }, [html, glossary, pageid, mobile])
 
   return (
     <div
