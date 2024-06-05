@@ -86,7 +86,7 @@ const QuestionInput = ({
       ) : undefined}
       <div className="flex-container">
         <Input
-          placeHolder={placeholder}
+          placeholder={placeholder}
           className={'large full-width ' + (fixed ? '' : 'shadow')}
           value={question}
           onChange={(e) => handleChange(e.target.value)}
