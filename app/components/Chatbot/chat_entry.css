@@ -14,6 +14,7 @@ article.stampy {
 }
 
 .chat-entry .info {
+  position: relative;
   display: flex;
   gap: var(--spacing-8);
   align-items: center;
@@ -21,17 +22,19 @@ article.stampy {
 
 .chat-entry .hint-contents {
   position: absolute;
-  transform: translateY(var(--spacing-24));
+  top: -10px;
+  right: 0;
+  transform: translateX(-50%);
   visibility: hidden;
   width: 256px;
+  background: var(--colors-cool-grey-800);
+  color: white;
+  padding: var(--spacing-16);
 }
 
 .chat-entry .hint-contents:hover,
 .chat-entry .hint:hover + .hint-contents {
   visibility: visible;
-  background: var(--colors-cool-grey-800);
-  color: white;
-  padding: var(--spacing-16);
 }
 
 .chat-entry .reference-link {

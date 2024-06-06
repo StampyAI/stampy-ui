@@ -33,7 +33,7 @@ const AnswerInfo = ({
         {answerType === 'human' ? 'Human-written' : 'Bot-generated'} response
       </span>
       <QuestionMarkIcon className="hint" />
-      <div className="hint-contents bordered">{hint}</div>
+      <div className="hint-contents bordered xs">{hint}</div>
     </span>
   )
 }
