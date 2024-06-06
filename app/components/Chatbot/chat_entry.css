@@ -19,7 +19,7 @@ article.stampy {
 }
 
 .followups {
-  margin-top: var(--spacing-4);
+  margin-top: var(--spacing-16);
   color: var(--colors-cool-grey-600);
 }
 

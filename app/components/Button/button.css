@@ -27,6 +27,7 @@
   border-width: 0;
   line-height: 0;
   background: inherit;
+  cursor: pointer;
 }
 
 /* style */
@@ -181,7 +182,6 @@
 
 /* #### Composite button #### */
 .composite-button {
-  box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(175, 183, 194, 0.2);
   cursor: pointer;
 }
 
@@ -255,13 +255,11 @@
   left: 50%;
   transform: translateX(-50%);
   background-color: #1b2b3e;
-  font-size: 14px;
   color: #f2f2f2;
-  padding: 5px 15px;
-  border-radius: var(--spacing-8);
+  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: var(--border-radius);
   white-space: nowrap;
   pointer-events: none;
-  line-height: var(--spacing-32);
 }
 
 .button.full-width {

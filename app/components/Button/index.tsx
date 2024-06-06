@@ -43,7 +43,7 @@ const Button = ({
         {...props}
       >
         {children}
-        {secondary && tooltip && !disabled && <p className="tool-tip-secondary">{tooltip}</p>}
+        {secondary && tooltip && !disabled && <p className="tool-tip-secondary xs">{tooltip}</p>}
       </Link>
     )
   }
@@ -56,7 +56,7 @@ const Button = ({
       {...props}
     >
       {children}
-      {secondary && tooltip && !disabled && <p className="tool-tip-secondary">{tooltip}</p>}
+      {secondary && tooltip && !disabled && <p className="tool-tip-secondary xs">{tooltip}</p>}
     </button>
   )
 }
@@ -68,7 +68,7 @@ export interface CompositeButtonProps {
 }
 export const CompositeButton = ({children, className = '', secondary}: CompositeButtonProps) => (
   <div
-    className={`${(secondary ? 'composite-button-secondary' : 'composite-button') + ' ' + className}`}
+    className={`shadowed ${(secondary ? 'composite-button-secondary' : 'composite-button') + ' ' + className}`}
   >
     {children}
   </div>

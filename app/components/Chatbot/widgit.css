@@ -77,6 +77,6 @@
   width: calc(100% + 2000px);
   height: 100px;
   top: 100%;
-  z-index: 1000;
+  z-index: -1;
   background: #ffffff;
 }
