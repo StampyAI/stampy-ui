@@ -26,7 +26,6 @@
 .warning-floating {
   position: fixed;
   right: 4.44vw;
-  z-index: 100;
   bottom: 4.44vw;
   width: 10.13vw;
 }
