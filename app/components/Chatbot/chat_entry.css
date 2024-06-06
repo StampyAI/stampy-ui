@@ -47,6 +47,10 @@ article.stampy {
   visibility: visible;
 }
 
+.chat-entry .footnotes {
+  padding-top: var(--spacing-32);
+}
+
 .chat-entry .reference-link {
   font-size: 12px;
   line-height: 12px;

@@ -148,7 +148,12 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
       {question.banners?.filter((b) => b.title).map(Banner)}
       <ArticleMeta question={question} className="padding-bottom-56" />
 
-      <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
+      <Contents
+        className="padding-bottom-80"
+        pageid={pageid}
+        html={text || ''}
+        glossary={glossary || {}}
+      />
 
       <KeepGoing {...question} />
 
