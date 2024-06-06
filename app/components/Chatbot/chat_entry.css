@@ -20,20 +20,30 @@ article.stampy {
   align-items: center;
 }
 
-.chat-entry .hint-contents {
-  position: absolute;
-  top: -10px;
-  right: 0;
-  transform: translateX(-50%);
-  visibility: hidden;
-  width: 256px;
-  background: var(--colors-cool-grey-800);
-  color: white;
-  padding: var(--spacing-16);
+.chat-entry .icon-container {
+  position: relative;
 }
 
-.chat-entry .hint-contents:hover,
-.chat-entry .hint:hover + .hint-contents {
+.chat-entry .hint-contents-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(50%);
+  visibility: hidden;
+  width: 256px;
+  padding-top: 120%;
+  z-index: 100;
+}
+
+.chat-entry .hint-contents {
+  background: var(--colors-cool-grey-900);
+  color: white;
+  padding: var(--spacing-16);
+  border-radius: var(--border-radius);
+}
+
+.chat-entry .hint-contents-container:hover,
+.chat-entry .hint:hover + .hint-contents-container {
   visibility: visible;
 }
 

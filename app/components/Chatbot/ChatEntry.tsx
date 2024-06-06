@@ -32,8 +32,12 @@ const AnswerInfo = ({
       <span className="small grey">
         {answerType === 'human' ? 'Human-written' : 'Bot-generated'} response
       </span>
-      <QuestionMarkIcon className="hint" />
-      <div className="hint-contents bordered xs">{hint}</div>
+      <div className="icon-container leading-0">
+        <QuestionMarkIcon className="hint" />
+        <div className="hint-contents-container">
+          <div className="hint-contents xs">{hint}</div>
+        </div>
+      </div>
     </span>
   )
 }
