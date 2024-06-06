@@ -105,7 +105,8 @@ const ReferencePopup = (citation: Citation) => {
     <div className="reference-contents bordered">
       <ReferenceSummary {...citation} titleClass="large-bold" />
       <div className="grey padding-bottom-16 padding-top-32 xs">Referenced excerpt</div>
-      <div className="default"
+      <div
+        className="default"
         dangerouslySetInnerHTML={{
           __html: md.render(parsed[1]),
         }}
