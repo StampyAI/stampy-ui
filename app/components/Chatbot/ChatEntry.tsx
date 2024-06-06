@@ -143,21 +143,22 @@ const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) 
     citations.push(v)
   })
   citations.sort((a, b) => a.index - b.index)
+  const phaseMessageClass = 'phase-message large-reading'
 
   const PhaseState = () => {
     switch (phase) {
       case 'started':
-        return <p>Loading: Sending query...</p>
+        return <p className={phaseMessageClass}>Loading: Sending query...</p>
       case 'semantic':
-        return <p>Loading: Performing semantic search...</p>
+        return <p className={phaseMessageClass}>Loading: Performing semantic search...</p>
       case 'history':
-        return <p>Loading: Processing history...</p>
+        return <p className={phaseMessageClass}>Loading: Processing history...</p>
       case 'context':
-        return <p>Loading: Creating context...</p>
+        return <p className={phaseMessageClass}>Loading: Creating context...</p>
       case 'prompt':
-        return <p>Loading: Creating prompt...</p>
+        return <p className={phaseMessageClass}>Loading: Creating prompt...</p>
       case 'llm':
-        return <p>Loading: Waiting for LLM...</p>
+        return <p className={phaseMessageClass}>Loading: Waiting for LLM...</p>
       case 'streaming':
       case 'followups':
       default:
@@ -211,7 +212,7 @@ const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) 
           ]}
         />
       ) : undefined}
-      {phase === 'followups' ? <p>Checking for followups...</p> : undefined}
+      {phase === 'followups' ? <p className="followups">Checking for followups...</p> : undefined}
     </div>
   )
 }
