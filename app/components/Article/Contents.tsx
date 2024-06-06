@@ -156,7 +156,17 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
   }
 }
 
-const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) => {
+const Contents = ({
+  pageid,
+  html,
+  glossary,
+  className = '',
+}: {
+  pageid: PageId
+  html: string
+  glossary: Glossary
+  className?: string
+}) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const mobile = useIsMobile()
 
@@ -194,7 +204,7 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
 
   return (
     <div
-      className="contents large-reading padding-bottom-80"
+      className={`contents large-reading ${className}`}
       dangerouslySetInnerHTML={{
         __html: html,
       }}
