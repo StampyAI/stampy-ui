@@ -149,10 +149,11 @@ article.stampy {
   word-wrap: break-word;
   background-color: white;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  padding: var(--spacing-24) var(--spacing-32);
+  padding: var(--spacing-40);
   position: absolute;
   transform: translateX(50%);
   text-decoration: unset;
+  z-index: 3;
 }
 
 .reference-contents:hover,

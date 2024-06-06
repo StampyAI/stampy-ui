@@ -88,7 +88,7 @@ const ReferenceSummary = ({title, authors, source, url}: Citation & {titleClass?
 
   return (
     <div>
-      <div className="title padding-bottom-4">{title}</div>
+      <div className="large-bold black padding-bottom-8">{title}</div>
       <div className="small">
         <Authors authors={authors} />
         <span>{'  ·  '}</span>
@@ -108,8 +108,9 @@ const ReferencePopup = (citation: Citation) => {
   return (
     <div className="reference-contents bordered">
       <ReferenceSummary {...citation} titleClass="large-bold" />
-      <div className="grey padding-bottom-16 padding-top-24">Referenced excerpt</div>
+      <div className="grey padding-bottom-16 padding-top-32 xs">Referenced excerpt</div>
       <div
+        className="default"
         dangerouslySetInnerHTML={{
           __html: md.render(parsed[1]),
         }}
