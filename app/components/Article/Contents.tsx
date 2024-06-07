@@ -31,7 +31,7 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean
   if (preexisting) return preexisting
 
   const popup = document.createElement('div')
-  popup.className = 'link-popup bordered'
+  popup.className = 'link-popup bordered small'
   popup.innerHTML = contents
   popup.id = id
 
