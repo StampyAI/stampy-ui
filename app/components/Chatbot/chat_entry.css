@@ -149,9 +149,7 @@ article.stampy {
   visibility: hidden;
   transition: visibility 0.2s;
   width: 512px;
-  height: 509px;
   word-wrap: break-word;
-  overflow: hidden;
   background-color: white;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   padding: var(--spacing-40);
@@ -160,16 +158,10 @@ article.stampy {
   text-decoration: unset;
   right: 0px;
   top: 40px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: var(--spacing-40);
-    background-color: white;
-  }
+}
+.reference-contents .inner-html {
+  height: 275px;
+  overflow: hidden;
 }
 
 .reference-contents:hover,
