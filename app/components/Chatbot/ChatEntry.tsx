@@ -106,7 +106,7 @@ const ReferencePopup = (citation: Citation) => {
   const parsed = citation.text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
   if (!parsed) return undefined
   return (
-    <div className="reference-contents bordered">
+    <div className="reference-contents bordered z-index-2">
       <ReferenceSummary {...citation} titleClass="large-bold" />
       <div className="grey padding-bottom-16 padding-top-32 xs">Referenced excerpt</div>
       <div
@@ -124,12 +124,12 @@ const ReferenceLink = (citation: Citation) => {
   if (!index || index > MAX_REFERENCES) return ''
 
   return (
-    <>
+    <span className="ref-container">
       <Link id={`${id}-ref`} to={`#${id}`} className={`reference-link ref-${index}`}>
         <span>{index}</span>
       </Link>
       <ReferencePopup {...citation} />
-    </>
+    </span>
   )
 }
 
