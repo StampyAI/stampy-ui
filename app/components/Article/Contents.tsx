@@ -2,6 +2,7 @@ import {useRef, useEffect} from 'react'
 import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
+import {togglePopup} from '../popups'
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
@@ -19,19 +20,12 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.innerHTML
 }
 
-const scrollToElement = (e: HTMLElement, offset?: number) => {
-  const elementPosition = e.getBoundingClientRect().top + window.pageYOffset
-  const offsetPosition = elementPosition - (offset || 0)
-
-  window.scrollTo({top: offsetPosition, behavior: 'smooth'})
-}
-
 const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
   const popup = document.createElement('div')
-  popup.className = 'link-popup bordered small'
+    popup.className = 'link-popup bordered small background'
   popup.innerHTML = contents
   popup.id = id
 
@@ -43,14 +37,9 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean
     popup.addEventListener('mouseover', () => popup.classList.add('shown'))
     popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
   } else {
-    const togglePopup = (event: Event) => {
-      event.preventDefault()
-      popup.classList.toggle('shown')
-      document.body.classList.toggle('noscroll')
-      scrollToElement(e, 16)
-    }
-    popup.addEventListener('click', togglePopup)
-    e.addEventListener('click', togglePopup)
+    const toggle = () => popup.classList.toggle('shown')
+    popup.addEventListener('click', togglePopup(toggle, e))
+    e.addEventListener('click', togglePopup(toggle, e))
   }
 
   return popup

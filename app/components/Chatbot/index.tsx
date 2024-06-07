@@ -87,7 +87,7 @@ const QuestionInput = ({
 
   return (
     <div
-      className={'widget-ask ' + (fixed ? 'fixed col-10 z-index-4' : 'col-9')}
+      className={'widget-ask ' + (fixed ? 'fixed col-10 z-index-1' : 'col-9')}
       ref={clickDetectorRef}
     >
       {results.length > 0 ? (

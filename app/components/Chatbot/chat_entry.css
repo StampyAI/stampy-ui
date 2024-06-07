@@ -147,26 +147,32 @@ article.stampy {
 }
 
 .reference-contents {
-  visibility: hidden;
   transition: visibility 0.2s;
-  width: 512px;
   word-wrap: break-word;
-  background-color: white;
+  text-decoration: unset;
+  width: 512px;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   padding: var(--spacing-40);
-  position: absolute;
-  transform: translateX(50%);
-  text-decoration: unset;
-  right: 0px;
-  top: 40px;
+  background-color: var(--colors-white);
+  padding: var(--spacing-40);
+  position: relative;
 }
 .reference-contents .inner-html {
   height: 275px;
   overflow: hidden;
 }
 
-.reference-contents:hover,
-.reference-link:hover + .reference-contents {
+@media (min-width: 780px) {
+  .reference-popup {
+    display: inline-block;
+    position: absolute;
+    transform: translate(-50%, 35px);
+    min-width: 30vw;
+  }
+}
+
+.reference-popup:hover,
+.reference-link:hover + .reference-popup {
   visibility: visible;
   transition-delay: 0s;
 }

@@ -224,19 +224,4 @@ article .banner h3 .title {
   article {
     margin: 0;
   }
-
-  article .link-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ff000033;
-    overflow: scroll;
-  }
-  article .link-popup .footnote {
-    margin: auto;
-    background-color: white;
-    width: 80%;
-  }
 }
