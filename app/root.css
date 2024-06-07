@@ -333,51 +333,51 @@ h2 {
 /* note I may change these to vars later */
 
 .col-1 {
-  width: clamp(38px, 3.54vw, 57px);
+  width: clamp(0px, 3.54vw, 53px);
 }
 
 .col-2 {
-  width: clamp(106px, 9.93vw, 160px);
+  width: clamp(0px, 9.93vw, 171px);
 }
 
 .col-3 {
-  width: clamp(173px, 16.25vw, 261px);
+  width: clamp(0px, 16.25vw, 288px);
 }
 
 .col-4 {
-  width: clamp(240px, 22.57vw, 363px);
+  width: clamp(0px, 22.57vw, 405px);
 }
 
 .col-5 {
-  width: clamp(308px, 28.96vw, 466px);
+  width: clamp(0px, 28.96vw, 523px);
 }
 
 .col-6 {
-  width: clamp(375px, 35.28vw, 567px);
+  width: clamp(0px, 35.28vw, 640px);
 }
 
 .col-7 {
-  width: clamp(443px, 41.6vw, 669px);
+  width: clamp(0px, 41.6vw, 757px);
 }
 
 .col-8 {
-  width: clamp(511px, 47.99vw, 772px);
+  width: clamp(0px, 47.99vw, 875px);
 }
 
 .col-9 {
-  width: clamp(578px, 54.31vw, 873px);
+  width: clamp(0px, 54.31vw, 992px);
 }
 
 .col-10 {
-  width: clamp(645px, 60.62vw, 975px);
+  width: clamp(0px, 60.62vw, 1109px);
 }
 
 .col-11 {
-  width: clamp(713px, 67.01vw, 1078px);
+  width: clamp(0px, 67.01vw, 1227px);
 }
 
 .col-12 {
-  width: clamp(780px, 73.33vw, 1179px);
+  width: clamp(0px, 73.33vw, 1344px);
 }
 
 .full-width {
