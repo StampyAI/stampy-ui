@@ -75,6 +75,9 @@ article.stampy {
   display: inline-block;
   text-align: center;
 }
+.ref-container {
+  position: relative;
+}
 
 .ref-1 {
   background: #dbffed;
@@ -145,7 +148,7 @@ article.stampy {
 .reference-contents {
   visibility: hidden;
   transition: visibility 0.2s;
-  max-width: 600px;
+  width: 512px;
   word-wrap: break-word;
   background-color: white;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
@@ -153,7 +156,12 @@ article.stampy {
   position: absolute;
   transform: translateX(50%);
   text-decoration: unset;
-  z-index: 3;
+  right: 0px;
+  top: 40px;
+}
+.reference-contents .inner-html {
+  height: 275px;
+  overflow: hidden;
 }
 
 .reference-contents:hover,

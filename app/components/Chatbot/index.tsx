@@ -78,7 +78,10 @@ const QuestionInput = ({
   }
 
   return (
-    <div className={'widget-ask ' + (fixed ? 'fixed col-10' : 'col-9')} ref={clickDetectorRef}>
+    <div
+      className={'widget-ask ' + (fixed ? 'fixed col-10 z-index-4' : 'col-9')}
+      ref={clickDetectorRef}
+    >
       {results.length > 0 ? (
         <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
           <p className="default">{results[0].title}</p>
