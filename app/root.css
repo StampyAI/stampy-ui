@@ -459,6 +459,12 @@ svg {
 .flex-double {
   flex-grow: 2;
 }
+.auto-left {
+  margin-left: auto;
+}
+.auto-right {
+  margin-right: auto;
+}
 
 .centered {
   margin: auto;
@@ -468,6 +474,11 @@ svg {
 }
 .horizontally-centered {
   margin: 0 auto;
+}
+
+.reverse-icon {
+  cursor: pointer;
+  transform: rotate(180deg);
 }
 
 .pointer {
@@ -602,6 +613,22 @@ svg {
   .article-container {
     padding: var(--spacing-32);
     flex-direction: column;
+  }
+
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #1b2b3e99;
+    width: 100vw;
+    height: 100vh;
+    overflow: scroll;
+  }
+
+  .background > * {
+    margin: 198px auto;
+    background-color: var(--colors-white);
+    width: 80%;
   }
 } /* end mobile */
 p,

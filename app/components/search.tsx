@@ -8,9 +8,10 @@ import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 
 type Props = {
   limitFromUrl?: number
+  className?: string
 }
 
-export default function Search({limitFromUrl}: Props) {
+export default function Search({limitFromUrl, className}: Props) {
   const [showResults, setShowResults] = useState(false)
   const [searchPhrase, setSearchPhrase] = useState('')
 
@@ -33,7 +34,7 @@ export default function Search({limitFromUrl}: Props) {
   const handleChange = debounce(searchFn, 100)
 
   return (
-    <div onFocus={() => setShowResults(true)} ref={clickDetectorRef}>
+    <div className={className} onFocus={() => setShowResults(true)} ref={clickDetectorRef}>
       <SearchInput expandable onChange={handleChange} />
       <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
       {isPendingSearch && results.length == 0 && (
