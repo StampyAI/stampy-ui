@@ -79,6 +79,18 @@ article .contents p {
   padding-bottom: var(--spacing-32);
 }
 
+article .contents p:last-child {
+  padding-bottom: 0;
+}
+
+article .contents li {
+  padding-bottom: var(--spacing-16);
+}
+
+article .contents li:last-child {
+  padding-bottom: 0;
+}
+
 article .contents img {
   max-width: 100%;
 }
@@ -91,11 +103,18 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   opacity: 0;
-  z-index: 2;
+  z-index: 4;
+  position: absolute;
+  top: 0;
+  width: 512px;
 }
 
 article .link-popup .footnote {
-  padding: var(--spacing-24) var(--spacing-24) 0 var(--spacing-24);
+  padding: var(--spacing-32) var(--spacing-32) 0 var(--spacing-32);
+}
+
+article .footnote-ref {
+  position: relative;
 }
 
 article .glossary-popup {

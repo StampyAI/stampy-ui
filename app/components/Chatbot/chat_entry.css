@@ -3,8 +3,9 @@ article.stampy {
   padding: var(--spacing-40);
   border-radius: var(--spacing-6);
   max-width: unset;
-  margin: var(--spacing-16);
   margin-left: var(--spacing-56);
+  margin-bottom: var(--spacing-24);
+  border-radius: var(--border-radius);
 }
 
 .chat-entry .title {

@@ -329,7 +329,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         <ChatEntry key={`chat-entry-${i}`} {...item} />
       ))}
 
-      <div className="padding-bottom-192">
+      <div className="padding-bottom-128">
         {followups ? (
           <Followups
             title="Continue the conversation"

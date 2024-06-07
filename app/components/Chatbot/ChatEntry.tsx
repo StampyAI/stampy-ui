@@ -63,7 +63,13 @@ const UserQuery = ({content}: Entry) => (
   </div>
 )
 
-const ReferenceSummary = ({title, authors, source, url}: Citation & {titleClass?: string}) => {
+const ReferenceSummary = ({
+  title,
+  authors,
+  source,
+  url,
+  titleClass,
+}: Citation & {titleClass?: string}) => {
   const referenceSources = {
     arxiv: 'Scientific paper',
     blogs: 'Blogpost',
@@ -88,7 +94,7 @@ const ReferenceSummary = ({title, authors, source, url}: Citation & {titleClass?
 
   return (
     <div>
-      <div className="large-bold black padding-bottom-8">{title}</div>
+      <div className={`black padding-bottom-8 ${titleClass}`}>{title}</div>
       <div className="small">
         <Authors authors={authors} />
         <span>{'  ·  '}</span>
