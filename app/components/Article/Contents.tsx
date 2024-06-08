@@ -10,14 +10,14 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
 
   if (!footnote) return null
 
-  const elem = document.createElement('div')
-  elem.innerHTML = footnote.innerHTML
+  const elem = footnote.cloneNode(true) as Element
 
   // remove the back link, as it's useless in the popup
-  if (elem?.firstElementChild?.lastChild)
-    elem.firstElementChild.removeChild(elem.firstElementChild.lastChild)
+  Array.from(elem.getElementsByClassName('footnote-backref')).forEach((e) => {
+    e.parentElement?.removeChild(e)
+  })
 
-  return elem.innerHTML
+  return elem.firstElementChild?.innerHTML || null
 }
 
 const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean): HTMLElement => {
@@ -81,6 +81,10 @@ const glossaryInjecter = (pageid: string, glossary: Glossary) => {
 }
 
 const insertGlossary = (pageid: string, glossary: Glossary) => {
+  // Generate a random ID for these glossary items. This is needed when mulitple articles are displayed -
+  // gloassary items should be only displayed once per article, but this is checked by popup id, so if
+  // there are 2 articles that have the same glossary item, then only the first articles popups would work
+  const randomId = Math.floor(1000 + Math.random() * 9000).toString()
   const injecter = glossaryInjecter(pageid, glossary)
 
   return (textNode: Node) => {
@@ -129,11 +133,11 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       const image = entry.image && `<img src="${entry.image}"/>`
       addPopup(
         e as HTMLSpanElement,
-        `glossary-${entry.term}`,
+        `glossary-${entry.term}-${randomId}`,
         `<div class="glossary-popup flex-container black small">
               <div class="contents ${image ? '' : 'full-width'}">
                    <div class="small-bold">${entry.term}</div>
-                   <div class="defintion small">${entry.contents}</div>
+                   <div class="definition small">${entry.contents}</div>
                    ${link || ''}
               </div>
               ${image || ''}

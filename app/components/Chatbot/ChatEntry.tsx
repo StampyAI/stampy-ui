@@ -172,11 +172,17 @@ const Reference = (citation: Citation) => {
   )
 }
 
-const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) => {
+const ChatbotReply = ({
+  question,
+  phase,
+  content,
+  citationsMap,
+  no,
+}: AssistantEntry & {no: number}) => {
   const mobile = useIsMobile()
   const citations = [] as Citation[]
   citationsMap?.forEach((v) => {
-    citations.push(v)
+    citations.push({...v, id: `${v.id}-${no}`})
   })
   citations.sort((a, b) => a.index - b.index)
   const phaseMessageClass = 'phase-message large-reading'
@@ -216,7 +222,7 @@ const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) 
           if (chunk?.match(/(\[\d+\])/)) {
             const refId = chunk.slice(1, chunk.length - 1)
             const ref = citationsMap?.get(refId)
-            return ref && <ReferenceLink key={i} mobile={mobile} {...ref} />
+            return ref && <ReferenceLink key={i} mobile={mobile} {...ref} id={`${ref.id}-${no}`} />
           } else if (chunk === '\n') {
             return <br key={i} />
           } else {
@@ -253,9 +259,14 @@ const ChatbotReply = ({question, phase, content, citationsMap}: AssistantEntry) 
   )
 }
 
-const StampyArticle = ({pageid, content, title}: StampyEntry) => {
+const StampyArticle = ({pageid, content, title, no}: StampyEntry & {no: number}) => {
   const glossary = useGlossary()
   const hint = `This response is pulled from our article "${title}" which was written by members of AISafety.info`
+
+  const uniqueReferences = (content: string, idFinder: string) =>
+    content
+      .replaceAll(new RegExp(`id="(${idFinder})"`, 'g'), `id="$1-${no}"`)
+      .replaceAll(new RegExp(`href="#(${idFinder})"`, 'g'), `href="#$1-${no}"`)
 
   return (
     <div>
@@ -264,7 +275,7 @@ const StampyArticle = ({pageid, content, title}: StampyEntry) => {
         <article className="stampy">
           <Contents
             pageid={pageid || ''}
-            html={content || 'Loading...'}
+            html={uniqueReferences(content || 'Loading...', 'fn\\d+-.*?')}
             glossary={glossary || {}}
           />
         </article>

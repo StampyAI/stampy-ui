@@ -12,6 +12,7 @@ import {questionUrl} from '~/routesMapper'
 import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 import Input from '~/components/Input'
+import {Exclamation} from '../icons-generated'
 
 // to be replaced with actual pool questions
 const poolQuestions = [
@@ -98,7 +99,7 @@ const QuestionInput = ({
           <p className="default">{results[0].title}</p>
         </Button>
       ) : undefined}
-      <div className="flex-container">
+      <div className="relative">
         <Input
           placeholder={placeholder}
           className="large full-width shadowed"
@@ -115,6 +116,10 @@ const QuestionInput = ({
         <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
       </div>
       {fixed && <div className="white-space"></div>}
+
+      <div className="mobile-only grey padding-top-8">
+        <Exclamation /> <span>Stampy can be inaccurate. Always verify its sources.</span>
+      </div>
     </div>
   )
 }
@@ -340,7 +345,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         <SplashScreen questions={questions} onSelection={showArticleByID} />
       ) : undefined}
       {history.map((item, i) => (
-        <ChatEntry key={`chat-entry-${i}`} {...item} />
+        <ChatEntry key={`chat-entry-${i}`} {...item} no={i} />
       ))}
 
       <div className="padding-bottom-128">
@@ -360,9 +365,9 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         fixed
       />
 
-      <div className={'warning-floating'}>
-        <p className={'xs'}>
-          <span className={'red xs-bold'}>Caution! </span>
+      <div className="desktop-only warning-floating">
+        <p className="xs">
+          <span className="red xs-bold">Caution! </span>
           This is an early prototype. Don’t automatically trust what it says, and make sure to
           follow its sources.
         </p>

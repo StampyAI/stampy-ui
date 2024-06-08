@@ -125,7 +125,7 @@ article .contents a.button {
 article .link-popup .glossary-popup > .contents {
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
-article .defintion {
+article .definition {
   height: 140px;
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
