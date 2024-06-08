@@ -63,6 +63,7 @@ const Feedback = ({
           hint={upHint}
           setVoted={setVoted}
           onClick={() => {
+            if (pageid === 'chatbot') onSubmit('Helpful', undefined)
             setShowThanks(true)
           }}
         />
@@ -74,6 +75,7 @@ const Feedback = ({
           disabled={voted}
           setVoted={setVoted}
           onClick={() => {
+            if (pageid === 'chatbot') onSubmit('Unhelpful', undefined)
             if (!showForm) setShowThanks(true)
             setShowFeedbackForm(!!showForm)
           }}
