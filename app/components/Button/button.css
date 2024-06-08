@@ -183,6 +183,7 @@
 /* #### Composite button #### */
 .composite-button {
   cursor: pointer;
+  display: flex;
 }
 
 .composite-button > form .button,

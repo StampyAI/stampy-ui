@@ -22,7 +22,13 @@ export interface SearchResultsProps {
   url: string
 }
 
-export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
+export const SearchResults = ({
+  results,
+  onSelect,
+}: {
+  results: SearchResultsProps[]
+  onSelect?: () => void
+}) => {
   const isMobile = useIsMobile()
   const noResults = results.length === 0
   if (noResults) {
@@ -34,7 +40,7 @@ export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
   }
 
   return (
-    <div className="container-search-results bordered col-5">
+    <div className="container-search-results bordered col-5" onClick={onSelect}>
       {results.map((result, i) => (
         <Link key={i} className="search-result" to={result.url}>
           <Paper />

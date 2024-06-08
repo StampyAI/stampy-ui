@@ -42,6 +42,7 @@ export default function Search({limitFromUrl, className}: Props) {
       )}
       {!isPendingSearch && searchPhrase && showResults && (
         <SearchResults
+          onSelect={() => setShowResults(false)}
           results={results.map((r) => ({
             title: r.title,
             url: questionUrl(r),
