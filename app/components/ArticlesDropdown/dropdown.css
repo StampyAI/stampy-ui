@@ -5,7 +5,6 @@
 }
 
 .articles-dropdown-container {
-  z-index: 100;
   top: 80px;
   position: absolute;
   justify-content: space-between;

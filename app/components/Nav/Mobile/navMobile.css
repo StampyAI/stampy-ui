@@ -1,96 +1,53 @@
 @media only screen and (max-width: 780px) {
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+  }
+
   .top-header {
-    padding: 0;
+    padding: var(--spacing-8) 0;
   }
-  .top-nav {
-    justify-content: space-between;
-    padding: var(--spacing-16);
-  }
-  .top-logo {
-    padding: 0;
-  }
-  .composite-elements {
-    display: flex;
-    align-items: center;
-  }
-  .space-between {
-    justify-content: space-between;
-  }
-  .flex-start {
-    justify-content: flex-start;
-  }
-  .mobile-menu > .button {
-    border-radius: 0;
-    padding: var(--spacing-80) var(--spacing-16);
-  }
-  .mobile-menu > .button:first-child {
-    border-bottom: 0;
-  }
-  .icon-margin {
-    margin-right: var(--spacing-8);
-  }
-  .articles-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-16);
-    border-bottom: 1px solid var(--colors-cool-grey-200);
-  }
-  .back-icon {
-    cursor: pointer;
-    transform: rotate(180deg);
-  }
-  .articles-mobile {
-    padding: var(--spacing-24);
-  }
-  .articles-dropdown-container {
-    visibility: visible !important;
-    flex-direction: column;
-    border: 0;
+
+  .top-header .menu-item {
     box-shadow: none;
-    position: static !important;
-    padding: 0 !important;
-    width: 100% !important;
+    height: 80px;
+    border-bottom: solid 1px var(--colors-cool-grey-200);
+    border-radius: 0;
+    padding: 0 24px;
+    gap: var(--spacing-16);
   }
-  .search-icon {
-    margin-right: var(--spacing-16);
-  }
-  .search-content > svg:nth-of-type(2) {
-    visibility: hidden;
-  }
-  .mobile-searchbar {
+
+  .top-header.background {
+    background-color: var(--colors-white);
     display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: nowrap;
-    align-content: center;
     justify-content: flex-start;
     align-items: flex-start;
+    flex-direction: column;
+  }
+  .top-header.background > * {
+    margin: inherit;
     width: 100%;
   }
-  .mobile-searchbar > svg {
-    margin-top: var(--spacing-12);
-    margin-left: var(--spacing-16);
+
+  .search-bar {
+    padding: var(--spacing-24) var(--spacing-40);
+    gap: var(--spacing-16);
   }
-  .mobile-searchbar > * .search-box.expandable:focus-within,
-  .mobile-searchbar > * .search-box.expandable {
+  .search-bar .search-box:focus-within,
+  .search-bar .search-box {
     width: 100%;
   }
-  .container-search-results-mobile {
-    height: 50vh;
-    width: 100%;
-    position: inherit;
-    margin-top: var(--spacing-8);
-    overflow: scroll;
+
+  .container-search-results {
+    width: calc(100% - 48px);
   }
-  .mobile-searchbar > div {
+
+  .articles-mobile .articles-dropdown-container {
+    visibility: visible;
+    flex-direction: column;
     width: 100%;
-  }
-  .expanded {
-    position: fixed;
-    z-index: 100;
-    height: 100vh;
-    width: 100vw;
-    background: var(--colors-cool-grey-100);
-    overflow: scroll;
   }
 }

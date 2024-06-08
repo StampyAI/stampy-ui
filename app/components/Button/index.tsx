@@ -26,6 +26,8 @@ const Button = ({
     (secondary && 'button-secondary') || 'button',
     className,
     tooltip && !secondary && 'tooltip',
+    secondary && active && 'active',
+    secondary && !active && !disabled && 'inactive',
   ]
     .filter((i) => i)
     .join(' ')
@@ -33,7 +35,7 @@ const Button = ({
     return (
       <Link
         to={action}
-        className={classes + ' ' + (secondary && (active ? 'active' : disabled ? '' : 'inactive'))}
+        className={classes}
         data-tooltip={tooltip}
         onClick={(e) => {
           if (disabled) {
@@ -49,7 +51,7 @@ const Button = ({
   }
   return (
     <button
-      className={classes + ' ' + (secondary && (active ? 'active' : disabled ? '' : 'inactive'))}
+      className={classes}
       onClick={action}
       data-tooltip={tooltip}
       disabled={disabled}

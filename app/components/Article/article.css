@@ -102,10 +102,7 @@ article .glossary-entry {
 
 article .link-popup {
   visibility: hidden;
-  opacity: 0;
   z-index: 4;
-  position: absolute;
-  top: 0;
   width: 512px;
 }
 
@@ -218,25 +215,14 @@ article .banner h3 .title {
     flex-direction: row;
     flex-wrap: wrap;
   }
+
+  article .link-popup {
+    width: 100%;
+  }
   article .footer-comtainer > div:nth-child(-n + 2) {
     flex: 1 1;
   }
   article {
     margin: 0;
-  }
-
-  article .link-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ff000033;
-    overflow: scroll;
-  }
-  article .link-popup .footnote {
-    margin: auto;
-    background-color: white;
-    width: 80%;
   }
 }
