@@ -51,6 +51,7 @@ type QuestionInputProps = {
   initial?: string
   onChange?: (val: string) => void
   onAsk?: (val: string) => void
+  onSuggestedAsk?: (followup: Followup) => void
   fixed?: boolean
   placeholder?: string
 }
@@ -58,6 +59,7 @@ const QuestionInput = ({
   initial,
   onChange,
   onAsk,
+  onSuggestedAsk,
   fixed,
   placeholder = 'Ask Stampy a question...',
 }: QuestionInputProps) => {
@@ -68,6 +70,12 @@ const QuestionInput = ({
   const handleAsk = (val: string) => {
     clear()
     onAsk && onAsk(val)
+    setQuestion('')
+  }
+
+  const handleSuggestedAsk = (followUp: Followup) => {
+    clear()
+    onSuggestedAsk && onSuggestedAsk(followUp)
     setQuestion('')
   }
 
@@ -83,7 +91,10 @@ const QuestionInput = ({
       ref={clickDetectorRef}
     >
       {results.length > 0 ? (
-        <Button className="full-width suggestion" action={() => handleAsk(results[0].title)}>
+        <Button
+          className="full-width suggestion"
+          action={() => handleSuggestedAsk({text: results[0].title, pageid: results[0].pageid})}
+        >
           <p className="default">{results[0].title}</p>
         </Button>
       ) : undefined}
@@ -184,10 +195,10 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
 
 const SplashScreen = ({
   questions,
-  onQuestion,
+  onSelection,
 }: {
-  questions?: string[]
-  onQuestion: (v: string) => void
+  questions?: Followup[]
+  onSelection: (followup: Followup) => void
 }) => (
   <div className="padding-top-40">
     <IconStampyLarge />
@@ -197,15 +208,15 @@ const SplashScreen = ({
     </div>
     <Followups
       title="Not sure where to start? Try these:"
-      followups={questions?.map((text: string) => ({text}))}
-      onSelect={({text}: Followup) => onQuestion(text)}
+      followups={questions}
+      onSelect={onSelection}
     />
   </div>
 )
 
 type ChatbotProps = {
   question?: string
-  questions?: string[]
+  questions?: Followup[]
   settings?: ChatSettings
 }
 export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
@@ -217,6 +228,9 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const fetcher = useFetcher({key: 'followup-fetcher'})
   const {search, resultsForRef, waitForResults, loadedQuestions} = useSearch(1)
 
+  // When a page needs to be loaded fetcher.load(url) is called and then this
+  // effect takes care of filling in the content of the StampyArticle ChatEntry
+  // once it has been loaded.
   useEffect(() => {
     if (!fetcher.data || fetcher.state !== 'idle') return
 
@@ -248,7 +262,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     )
   }, [fetcher.data, fetcher.state])
 
-  const showFollowup = async ({text, pageid}: Followup) => {
+  const showArticleByID = async ({text, pageid}: Followup) => {
     if (pageid) fetcher.load(questionUrl({pageid}))
     setHistory((prev) => [
       ...prev,
@@ -323,7 +337,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   return (
     <div className="centered col-10 height-70">
       {history.length === 0 ? (
-        <SplashScreen questions={questions} onQuestion={onQuestion} />
+        <SplashScreen questions={questions} onSelection={showArticleByID} />
       ) : undefined}
       {history.map((item, i) => (
         <ChatEntry key={`chat-entry-${i}`} {...item} />
@@ -334,13 +348,14 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           <Followups
             title="Continue the conversation"
             followups={followups}
-            onSelect={showFollowup}
+            onSelect={showArticleByID}
           />
         ) : undefined}
       </div>
 
       <QuestionInput
         onAsk={onQuestion}
+        onSuggestedAsk={showArticleByID}
         placeholder={history.length > 0 ? 'Message Stampy' : undefined}
         fixed
       />
