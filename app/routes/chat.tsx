@@ -40,9 +40,9 @@ export default function App() {
           questions={[
             {text: 'What is AI Safety?', pageid: '8486'},
             {text: 'How would the AI even get out in the world?', pageid: '8222'},
-            {text: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
-          ]}
-          settings={chatSettings}
+                   {text: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
+                   ]}
+            settings={chatSettings}
         />
         <div className="settings-container z-index-1" ref={clickDetectorRef}>
           {showSettings && (

@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import {Question} from '~/server-utils/stampy'
-import {useOnSiteQuestions} from './useCachedObjects'
+import useOnSiteQuestions from './useOnSiteQuestions'
 
 const NUM_RESULTS = 8
 
