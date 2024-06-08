@@ -262,7 +262,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
     )
   }, [fetcher.data, fetcher.state])
 
-  const showFollowup = async ({text, pageid}: Followup) => {
+  const showArticleByID = async ({text, pageid}: Followup) => {
     if (pageid) fetcher.load(questionUrl({pageid}))
     setHistory((prev) => [
       ...prev,
@@ -337,7 +337,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   return (
     <div className="centered col-10 height-70">
       {history.length === 0 ? (
-        <SplashScreen questions={questions} onSelection={showFollowup} />
+        <SplashScreen questions={questions} onSelection={showArticleByID} />
       ) : undefined}
       {history.map((item, i) => (
         <ChatEntry key={`chat-entry-${i}`} {...item} />
@@ -348,14 +348,14 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           <Followups
             title="Continue the conversation"
             followups={followups}
-            onSelect={showFollowup}
+            onSelect={showArticleByID}
           />
         ) : undefined}
       </div>
 
       <QuestionInput
         onAsk={onQuestion}
-        onSuggestedAsk={showFollowup}
+        onSuggestedAsk={showArticleByID}
         placeholder={history.length > 0 ? 'Message Stampy' : undefined}
         fixed
       />
