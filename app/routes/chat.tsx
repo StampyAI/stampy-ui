@@ -38,9 +38,9 @@ export default function App() {
         <Chatbot
           question={question}
           questions={[
-            'What is AI Safety?',
-            'How would the AI even get out in the world?',
-            'Do people seriously worry about existential risk from AI?',
+            {text: 'What is AI Safety?', pageid: '8486'},
+            {text: 'How would the AI even get out in the world?', pageid: '8222'},
+            {text: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
           ]}
           settings={chatSettings}
         />
