@@ -150,6 +150,7 @@ export const Action = ({
       onClick()
     }
     setActionTaken(!actionTaken)
+    if (pageid === 'chatbot') return
 
     // This sort of cheats - if more than 1 request is sent per second (or some other such time
     // period), one of them will be (sort of) picked at random. This should be ok in the long run.
