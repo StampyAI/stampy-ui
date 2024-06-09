@@ -29,7 +29,7 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
   return (
     <div ref={clickCheckerRef} className={'feedback-form bordered ' + (className ?? '')}>
       <button onClick={onClose} className="mobile-only escape-feedback">
-        <XLarge></XLarge>
+        <XLarge />
       </button>
       <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (
