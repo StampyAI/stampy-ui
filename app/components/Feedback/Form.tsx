@@ -2,6 +2,7 @@ import {useState} from 'react'
 import Button from '~/components/Button'
 import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import './feedback.css'
+import {XLarge} from '../icons-generated'
 
 export type FeedbackFormProps = {
   onSubmit?: (msg: string, option?: string) => Promise<any>
@@ -27,6 +28,9 @@ const FeedbackForm = ({onSubmit, onClose, options, className}: FeedbackFormProps
 
   return (
     <div ref={clickCheckerRef} className={'feedback-form bordered ' + (className ?? '')}>
+      <button onClick={onClose} className="mobile-only escape-feedback">
+        <XLarge></XLarge>
+      </button>
       <span className="black small padding-bottom-32">What was the problem?</span>
       {options?.map((option) => (
         <Button

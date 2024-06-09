@@ -51,10 +51,12 @@ type TitleProps = {
   hint?: string
 }
 const Title = ({title, Icon, answerType, hint}: TitleProps) => (
-  <div className="flex-container title padding-bottom-16">
+  <div className="title-container padding-bottom-16">
     <Icon width="40" height="40" />
-    <span className="default-bold flex-double">{title}</span>
-    <AnswerInfo answerType={answerType} hint={hint} />
+    <div className="title-inner-container">
+      <span className="default-bold">{title}</span>
+      <AnswerInfo answerType={answerType} hint={hint} />
+    </div>
   </div>
 )
 

@@ -8,10 +8,16 @@ article.stampy {
   border-radius: var(--border-radius);
 }
 
-.chat-entry .title {
+.chat-entry .title-container {
   display: flex;
   gap: var(--spacing-16);
   align-items: center;
+}
+
+.title-inner-container {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
 }
 
 .phase-message {
@@ -175,4 +181,12 @@ article.stampy {
 .reference-link:hover + .reference-popup {
   visibility: visible;
   transition-delay: 0s;
+}
+
+@media (max-width: 780px) {
+  .title-inner-container {
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+  }
 }
