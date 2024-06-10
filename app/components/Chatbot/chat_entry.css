@@ -188,9 +188,9 @@ article.stampy {
 }
 
 @media (max-width: 780px) {
-    .title-inner-container {
-        flex-direction: column;
-        align-items: start;
-        justify-content: flex-start;
-    }
+  .title-inner-container {
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+  }
 }

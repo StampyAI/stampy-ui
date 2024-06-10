@@ -6,6 +6,7 @@ import Chatbot from '~/components/Chatbot'
 import {ChatSettings, Mode} from '~/hooks/useChat'
 import Button from '~/components/Button'
 import useOutsideOnClick from '~/hooks/useOnOutsideClick'
+import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
 
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
@@ -15,6 +16,7 @@ export default function App() {
   const clickDetectorRef = useOutsideOnClick(() => setShowSettings(false))
   const [chatSettings, setChatSettings] = useState({mode: 'default'} as ChatSettings)
   const question = params.get('question') || undefined
+  const {selected: questions} = useOnSiteQuestions()
 
   useEffect(() => {
     setChatSettings(
@@ -35,15 +37,7 @@ export default function App() {
   return (
     <Page noFooter>
       <div className="page-body full-height padding-top-32">
-        <Chatbot
-          question={question}
-          questions={[
-            {text: 'What is AI Safety?', pageid: '8486'},
-            {text: 'How would the AI even get out in the world?', pageid: '8222'},
-                   {text: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
-                   ]}
-            settings={chatSettings}
-        />
+        <Chatbot question={question} questions={questions} settings={chatSettings} />
         <div className="settings-container z-index-1" ref={clickDetectorRef}>
           {showSettings && (
             <div className="settings bordered flex-container">

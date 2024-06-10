@@ -190,12 +190,11 @@ const SplashScreen = ({
 
 type ChatbotProps = {
   question?: string
+  questions?: Question[]
   settings?: ChatSettings
 }
-export const Chatbot = ({question, settings}: ChatbotProps) => {
+export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [followups, setFollowups] = useState<Followup[]>()
-  const {selected: questions} = useOnSiteQuestions()
-
   const [sessionId] = useState(crypto.randomUUID())
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
@@ -312,7 +311,7 @@ export const Chatbot = ({question, settings}: ChatbotProps) => {
     <div className="centered col-10 height-70">
       {history.length === 0 ? (
         <SplashScreen
-          questions={questions.map(({title, pageid}) => ({pageid, text: title}))}
+          questions={questions?.map(({title, pageid}) => ({pageid, text: title}))}
           onSelection={showArticleByID}
         />
       ) : undefined}
