@@ -44,7 +44,7 @@ export default function App() {
           ]}
           settings={chatSettings}
         />
-        <div className="settings-container" ref={clickDetectorRef}>
+        <div className="settings-container z-index-1" ref={clickDetectorRef}>
           {showSettings && (
             <div className="settings bordered flex-container">
               <div>Answer detail</div>

@@ -29,9 +29,8 @@
   border-radius: var(--border-radius);
 }
 
-/* Comment to Nemo when he reviews: why didn't you just do this the way you did the settings buttons? */
 .select-option {
-  height: var(--spacing-48);
+  height: var(--height-48);
   border-radius: var(--border-radius);
   margin-bottom: var(--spacing-16);
   cursor: pointer;
@@ -69,4 +68,19 @@
   position: absolute;
   transform: translate(-9vw, var(--spacing-56));
   margin: var(--spacing-24);
+}
+
+.escape-feedback {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  line-height: 0;
+  border: none;
+  background: #fff;
+}
+
+@media (max-width: 780px) {
+  .feedback-form {
+    left: -20px;
+  }
 }
