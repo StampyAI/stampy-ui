@@ -18,4 +18,10 @@
     gap: 32px;
     margin-bottom: 0;
   }
+
+  .col-5,
+  .col-4,
+  .col-3 {
+    width: 100%;
+  }
 }
