@@ -183,6 +183,10 @@ article.stampy {
   transition-delay: 0s;
 }
 
+.chat-entry article {
+  min-height: inherit;
+}
+
 @media (max-width: 780px) {
   .title-inner-container {
     flex-direction: column;

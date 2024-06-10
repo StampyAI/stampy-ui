@@ -1,49 +1,19 @@
 import {useEffect, useRef, useState} from 'react'
 import {useFetcher, useNavigate} from '@remix-run/react'
+import ExclamationIcon from '../icons-generated/Exclamation'
 import IconStampyLarge from '~/components/icons-generated/StampyLarge'
 import IconStampySmall from '~/components/icons-generated/StampySmall'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
 import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings} from '~/hooks/useChat'
 import useOutsideOnClick from '~/hooks/useOnOutsideClick'
+import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
 import ChatEntry from './ChatEntry'
 import './widgit.css'
 import {questionUrl} from '~/routesMapper'
 import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 import Input from '~/components/Input'
-
-// to be replaced with actual pool questions
-const poolQuestions = [
-  {text: 'Do people seriously worry about existential risk from AI?', pageid: '6953'},
-  {text: 'Is AI safety about systems becoming malevolent or conscious?', pageid: '6194'},
-  {text: 'When do experts think human-level AI will be created?', pageid: '5633'},
-  {text: 'Why is AI alignment a hard problem?', pageid: '8163'},
-  {
-    text: 'Why can’t we just “put the AI in a box” so that it can’t influence the outside world?',
-    pageid: '6176',
-  },
-  {
-    text: 'What are the differences between AGI, transformative AI, and superintelligence?',
-    pageid: '5864',
-  },
-  {text: 'What are large language models?', pageid: '5864'},
-  {text: "Why can't we just turn the AI off if it starts to misbehave?", pageid: '3119'},
-  {text: 'What is instrumental convergence?', pageid: '897I'},
-  {text: "What is Goodhart's law?", pageid: '8185'},
-  {text: 'What is the orthogonality thesis?', pageid: '6568'},
-  {text: 'How powerful would a superintelligence become?', pageid: '7755'},
-  {text: 'Will AI be able to think faster than humans?', pageid: '8E41'},
-  {text: "Isn't the real concern misuse?", pageid: '9B85'},
-  {text: 'Are AIs conscious?', pageid: '8V5J'},
-  {
-    text: 'What are the differences between a singularity, an intelligence explosion, and a hard takeoff?',
-    pageid: '8IHO',
-  },
-  {text: 'What is an intelligence explosion?', pageid: '6306'},
-  {text: 'How might AGI kill people?', pageid: '5943'},
-  {text: 'What is a "warning shot"?', pageid: '7748'},
-]
 
 const MIN_SIMILARITY = 0.85
 
@@ -98,7 +68,7 @@ const QuestionInput = ({
           <p className="default">{results[0].title}</p>
         </Button>
       ) : undefined}
-      <div className="flex-container">
+      <div className="relative">
         <Input
           placeholder={placeholder}
           className="large full-width shadowed"
@@ -115,18 +85,18 @@ const QuestionInput = ({
         <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
       </div>
       {fixed && <div className="white-space"></div>}
+
+      <div className="mobile-only grey padding-top-8">
+        <ExclamationIcon /> <span>Stampy can be inaccurate. Always verify its sources.</span>
+      </div>
     </div>
   )
 }
 
 export const WidgetStampy = ({className}: {className?: string}) => {
   const [question, setQuestion] = useState('')
+  const {selected: questions} = useOnSiteQuestions()
   const navigate = useNavigate()
-  const questions = [
-    'What is AI Safety?',
-    'How would the AI even get out in the world?',
-    'Do people seriously worry about existential risk from AI?',
-  ]
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
@@ -140,10 +110,10 @@ export const WidgetStampy = ({className}: {className?: string}) => {
         <IconStampySmall />
         <div className="sample-messages rounded">
           <div className="padding-bottom-24">Try asking me...</div>
-          {questions.map((question, i) => (
+          {questions.map(({title}, i) => (
             <div key={i} className="padding-bottom-16">
-              <Button className="secondary-alt-large" action={stampyUrl(question)}>
-                {question}
+              <Button className="secondary-alt-large" action={stampyUrl(title)}>
+                {title}
               </Button>
             </div>
           ))}
@@ -171,10 +141,14 @@ type FollowupsProps = {
   className?: string
 }
 const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
+  const {randomQuestions} = useOnSiteQuestions()
   const items =
     (followups?.length || 0) >= 3
       ? followups
-      : [...(followups || []), ...poolQuestions.sort(() => Math.random() - 0.5)].slice(0, 3)
+      : [
+          ...(followups || []),
+          ...randomQuestions().map(({title, pageid}) => ({text: title, pageid})),
+        ].slice(0, 3)
   return (
     <>
       {title && <div className={'padding-bottom-24 grey' + (className || '')}>{title}</div>}
@@ -216,12 +190,11 @@ const SplashScreen = ({
 
 type ChatbotProps = {
   question?: string
-  questions?: Followup[]
+  questions?: Question[]
   settings?: ChatSettings
 }
 export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [followups, setFollowups] = useState<Followup[]>()
-
   const [sessionId] = useState(crypto.randomUUID())
   const [history, setHistory] = useState([] as Entry[])
   const [controller, setController] = useState(() => new AbortController())
@@ -337,10 +310,13 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   return (
     <div className="centered col-10 height-70">
       {history.length === 0 ? (
-        <SplashScreen questions={questions} onSelection={showArticleByID} />
+        <SplashScreen
+          questions={questions?.map(({title, pageid}) => ({pageid, text: title}))}
+          onSelection={showArticleByID}
+        />
       ) : undefined}
       {history.map((item, i) => (
-        <ChatEntry key={`chat-entry-${i}`} {...item} />
+        <ChatEntry key={`chat-entry-${i}`} {...item} no={i} />
       ))}
 
       <div className="padding-bottom-128">
@@ -360,9 +336,9 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         fixed
       />
 
-      <div className={'warning-floating'}>
-        <p className={'xs'}>
-          <span className={'red xs-bold'}>Caution! </span>
+      <div className="desktop-only warning-floating">
+        <p className="xs">
+          <span className="red xs-bold">Caution! </span>
           This is an early prototype. Don’t automatically trust what it says, and make sure to
           follow its sources.
         </p>

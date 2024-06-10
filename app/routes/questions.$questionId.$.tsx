@@ -12,9 +12,10 @@ import {ArticlesNav} from '~/components/ArticlesNav/ArticleNav'
 import {QuestionStatus, loadQuestionDetail} from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
 import useGlossary from '~/hooks/useGlossary'
+import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
+import {useTags} from '~/hooks/useCachedObjects'
 import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
-import {useOnSiteQuestions, useTags} from '~/hooks/useCachedObjects'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 

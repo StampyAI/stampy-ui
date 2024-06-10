@@ -12,7 +12,7 @@ export type Citation = {
   id?: string
 }
 
-export type Entry = UserEntry | AssistantEntry | ErrorMessage | StampyEntry
+export type Entry = (UserEntry | AssistantEntry | ErrorMessage | StampyEntry) & {no?: number}
 export type ChatPhase =
   | 'started'
   | 'semantic'
