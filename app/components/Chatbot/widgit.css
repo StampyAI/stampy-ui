@@ -73,7 +73,7 @@
   position: absolute;
   left: -1000px;
   width: calc(100% + 2000px);
-  height: 120px;
+  height: 250px;
   top: 0;
   z-index: -1;
   background: #ffffff;
