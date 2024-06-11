@@ -81,6 +81,9 @@
 
 @media (max-width: 780px) {
   .feedback-form {
-    left: -20px;
+    position: fixed;
+    left: 6.4vw;
+    bottom: var(--spacing-80);
+    width: 87.2vw;
   }
 }

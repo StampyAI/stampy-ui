@@ -1,6 +1,7 @@
 import {ReactNode} from 'react'
 import {Link} from '@remix-run/react'
 import './button.css'
+import useIsMobile from '~/hooks/isMobile'
 
 type ButtonProps = {
   action?: string | (() => void)
@@ -22,6 +23,8 @@ const Button = ({
   active = false,
   props,
 }: ButtonProps) => {
+  const mobile = useIsMobile()
+
   const classes = [
     (secondary && 'button-secondary') || 'button',
     className,
@@ -45,7 +48,9 @@ const Button = ({
         {...props}
       >
         {children}
-        {secondary && tooltip && !disabled && <p className="tool-tip-secondary xs">{tooltip}</p>}
+        {secondary && tooltip && !disabled && !mobile && (
+          <p className="tool-tip-secondary xs">{tooltip}</p>
+        )}
       </Link>
     )
   }
@@ -58,7 +63,9 @@ const Button = ({
       {...props}
     >
       {children}
-      {secondary && tooltip && !disabled && <p className="tool-tip-secondary xs">{tooltip}</p>}
+      {secondary && tooltip && !disabled && !mobile && (
+        <p className="tool-tip-secondary xs">{tooltip}</p>
+      )}
     </button>
   )
 }

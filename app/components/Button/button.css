@@ -232,8 +232,8 @@
   align-items: center;
   padding: 7px;
   gap: var(--spacing-4);
-  min-width: min-content;
-  min-height: min-content;
+  max-width: min-content;
+  height: min-content;
 }
 
 .tooltip::after {

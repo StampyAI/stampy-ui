@@ -9,10 +9,13 @@ import {tagUrl} from '~/routesMapper'
 import type {Glossary, Question, Banner as BannerType} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
+import useIsMobile from '~/hooks/isMobile'
 
 const isLoading = ({text}: Question) => !text || text === 'Loading...'
 
 const ArticleFooter = (question: Question) => {
+  const mobile = useIsMobile()
+
   const date =
     question.updatedAt &&
     new Date(question.updatedAt).toLocaleDateString('en-GB', {
@@ -23,33 +26,38 @@ const ArticleFooter = (question: Question) => {
   return (
     !isLoading(question) && (
       <div className="footer-comtainer padding-bottom-40">
-        {date && <div className="grey"> {`Updated ${date}`}</div>}
-        <CompositeButton secondary>
-          <Button
-            secondary
-            action={question.answerEditLink || ''}
-            tooltip="Google Doc"
-            props={{target: '_blank', rel: 'noopener noreferrer'}}
-          >
-            <EditIcon />
-          </Button>
-        </CompositeButton>
-        <Feedback
-          showForm
-          pageid={question.pageid}
-          onSubmit={async (message: string, option?: string) =>
-            logFeedback({
-              message,
-              option,
-              type: 'bot',
-              question: question.title || '',
-              answer: question.text || '',
-            })
-          }
-          options={['Unclear', 'Too wordy', 'Confusing', 'Incorrect', 'Other']}
-          upHint="This page was helpful"
-          downHint="This page was unhelpful"
-        />
+        <div className="edited-container">
+          {date && <div className="grey"> {`Updated ${date}`}</div>}
+          <CompositeButton secondary>
+            <Button
+              secondary
+              action={question.answerEditLink || ''}
+              tooltip="Google Doc"
+              props={{target: '_blank', rel: 'noopener noreferrer'}}
+            >
+              <EditIcon />
+            </Button>
+          </CompositeButton>
+        </div>
+        <div className="feeback-container">
+          {mobile && <p>Was this page helpful?</p>}
+          <Feedback
+            showForm
+            pageid={question.pageid}
+            onSubmit={async (message: string, option?: string) =>
+              logFeedback({
+                message,
+                option,
+                type: 'bot',
+                question: question.title || '',
+                answer: question.text || '',
+              })
+            }
+            options={['Unclear', 'Too wordy', 'Confusing', 'Incorrect', 'Other']}
+            upHint="This page was helpful"
+            downHint="This page was unhelpful"
+          />
+        </div>
       </div>
     )
   )

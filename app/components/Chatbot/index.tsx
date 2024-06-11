@@ -14,6 +14,7 @@ import {questionUrl} from '~/routesMapper'
 import {Question} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 import Input from '~/components/Input'
+import useIsMobile from '~/hooks/isMobile'
 
 const MIN_SIMILARITY = 0.85
 
@@ -36,6 +37,7 @@ const QuestionInput = ({
   const [question, setQuestion] = useState(initial || '')
   const {results, search, clear} = useSearch(1)
   const clickDetectorRef = useOutsideOnClick(() => handleChange(''))
+  const mobile = useIsMobile()
 
   const handleAsk = (val: string) => {
     clear()
@@ -57,7 +59,10 @@ const QuestionInput = ({
 
   return (
     <div
-      className={'widget-ask ' + (fixed ? 'fixed col-10 z-index-1' : 'col-9')}
+      className={
+        'widget-ask ' +
+        (fixed ? `fixed z-index-1 ${mobile ? 'mobile-chat-width' : 'col-10'}` : 'col-9')
+      }
       ref={clickDetectorRef}
     >
       {results.length > 0 ? (
@@ -86,7 +91,7 @@ const QuestionInput = ({
       </div>
       {fixed && <div className="white-space" />}
 
-      <div className="mobile-only grey mobile-caution xxs">
+      <div className="mobile-only grey mobile-caution xxs padding-top-8">
         <ExclamationIcon />{' '}
         <span className="padding-left-4">Stampy can be inaccurate. Always verify its sources.</span>
       </div>
@@ -157,7 +162,7 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
       {items?.map(({text, pageid}, i) => (
         <div key={i} className="padding-bottom-16">
           <Button
-            className="secondary-alt-large text-align-left"
+            className="secondary-alt-large text-align-left followup-button"
             action={() => onSelect({text, pageid})}
           >
             {text}
@@ -178,7 +183,7 @@ const SplashScreen = ({
   <div className="padding-top-40">
     <IconStampyLarge />
     <div className="col-6 padding-bottom-40 padding-top-40">
-      <h2 className="teal-500">Hi there, I'm Stampy.</h2>
+      <h2 className="teal-500">Hi there, I’m Stampy.</h2>
       <h2>I can answer your questions about AI Safety.</h2>
     </div>
     <Followups
@@ -201,6 +206,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   const [controller, setController] = useState(() => new AbortController())
   const fetcher = useFetcher({key: 'followup-fetcher'})
   const {search, resultsForRef, waitForResults, loadedQuestions} = useSearch(1)
+  const mobile = useIsMobile()
 
   // When a page needs to be loaded fetcher.load(url) is called and then this
   // effect takes care of filling in the content of the StampyArticle ChatEntry
@@ -309,7 +315,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
   }, [loadedQuestions, question])
 
   return (
-    <div className="centered col-10 height-70">
+    <div className={`centered height-70 ${mobile ? 'mobile-chat-width' : 'col-10'}`}>
       {history.length === 0 ? (
         <SplashScreen
           questions={questions?.map(({title, pageid}) => ({pageid, text: title}))}

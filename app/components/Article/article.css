@@ -192,6 +192,18 @@ article .banner h3 .title {
   padding-left: 10px;
 }
 
+.footer-comtainer .edited-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+}
+
+.footer-comtainer .feeback-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
 @media (min-width: 780px) {
   article .link-popup {
     position: absolute;
@@ -212,16 +224,14 @@ article .banner h3 .title {
     padding: 0;
   }
   article .footer-comtainer {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: start;
   }
 
   article .link-popup {
     width: 100%;
   }
-  article .footer-comtainer > div:nth-child(-n + 2) {
-    flex: 1 1;
-  }
+
   article {
     margin: 0;
   }
