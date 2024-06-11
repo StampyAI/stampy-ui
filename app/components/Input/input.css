@@ -7,9 +7,9 @@
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
   color: var(--colors-cool-grey-900, #1b2b3e);
-  padding: var(--spacing-8) 0 var(--spacing-8) var(--spacing-12);
+  padding: var(--spacing-8) var(--height-48) var(--spacing-8) var(--spacing-12);
   /* This can't be a variable because it shouldn't shrink when the screen gets small */
-  height: 48px;
+  height: var(--height-48);
   font-size: 16px;
   font-weight: 300;
   line-height: 170%; /* 27.2px */
@@ -24,9 +24,10 @@
 /* size */
 
 .input.large {
-  height: 56px;
+  height: var(--height-64);
   font-size: 18px;
   letter-spacing: -0.18px;
+  padding-right: var(--height-64);
 }
 
 /* states */

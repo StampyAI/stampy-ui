@@ -144,8 +144,10 @@ article.stampy {
   width: var(--spacing-32);
   height: var(--spacing-32);
   border-radius: var(--border-radius);
-  text-align: center;
-  line-height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .reference .source-link {

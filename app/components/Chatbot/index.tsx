@@ -84,10 +84,11 @@ const QuestionInput = ({
         />
         <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
       </div>
-      {fixed && <div className="white-space"></div>}
+      {fixed && <div className="white-space" />}
 
-      <div className="mobile-only grey padding-top-8">
-        <ExclamationIcon /> <span>Stampy can be inaccurate. Always verify its sources.</span>
+      <div className="mobile-only grey mobile-caution xxs">
+        <ExclamationIcon />{' '}
+        <span className="padding-left-4">Stampy can be inaccurate. Always verify its sources.</span>
       </div>
     </div>
   )
@@ -319,7 +320,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         <ChatEntry key={`chat-entry-${i}`} {...item} no={i} />
       ))}
 
-      <div className="padding-bottom-128">
+      <div className="followups-container">
         {followups ? (
           <Followups
             title="Continue the conversation"
@@ -336,7 +337,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         fixed
       />
 
-      <div className="desktop-only warning-floating">
+      <div className="desktop-only warning-floating z-index-1">
         <p className="xs">
           <span className="red xs-bold">Caution! </span>
           This is an early prototype. Don’t automatically trust what it says, and make sure to
