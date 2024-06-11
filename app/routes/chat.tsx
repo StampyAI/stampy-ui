@@ -38,7 +38,7 @@ export default function App() {
     <Page noFooter>
       <div className="page-body full-height padding-top-32">
         <Chatbot question={question} questions={questions} settings={chatSettings} />
-        <div className="settings-container z-index-1" ref={clickDetectorRef}>
+        <div className="settings-container z-index-1 desktop-only" ref={clickDetectorRef}>
           {showSettings && (
             <div className="settings bordered flex-container">
               <div>Answer detail</div>

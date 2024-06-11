@@ -164,6 +164,13 @@ h2 {
   letter-spacing: -0.14px;
 }
 
+.xxs {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 150%; /* 23.8px */
+  letter-spacing: -0.1px;
+}
+
 .leading-0 {
   line-height: 0 !important;
 }
@@ -353,7 +360,7 @@ h2 {
 }
 
 .col-6 {
-  width: clamp(0px, 35.28vw, 640px);
+  width: clamp(270px, 35.28vw, 640px);
 }
 
 .col-7 {
@@ -369,7 +376,7 @@ h2 {
 }
 
 .col-10 {
-  width: clamp(0px, 60.62vw, 1109px);
+  width: clamp(300px, 60.62vw, 1109px);
 }
 
 .col-11 {
