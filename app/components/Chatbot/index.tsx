@@ -183,7 +183,7 @@ const SplashScreen = ({
   <div className="padding-top-40">
     <IconStampyLarge />
     <div className="col-6 padding-bottom-40 padding-top-40">
-      <h2 className="teal-500">Hi there, I'm Stampy.</h2>
+      <h2 className="teal-500">Hi there, I’m Stampy.</h2>
       <h2>I can answer your questions about AI Safety.</h2>
     </div>
     <Followups
