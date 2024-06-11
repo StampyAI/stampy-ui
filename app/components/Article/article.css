@@ -231,9 +231,7 @@ article .banner h3 .title {
   article .link-popup {
     width: 100%;
   }
-  article .footer-comtainer > div:nth-child(-n + 2) {
-    margin-right: var(--spacing-12s);
-  }
+
   article {
     margin: 0;
   }
