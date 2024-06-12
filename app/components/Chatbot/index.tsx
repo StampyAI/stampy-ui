@@ -157,7 +157,7 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
         ].slice(0, 3)
   return (
     <>
-      {title && <div className={'padding-bottom-24 grey' + (className || '')}>{title}</div>}
+      {title && <div className={'padding-bottom-24' + (className || '')}>{title}</div>}
 
       {items?.map(({text, pageid}, i) => (
         <div key={i} className="padding-bottom-16">

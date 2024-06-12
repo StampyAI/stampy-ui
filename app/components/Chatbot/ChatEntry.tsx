@@ -123,7 +123,7 @@ const ReferencePopup = (
       className={`reference-popup background z-index-2 ${citation.className || ''}`}
       onClick={citation.onClose}
     >
-      <div className="reference-contents bordered">
+      <div onClick={(e) => e.stopPropagation()} className="reference-contents bordered">
         <ReferenceSummary {...citation} titleClass="large-bold" />
         <div className="grey padding-bottom-16 padding-top-32 xs">Referenced excerpt</div>
         <div

@@ -28,7 +28,6 @@ const Button = ({
   const classes = [
     (secondary && 'button-secondary') || 'button',
     className,
-    tooltip && !secondary && 'tooltip',
     secondary && active && 'active',
     secondary && !active && !disabled && 'inactive',
   ]
@@ -39,7 +38,6 @@ const Button = ({
       <Link
         to={action}
         className={classes}
-        data-tooltip={tooltip}
         onClick={(e) => {
           if (disabled) {
             e.preventDefault()
@@ -48,23 +46,17 @@ const Button = ({
         {...props}
       >
         {children}
-        {secondary && tooltip && !disabled && !mobile && (
-          <p className="tool-tip-secondary xs">{tooltip}</p>
+        {tooltip && !disabled && !mobile && (
+          <p className="tool-tip-secondary xs z-index-1">{tooltip}</p>
         )}
       </Link>
     )
   }
   return (
-    <button
-      className={classes}
-      onClick={action}
-      data-tooltip={tooltip}
-      disabled={disabled}
-      {...props}
-    >
+    <button className={classes} onClick={action} disabled={disabled} {...props}>
       {children}
-      {secondary && tooltip && !disabled && !mobile && (
-        <p className="tool-tip-secondary xs">{tooltip}</p>
+      {tooltip && !disabled && !mobile && (
+        <p className="tool-tip-secondary xs z-index-1">{tooltip}</p>
       )}
     </button>
   )
