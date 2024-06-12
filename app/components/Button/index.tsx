@@ -46,18 +46,14 @@ const Button = ({
         {...props}
       >
         {children}
-        {tooltip && !disabled && !mobile && (
-          <p className="tool-tip-secondary xs z-index-1">{tooltip}</p>
-        )}
+        {tooltip && !disabled && !mobile && <p className="tool-tip xs z-index-1">{tooltip}</p>}
       </Link>
     )
   }
   return (
     <button className={classes} onClick={action} disabled={disabled} {...props}>
       {children}
-      {tooltip && !disabled && !mobile && (
-        <p className="tool-tip-secondary xs z-index-1">{tooltip}</p>
-      )}
+      {tooltip && !disabled && !mobile && <p className="tool-tip xs z-index-1">{tooltip}</p>}
     </button>
   )
 }

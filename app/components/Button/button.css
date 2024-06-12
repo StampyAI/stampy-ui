@@ -165,10 +165,10 @@
   border: 1px solid var(--colors-teal-200, #a6d9d7);
 }
 
-.button-secondary:hover .tool-tip-secondary {
+.button-secondary:hover .tool-tip {
   opacity: 1;
 }
-.button:hover .tool-tip-secondary {
+.button:hover .tool-tip {
   opacity: 1;
 }
 
@@ -240,7 +240,7 @@
   height: min-content;
 }
 
-.tool-tip-secondary {
+.tool-tip {
   opacity: 0;
   position: absolute;
   top: -42px;
