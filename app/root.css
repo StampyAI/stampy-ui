@@ -561,6 +561,9 @@ svg {
 /* mobile */
 
 @media (max-width: 780px) {
+  body {
+    overflow-x: hidden;
+  }
   .page-body {
     padding: 0px var(--spacing-48);
   }

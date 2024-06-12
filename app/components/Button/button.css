@@ -9,6 +9,7 @@
   box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(32, 44, 89, 0.05);
   border-radius: var(--border-radius);
   box-sizing: border-box;
+  position: relative;
 
   background: var(--colors-white, #ffffff);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
@@ -164,7 +165,10 @@
   border: 1px solid var(--colors-teal-200, #a6d9d7);
 }
 
-.button-secondary:hover .tool-tip-secondary {
+.button-secondary:hover .tool-tip {
+  opacity: 1;
+}
+.button:hover .tool-tip {
   opacity: 1;
 }
 
@@ -236,20 +240,7 @@
   height: min-content;
 }
 
-.tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  transform: translateY(var(--spacing-56, 56px));
-  padding: var(--spacing-16);
-  color: var(--colors-white);
-  background: var(--colors-black);
-  border-radius: 5px;
-  display: none;
-  z-index: 1;
-  font-size: 16px; /* hard to set via classes, what with this being a pseudoclass */
-}
-
-.tool-tip-secondary {
+.tool-tip {
   opacity: 0;
   position: absolute;
   top: -42px;
@@ -271,5 +262,10 @@
 .button:disabled,
 .button[disabled] {
   opacity: 0.6;
+  cursor: inherit;
+}
+.button-secondary:disabled,
+.button-secondary[disabled] {
+  opacity: 0.8;
   cursor: inherit;
 }
