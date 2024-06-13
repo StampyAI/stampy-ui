@@ -107,7 +107,7 @@ article .link-popup {
 }
 
 article .link-popup .footnote {
-  padding: var(--spacing-32) var(--spacing-32) 0 var(--spacing-32);
+  padding: var(--spacing-32) var(--spacing-32) var(--spacing-32) var(--spacing-32);
 }
 
 article .footnote-ref {
@@ -115,7 +115,6 @@ article .footnote-ref {
 }
 
 article .glossary-popup {
-  width: 522px;
   height: 304px;
 }
 
@@ -226,6 +225,12 @@ article .banner h3 .title {
   article .footer-comtainer {
     flex-direction: column;
     align-items: start;
+  }
+  article .link-popup .footnote {
+    margin-top: 42px;
+  }
+  article .glossary-popup {
+    margin-top: 50px;
   }
 
   article .link-popup {
