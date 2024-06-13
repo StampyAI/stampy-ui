@@ -20,7 +20,12 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean): HTMLElement => {
+const addPopup = (
+  e: HTMLElement,
+  id: string,
+  contents: string,
+  mobile: boolean = window?.innerWidth <= 780
+): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
@@ -40,6 +45,7 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile?: boolean
     const toggle = () => popup.classList.toggle('shown')
     popup.addEventListener('click', togglePopup(toggle, e))
     e.addEventListener('click', togglePopup(toggle, e))
+    popup.children[0].addEventListener('click', (e) => e.stopPropagation())
   }
 
   return popup
