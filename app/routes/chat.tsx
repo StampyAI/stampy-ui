@@ -7,6 +7,7 @@ import {ChatSettings, Mode} from '~/hooks/useChat'
 import Button from '~/components/Button'
 import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
+import '~/components/Chatbot/widgit.css'
 
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
@@ -53,7 +54,7 @@ export default function App() {
           <SettingsIcon
             width="24"
             height="24"
-            className="pointer"
+            className="pointer settings-icon"
             onClick={() => setShowSettings((current) => !current)}
           />
         </div>

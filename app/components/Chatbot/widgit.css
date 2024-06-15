@@ -50,6 +50,10 @@
   width: 384px;
 }
 
+.settings-icon {
+  rotate: 30deg;
+}
+
 .widget-ask .suggestion {
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   justify-content: start;
