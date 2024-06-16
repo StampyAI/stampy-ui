@@ -459,6 +459,10 @@ svg {
   text-align: center;
 }
 
+.text-no-wrap {
+  white-space: nowrap;
+}
+
 .flex-container {
   display: flex;
 }
@@ -635,7 +639,7 @@ svg {
   .background > * {
     margin: 198px auto;
     background-color: var(--colors-white);
-    width: 80%;
+    width: 85%;
   }
 } /* end mobile */
 p,

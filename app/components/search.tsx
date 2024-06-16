@@ -34,7 +34,11 @@ export default function Search({limitFromUrl, className}: Props) {
   const handleChange = debounce(searchFn, 100)
 
   return (
-    <div className={className} onFocus={() => setShowResults(true)} ref={clickDetectorRef}>
+    <div
+      className={`relative ${className}`}
+      onFocus={() => setShowResults(true)}
+      ref={clickDetectorRef}
+    >
       <SearchInput expandable onChange={handleChange} />
       <div className={`search-loader ${isPendingSearch ? 'loader' : ''}`}> </div>
       {isPendingSearch && results.length == 0 && (

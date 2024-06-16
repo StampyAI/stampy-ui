@@ -26,17 +26,21 @@ export default function App() {
     )
   }, [params])
 
-  const ModeButton = ({name, mode}: {name: string; mode: Mode}) => (
-    <Button
-      className={chatSettings.mode === mode ? 'secondary-selected' : 'secondary'}
-      action={() => {
-        setShowSettings(false)
-        setChatSettings({...chatSettings, mode})
-      }}
-    >
-      {name}
-    </Button>
-  )
+  const ModeButton = ({name, mode}: {name: string; mode: Mode}) => {
+    return (
+      <Button
+        className={chatSettings.mode === mode ? 'secondary-selected' : 'secondary'}
+        action={() => {
+          if (chatSettings.mode !== mode) {
+            setTimeout(() => setShowSettings(false), 300)
+            setChatSettings({...chatSettings, mode})
+          }
+        }}
+      >
+        {name}
+      </Button>
+    )
+  }
 
   return (
     <Page noFooter>

@@ -1,7 +1,10 @@
 .container-search-results {
   position: absolute;
   z-index: 2;
-  height: 100%;
+  left: 0;
+  width: 100%;
+  overflow: auto;
+  height: 450px;
 }
 
 .search-result {

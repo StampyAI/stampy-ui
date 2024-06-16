@@ -1,5 +1,4 @@
 import {ReactNode} from 'react'
-import {Link} from '@remix-run/react'
 import './button.css'
 import useIsMobile from '~/hooks/isMobile'
 
@@ -35,8 +34,8 @@ const Button = ({
     .join(' ')
   if (typeof action === 'string') {
     return (
-      <Link
-        to={action}
+      <a
+        href={action}
         className={classes}
         onClick={(e) => {
           if (disabled) {
@@ -47,7 +46,7 @@ const Button = ({
       >
         {children}
         {tooltip && !disabled && !mobile && <p className="tool-tip xs z-index-1">{tooltip}</p>}
-      </Link>
+      </a>
     )
   }
   return (
