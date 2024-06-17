@@ -137,12 +137,12 @@ export const Action = ({
     if (actionTaken && setVoted) setVoted(true)
     if (loadActionTaken() || actionTaken) {
       try {
-        localStorage.setItem(actionId, actionTaken.toString())
+        if (pageid !== 'chatbot') localStorage.setItem(actionId, actionTaken.toString())
       } catch (e) {
         // This will happen when local storage is disabled
       }
     }
-  }, [actionTaken, loadActionTaken, actionId, setVoted])
+  }, [actionTaken, loadActionTaken, actionId, setVoted, pageid])
 
   const handleAction = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()

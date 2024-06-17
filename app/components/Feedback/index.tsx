@@ -29,6 +29,7 @@ type FeedbackProps = {
   labels?: boolean
   upHint?: string
   downHint?: string
+  className?: string
   formClassName?: string
   options?: string[]
   onSubmit: (message: string, option?: string) => Promise<any>
@@ -40,6 +41,7 @@ const Feedback = ({
   upHint,
   downHint,
   options,
+  className = '',
   formClassName,
   onSubmit,
 }: FeedbackProps) => {
@@ -53,7 +55,7 @@ const Feedback = ({
   }, [showThanks])
 
   return (
-    <div className="feedback">
+    <div className={`feedback ${className}`}>
       <CompositeButton secondary>
         <Action
           pageid={pageid}

@@ -6,7 +6,6 @@ import IconStampySmall from '~/components/icons-generated/StampySmall'
 import SendIcon from '~/components/icons-generated/PlaneSend'
 import Button from '~/components/Button'
 import {queryLLM, Entry, AssistantEntry, StampyEntry, Followup, ChatSettings} from '~/hooks/useChat'
-import useOutsideOnClick from '~/hooks/useOnOutsideClick'
 import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
 import ChatEntry from './ChatEntry'
 import './widgit.css'
@@ -36,7 +35,6 @@ const QuestionInput = ({
 }: QuestionInputProps) => {
   const [question, setQuestion] = useState(initial || '')
   const {results, search, clear} = useSearch(1)
-  const clickDetectorRef = useOutsideOnClick(() => handleChange(''))
   const mobile = useIsMobile()
 
   const handleAsk = (val: string) => {
@@ -63,7 +61,6 @@ const QuestionInput = ({
         'widget-ask ' +
         (fixed ? `fixed z-index-1 ${mobile ? 'mobile-chat-width' : 'col-10'}` : 'col-9')
       }
-      ref={clickDetectorRef}
     >
       {results.length > 0 ? (
         <Button

@@ -142,7 +142,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
         `glossary-${entry.term}-${randomId}`,
         `<div class="glossary-popup flex-container black small">
               <div class="contents ${image ? '' : 'full-width'}">
-                   <div class="small-bold">${entry.term}</div>
+                   <div class="small-bold text-no-wrap">${entry.term}</div>
                    <div class="definition small">${entry.contents}</div>
                    ${link || ''}
               </div>
