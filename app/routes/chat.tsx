@@ -18,6 +18,7 @@ export default function App() {
   const [chatSettings, setChatSettings] = useState({mode: 'default'} as ChatSettings)
   const question = params.get('question') || undefined
   const {selected: questions} = useOnSiteQuestions()
+  const [flash, setFlash] = useState(true)
 
   useEffect(() => {
     setChatSettings(
@@ -26,21 +27,25 @@ export default function App() {
     )
   }, [params])
 
-  const ModeButton = ({name, mode}: {name: string; mode: Mode}) => {
-    return (
-      <Button
-        className={chatSettings.mode === mode ? 'secondary-selected' : 'secondary'}
-        action={() => {
-          if (chatSettings.mode !== mode) {
-            setTimeout(() => setShowSettings(false), 300)
-            setChatSettings({...chatSettings, mode})
-          }
-        }}
-      >
-        {name}
-      </Button>
-    )
-  }
+  const ModeButton = ({name, mode}: {name: string; mode: Mode}) => (
+    <Button
+      className={chatSettings.mode === mode && flash ? 'secondary-selected' : 'secondary'}
+      action={() => {
+        if (chatSettings.mode === mode) return
+        setChatSettings({...chatSettings, mode})
+        const interval = setInterval(() => {
+          setFlash((v) => !v)
+        }, 85)
+        setTimeout(() => {
+          clearInterval(interval)
+          setFlash(true)
+          setTimeout(() => setShowSettings(false), 235)
+        }, 370)
+      }}
+    >
+      {name}
+    </Button>
+  )
 
   return (
     <Page noFooter>
