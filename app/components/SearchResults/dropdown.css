@@ -1,6 +1,5 @@
 .container-search-results {
   position: absolute;
-  z-index: 2;
   left: 0;
   width: 100%;
   overflow: auto;

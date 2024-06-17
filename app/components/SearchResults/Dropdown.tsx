@@ -33,14 +33,14 @@ export const SearchResults = ({
   const noResults = results.length === 0
   if (noResults) {
     return (
-      <div className="full-width container-search-results bordered">
+      <div className="full-width z-index-2 container-search-results bordered">
         <div className="search-result">No results found</div>
       </div>
     )
   }
 
   return (
-    <div className="container-search-results bordered" onClick={onSelect}>
+    <div className="container-search-results z-index-2 bordered" onClick={onSelect}>
       {results.map((result, i) => (
         <Link key={i} className="search-result" to={result.url}>
           <Paper />
