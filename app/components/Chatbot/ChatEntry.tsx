@@ -104,8 +104,12 @@ const ReferenceSummary = ({
     <div>
       <div className={`black padding-bottom-8 ${titleClass}`}>{convertAscii(title)}</div>
       <div className="small">
-        <Authors authors={authors} />
-        <span>{'  ·  '}</span>
+        {source !== 'youtube' && (
+          <>
+            <Authors authors={authors} />
+            <span>{'  ·  '}</span>
+          </>
+        )}
         <Link className="source-link teal-500" to={url} target="_blank" rel="noopener noreferrer">
           {referenceSources[source as keyof typeof referenceSources] || new URL(url).host}{' '}
           <LinkIcon width="16" height="16" />
