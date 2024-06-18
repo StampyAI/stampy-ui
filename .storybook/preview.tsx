@@ -1,17 +1,23 @@
-import {BrowserRouter} from 'react-router-dom'
+import {createRemixStub} from '@remix-run/testing'
 import type {Preview} from '@storybook/react'
 import {CachedObjectsProvider} from '../app//hooks/useCachedObjects'
 
 import '../app/newRoot.css'
 
 export const decorators = [
-  (Story) => (
-    <CachedObjectsProvider>
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    </CachedObjectsProvider>
-  ),
+  (Story) => {
+    const RemixStub = createRemixStub([
+      {
+        path: '*',
+        Component: () => <Story />,
+      },
+    ])
+    return (
+      <CachedObjectsProvider>
+          <RemixStub />
+      </CachedObjectsProvider>
+    )
+  },
 ]
 
 const preview: Preview = {
