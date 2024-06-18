@@ -14,7 +14,7 @@ export const decorators = [
     ])
     return (
       <CachedObjectsProvider>
-          <RemixStub />
+        <RemixStub />
       </CachedObjectsProvider>
     )
   },
