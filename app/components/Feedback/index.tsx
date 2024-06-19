@@ -59,7 +59,7 @@ const Feedback = ({
       <CompositeButton secondary>
         <Action
           pageid={pageid}
-          showText={!!labels}
+          showtext={(!!labels).toString()}
           actionType={ActionType.HELPFUL}
           disabled={voted}
           hint={upHint}
@@ -71,7 +71,7 @@ const Feedback = ({
         />
         <Action
           pageid={pageid}
-          showText={!!labels}
+          showtext={(!!labels).toString()}
           hint={downHint}
           actionType={ActionType.UNHELPFUL}
           disabled={voted}
