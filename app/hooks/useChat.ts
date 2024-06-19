@@ -128,23 +128,19 @@ export const findCitations: (text: string, citations: Citation[]) => Map<string,
 ) => {
   // figure out what citations are in the response, and map them appropriately
   const cite_map = new Map<string, Citation>()
-  let index = 1
-
-  // scan a regex for [x] over the response. If x isn't in the map, add it.
-  // (note: we're actually doing this twice - once on parsing, once on render.
-  // if that looks like a problem, we could swap from strings to custom ropes).
-  const regex = /\[(\d+)\]/g
-  let match
-  while ((match = regex.exec(text)) !== null) {
-    const ref = match[1]
-    if (!ref || cite_map.has(ref!)) continue
-
-    const citation = citations[parseInt(ref, 10)]
-    if (!citation) continue
-
-    cite_map.set(ref!, {...citation, index})
-    index++
+  const byRef = citations.reduce((acc, c) => ({...acc, [c.reference]: c}), {}) as {
+    [k: string]: Citation
   }
+  let index = 1
+  const refs = [...text.matchAll(/\[(\d+)\]/g)]
+  refs.forEach(([_, num]) => {
+    if (!num || cite_map.has(num)) return
+    const citation = byRef[num as keyof typeof byRef]
+    if (!citation) return
+
+    cite_map.set(num, {...citation, index: index++})
+  })
+
   return cite_map
 }
 
