@@ -148,6 +148,7 @@ const ignoreAbort = (error: Error) => {
   if (error.name !== 'AbortError') {
     throw error
   }
+  console.log(error)
 }
 
 export async function* iterateData(res: Response) {
@@ -240,6 +241,17 @@ export const extractAnswer = async (
   return {result, followups}
 }
 
+const makePayload = (
+  sessionId: string | undefined,
+  history: HistoryEntry[],
+  settings?: ChatSettings
+): string => {
+  const payload = JSON.stringify({sessionId, history, settings})
+  if (payload.length < 70000) return payload
+  if (history.length === 1) throw 'You question is too long - please shorten it'
+  return makePayload(sessionId, history.slice(1), settings)
+}
+
 const fetchLLM = async (
   sessionId: string | undefined,
   history: HistoryEntry[],
@@ -255,7 +267,7 @@ const fetchLLM = async (
       'Content-Type': 'application/json',
       Accept: 'text/event-stream',
     },
-    body: JSON.stringify({sessionId, history, settings}),
+    body: makePayload(sessionId, history, settings),
   }).catch(ignoreAbort)
 
 export const queryLLM = async (
