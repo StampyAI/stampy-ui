@@ -157,6 +157,7 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
           ].slice(0, 3)
 
     setItems(initialItems)
+    // eslint-disable-next-line
   }, [followups])
   return (
     <>
