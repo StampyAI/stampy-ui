@@ -9,53 +9,185 @@
   box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(32, 44, 89, 0.05);
   border-radius: var(--border-radius);
   box-sizing: border-box;
+  position: relative;
 
   background: var(--colors-white, #ffffff);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
+
+.button-secondary {
+  position: relative;
+  padding: 0.25rem;
+  border-radius: var(--border-radius);
+  border-width: 0;
+  line-height: 0;
+  background: inherit;
+  cursor: pointer;
+}
+
+/* style */
 
 .primary {
   background: var(--colors-teal-500, #1d9089);
   font-weight: 500;
   color: var(--colors-white, #ffffff);
-}
 
-.primary:hover {
-  background: var(--colors-teal-700, #17736e);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
 .primary-alt {
   background: var(--colors-white, #ffffff);
   color: var(--colors-teal-500, #1d9089);
-}
 
-.primary-alt:hover {
-  color: var(--colors-teal-800, #146560);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
 .secondary {
   color: var(--colors-cool-grey-600, #788492) !important;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
+
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
-.secondary:hover {
-  border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
+.secondary-selected {
+  background: var(--colors-white, #ffffff);
+  color: var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-teal-500, #1d9089);
+
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
 .secondary-alt {
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
+
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
-.secondary-alt:hover {
+/* large */
+
+.primary-large {
+  background: var(--colors-teal-500, #1d9089);
+  font-weight: 500;
+  color: var(--colors-white, #ffffff);
+
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+.primary-alt-large {
+  background: var(--colors-white, #ffffff);
+  color: var(--colors-teal-500, #1d9089);
+
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+.secondary-large {
+  color: var(--colors-cool-grey-600, #788492) !important;
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--colors-white, #fff);
+
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+.secondary-selected-large {
+  background: var(--colors-white, #ffffff);
+  color: var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-teal-500, #1d9089);
+
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+.secondary-alt-large {
+  color: var(--colors-teal-500, #1d9089);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--colors-white, #fff);
+
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+}
+
+/* state */
+
+.primary:hover,
+.primary-large:hover {
+  background: var(--colors-teal-700, #17736e);
+}
+
+.primary-alt:hover,
+.primary-alt-large:hover {
+  color: var(--colors-teal-800, #146560);
+}
+
+.secondary:hover,
+.secondary-large:hover {
+  border: 1px solid var(--colors-teal-200, #a6d9d7) !important;
+}
+
+.secondary-alt:hover,
+.secondary-alt-large:hover {
   border: 1px solid var(--colors-teal-200, #a6d9d7);
+}
+
+.button-secondary:hover .tool-tip {
+  opacity: 1;
+}
+.button:hover .tool-tip {
+  opacity: 1;
+}
+
+.active path {
+  stroke: var(--colors-teal-600);
+}
+
+.active {
+  background-color: var(--colors-teal-50);
+}
+
+.inactive:hover {
+  background-color: var(--colors-light-grey);
 }
 
 /* #### Composite button #### */
 .composite-button {
-  box-shadow: 0px var(--spacing-16) var(--spacing-40) 0px rgba(175, 183, 194, 0.2);
+  cursor: pointer;
+  display: flex;
 }
 
 .composite-button > form .button,
@@ -94,17 +226,32 @@
   border-width: 1px;
 }
 
-.tooltip::after {
-  content: attr(data-tooltip);
+.composite-button-secondary {
+  display: flex;
+  border-style: solid;
+  border-color: var(--colors-cool-grey-200);
+  border-width: 1px;
+  border-radius: var(--border-radius);
+  justify-content: center;
+  align-items: center;
+  padding: 7px;
+  gap: var(--spacing-4);
+  max-width: min-content;
+  height: min-content;
+}
+
+.tool-tip {
+  opacity: 0;
   position: absolute;
-  transform: translateY(var(--spacing-56, 56px));
-  padding: var(--spacing-16);
-  color: var(--colors-white);
-  background: var(--colors-black);
-  border-radius: 5px;
-  display: none;
-  z-index: 1;
-  font-size: 16px; /* hard to set via classes, what with this being a pseudoclass */
+  top: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1b2b3e;
+  color: #f2f2f2;
+  padding: var(--spacing-8) var(--spacing-16);
+  border-radius: var(--border-radius);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .button.full-width {
@@ -115,5 +262,10 @@
 .button:disabled,
 .button[disabled] {
   opacity: 0.6;
+  cursor: inherit;
+}
+.button-secondary:disabled,
+.button-secondary[disabled] {
+  opacity: 0.8;
   cursor: inherit;
 }

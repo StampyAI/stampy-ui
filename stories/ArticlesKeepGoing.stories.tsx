@@ -123,7 +123,12 @@ const relatedQuestions = [
 const withMockedToC = (StoryFn: any) => {
   return (
     <CachedObjectsContext.Provider
-      value={{toc: {items: toc}, glossary: {items: undefined}, tags: {items: undefined}}}
+      value={{
+        toc: {items: toc},
+        glossary: {items: undefined},
+        tags: {items: undefined},
+        onSiteQuestions: {items: undefined},
+      }}
     >
       <StoryFn />
     </CachedObjectsContext.Provider>

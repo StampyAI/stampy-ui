@@ -8,11 +8,50 @@ import Button from '~/components/Button'
 import './dropdown.css'
 import useIsMobile from '~/hooks/isMobile'
 
+type LinkProps = {
+  to: string
+  text: string
+  pageid?: string
+  className?: string
+  onClick: () => void
+}
+const Link = ({to, text, pageid, className, onClick}: LinkProps) => (
+  <div className={'articles-dropdown-entry ' + (className || '')}>
+    <LinkElem to={to} onClick={onClick} state={{section: pageid}}>
+      {text}
+    </LinkElem>
+  </div>
+)
+
+type ArticlesSectionProps = {
+  category: Category
+  toc: TOCItem[]
+  className?: string
+  hide: () => void
+}
+const ArticlesSection = ({category, toc, className, hide}: ArticlesSectionProps) => (
+  <div className={className || ''}>
+    <div className="default-bold">{category} sections</div>
+    {toc
+      .filter((item) => item.category === category)
+      .map((item: TOCItem) => (
+        <Link
+          key={`${item.pageid}-${item.title}`}
+          to={questionUrl(item)}
+          text={item.title}
+          pageid={item.pageid}
+          onClick={hide}
+        />
+      ))}
+  </div>
+)
+
 export type ArticlesDropdownProps = {
   toc: TOCItem[]
   categories: Tag[]
+  fullWidth?: boolean
 }
-export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
+export const ArticlesDropdown = ({toc, categories, fullWidth}: ArticlesDropdownProps) => {
   // The dropdown works by using the onHover pseudoclass, so will only hide once
   // the mouse leaves it. When using client side changes, the mouse doesn't leave
   // it, so it's always shown (until the mouse is moved out, of course). To get around
@@ -22,63 +61,26 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
   const hide = () => setHidden(true)
   useEffect(() => setHidden(false), [hidden])
   const mobile = useIsMobile()
-  const Link = ({
-    to,
-    text,
-    pageid,
-    className,
-  }: {
-    to: string
-    text: string
-    pageid?: string
-    className?: string
-  }) => (
-    <div className={'articles-dropdown-entry ' + (className || '')}>
-      <LinkElem to={to} onClick={hide} state={{section: pageid}}>
-        {text}
-      </LinkElem>
-    </div>
-  )
-
-  const ArticlesSection = ({
-    category,
-    toc,
-    className,
-  }: {
-    category: Category
-    toc: TOCItem[]
-    className?: string
-  }) => (
-    <div className={className || ''}>
-      <div className="default-bold">{category} sections</div>
-      {toc
-        .filter((item) => item.category === category)
-        .map((item: TOCItem) => (
-          <Link
-            key={`${item.pageid}-${item.title}`}
-            to={questionUrl(item)}
-            text={item.title}
-            pageid={item.pageid}
-          />
-        ))}
-    </div>
-  )
 
   return hidden ? null : (
-    <div className="articles-dropdown-container bordered col-8">
-      <div className="col-5 toc">
+    <div
+      className={`articles-dropdown-container bordered ${fullWidth ? 'full-width' : 'col-8'} z-index-4`}
+    >
+      <div className={(fullWidth ? '' : 'col-5 ') + 'toc'}>
         <ArticlesSection
           category={INTRODUCTORY}
           toc={toc}
           className={mobile ? 'padding-bottom-40' : 'padding-bottom-32'}
+          hide={hide}
         />
         <ArticlesSection
           category={ADVANCED}
           toc={toc}
           className={mobile ? 'padding-bottom-40' : ''}
+          hide={hide}
         />
       </div>
-      <div className="col-4">
+      <div className={fullWidth ? '' : 'col-4'}>
         {/*sorted right side*/}
         <div className="default-bold">Browse by category</div>
 
@@ -87,7 +89,13 @@ export const ArticlesDropdown = ({toc, categories}: ArticlesDropdownProps) => {
             ?.sort(sortFuncs['by number of questions'])
             .slice(0, 12)
             .map((tag) => (
-              <Link key={tag.rowId} className="teal-500" to={tagUrl(tag)} text={tag.name} />
+              <Link
+                key={tag.rowId}
+                className="teal-500"
+                to={tagUrl(tag)}
+                text={tag.name}
+                onClick={hide}
+              />
             ))}
         </div>
 

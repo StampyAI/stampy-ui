@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldRevalidateFunction, redirect} from '@remix-run/react'
 import {QuestionState} from '~/server-utils/stampy'
@@ -5,9 +6,9 @@ import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/Co
 import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
 import Page from '~/components/Page'
+import {WidgetStampy} from '~/components/Chatbot'
 import {getStateEntries} from '~/hooks/stateModifiers'
 import {questionUrl} from '~/routesMapper'
-import {useEffect} from 'react'
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
@@ -44,7 +45,7 @@ export default function App() {
         <ContentBoxThird />
 
         <div className="desktop-only padding-bottom-56" />
-        {/* <WidgetStampy /> */}
+        <WidgetStampy className="desktop-only" />
 
         <h3 className="grey large-bold padding-bottom-32">Advanced sections</h3>
         <Grid gridBoxes={advanced} />

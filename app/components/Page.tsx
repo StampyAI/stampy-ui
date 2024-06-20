@@ -7,7 +7,13 @@ import MobileNav from '~/components/Nav/Mobile'
 import {useTags} from '~/hooks/useCachedObjects'
 import useToC from '~/hooks/useToC'
 import useIsMobile from '~/hooks/isMobile'
-const Page = ({children, modal}: {children: ReactNode; modal?: boolean}) => {
+
+type PageProps = {
+  children: ReactNode
+  modal?: boolean
+  noFooter?: boolean
+}
+const Page = ({children, modal, noFooter}: PageProps) => {
   const {toc} = useToC()
   const {items: tags} = useTags()
   const {embed} = useOutletContext<Context>() || {}
@@ -22,7 +28,7 @@ const Page = ({children, modal}: {children: ReactNode; modal?: boolean}) => {
         ))}
       {children}
 
-      {!embed && !modal && <Footer />}
+      {!embed && !modal && !noFooter && <Footer />}
     </>
   )
 }

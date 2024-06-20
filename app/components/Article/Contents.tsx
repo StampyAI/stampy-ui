@@ -1,6 +1,8 @@
 import {useRef, useEffect} from 'react'
+import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
+import {togglePopup} from '../popups'
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
@@ -8,31 +10,43 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
 
   if (!footnote) return null
 
-  const elem = document.createElement('div')
-  elem.innerHTML = footnote.innerHTML
+  const elem = footnote.cloneNode(true) as Element
 
   // remove the back link, as it's useless in the popup
-  if (elem?.firstElementChild?.lastChild)
-    elem.firstElementChild.removeChild(elem.firstElementChild.lastChild)
+  Array.from(elem.getElementsByClassName('footnote-backref')).forEach((e) => {
+    e.parentElement?.removeChild(e)
+  })
 
-  return elem.innerHTML
+  return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string): HTMLElement => {
+const addPopup = (
+  e: HTMLElement,
+  id: string,
+  contents: string,
+  mobile: boolean = window?.innerWidth <= 780
+): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
   const popup = document.createElement('div')
-  popup.className = 'link-popup bordered'
+  popup.className = 'link-popup bordered small background'
   popup.innerHTML = contents
   popup.id = id
 
   e.insertAdjacentElement('afterend', popup)
 
-  e.addEventListener('mouseover', () => popup.classList.add('shown'))
-  e.addEventListener('mouseout', () => popup.classList.remove('shown'))
-  popup.addEventListener('mouseover', () => popup.classList.add('shown'))
-  popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
+  if (!mobile) {
+    e.addEventListener('mouseover', () => popup.classList.add('shown'))
+    e.addEventListener('mouseout', () => popup.classList.remove('shown'))
+    popup.addEventListener('mouseover', () => popup.classList.add('shown'))
+    popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
+  } else {
+    const toggle = () => popup.classList.toggle('shown')
+    popup.addEventListener('click', togglePopup(toggle, e))
+    e.addEventListener('click', togglePopup(toggle, e))
+    popup.children[0].addEventListener('click', (e) => e.stopPropagation())
+  }
 
   return popup
 }
@@ -73,6 +87,10 @@ const glossaryInjecter = (pageid: string, glossary: Glossary) => {
 }
 
 const insertGlossary = (pageid: string, glossary: Glossary) => {
+  // Generate a random ID for these glossary items. This is needed when mulitple articles are displayed -
+  // gloassary items should be only displayed once per article, but this is checked by popup id, so if
+  // there are 2 articles that have the same glossary item, then only the first articles popups would work
+  const randomId = Math.floor(1000 + Math.random() * 9000).toString()
   const injecter = glossaryInjecter(pageid, glossary)
 
   return (textNode: Node) => {
@@ -121,11 +139,11 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       const image = entry.image && `<img src="${entry.image}"/>`
       addPopup(
         e as HTMLSpanElement,
-        `glossary-${entry.term}`,
+        `glossary-${entry.term}-${randomId}`,
         `<div class="glossary-popup flex-container black small">
               <div class="contents ${image ? '' : 'full-width'}">
-                   <div class="small-bold">${entry.term}</div>
-                   <div class="defintion small">${entry.contents}</div>
+                   <div class="small-bold text-no-wrap">${entry.term}</div>
+                   <div class="definition small">${entry.contents}</div>
                    ${link || ''}
               </div>
               ${image || ''}
@@ -137,8 +155,19 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
   }
 }
 
-const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; glossary: Glossary}) => {
+const Contents = ({
+  pageid,
+  html,
+  glossary,
+  className = '',
+}: {
+  pageid: PageId
+  html: string
+  glossary: Glossary
+  className?: string
+}) => {
   const elementRef = useRef<HTMLDivElement>(null)
+  const mobile = useIsMobile()
 
   useEffect(() => {
     const el = elementRef.current
@@ -161,18 +190,20 @@ const Contents = ({pageid, html, glossary}: {pageid: PageId; html: string; gloss
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
       const footnote = footnoteHTML(el, e as HTMLAnchorElement)
       const footnoteId = (e.getAttribute('href') || '').replace('#', '')
-      if (footnote)
+      if (footnote) {
         addPopup(
           e as HTMLAnchorElement,
           `footnote-${footnoteId}`,
-          `<div class="footnote">${footnote}</div>`
+          `<div class="footnote">${footnote}</div>`,
+          mobile
         )
+      }
     })
-  }, [html, glossary, pageid])
+  }, [html, glossary, pageid, mobile])
 
   return (
     <div
-      className="contents large-reading padding-bottom-80"
+      className={`contents large-reading ${className}`}
       dangerouslySetInnerHTML={{
         __html: html,
       }}

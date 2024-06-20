@@ -12,6 +12,7 @@
   --colors-cool-grey-300: #c7cdd5;
   --colors-cool-grey-200: #dfe3e9;
   --colors-cool-grey-100: #f9fafc;
+  --colors-light-grey: #f9fafc;
   --colors-white: #ffffff;
 
   --colors-teal-900: #115652;
@@ -27,23 +28,26 @@
 
   --colors-green-500: #40c075;
 
-  /* spacing */
+  /* spacing - user everywhere for padding and margin */
   --border-radius: 6px;
   --spacing-4: 4px;
-  --spacing-6: 6px;
   --spacing-8: 8px;
   --spacing-12: 12px;
   --spacing-16: 16px;
-  --spacing-24: clamp(16px, 2.6vw, 24px);
-  --spacing-32: clamp(24px, 3.4vw, 32px);
-  --spacing-40: clamp(24px, 4.2vw, 40px);
-  --spacing-48: clamp(24px, 5vw, 48px);
-  --spacing-56: clamp(24px, 6vw, 56px);
-  --spacing-80: clamp(40px, 7.4vw, 80px);
-  --spacing-104: clamp(56px, 10.6vw, 104px);
-  --spacing-128: clamp(56px, 13.8vw, 128px);
-  --spacing-192: clamp(80px, 17vw, 192px);
-  --spacing-288: clamp(128px, 25.6vw, 288px);
+  --spacing-24: clamp(16px, 1.67vw, 24px);
+  --spacing-32: clamp(24px, 2.22vw, 32px);
+  --spacing-40: clamp(24px, 2.78vw, 40px);
+  --spacing-48: clamp(24px, 3.33vw, 48px);
+  --spacing-56: clamp(24px, 3.89vw, 56px);
+  --spacing-80: clamp(40px, 5.56vw, 80px);
+  --spacing-104: clamp(56px, 7.22vw, 104px);
+  --spacing-128: clamp(56px, 8.89vw, 128px);
+  --spacing-192: clamp(80px, 13.33vw, 192px);
+  --spacing-288: clamp(128px, 20vw, 288px);
+
+  /* height */
+  --height-48: 48px;
+  --height-64: 64px;
 }
 
 /* CSS Reset */
@@ -71,6 +75,7 @@ input {
   color: var(--colors-cool-grey-900), #1b2b3e;
   margin: 0;
 }
+
 body {
   margin: auto;
   max-width: 1608px; /* multiple of 12 for .col-x, 1 col at max width = 134px */
@@ -159,6 +164,16 @@ h2 {
   letter-spacing: -0.14px;
 }
 
+.xxs {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 150%; /* 23.8px */
+  letter-spacing: -0.1px;
+}
+
+.leading-0 {
+  line-height: 0 !important;
+}
 /* color classes */
 
 .black {
@@ -192,143 +207,210 @@ h2 {
 }
 
 .padding-bottom-4 {
-  padding-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-4) !important;
 }
 
 .padding-bottom-8 {
-  padding-bottom: var(--spacing-8);
+  padding-bottom: var(--spacing-8) !important;
 }
 
 .padding-bottom-16 {
-  padding-bottom: var(--spacing-16);
+  padding-bottom: var(--spacing-16) !important;
 }
 
 .padding-bottom-24 {
-  padding-bottom: var(--spacing-24);
+  padding-bottom: var(--spacing-24) !important;
 }
 
 .padding-bottom-32 {
-  padding-bottom: var(--spacing-32);
+  padding-bottom: var(--spacing-32) !important;
 }
 
 .padding-bottom-40 {
-  padding-bottom: var(--spacing-40);
+  padding-bottom: var(--spacing-40) !important;
 }
 
 .padding-bottom-56 {
-  padding-bottom: var(--spacing-56);
+  padding-bottom: var(--spacing-56) !important;
 }
 
 .padding-bottom-80 {
-  padding-bottom: var(--spacing-80);
+  padding-bottom: var(--spacing-80) !important;
 }
 
 .padding-bottom-104 {
-  padding-bottom: var(--spacing-104);
+  padding-bottom: var(--spacing-104) !important;
 }
 
 .padding-bottom-128 {
-  padding-bottom: var(--spacing-128);
+  padding-bottom: var(--spacing-128) !important;
 }
 
 .padding-bottom-192 {
-  padding-bottom: var(--spacing-192);
+  padding-bottom: var(--spacing-192) !important;
 }
 
 .padding-bottom-288 {
-  padding-bottom: var(--spacing-288);
+  padding-bottom: var(--spacing-288) !important;
 }
 
 .padding-top-4 {
-  padding-top: var(--spacing-4);
+  padding-top: var(--spacing-4) !important;
 }
 
 .padding-top-8 {
-  padding-top: var(--spacing-8);
+  padding-top: var(--spacing-8) !important;
 }
 
 .padding-top-16 {
-  padding-top: var(--spacing-16);
+  padding-top: var(--spacing-16) !important;
 }
 
 .padding-top-24 {
-  padding-top: var(--spacing-24);
+  padding-top: var(--spacing-24) !important;
 }
 
 .padding-top-32 {
-  padding-top: var(--spacing-32);
+  padding-top: var(--spacing-32) !important;
 }
 
 .padding-top-40 {
-  padding-top: var(--spacing-40);
+  padding-top: var(--spacing-40) !important;
 }
 
 .padding-top-56 {
-  padding-top: var(--spacing-56);
+  padding-top: var(--spacing-56) !important;
 }
 
 .padding-top-80 {
-  padding-top: var(--spacing-80);
+  padding-top: var(--spacing-80) !important;
 }
 
 .padding-top-104 {
-  padding-top: var(--spacing-104);
+  padding-top: var(--spacing-104) !important;
 }
 
 .padding-top-128 {
-  padding-top: var(--spacing-128);
+  padding-top: var(--spacing-128) !important;
 }
 
 .padding-top-192 {
-  padding-top: var(--spacing-192);
+  padding-top: var(--spacing-192) !important;
 }
 
 .padding-top-288 {
-  padding-top: var(--spacing-288);
+  padding-top: var(--spacing-288) !important;
+}
+
+/* padding left */
+
+.padding-left-4 {
+  padding-left: var(--spacing-4) !important;
+}
+
+.padding-left-8 {
+  padding-left: var(--spacing-8) !important;
+}
+
+.padding-left-16 {
+  padding-left: var(--spacing-16) !important;
+}
+
+.padding-left-24 {
+  padding-left: var(--spacing-24) !important;
+}
+
+.padding-left-32 {
+  padding-left: var(--spacing-32) !important;
+}
+
+.padding-left-40 {
+  padding-left: var(--spacing-40) !important;
+}
+
+.padding-left-56 {
+  padding-left: var(--spacing-56) !important;
+}
+
+.padding-left-80 {
+  padding-left: var(--spacing-80) !important;
 }
 
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
 .col-1 {
-  width: clamp(65px, 8.25vw, 134px);
+  width: clamp(0px, 3.54vw, 53px);
 }
+
 .col-2 {
-  width: clamp(130px, 16.5vw, 268px);
+  width: clamp(0px, 9.93vw, 171px);
 }
+
 .col-3 {
-  width: clamp(195px, 24.75vw, 402px);
+  width: clamp(0px, 16.25vw, 288px);
 }
+
 .col-4 {
-  width: clamp(260px, 33vw, 536px);
+  width: clamp(0px, 22.57vw, 405px);
 }
+
 .col-5 {
-  width: clamp(325px, 41.25vw, 670px);
+  width: clamp(0px, 28.96vw, 523px);
 }
+
 .col-6 {
-  width: clamp(390px, 49.5vw, 804px);
+  width: clamp(270px, 35.28vw, 640px);
 }
+
 .col-7 {
-  width: clamp(455px, 57.75vw, 938px);
+  width: clamp(0px, 41.6vw, 757px);
 }
+
 .col-8 {
-  width: clamp(520px, 66vw, 1072px);
+  width: clamp(0px, 47.99vw, 875px);
 }
+
 .col-9 {
-  width: clamp(585px, 74.25vw, 1206px);
+  width: clamp(0px, 54.31vw, 992px);
 }
+
 .col-10 {
-  width: clamp(650px, 82.5vw, 1340px);
+  width: clamp(300px, 60.62vw, 1109px);
 }
+
 .col-11 {
-  width: clamp(715px, 90.75vw, 1474px);
+  width: clamp(0px, 67.01vw, 1227px);
 }
+
 .col-12 {
-  width: clamp(780px, 99vw, 1608px);
+  width: clamp(0px, 73.33vw, 1344px);
 }
 
 .full-width {
   width: 100%;
+}
+
+.full-height {
+  height: fit-content;
+  min-height: 100%;
+}
+
+/* z-index classes */
+.z-index-1 {
+  z-index: 1;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.z-index-3 {
+  z-index: 3;
+}
+
+.z-index-4 {
+  z-index: 4;
 }
 
 /* other tags */
@@ -340,7 +422,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: var(--colors-teal-500, #1d9089);
+  /* color: var(--colors-teal-500, #1d9089); */
 }
 
 a:not(:hover, :focus-visible) {
@@ -358,6 +440,7 @@ ul {
   padding: 0;
   padding-left: var(--spacing-32);
 }
+
 ol {
   padding-left: var(--spacing-32);
 }
@@ -368,8 +451,16 @@ svg {
 
 /* other one-off classes */
 
+.text-align-left {
+  text-align: left;
+}
+
 .text-align-center {
   text-align: center;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
 }
 
 .flex-container {
@@ -378,6 +469,12 @@ svg {
 
 .flex-double {
   flex-grow: 2;
+}
+.auto-left {
+  margin-left: auto;
+}
+.auto-right {
+  margin-right: auto;
 }
 
 .centered {
@@ -390,8 +487,26 @@ svg {
   margin: 0 auto;
 }
 
+.reverse-icon {
+  cursor: pointer;
+  transform: rotate(180deg);
+}
+
 .pointer {
   cursor: pointer;
+}
+
+.hidden {
+  visibility: hidden;
+  transition: visibility 0.2s;
+}
+.shown {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.noscroll {
+  overflow: hidden;
 }
 
 /* for troubleshooting */
@@ -403,12 +518,15 @@ svg {
 
 /* defines the standard left and right margins */
 .page-body {
-  padding: 0 var(--spacing-104);
+  padding: 0px var(--spacing-128);
 }
 
 /* all other classes */
 .rounded {
   border-radius: var(--border-radius);
+}
+
+.shadowed {
   box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
   box-sizing: border-box;
 }
@@ -429,6 +547,11 @@ svg {
 .icon-link path {
   stroke: var(--colors-cool-grey-600);
 }
+
+.icon-link:hover path {
+  stroke: var(--colors-teal-500);
+}
+
 .icon-link.focused path {
   stroke: var(--colors-teal-600);
 }
@@ -442,20 +565,8 @@ svg {
 /* mobile */
 
 @media (max-width: 780px) {
-  :root {
-    --spacing-24: 16px;
-    --spacing-32: 24px;
-    --spacing-40: 24px;
-    --spacing-56: 24px;
-    --spacing-80: 40px;
-    --spacing-104: 56px;
-    --spacing-128: 56px;
-    --spacing-192: 80px;
-    --spacing-288: 128px;
-  }
-
   .page-body {
-    padding: 0px 6.4vw;
+    padding: 0px var(--spacing-48);
   }
 
   /* typography tags */
@@ -463,12 +574,14 @@ svg {
   h1 {
     font-size: 38px;
     font-weight: 500;
+    font-weight: 500;
     line-height: 130%; /* 49.4px */
     letter-spacing: -0.57px;
   }
 
   h2 {
     font-size: 26px;
+    font-weight: 500;
     font-weight: 500;
     line-height: 145%; /* 37.7px */
     letter-spacing: -0.52px;
@@ -479,6 +592,7 @@ svg {
   .large {
     font-size: 18px;
     font-weight: 300;
+    font-weight: 300;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
   }
@@ -486,12 +600,14 @@ svg {
   .large-reading {
     font-size: 18px;
     font-weight: 300;
+    font-weight: 300;
     line-height: 190%; /* 34.2px */
     letter-spacing: -0.18px;
   }
 
   .large-bold {
     font-size: 18px;
+    font-weight: 500;
     font-weight: 500;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
@@ -509,6 +625,22 @@ svg {
     padding: var(--spacing-32);
     flex-direction: column;
   }
+
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #1b2b3e99;
+    width: 100vw;
+    height: 100vh;
+    overflow: scroll;
+  }
+
+  .background > * {
+    margin: 198px auto;
+    background-color: var(--colors-white);
+    width: 85%;
+  }
 } /* end mobile */
 p,
 textarea,
@@ -517,4 +649,7 @@ button {
 }
 .margin-top-40 {
   margin-top: var(--spacing-40);
+}
+.relative {
+  position: relative;
 }

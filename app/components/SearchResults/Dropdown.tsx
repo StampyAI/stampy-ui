@@ -22,19 +22,25 @@ export interface SearchResultsProps {
   url: string
 }
 
-export const SearchResults = ({results}: {results: SearchResultsProps[]}) => {
+export const SearchResults = ({
+  results,
+  onSelect,
+}: {
+  results: SearchResultsProps[]
+  onSelect?: () => void
+}) => {
   const isMobile = useIsMobile()
   const noResults = results.length === 0
   if (noResults) {
     return (
-      <div className="container-search-results bordered col-5 container-search-results-mobile">
+      <div className="full-width z-index-2 container-search-results bordered">
         <div className="search-result">No results found</div>
       </div>
     )
   }
 
   return (
-    <div className="container-search-results bordered col-5 container-search-results-mobile">
+    <div className="container-search-results z-index-2 bordered" onClick={onSelect}>
       {results.map((result, i) => (
         <Link key={i} className="search-result" to={result.url}>
           <Paper />

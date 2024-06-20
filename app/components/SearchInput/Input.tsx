@@ -33,6 +33,7 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
         <MagnifyingIcon className="iconsMagnifyingGlass" />
         <input
           name="searchbar"
+          autoComplete="off"
           placeholder={placeholderText ?? 'Search articles'}
           className="search-input black"
           onKeyDown={(e) => {
@@ -43,7 +44,7 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
           }}
           value={search}
         />
-        {search !== '' && <XIcon className="x-icon" onClick={clear} />}
+        {search !== '' && <XIcon className="x-icon pointer" onClick={clear} />}
       </div>
     </div>
   )

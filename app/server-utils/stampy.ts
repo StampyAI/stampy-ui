@@ -200,7 +200,7 @@ const sendToCoda = async (
 export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
-    json = await (await fetch(url, params)).json()
+    json = await ((await fetch(url, params)) as Response).json()
   } catch (e: unknown) {
     // forward debug message to HTTP Response
     if (e && typeof e === 'object' && 'message' in e) {
@@ -339,7 +339,13 @@ export const loadGlossary = withCache('loadGlossary', async () => {
     rows
       .map(({values}) => {
         const pageid = extractText(values['UI ID'])
-        const phrases = [values.phrase, ...values.aliases.split('\n')]
+        const phrases = [
+          values.phrase,
+          ...values.aliases
+            .split(/[,\n]/)
+            .map((v) => v.trim())
+            .filter(Boolean),
+        ]
         const item = {
           pageid,
           term: extractText(values.phrase),

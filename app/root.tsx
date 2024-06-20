@@ -12,7 +12,7 @@ import {
 } from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import {cssBundleHref} from '@remix-run/css-bundle'
-import newStyles from '~/newRoot.css'
+import newStyles from '~/root.css'
 import Error from '~/components/Error'
 import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
@@ -133,7 +133,7 @@ function Head() {
   return (
     <head>
       <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
       {/* don't use color-scheme because supporting transparent iframes https://fvsch.com/transparent-iframes
           is more important than dark reader https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024
           <meta name="color-scheme" content="light dark" />

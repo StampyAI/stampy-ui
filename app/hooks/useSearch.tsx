@@ -1,5 +1,6 @@
-import {useState, useEffect, useRef, MutableRefObject} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import {Question} from '~/server-utils/stampy'
+import useOnSiteQuestions from './useOnSiteQuestions'
 
 const NUM_RESULTS = 8
 
@@ -21,6 +22,23 @@ export type WorkerMessage =
       userQuery?: string
     }
 
+const waitForCondition = async (conditionFn: () => boolean, interval = 100, timeout = 5000) => {
+  const startTime = Date.now()
+
+  async function loop() {
+    // If the condition is met, resolve.
+    if (conditionFn()) return true
+
+    // If the timeout has elapsed, reject.
+    if (Date.now() - startTime > timeout) throw new Error('Timeout waiting for condition')
+
+    // Wait for the specified interval, then try again.
+    await new Promise((resolve) => setTimeout(resolve, interval))
+    return loop()
+  }
+  return loop()
+}
+
 /**
  * Sort function for the highest score on top
  */
@@ -36,6 +54,7 @@ const byScore = (a: SearchResult, b: SearchResult) => b.score - a.score
 export const baselineSearch = async (
   searchQueryRaw: string,
   questions: Question[],
+  minSimilarity = 0,
   numResults = NUM_RESULTS
 ): Promise<SearchResult[]> => {
   if (!searchQueryRaw) {
@@ -89,7 +108,7 @@ export const baselineSearch = async (
     })
     .sort(byScore)
     .slice(0, numResults)
-    .filter(({score}) => score > 0)
+    .filter(({score}) => score >= minSimilarity)
 }
 
 /**
@@ -112,15 +131,16 @@ const normalize = (question: string) =>
  * use baseline search over the list of questions already loaded on the site.
  * Searches containing only one or two words will also use the baseline search
  */
-export const useSearch = (
-  onSiteQuestions: MutableRefObject<Question[]>,
-  numResults = NUM_RESULTS
-) => {
+export const useSearch = (numResults = NUM_RESULTS) => {
   const tfWorkerRef = useRef<Worker>()
   const runningQueryRef = useRef<string>() // detect current query in search function from previous render => ref
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>() // cancel previous timeout => ref
-  const [isPendingSearch, setIsPendingSearch] = useState(false) // re-render loading indicator => state
+  const isPendingSearch = useRef(false)
+  const resultsRef = useRef<SearchResult[]>([])
+  const resultsForRef = useRef<string>()
   const [results, setResults] = useState([] as SearchResult[])
+
+  const {items} = useOnSiteQuestions()
 
   useEffect(() => {
     const makeWorker = async () => {
@@ -130,50 +150,78 @@ export const useSearch = (
           tfWorkerRef.current = worker
         } else if (data.userQuery == runningQueryRef.current) {
           runningQueryRef.current = undefined
-          if (data.searchResults) setResults(data.searchResults)
-          setIsPendingSearch(false)
+          if (data.searchResults) {
+            resultsRef.current = data.searchResults
+            resultsForRef.current = data.userQuery
+            setResults(data.searchResults)
+          }
+          isPendingSearch.current = false
         }
       })
     }
     makeWorker()
   }, [])
 
-  const searchLater = (userQuery: string) => {
+  const searchLater = (userQuery: string, minSimilarity?: number) => {
     if (typeof window === 'undefined') return
 
     clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
-      search(userQuery)
+      search(userQuery, minSimilarity)
     }, 100)
   }
 
-  const search = (userQuery: string) => {
-    setIsPendingSearch(true)
-    const wordCount = userQuery.split(' ').length
-    if (wordCount > 2) {
+  const search = (userQuery: string, minSimilarity?: number) => {
+    isPendingSearch.current = true
+    const wordCount = userQuery.trim().split(' ').length
+    if (wordCount > 2 && tfWorkerRef.current) {
       if (runningQueryRef.current || !tfWorkerRef.current) {
-        searchLater(userQuery)
+        searchLater(userQuery, minSimilarity)
         return
       }
       runningQueryRef.current = userQuery
-      tfWorkerRef.current.postMessage({userQuery, numResults})
+      tfWorkerRef.current.postMessage({userQuery, numResults, minSimilarity})
     } else {
-      if (runningQueryRef.current || onSiteQuestions.current.length == 0) {
-        searchLater(userQuery)
+      if (!items || items?.length == 0) {
+        searchLater(userQuery, minSimilarity)
         return
       }
       runningQueryRef.current = userQuery
-      baselineSearch(userQuery, onSiteQuestions.current, numResults).then((searchResults) => {
+      baselineSearch(userQuery, items, minSimilarity, numResults).then((searchResults) => {
         runningQueryRef.current = undefined
+        resultsRef.current = searchResults
+        resultsForRef.current = userQuery
+        isPendingSearch.current = false
         setResults(searchResults)
-        setIsPendingSearch(false)
       })
     }
   }
 
+  const waitForResults = async (interval?: number, timeout?: number) => {
+    try {
+      await waitForCondition(() => !isPendingSearch.current, interval, timeout)
+    } catch (e) {
+      console.info('Timeout')
+    }
+    return resultsRef.current
+  }
+
+  const clear = () => {
+    runningQueryRef.current = undefined
+    isPendingSearch.current = false
+    resultsForRef.current = undefined
+    resultsRef.current = []
+    setResults([])
+  }
+
   return {
+    loadedQuestions: !!items,
+    loadedEmbeddings: !!runningQueryRef.current,
     search,
+    clear,
     results,
-    isPendingSearch,
+    resultsForRef,
+    isPendingSearch: isPendingSearch.current,
+    waitForResults,
   }
 }

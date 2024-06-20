@@ -42,6 +42,12 @@ interface HostConfig {
 }
 
 const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
+md.renderer.rules.footnote_caption = (tokens, idx) => {
+  let n = Number(tokens[idx].meta.id + 1).toString()
+  if (tokens[idx].meta.subId > 0) n += `:${tokens[idx].meta.subId}`
+  return n
+}
+
 export const convertToHtmlAndWrapInDetails = (markdown: string): string => {
   // Recursively wrap any [See more...] segments in HTML Details
   const seeMoreToken = 'SEE-MORE-BUTTON'
@@ -94,5 +100,5 @@ export const allLinksOnNewTab = (html: string): string => {
   // Open external links on new tab by using target="_blank",
   // pros&cons were extensively discussed in https://github.com/StampyAI/stampy-ui/issues/222
   // internal links look like <a href="/?state=1234">, so all absolute http links are treated as external
-  return html.replace(/(<a href="[^"]+")/g, `$1 target="_blank" rel="noreferrer"`)
+  return html.replace(/(<a href="[^#].*?")/g, `$1 target="_blank" rel="noreferrer"`)
 }

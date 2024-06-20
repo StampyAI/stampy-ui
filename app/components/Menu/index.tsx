@@ -13,6 +13,7 @@ interface MenuItemProps {
   onMouseEnter?: () => void
   onMouseLeave?: () => void
   id?: string
+  reload?: boolean
 }
 export const MenuItem = ({
   primary = false,
@@ -22,10 +23,12 @@ export const MenuItem = ({
   onMouseEnter,
   onMouseLeave,
   id,
+  reload,
 }: MenuItemProps) => {
+  const Component = !reload ? Link : (props: {to: string}) => <a href={props.to} {...props} />
   return (
     <li className="top-menu-item" id={id} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <Link to={link} className="top-menu-link">
+      <Component to={link} className="top-menu-link">
         {icon ? (
           typeof icon === 'string' ? (
             <img loading="lazy" src={icon} className="top-menu-icon" alt={text} />
@@ -35,7 +38,7 @@ export const MenuItem = ({
         ) : null}
 
         <span className={['top-menu-text', primary ? '' : 'teal-500'].join(' ')}>{text}</span>
-      </Link>
+      </Component>
     </li>
   )
 }

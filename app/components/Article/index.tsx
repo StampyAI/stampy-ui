@@ -1,22 +1,21 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
 import EditIcon from '~/components/icons-generated/Pencil'
 import Button, {CompositeButton} from '~/components/Button'
-import {Action, ActionType} from '~/routes/questions.actions'
-import type {Glossary, Question} from '~/server-utils/stampy'
+import Feedback, {logFeedback} from '~/components/Feedback'
 import {tagUrl} from '~/routesMapper'
+import type {Glossary, Question, Banner as BannerType} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
-import FeedbackForm from '~/components/Article/FeedbackForm'
+import useIsMobile from '~/hooks/isMobile'
 
 const isLoading = ({text}: Question) => !text || text === 'Loading...'
 
 const ArticleFooter = (question: Question) => {
-  const [showFeedback, setShowFeedback] = useState(false)
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
-  const [isFormFocused, setIsFormFocused] = useState(false)
+  const mobile = useIsMobile()
+
   const date =
     question.updatedAt &&
     new Date(question.updatedAt).toLocaleDateString('en-GB', {
@@ -24,67 +23,41 @@ const ArticleFooter = (question: Question) => {
       month: 'short',
     })
 
-  React.useEffect(() => {
-    // Hide the form after 10 seconds if the user hasn't interacted with it
-    const timeoutId = setInterval(() => {
-      if (!isFormFocused) {
-        setShowFeedbackForm(false)
-      }
-    }, 10000)
-
-    // Clear the timeout to prevent it from running if the component unmounts
-    return () => clearInterval(timeoutId)
-  }, [showFeedbackForm, isFormFocused])
-
-  React.useEffect(() => {
-    const timeout = setInterval(() => setShowFeedback(false), 6000)
-    return () => clearInterval(timeout)
-  }, [showFeedback])
-
   return (
     !isLoading(question) && (
       <div className="footer-comtainer padding-bottom-40">
-        {date && <div className="grey"> {`Updated ${date}`}</div>}
-        <div className="flex-double">
-          <Button
-            className="secondary"
-            action={question.answerEditLink || ''}
-            tooltip="Edit article"
-            props={{target: '_blank', rel: 'noopener noreferrer'}}
-          >
-            <EditIcon className="no-fill" />
-          </Button>
+        <div className="edited-container">
+          {date && <div className="grey"> {`Updated ${date}`}</div>}
+          <CompositeButton secondary>
+            <Button
+              secondary
+              action={question.answerEditLink || ''}
+              tooltip="Google Doc"
+              props={{target: '_blank', rel: 'noopener noreferrer'}}
+            >
+              <EditIcon />
+            </Button>
+          </CompositeButton>
         </div>
-        <span>Was this page helpful?</span>
-
-        <CompositeButton className="flex-container">
-          <Action
+        <div className="feeback-container">
+          {mobile && <p>Was this page helpful?</p>}
+          <Feedback
+            showForm
             pageid={question.pageid}
-            showText={true}
-            actionType={ActionType.HELPFUL}
-            onSuccess={() => setShowFeedback(true)}
+            onSubmit={async (message: string, option?: string) =>
+              logFeedback({
+                message,
+                option,
+                type: 'bot',
+                question: question.title || '',
+                answer: question.text || '',
+              })
+            }
+            options={['Unclear', 'Too wordy', 'Confusing', 'Incorrect', 'Other']}
+            upHint="This page was helpful"
+            downHint="This page was unhelpful"
           />
-          <Action
-            pageid={question.pageid}
-            showText={true}
-            actionType={ActionType.UNHELPFUL}
-            onClick={() => setShowFeedbackForm(true)}
-          />
-          <div className={['action-feedback-text', showFeedback ? 'show' : ''].join(' ')}>
-            Thanks for your feedback!
-          </div>
-          <FeedbackForm
-            pageid={question.pageid}
-            className={['feedback-form', showFeedbackForm ? 'show' : ''].join(' ')}
-            onClose={() => {
-              setShowFeedback(true)
-              setShowFeedbackForm(false)
-            }}
-            onBlur={() => setIsFormFocused(false)}
-            onFocus={() => setIsFormFocused(true)}
-            hasOptions={true}
-          />
-        </CompositeButton>
+        </div>
       </div>
     )
   )
@@ -107,7 +80,7 @@ const ArticleActions = ({answerEditLink}: Question) => {
       <Button
         className="secondary"
         action={answerEditLink || ''}
-        tooltip="Edit article"
+        tooltip="Suggest changes in Google Docs"
         props={{target: '_blank', rel: 'noopener noreferrer'}}
       >
         <EditIcon className="no-fill" />
@@ -135,6 +108,30 @@ const ArticleMeta = ({question, className}: {question: Question; className?: str
   )
 }
 
+const Banner = ({title, text, icon, backgroundColour, textColour}: BannerType) => {
+  return (
+    <div
+      key={title}
+      className="banner rounded shadowed"
+      style={{
+        backgroundColor: backgroundColour || 'inherit',
+        color: textColour || 'inherit',
+      }}
+    >
+      <h3>
+        <img src={icon?.url} alt={icon?.name} />
+        <span className="title">{title}</span>
+      </h3>
+      <div
+        className="banner-contents"
+        dangerouslySetInnerHTML={{
+          __html: text,
+        }}
+      ></div>
+    </div>
+  )
+}
+
 const Tags = ({tags}: Question) => (
   <div className="tags">
     {tags?.map((tag) => (
@@ -156,9 +153,15 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
       <h1 className="teal-500 padding-bottom-24">{title}</h1>
+      {question.banners?.filter((b) => b.title).map(Banner)}
       <ArticleMeta question={question} className="padding-bottom-56" />
 
-      <Contents pageid={pageid} html={text || ''} glossary={glossary || {}} />
+      <Contents
+        className="padding-bottom-80"
+        pageid={pageid}
+        html={text || ''}
+        glossary={glossary || {}}
+      />
 
       <KeepGoing {...question} />
 

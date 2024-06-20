@@ -1,0 +1,49 @@
+/* I define the first class, which in the component is set up to add to every component, as the default values */
+/* You could use this class and nothing else and it will still show up correctly */
+/* the class has the same title as the component */
+
+.input {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--colors-white, #fff);
+  color: var(--colors-cool-grey-900, #1b2b3e);
+  padding: var(--spacing-8) var(--height-48) var(--spacing-8) var(--spacing-12);
+  /* This can't be a variable because it shouldn't shrink when the screen gets small */
+  height: var(--height-48);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
+  transition: border 0.2s;
+}
+
+/* I then define all properties from Figma as titles (e.g. 'size' and 'state' for input) */
+/* and all possible values as unique classes within those properties (except for 'default') */
+/* I have to make sure to do .input.large so that this doesn't get in the way of other components */
+
+/* size */
+
+.input.large {
+  height: var(--height-64);
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  padding-right: var(--height-64);
+}
+
+/* states */
+
+.input:hover {
+  border: 1px solid var(--colors-teal-200, #a6d9d7);
+}
+
+.input:focus {
+  border: 1px solid var(--colors-teal-500, #1d9089) !important;
+  outline: none;
+  color: var(--colors-cool-grey-900, #1b2b3e);
+}
+
+.input:disabled,
+.input[disabled] {
+  opacity: 0.6;
+  cursor: inherit;
+}
