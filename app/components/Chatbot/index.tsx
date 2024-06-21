@@ -145,13 +145,20 @@ type FollowupsProps = {
 }
 const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
   const {randomQuestions} = useOnSiteQuestions()
-  const items =
-    (followups?.length || 0) >= 3
-      ? followups
-      : [
-          ...(followups || []),
-          ...randomQuestions().map(({title, pageid}) => ({text: title, pageid})),
-        ].slice(0, 3)
+  const [items, setItems] = useState(followups)
+
+  useEffect(() => {
+    const initialItems =
+      (followups?.length || 0) >= 3
+        ? followups
+        : [
+            ...(followups || []),
+            ...randomQuestions().map(({title, pageid}) => ({text: title, pageid})),
+          ].slice(0, 3)
+
+    setItems(initialItems)
+    // eslint-disable-next-line
+  }, [followups])
   return (
     <>
       {title && <div className={'padding-bottom-24' + (className || '')}>{title}</div>}
