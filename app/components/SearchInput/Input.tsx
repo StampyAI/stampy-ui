@@ -28,7 +28,9 @@ export const SearchInput = ({onChange, expandable, placeholderText}: SearchInput
   const clear = () => handleSearch('')
 
   return (
-    <div className={`search-box bordered ${expandable ? 'expandable' : ''}`}>
+    <div
+      className={`search-box bordered ${expandable ? 'expandable' : ''} ${search ? 'expanded' : ''}`}
+    >
       <div className="search-content">
         <MagnifyingIcon className="iconsMagnifyingGlass" />
         <input
