@@ -3,7 +3,8 @@
   box-sizing: border-box;
   border-radius: var(--border-radius);
 }
-.search-box.expandable:focus-within {
+.search-box.expandable:focus-within,
+.search-box.expandable.expanded {
   width: 21.46vw;
 }
 
