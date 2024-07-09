@@ -69,6 +69,7 @@ export type Question = {
   title: string
   pageid: string
   text: string | null
+  markdown: string | null
   answerEditLink: string | null
   relatedQuestions: RelatedQuestion[]
   questionState?: QuestionState
@@ -288,6 +289,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
+  markdown: extractText(values['Rich Text']),
   answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
   tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
   banners: extractJoined(values['Banners'] || [], allBanners),
