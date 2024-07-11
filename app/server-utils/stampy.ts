@@ -69,6 +69,7 @@ export type Question = {
   title: string
   pageid: string
   text: string | null
+  markdown: string | null
   answerEditLink: string | null
   relatedQuestions: RelatedQuestion[]
   questionState?: QuestionState
@@ -200,7 +201,8 @@ const sendToCoda = async (
 export const fetchJson = async (url: string, params?: RequestInit) => {
   let json
   try {
-    json = await ((await fetch(url, params)) as Response).json()
+    const res = (await fetch(url, params)) as Response
+    json = await res.json()
   } catch (e: unknown) {
     // forward debug message to HTTP Response
     if (e && typeof e === 'object' && 'message' in e) {
@@ -288,6 +290,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
   title: name,
   pageid: extractText(values['UI ID']),
   text: renderText(extractText(values['UI ID']), values['Rich Text']),
+  markdown: extractText(values['Rich Text']),
   answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
   tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
   banners: extractJoined(values['Banners'] || [], allBanners),
@@ -378,7 +381,12 @@ export const loadBanners = withCache('loadBanners', async (): Promise<Record<str
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
-  return rows.map(convertToQuestion)
+  const cleaned = rows.map(convertToQuestion)
+  const questionIds = cleaned.map((q) => q.pageid)
+  return cleaned.map((q) => ({
+    ...q,
+    relatedQuestions: q.relatedQuestions.filter(({pageid}) => questionIds.includes(pageid)),
+  }))
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {

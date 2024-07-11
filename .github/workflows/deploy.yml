@@ -26,6 +26,8 @@ jobs:
             | sed s/{MATOMO_DOMAIN}/${{ secrets.MATOMO_DOMAIN }}/ \
             | sed s/{DISCORD_LOGGING_CHANNEL_ID}/${{ secrets.DISCORD_LOGGING_CHANNEL_ID }}/ \
             | sed s/{DISCORD_LOGGING_TOKEN}/${{ secrets.DISCORD_LOGGING_TOKEN }}/ \
+            | sed s/{EDITOR_USERNAME}/${{ secrets.EDITOR_USERNAME }}/ \
+            | sed s/{EDITOR_PASSWORD}/${{ secrets.EDITOR_PASSWORD }}/ \
             > wrangler.toml
           npm ci
           npm run deploy

@@ -1,6 +1,7 @@
-import {ActionFunctionArgs, json} from '@remix-run/cloudflare'
+import {ActionFunctionArgs, LoaderFunctionArgs, json} from '@remix-run/cloudflare'
 import {useLoaderData, useActionData, useNavigation, Form} from '@remix-run/react'
 import {useEffect, useState} from 'react'
+import {isAuthorized} from '~/routesMapper'
 import {loadCacheKeys, loadCacheValue, cleanCache} from '~/server-utils/kv-cache'
 
 enum Actions {
@@ -9,7 +10,17 @@ enum Actions {
   loadCache = 'loadCache',
 }
 
-export const loader = async () => await loadCacheKeys()
+export const headers = () => ({
+  'WWW-Authenticate': 'Basic',
+})
+
+export const loader = async ({request}: LoaderFunctionArgs) => {
+  if (!isAuthorized(request)) {
+    return json([] as string[], {status: 401})
+  }
+
+  return await loadCacheKeys()
+}
 
 export const action = async ({request}: ActionFunctionArgs) => {
   const data = Array.from(await request.formData()) as [Actions, string][]
