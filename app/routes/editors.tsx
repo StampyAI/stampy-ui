@@ -1,21 +1,25 @@
 import {useState} from 'react'
+import {LoaderFunctionArgs, json} from '@remix-run/cloudflare'
 import Page from '~/components/Page'
 import Button from '~/components/Button'
 import '~/components/Chatbot/widgit.css'
-import {Question} from '~/server-utils/stampy'
+import {Question, QuestionStatus, loadAllQuestions} from '~/server-utils/stampy'
 import {downloadZip} from 'client-zip'
-import {fetchAllQuestionsOnSite} from './questions.allQuestionsOnSite'
+import {useLoaderData} from '@remix-run/react'
+import {isAuthorized} from '~/routesMapper'
 
 const SINGLE_FILE_HTML = 'singleFileHtml'
 const SINGLE_FILE_MARKDOWN = 'singleFileMarkdown'
 const MULTI_FILE_HTML = 'multipleFilesMarkdown'
 const MULTI_FILE_MARKDOWN = 'multipleFileHtml'
+const SINGLE_FILE_JSON = 'singleFileJson'
 
 const downloadOptions = {
   [SINGLE_FILE_HTML]: 'Single HTML file',
   [MULTI_FILE_HTML]: 'Multiple HTML files',
   [SINGLE_FILE_MARKDOWN]: 'Single markdown file',
   [MULTI_FILE_MARKDOWN]: 'Multiple markdown files',
+  [SINGLE_FILE_JSON]: 'As JSON',
 }
 
 const makeZipFile = async (questions: Question[], extention: string) =>
@@ -44,6 +48,8 @@ const makeFilename = (selectedOption: string) => {
     case MULTI_FILE_HTML:
     case MULTI_FILE_MARKDOWN:
       return 'questions.zip'
+    case SINGLE_FILE_JSON:
+      return 'questions.json'
     default:
       return 'questions'
   }
@@ -76,42 +82,80 @@ const getData = async (questions: Question[], selectedOption: string) => {
       return new Blob([questions.map(toMarkdownChunk).join('\n\n\n')], {type: 'text/markdown'})
     case MULTI_FILE_MARKDOWN:
       return makeZipFile(questions, 'md')
+    case SINGLE_FILE_JSON:
+      return new Blob([JSON.stringify(questions, null, 2)], {type: 'application/json'})
   }
 }
 
-const DownloadQuestions = () => {
+type DownloadQuestionsProps = {
+  title: string
+  questions: Question[]
+}
+const DownloadQuestions = ({title, questions}: DownloadQuestionsProps) => {
   const [selectedOption, setSelectedOption] = useState(SINGLE_FILE_HTML)
 
   const download = async () => {
-    const {data} = await fetchAllQuestionsOnSite()
-    const blob = await getData(data, selectedOption)
+    const blob = await getData(questions, selectedOption)
     blob && (await downloadBlob(makeFilename(selectedOption), blob))
   }
   return (
-    <div className="page-body full-height padding-top-32">
-      <h4>Download all questions</h4>
-      {Object.entries(downloadOptions).map(([id, label]) => (
-        <div key={id}>
-          <input
-            type="radio"
-            id={id}
-            checked={id === selectedOption}
-            name="download-format"
-            value={id}
-            onChange={(e) => setSelectedOption(e.target.id)}
-          />
-          <label htmlFor={id}>{label}</label>
-        </div>
-      ))}
-      <Button action={download}>Download</Button>
-    </div>
+    questions &&
+    questions.length > 0 && (
+      <div className="padding-top-32">
+        <h4>{title}</h4>
+        {Object.entries(downloadOptions).map(([id, label]) => (
+          <div key={id}>
+            <input
+              type="radio"
+              id={id}
+              checked={id === selectedOption}
+              name="download-format"
+              value={id}
+              onChange={(e) => setSelectedOption(e.target.id)}
+            />
+            <label htmlFor={id}>{label}</label>
+          </div>
+        ))}
+        <Button action={download}>Download</Button>
+      </div>
+    )
   )
 }
 
+export const headers = () => ({
+  'WWW-Authenticate': 'Basic',
+})
+
+export const loader = async ({request}: LoaderFunctionArgs) => {
+  try {
+    if (!isAuthorized(request)) {
+      return json({authorized: false, data: [] as Question[]}, {status: 401})
+    }
+
+    return await loadAllQuestions(request)
+  } catch (e) {
+    console.error(e)
+    throw new Response('Could not fetch all articles', {status: 500})
+  }
+}
+
 export default function EditorHelpers() {
+  const {data: questions} = useLoaderData<typeof loader>()
+
   return (
     <Page noFooter>
-      <DownloadQuestions />
+      <div className="page-body full-height padding-top-32">
+        {(!questions || !questions.length) && <div>Fetching questions...</div>}
+        <DownloadQuestions title="Download all questions" questions={questions} />
+        <DownloadQuestions
+          title="Download all published questions"
+          questions={questions?.filter((q) => q.status === QuestionStatus.LIVE_ON_SITE)}
+        />
+        <DownloadQuestions
+          title="Download all non published questions"
+          questions={questions?.filter((q) => q.status !== QuestionStatus.LIVE_ON_SITE)}
+        />
+      </div>
     </Page>
   )
 }

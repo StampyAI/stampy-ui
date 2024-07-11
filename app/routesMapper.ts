@@ -1,3 +1,15 @@
+export const isAuthorized = (request: Request) => {
+  const header = request.headers.get('Authorization')
+
+  if (!header) return false
+
+  const parsed = atob(header.replace('Basic ', ''))
+  if (!parsed) return false
+
+  const [username, password] = parsed.split(':')
+  return username === EDITOR_USERNAME && password === EDITOR_PASSWORD
+}
+
 export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) =>
   `/questions/${pageid}/${title?.replaceAll(' ', '-') || ''}`
 
