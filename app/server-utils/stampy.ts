@@ -381,7 +381,12 @@ export const loadBanners = withCache('loadBanners', async (): Promise<Record<str
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
-  return rows.map(convertToQuestion)
+  const cleaned = rows.map(convertToQuestion)
+  const questionIds = cleaned.map((q) => q.pageid)
+  return cleaned.map((q) => ({
+    ...q,
+    relatedQuestions: q.relatedQuestions.filter(({pageid}) => questionIds.includes(pageid)),
+  }))
 })
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
