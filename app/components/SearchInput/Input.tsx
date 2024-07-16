@@ -19,6 +19,7 @@ interface SearchInputProps {
 }
 export const SearchInput = ({onChange, expandable, placeholderText}: SearchInputProps) => {
   const [search, setSearch] = useState('')
+
   const handleSearch = (search: string) => {
     setSearch(search)
     if (onChange) {
