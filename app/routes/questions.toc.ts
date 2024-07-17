@@ -80,7 +80,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
   return {
     data: data
       .filter(canBeShown)
-      .filter(({tags}) => tags.includes(INTRODUCTORY) || tags.includes(ADVANCED))
+      .filter(({tags}) => tags?.includes(INTRODUCTORY) || tags?.includes(ADVANCED))
       .map(formatQuestion(1))
       .sort((a, b) => (a.order || 0) - (b.order || 0)),
     timestamp,
