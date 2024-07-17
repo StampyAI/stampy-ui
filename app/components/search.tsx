@@ -1,4 +1,5 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
+import {useSearchParams} from '@remix-run/react'
 import debounce from 'lodash/debounce'
 import {useSearch} from '~/hooks/useSearch'
 import {SearchInput} from './SearchInput/Input'
@@ -12,10 +13,11 @@ type Props = {
 }
 
 export default function Search({limitFromUrl, className}: Props) {
+  const [searchParams] = useSearchParams()
   const [showResults, setShowResults] = useState(false)
   const [searchPhrase, setSearchPhrase] = useState('')
 
-  const {search, isPendingSearch, results, clear} = useSearch(limitFromUrl)
+  const {search, isPendingSearch, results, clear, loadedQuestions} = useSearch(limitFromUrl)
   const clickDetectorRef = useOutsideOnClick(() => setShowResults(false))
 
   const searchFn = (rawValue: string) => {
@@ -30,6 +32,17 @@ export default function Search({limitFromUrl, className}: Props) {
       clear()
     }
   }
+
+  useEffect(() => {
+    const query = searchParams.get('q')
+    if (loadedQuestions && query) {
+      searchFn(query)
+      setShowResults(true)
+    }
+    // Properly adding all dependancies would require transforming `searchFn` into a callback
+    // or something, which in turn would cause this `useEffect` to be called a lot more often.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedQuestions, searchParams])
 
   const handleChange = debounce(searchFn, 100)
 
