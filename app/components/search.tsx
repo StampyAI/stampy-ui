@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {useSearchParams} from '@remix-run/react'
 import debounce from 'lodash/debounce'
 import {useSearch} from '~/hooks/useSearch'
@@ -33,15 +33,15 @@ export default function Search({limitFromUrl, className}: Props) {
     }
   }
 
+  // This ugly thing here is so that the useEffect doesn't need `searchFn` as its dependancy
+  const searchFnRef = useRef(searchFn)
+  searchFnRef.current = searchFn
   useEffect(() => {
     const query = searchParams.get('q')
     if (loadedQuestions && query) {
-      searchFn(query)
+      searchFnRef.current(query)
       setShowResults(true)
     }
-    // Properly adding all dependancies would require transforming `searchFn` into a callback
-    // or something, which in turn would cause this `useEffect` to be called a lot more often.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedQuestions, searchParams])
 
   const handleChange = debounce(searchFn, 100)
