@@ -59,9 +59,7 @@ const ArticleLevel = ({article, path, current, hideChildren}: Article) => {
       <Title article={article} path={path} current={current} />
       {!hideChildren && (
         <>
-          <div
-            className={'grey articles-dropdown' + (path?.includes(article.pageid) ? ' active' : '')}
-          >
+          <div className={'grey articles-dropdown'}>
             {article.children?.map((child) => (
               <ArticleLevel key={child.pageid} article={child} path={path} current={current} />
             ))}
