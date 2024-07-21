@@ -140,12 +140,13 @@ export default function EditorHelpers() {
                   className="teal-500"
                   target="_blank"
                   href="https://coda.io/d/AI-Safety-Info_dfau7sl2hmG"
+                  rel="noreferrer"
                 >
                   Coda
                 </a>
               </li>
               <li>
-                <a className="teal-500" target="_blank" href="https://ardmap.com">
+                <a className="teal-500" target="_blank" href="https://ardmap.com" rel="noreferrer">
                   Map of Alignment Research Dataset
                 </a>
               </li>
