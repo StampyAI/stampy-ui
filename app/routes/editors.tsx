@@ -76,7 +76,7 @@ const DownloadQuestions = ({title, type, questions}: DownloadQuestionsProps) => 
       <div className="padding-top-32">
         <h4>{title}</h4>
         {Object.entries(downloadOptions).map(([id, label]) => (
-          <div key={id}>
+          <div key={id} className="padding-left-8">
             <input
               type="radio"
               id={id}
@@ -85,7 +85,7 @@ const DownloadQuestions = ({title, type, questions}: DownloadQuestionsProps) => 
               value={id}
               onChange={(e) => setSelectedOption(e.target.id)}
             />
-            <label htmlFor={id} onClick={() => setSelectedOption(id)}>
+            <label className="padding-left-8" htmlFor={id} onClick={() => setSelectedOption(id)}>
               {label}
             </label>
           </div>
@@ -118,7 +118,7 @@ export default function EditorHelpers() {
 
   return (
     <Page noFooter>
-      <div className="page-body full-height padding-top-32">
+      <div className="page-body full-height padding-top-32 padding-bottom-128">
         {(!questions || !questions.length) && <div>Fetching questions...</div>}
         <DownloadQuestions title="Download all questions" questions={questions} type="all" />
         <DownloadQuestions
@@ -131,6 +131,27 @@ export default function EditorHelpers() {
           type="inProgress"
           questions={questions?.filter((q) => q.status !== QuestionStatus.LIVE_ON_SITE)}
         />
+        <div className="padding-top-32">
+          <h4>Tools</h4>
+          <div>
+            <ul>
+              <li>
+                <a
+                  className="teal-500"
+                  target="_blank"
+                  href="https://coda.io/d/AI-Safety-Info_dfau7sl2hmG"
+                >
+                  Coda
+                </a>
+              </li>
+              <li>
+                <a className="teal-500" target="_blank" href="https://ardmap.com">
+                  Map of Alignment Research Dataset
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </Page>
   )
