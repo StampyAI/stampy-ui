@@ -28,7 +28,6 @@ export const ListTable = ({elements, sameTab, className}: ListTableProps) => {
           key={`entry-${i}`}
           className={styles.entry + ' teal-500 default-bold flex-container ' + (className || '')}
           to={questionUrl({pageid, title})}
-          target={sameTab ? undefined : '_blank'}
           rel={sameTab ? undefined : 'noopener noreferrer'}
         >
           <div>
