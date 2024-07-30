@@ -26,6 +26,7 @@ const Button = ({
   const mobile = useIsMobile()
 
   const classes = [
+    'default',
     (secondary && 'button-secondary') || 'button',
     className,
     secondary && active && 'active',

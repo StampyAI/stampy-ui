@@ -85,14 +85,14 @@ body {
 /* typography tags */
 
 h1 {
-  font-size: clamp(40px, 4vw, 52px);
+  font-size: clamp(40px, 4vw, 50px);
   font-weight: 500;
   line-height: 125%; /* 80px */
   letter-spacing: -1.28px;
 }
 
 h2 {
-  font-size: clamp(24px, 2.6vw, 32px);
+  font-size: clamp(24px, 2.6vw, 28px);
   font-weight: 500;
   line-height: 130%; /* 49.4px */
   letter-spacing: -0.57px;
@@ -101,39 +101,62 @@ h2 {
 /* typography classes */
 
 .large {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+  /*   
   font-size: 22px;
   font-weight: 300;
   line-height: 170%; /* 37.4px */
-  letter-spacing: -0.44px;
+  /* letter-spacing: -0.44px; */
 }
 
 .large-reading {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 190%; /* 30.6px */
+  letter-spacing: -0.18px;
+  /*   
   font-size: 22px;
   font-weight: 300;
   line-height: 190%; /* 41.8px */
-  letter-spacing: -0.44px;
+  /* letter-spacing: -0.44px;  */
 }
 
 .large-bold {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
+  /* 
   font-size: 22px;
   font-weight: 500;
   line-height: 170%; /* 37.4px */
-  letter-spacing: -0.44px;
+  /* letter-spacing: -0.44px; */
 }
 
 .default {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
   /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
-  font-size: 18px;
+  /* font-size: 18px;
   font-weight: 300;
   line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  /* letter-spacing: -0.18px; */
 }
 
 .default-bold {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
+  /* font-size: 18px;
   font-weight: 500;
   line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  /* letter-spacing: -0.18px; */
 }
 
 .small {

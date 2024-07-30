@@ -112,7 +112,7 @@ export const WidgetStampy = ({className}: {className?: string}) => {
       <div className="sample-messages-container padding-bottom-24">
         <IconStampySmall />
         <div className="sample-messages rounded">
-          <div className="padding-bottom-24">Try asking me...</div>
+          <div className="padding-bottom-24 small">Try asking me...</div>
           {questions.map(({title}, i) => (
             <div key={i} className="padding-bottom-16">
               <Button className="secondary-alt-large" action={stampyUrl(title)}>
@@ -166,7 +166,7 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
       {items?.map(({text, pageid}, i) => (
         <div key={i} className="padding-bottom-16">
           <Button
-            className="secondary-alt-large text-align-left followup-button"
+            className="secondary-alt-large text-align-left followup-button large"
             action={() => onSelect({text, pageid})}
           >
             {text}
