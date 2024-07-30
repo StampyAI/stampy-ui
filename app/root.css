@@ -85,14 +85,14 @@ body {
 /* typography tags */
 
 h1 {
-  font-size: clamp(40px, 4vw, 50px);
+  font-size: clamp(40px, 4vw, 52px);
   font-weight: 500;
   line-height: 125%; /* 80px */
   letter-spacing: -1.28px;
 }
 
 h2 {
-  font-size: clamp(24px, 2.6vw, 28px);
+  font-size: clamp(24px, 2.6vw, 32px);
   font-weight: 500;
   line-height: 130%; /* 49.4px */
   letter-spacing: -0.57px;

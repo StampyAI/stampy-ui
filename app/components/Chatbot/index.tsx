@@ -106,7 +106,7 @@ export const WidgetStampy = ({className}: {className?: string}) => {
     <div className={`centered col-9 padding-bottom-128 ${className || ''}`}>
       <div className="col-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
-        <h2>Ask Stampy, our chatbot, any question about AI safety</h2>
+        <h2>Ask Stampy, our chatbot, any questions about AI safety</h2>
       </div>
 
       <div className="sample-messages-container padding-bottom-24">
