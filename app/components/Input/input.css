@@ -28,6 +28,7 @@
   font-size: 18px;
   letter-spacing: -0.18px;
   padding-right: var(--height-64);
+  padding-left: var(--spacing-16);
 }
 
 /* states */
