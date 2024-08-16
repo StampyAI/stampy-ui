@@ -66,8 +66,15 @@ const updateRelated = (question: Question, allQuestions?: Question[]) => {
   }
 }
 
-const updateFields = (question: Question, tags?: Tag[], allQuestions?: Question[]) =>
-  updateTags(updateRelated(question, allQuestions), tags)
+const updateBanners = (question: Question, hideBanners?: boolean) =>
+  hideBanners ? {...question, banners: []} : question
+
+const updateFields = (
+  question: Question,
+  hideBanners?: boolean,
+  tags?: Tag[],
+  allQuestions?: Question[]
+) => updateTags(updateRelated(updateBanners(question, hideBanners), allQuestions), tags)
 
 export default function RenderArticle() {
   const location = useLocation()
@@ -80,6 +87,7 @@ export default function RenderArticle() {
   const {question} = useLoaderData<typeof loader>()
   const {toc, findSection, getArticle, getPath} = useToC()
   const section = findSection(location?.state?.section || pageid)
+  const hideBannersIfSubsection = section?.children?.some((c) => c.pageid === pageid)
 
   useEffect(() => {
     setShowNav(false)
@@ -153,6 +161,7 @@ export default function RenderArticle() {
                   <Article
                     question={updateFields(
                       resolvedQuestion.data as Question,
+                      hideBannersIfSubsection,
                       tags,
                       onSiteQuestions
                     )}

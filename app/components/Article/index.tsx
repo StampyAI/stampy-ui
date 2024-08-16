@@ -149,6 +149,7 @@ type ArticleProps = {
 }
 export const Article = ({question, glossary, className}: ArticleProps) => {
   const {title, text, pageid} = question
+  console.debug('gg')
 
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
@@ -156,12 +157,16 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
       {question.banners?.filter((b) => b.title).map(Banner)}
       <ArticleMeta question={question} className="padding-bottom-56" />
 
-      <Contents
-        className="padding-bottom-80"
-        pageid={pageid}
-        html={text || ''}
-        glossary={glossary || {}}
-      />
+      {text ? (
+        <Contents
+          className="padding-bottom-80"
+          pageid={pageid}
+          html={text}
+          glossary={glossary || {}}
+        />
+      ) : (
+        <div className="padding-bottom-32" />
+      )}
 
       <KeepGoing {...question} />
 
