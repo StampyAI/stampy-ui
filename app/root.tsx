@@ -61,7 +61,7 @@ const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
-  const logo = 'favicon-512.png'
+  const logo = '/favicon-512.png'
   return [
     {title},
     {name: 'description', content: description},
