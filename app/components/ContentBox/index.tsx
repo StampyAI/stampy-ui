@@ -29,7 +29,7 @@ export const ContentBox = ({
     <div className={`main-container-box-table bordered ${className || ''}`}>
       <div className="content-box-description">
         <h2 className="padding-bottom-32">{title}</h2>
-        <Button action={action} className="primary-alt">
+        <Button action={action} className="primary-alt" size="large">
           {actionTitle}
         </Button>
       </div>

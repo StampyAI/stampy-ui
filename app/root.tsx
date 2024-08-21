@@ -18,6 +18,7 @@ import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
+import GlobalBanners from './components/GlobalBanners'
 
 /*
  * Transform the given text into a meta header format.
@@ -157,7 +158,10 @@ const BasePage = ({
   <CachedObjectsProvider>
     <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
       <Head />
-      <body>{children}</body>
+      <body>
+        <GlobalBanners />
+        {children}
+      </body>
     </html>
   </CachedObjectsProvider>
 )

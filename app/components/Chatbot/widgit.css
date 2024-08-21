@@ -96,7 +96,7 @@
 }
 
 @media (max-width: 780px) {
-  .button {
+  .stampy-widget .button {
     width: 100%;
   }
   .widget-ask.fixed {

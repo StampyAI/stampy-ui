@@ -19,7 +19,7 @@ const Page = ({children, modal, noFooter}: PageProps) => {
   const {embed} = useOutletContext<Context>() || {}
   const isMobile = useIsMobile()
   return (
-    <>
+    <div className="page">
       {!modal &&
         (isMobile ? (
           <MobileNav toc={toc} categories={tags} />
@@ -29,7 +29,7 @@ const Page = ({children, modal, noFooter}: PageProps) => {
       {children}
 
       {!embed && !modal && !noFooter && <Footer />}
-    </>
+    </div>
   )
 }
 
