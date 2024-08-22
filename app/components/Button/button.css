@@ -1,7 +1,6 @@
 .button {
   cursor: pointer;
   display: inline-flex;
-  min-height: var(--spacing-56, 56px);
   padding: var(--spacing-8) var(--spacing-24);
   justify-content: center;
   align-items: center;
@@ -23,6 +22,14 @@
   line-height: 0;
   background: inherit;
   cursor: pointer;
+}
+
+.button.small {
+  height: 40px; /* This shouldn't get overridden on mobile */
+}
+
+.button.large {
+  min-height: var(--spacing-56, 56px);
 }
 
 /* style */

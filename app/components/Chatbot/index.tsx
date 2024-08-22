@@ -103,7 +103,7 @@ export const WidgetStampy = ({className}: {className?: string}) => {
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
-    <div className={`centered col-9 padding-bottom-128 ${className || ''}`}>
+    <div className={`stampy-widget centered col-9 padding-bottom-128 ${className || ''}`}>
       <div className="col-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
         <h2>Ask Stampy, our chatbot, any questions about AI safety</h2>
@@ -115,7 +115,7 @@ export const WidgetStampy = ({className}: {className?: string}) => {
           <div className="padding-bottom-24 small">Try asking me...</div>
           {questions.map(({title}, i) => (
             <div key={i} className="padding-bottom-16">
-              <Button className="secondary-alt-large" action={stampyUrl(title)}>
+              <Button className="secondary-alt-large" action={stampyUrl(title)} size="large">
                 {title}
               </Button>
             </div>
@@ -184,7 +184,7 @@ const SplashScreen = ({
   questions?: Followup[]
   onSelection: (followup: Followup) => void
 }) => (
-  <div className="padding-top-40">
+  <div className="stampy-widget padding-top-40">
     <IconStampyLarge />
     <div className="col-6 padding-bottom-40 padding-top-40">
       <h2 className="teal-500">Hi there, I’m Stampy.</h2>
