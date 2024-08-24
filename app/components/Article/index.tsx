@@ -149,7 +149,6 @@ type ArticleProps = {
 }
 export const Article = ({question, glossary, className}: ArticleProps) => {
   const {title, text, pageid} = question
-  console.debug('gg')
 
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>

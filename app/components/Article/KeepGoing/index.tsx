@@ -44,11 +44,8 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
   const next = getNext(pageid, section?.pageid)
   const hasRelated = relatedQuestions && relatedQuestions.length > 0
   const showListTable =
-    // used on section and sub-sections, but not on leaf articles
-    sectionsWithListTable.includes(pageid) ||
-    (section &&
-      sectionsWithListTable.includes(section.pageid) &&
-      section.children?.some((c) => c.pageid == pageid))
+    // used on sectionsWithListTable and on sub-sections from any section, but not on leaf articles
+    sectionsWithListTable.includes(pageid) || section?.children?.some((c) => c.pageid == pageid)
 
   const formatRelated = (hasIcon: boolean) => (related: RelatedQuestion) => {
     const relatedSection = findSection(related.pageid)
