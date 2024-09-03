@@ -45,7 +45,7 @@ const GlobalBanners = () => (
     <GlobalBanner
       bannerId="take-survey-1"
       title="Take AISafety.info’s 3 minute survey to help inform our strategy and priorities"
-      action="https://79385avet9x.typeform.com/to/cyfXg3je"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSebvqMAyb1vUoP7gIEAJHOZE4HtNp6oixJm3taVos0AfwrBKg/viewform"
       actionLabel="Take the survey"
     />
   </>
