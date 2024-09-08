@@ -72,13 +72,13 @@ export const ContentBoxSecond = () => {
       <ListTable
         sameTab
         elements={[
-          {title: 'Why can’t we just use Asimov’s Three Laws of Robotics?', pageid: '6224'},
           {
-            title: 'Why would misaligned AI pose a threat that we can’t deal with?',
-            pageid: 'MNAK',
+            title: 'Why can’t we just turn the AI off if it starts to misbehave?',
+            pageid: '5611',
             className: 'desktop-only',
           },
-          {title: 'Isn’t the real concern with AI something else?', pageid: '1001'},
+          {title: 'Isn’t the real concern technological unemployment?', pageid: '6412'},
+          {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
         ]}
       />
     </ContentBox>
