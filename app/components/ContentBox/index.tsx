@@ -78,7 +78,7 @@ export const ContentBoxSecond = () => {
             className: 'desktop-only',
           },
           {title: 'Isn’t the real concern technological unemployment?', pageid: '6412'},
-          {title: 'Will AI be able to think faster than humans?', pageid: '8E41'}
+          {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
         ]}
       />
     </ContentBox>
