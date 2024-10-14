@@ -1,3 +1,4 @@
+import {SVGProps} from 'react'
 import ButtonOrLink from '../ButtonOrLink'
 import './card.css'
 
@@ -5,7 +6,7 @@ interface CardProps {
   title: string
   description: string
   impact: string
-  icon: string
+  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
   route?: string
   onClick?: () => void
   className?: string
@@ -24,9 +25,9 @@ export default function Card({
 
   const commonContent = (
     <>
-      <div className="card-icon">{icon}</div>
+      <div className="card-icon">{icon({})}</div>
       <div className="card-content">
-        <h3 className="large-bold">{title}</h3>
+        <h3 className="large-bold padding-bottom-8">{title}</h3>
         <p className="grey padding-bottom-16">{description}</p>
         <p className="card-impact small">{impact}</p>
       </div>

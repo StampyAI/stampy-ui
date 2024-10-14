@@ -1,0 +1,33 @@
+.drop-down {
+  border-top: 1px solid var(--colors-teal-500);
+  border-bottom: 1px solid var(--colors-teal-500);
+}
+
+.drop-down-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-32);
+  padding-bottom: var(--spacing-32);
+  cursor: pointer;
+}
+
+.drop-down-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.drop-down-content.open {
+  max-height: 2000px;
+  padding-bottom: var(--spacing-40);
+}
+
+.drop-down-chevron {
+  transition: transform 0.3s ease-out;
+  transform: rotate(90deg);
+}
+
+.rotate-90 {
+  transform: rotate(-90deg);
+}

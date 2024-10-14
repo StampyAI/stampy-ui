@@ -1,4 +1,4 @@
-import {useParams} from '@remix-run/react'
+import {Link, useParams} from '@remix-run/react'
 import {useEffect} from 'react'
 import Page from '~/components/Page'
 import {howCanIHelpComponents} from '~/components/HowCanIHelp'
@@ -18,7 +18,9 @@ export default function HowCanIHelp() {
   return (
     <Page>
       <div className="page-body">
-        <p className="padding-bottom-16">How can I help with AI Safety?</p>
+        <div className="padding-bottom-16">
+          <Link to="/howcanihelp">How can I help with AI Safety?</Link>
+        </div>
         <Component />
       </div>
     </Page>

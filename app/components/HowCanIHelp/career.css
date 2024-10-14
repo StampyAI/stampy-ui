@@ -7,7 +7,18 @@
 .section-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-32);
+  gap: 40px 64px;
+}
+
+.section-split {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-40);
+}
+
+.help-footer {
+  border-top: 1px solid var(--colors-cool-grey-200);
+  padding-top: var(--spacing-80);
 }
 
 @media (max-width: 780px) {

@@ -1,5 +1,6 @@
 import './helpgrid.css'
 import Card from '../Card'
+import {Briefcase, Megaphone, PiggyBank, Hand, Book, People} from '../icons-generated'
 
 const helpItems = [
   {
@@ -7,14 +8,14 @@ const helpItems = [
     description:
       'For both technical and non-technical roles in AI alignment, governance, and field-building',
     impact: 'Highest direct impact',
-    icon: 'briefcase',
+    icon: Briefcase,
     route: '/howcanihelppage/career',
   },
   {
     title: 'Spread the word & grassroots activism',
     description: 'For anyone—help us spread the word about this issue',
     impact: 'Quickest & most accessible',
-    icon: 'megaphone',
+    icon: Megaphone,
     route: '/howcanihelppage/grassroots',
   },
   {
@@ -22,7 +23,7 @@ const helpItems = [
     description:
       'The AI safety field is constrained by funding—financial help is critical at this moment',
     impact: 'Highest indirect impact',
-    icon: 'piggy-bank',
+    icon: PiggyBank,
     route: '/howcanihelppage/donate',
   },
   {
@@ -30,7 +31,7 @@ const helpItems = [
     description:
       'Help us build important AI safety infrastructure—all skill sets and levels of time-commitment are wanted',
     impact: 'Best for partial commitment',
-    icon: 'hand-heart',
+    icon: Hand,
     route: '/howcanihelppage/volunteer',
   },
   {
@@ -38,7 +39,7 @@ const helpItems = [
     description:
       'Learning about AI safety equips you to effectively contribute to discussions and influence its development',
     impact: 'Enables impact',
-    icon: 'book',
+    icon: Book,
     route: '/howcanihelppage/knowledge',
   },
   {
@@ -46,7 +47,7 @@ const helpItems = [
     description:
       'Joining a community is motivating, and will help guide your efforts to contribute and get involved',
     impact: 'Enables impact',
-    icon: 'people',
+    icon: People,
     route: '/howcanihelppage/community',
   },
 ]

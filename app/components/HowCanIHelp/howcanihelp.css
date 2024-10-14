@@ -1,5 +1,4 @@
 .howcanihelp-header {
-  display: flex;
-  align-items: start;
-  justify-content: start;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
