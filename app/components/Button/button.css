@@ -1,7 +1,6 @@
 .button {
   cursor: pointer;
   display: inline-flex;
-  min-height: var(--spacing-56, 56px);
   padding: var(--spacing-8) var(--spacing-24);
   justify-content: center;
   align-items: center;
@@ -13,12 +12,6 @@
 
   background: var(--colors-white, #ffffff);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
 }
 
 .button-secondary {
@@ -31,60 +24,43 @@
   cursor: pointer;
 }
 
+.button.small {
+  height: 40px; /* This shouldn't get overridden on mobile */
+}
+
+.button.large {
+  min-height: var(--spacing-56, 56px);
+}
+
 /* style */
 
 .primary {
   background: var(--colors-teal-500, #1d9089);
   font-weight: 500;
   color: var(--colors-white, #ffffff);
-
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
 }
 
 .primary-alt {
   background: var(--colors-white, #ffffff);
   color: var(--colors-teal-500, #1d9089);
-
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
 }
 
 .secondary {
   color: var(--colors-cool-grey-600, #788492) !important;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
-
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
 }
 
 .secondary-selected {
   background: var(--colors-white, #ffffff);
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-teal-500, #1d9089);
-
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
 }
 
 .secondary-alt {
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
-
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
 }
 
 /* large */
@@ -93,54 +69,29 @@
   background: var(--colors-teal-500, #1d9089);
   font-weight: 500;
   color: var(--colors-white, #ffffff);
-
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
 }
 
 .primary-alt-large {
   background: var(--colors-white, #ffffff);
   color: var(--colors-teal-500, #1d9089);
-
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
 }
 
 .secondary-large {
   color: var(--colors-cool-grey-600, #788492) !important;
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
-
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
 }
 
 .secondary-selected-large {
   background: var(--colors-white, #ffffff);
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-teal-500, #1d9089);
-
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
 }
 
 .secondary-alt-large {
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
   background: var(--colors-white, #fff);
-
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
 }
 
 /* state */

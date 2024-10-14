@@ -76,7 +76,7 @@ input {
   margin: 0;
 }
 
-body {
+.page {
   margin: auto;
   max-width: 1608px; /* multiple of 12 for .col-x, 1 col at max width = 134px */
   min-height: 100vh;
@@ -101,39 +101,39 @@ h2 {
 /* typography classes */
 
 .large {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 300;
-  line-height: 170%; /* 37.4px */
-  letter-spacing: -0.44px;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .large-reading {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 300;
-  line-height: 190%; /* 41.8px */
-  letter-spacing: -0.44px;
+  line-height: 190%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .large-bold {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 170%; /* 37.4px */
-  letter-spacing: -0.44px;
+  line-height: 170%; /* 30.6px */
+  letter-spacing: -0.18px;
 }
 
 .default {
-  /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
+  /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
 }
 
 .default-bold {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  line-height: 170%; /* 27.2px */
+  letter-spacing: -0.16px;
 }
 
 .small {

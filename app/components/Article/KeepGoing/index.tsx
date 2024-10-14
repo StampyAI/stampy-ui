@@ -8,7 +8,7 @@ import type {Question, RelatedQuestion} from '~/server-utils/stampy'
 import {questionUrl} from '~/routesMapper'
 import styles from './keepGoing.module.css'
 
-const nonContinueSections = ['8TJV']
+const sectionsWithListTable = ['8TJV']
 
 type NextArticleProps = {
   section?: TOCItem
@@ -18,7 +18,7 @@ type NextArticleProps = {
 const NextArticle = ({section, next, first}: NextArticleProps) =>
   next && (
     <>
-      <h2 className="padding-bottom-40">Keep reading!</h2>
+      <h2 className="padding-bottom-40">Keep Reading</h2>
       <div className="padding-bottom-24">
         {first ? 'Start' : 'Continue'} with the {first ? 'first' : 'next'} entry in "
         {section?.title}"
@@ -43,7 +43,9 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
   const section = findSection(location?.state?.section || pageid)
   const next = getNext(pageid, section?.pageid)
   const hasRelated = relatedQuestions && relatedQuestions.length > 0
-  const skipNext = nonContinueSections.includes(section?.pageid || '')
+  const showListTable =
+    // used on sectionsWithListTable and on sub-sections from any section, but not on leaf articles
+    sectionsWithListTable.includes(pageid) || section?.children?.some((c) => c.pageid == pageid)
 
   const formatRelated = (hasIcon: boolean) => (related: RelatedQuestion) => {
     const relatedSection = findSection(related.pageid)
@@ -54,25 +56,23 @@ export const KeepGoing = ({pageid, relatedQuestions}: Question) => {
 
   return (
     <div>
-      {!skipNext && (
-        <NextArticle section={section} next={next} first={section?.pageid === pageid} />
-      )}
-
-      {next && hasRelated && !skipNext && (
-        <div className="padding-bottom-56">Or jump to a related question</div>
-      )}
-      {hasRelated && !skipNext && (
-        <div className="padding-bottom-40">
-          <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated(true))} />
-        </div>
-      )}
-      {skipNext && (
-        <div className="padding-bottom-40">
-          <ListTable
-            sameTab
-            elements={getArticle(pageid)?.children?.map(formatRelated(false)) || []}
-          />
-        </div>
+      {showListTable ? (
+        <ListTable
+          sameTab
+          elements={getArticle(pageid)?.children?.map(formatRelated(false)) || []}
+        />
+      ) : (
+        <>
+          <NextArticle section={section} next={next} first={section?.pageid === pageid} />
+          {next && hasRelated && (
+            <div className="padding-bottom-24">Or jump to a related question</div>
+          )}
+          {hasRelated && (
+            <div>
+              <ListTable elements={relatedQuestions.slice(0, 3).map(formatRelated(true))} />
+            </div>
+          )}
+        </>
       )}
     </div>
   )

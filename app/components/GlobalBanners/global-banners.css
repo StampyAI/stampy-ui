@@ -1,0 +1,27 @@
+.global-banner {
+  background-color: var(--colors-teal-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-24);
+  padding: var(--spacing-12) var(--spacing-40);
+}
+
+.global-banner .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 780px) {
+  .global-banner {
+    flex-direction: column;
+    padding-bottom: var(--spacing-32);
+  }
+
+  .global-banner .close {
+    top: 8px;
+    right: 8px;
+  }
+}

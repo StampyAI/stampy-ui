@@ -13,3 +13,5 @@ declare const CHATBOT_URL: string
 declare const MATOMO_DOMAIN: string
 declare const DISCORD_LOGGING_CHANNEL_ID: string
 declare const DISCORD_LOGGING_TOKEN: string
+declare const EDITOR_USERNAME: string
+declare const EDITOR_PASSWORD: string

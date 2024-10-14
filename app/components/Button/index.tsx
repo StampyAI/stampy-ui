@@ -11,6 +11,7 @@ type ButtonProps = {
   disabled?: boolean
   active?: boolean
   secondary?: boolean
+  size?: 'default' | 'large' | 'small'
   props?: {[k: string]: any}
 }
 const Button = ({
@@ -21,40 +22,51 @@ const Button = ({
   className,
   disabled = false,
   active = false,
+  size,
   props,
 }: ButtonProps) => {
   const mobile = useIsMobile()
 
   const classes = [
+    'default',
     (secondary && 'button-secondary') || 'button',
     className,
     secondary && active && 'active',
     secondary && !active && !disabled && 'inactive',
+    size,
   ]
     .filter((i) => i)
     .join(' ')
-  if (typeof action === 'string') {
+  if (typeof action !== 'string') {
     return (
-      <Link
-        to={action}
-        className={classes}
-        onClick={(e) => {
-          if (disabled) {
-            e.preventDefault()
-          }
-        }}
-        {...props}
-      >
+      <button className={classes} onClick={action} disabled={disabled} {...props}>
         {children}
         {tooltip && !disabled && !mobile && <p className="tool-tip xs z-index-1">{tooltip}</p>}
-      </Link>
+      </button>
     )
   }
+  const LinkComponent = !action.startsWith('http')
+    ? Link
+    : ({to, children, ...props}: {[k: string]: any}) => (
+        <a href={to} {...props}>
+          {children}
+        </a>
+      )
+
   return (
-    <button className={classes} onClick={action} disabled={disabled} {...props}>
+    <LinkComponent
+      to={action}
+      className={classes}
+      onClick={(e) => {
+        if (disabled) {
+          e.preventDefault()
+        }
+      }}
+      {...props}
+    >
       {children}
       {tooltip && !disabled && !mobile && <p className="tool-tip xs z-index-1">{tooltip}</p>}
-    </button>
+    </LinkComponent>
   )
 }
 

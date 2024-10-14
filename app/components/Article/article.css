@@ -110,6 +110,15 @@ article .link-popup .footnote {
   padding: var(--spacing-32) var(--spacing-32) var(--spacing-32) var(--spacing-32);
 }
 
+.contents .footnotes {
+  margin-top: var(--spacing-16);
+}
+
+.contents .footnotes-sep {
+  border: 1.5px solid var(--colors-cool-grey-600);
+  border-bottom: 0;
+}
+
 article .footnote-ref {
   position: relative;
 }

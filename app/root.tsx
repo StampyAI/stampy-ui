@@ -18,6 +18,7 @@ import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
+import GlobalBanners from './components/GlobalBanners'
 
 /*
  * Transform the given text into a meta header format.
@@ -61,7 +62,7 @@ const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
-  const logo = 'favicon-512.png'
+  const logo = '/favicon-512.png'
   return [
     {title},
     {name: 'description', content: description},
@@ -157,7 +158,10 @@ const BasePage = ({
   <CachedObjectsProvider>
     <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
       <Head />
-      <body>{children}</body>
+      <body>
+        <GlobalBanners />
+        {children}
+      </body>
     </html>
   </CachedObjectsProvider>
 )

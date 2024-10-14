@@ -26,9 +26,8 @@ export const ListTable = ({elements, sameTab, className}: ListTableProps) => {
       {elements.map(({pageid, title, subtitle, hasIcon, className}, i) => (
         <Link
           key={`entry-${i}`}
-          className={styles.entry + ' teal-500 default-bold flex-container ' + (className || '')}
+          className={styles.entry + ' teal-500 flex-container large-bold ' + (className || '')}
           to={questionUrl({pageid, title})}
-          target={sameTab ? undefined : '_blank'}
           rel={sameTab ? undefined : 'noopener noreferrer'}
         >
           <div>

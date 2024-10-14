@@ -103,19 +103,19 @@ export const WidgetStampy = ({className}: {className?: string}) => {
 
   const stampyUrl = (question: string) => `/chat/?question=${question.trim()}`
   return (
-    <div className={`centered col-9 padding-bottom-128 ${className || ''}`}>
+    <div className={`stampy-widget centered col-9 padding-bottom-128 ${className || ''}`}>
       <div className="col-6 padding-bottom-56">
         <h2 className="teal-500">Questions?</h2>
-        <h2>Ask Stampy, our chatbot, any question about AI safety</h2>
+        <h2>Ask Stampy, our chatbot, any questions about AI safety</h2>
       </div>
 
       <div className="sample-messages-container padding-bottom-24">
         <IconStampySmall />
         <div className="sample-messages rounded">
-          <div className="padding-bottom-24">Try asking me...</div>
+          <div className="padding-bottom-24 small">Try asking me...</div>
           {questions.map(({title}, i) => (
             <div key={i} className="padding-bottom-16">
-              <Button className="secondary-alt-large" action={stampyUrl(title)}>
+              <Button className="secondary-alt-large" action={stampyUrl(title)} size="large">
                 {title}
               </Button>
             </div>
@@ -145,13 +145,20 @@ type FollowupsProps = {
 }
 const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
   const {randomQuestions} = useOnSiteQuestions()
-  const items =
-    (followups?.length || 0) >= 3
-      ? followups
-      : [
-          ...(followups || []),
-          ...randomQuestions().map(({title, pageid}) => ({text: title, pageid})),
-        ].slice(0, 3)
+  const [items, setItems] = useState(followups)
+
+  useEffect(() => {
+    const initialItems =
+      (followups?.length || 0) >= 3
+        ? followups
+        : [
+            ...(followups || []),
+            ...randomQuestions().map(({title, pageid}) => ({text: title, pageid})),
+          ].slice(0, 3)
+
+    setItems(initialItems)
+    // eslint-disable-next-line
+  }, [followups])
   return (
     <>
       {title && <div className={'padding-bottom-24' + (className || '')}>{title}</div>}
@@ -159,7 +166,7 @@ const Followups = ({title, followups, onSelect, className}: FollowupsProps) => {
       {items?.map(({text, pageid}, i) => (
         <div key={i} className="padding-bottom-16">
           <Button
-            className="secondary-alt-large text-align-left followup-button"
+            className="secondary-alt-large text-align-left followup-button large"
             action={() => onSelect({text, pageid})}
           >
             {text}
@@ -177,7 +184,7 @@ const SplashScreen = ({
   questions?: Followup[]
   onSelection: (followup: Followup) => void
 }) => (
-  <div className="padding-top-40">
+  <div className="stampy-widget padding-top-40">
     <IconStampyLarge />
     <div className="col-6 padding-bottom-40 padding-top-40">
       <h2 className="teal-500">Hi there, I’m Stampy.</h2>
