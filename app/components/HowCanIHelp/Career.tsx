@@ -14,7 +14,7 @@ export default function Career() {
         <CardSmall
           iconColor="var(--colors-teal-700)"
           title="AI alignment research"
-          description="Research roles dedicated to solving the technical challenge of AI alignment, and non-technical supporting roles"
+          description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
           icon={Microscope}
         />
         <CardSmall
@@ -402,7 +402,7 @@ export default function Career() {
                 <div className="section-split padding-bottom-40">
                   <div>
                     <p className="default-bold padding-bottom-16">
-                      Working in information security to protect AI (or the results of key
+                      Working in information security to protect AI (or the results of key
                       experiments) from misuse, theft, or tampering
                     </p>
                     <p className="grey default padding-bottom-16 default">
@@ -417,7 +417,7 @@ export default function Career() {
                 <div className="section-split">
                   <div>
                     <p className="default-bold padding-bottom-16">
-                      Becoming an expert in AI hardware as a way of steering AI progress in safer
+                      Becoming an expert in AI hardware as a way of steering AI progress in safer
                       directions
                     </p>
                     <p className="grey default">
@@ -426,7 +426,7 @@ export default function Career() {
                     </p>
                   </div>
                   <div>
-                    <LinkCard title="Read 80k’s guide on expertise in AI hardware" />
+                    <LinkCard title="Read 80k’s guide on expertise in AI hardware" />
                   </div>
                 </div>
               </div>
@@ -462,7 +462,7 @@ export default function Career() {
           />
           <CardSmall
             title="Volunteer"
-            description="Help us build important AI safety infrastructure—all skill sets and levels of time-commitment are wanted"
+            description="Help us build important AI safety infrastructure—all skill sets and levels of time—commitment are wanted"
             icon={PuzzlePieces}
             route="/howcanihelppage/volunteer"
           />
