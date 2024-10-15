@@ -10,6 +10,9 @@
   padding-top: var(--spacing-32);
   padding-bottom: var(--spacing-32);
   cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
 }
 
 .drop-down-content {

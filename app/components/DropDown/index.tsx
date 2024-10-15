@@ -12,14 +12,14 @@ export default function DropDown({title, content}: DropDownProps) {
 
   return (
     <div className="drop-down">
-      <div onClick={() => setIsOpen(!isOpen)} className="drop-down-header">
+      <button onClick={() => setIsOpen(!isOpen)} className="drop-down-header">
         <p className="large-bold teal-500">{title}</p>
         <ChevronRight
           height={22}
           width={22}
           className={`${isOpen ? 'rotate-90' : ''} drop-down-chevron`}
         />
-      </div>
+      </button>
       <div className={`drop-down-content ${isOpen ? 'open' : ''}`}>{content}</div>
     </div>
   )

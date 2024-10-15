@@ -9,14 +9,14 @@ const helpItems = [
       'For both technical and non-technical roles in AI alignment, governance, and field-building',
     impact: 'Highest direct impact',
     icon: Briefcase,
-    route: '/howcanihelppage/career',
+    action: '/howcanihelp/career',
   },
   {
     title: 'Spread the word & grassroots activism',
     description: 'For anyone—help us spread the word about this issue',
     impact: 'Quickest & most accessible',
     icon: Megaphone,
-    route: '/howcanihelppage/grassroots',
+    action: '/howcanihelp/grassroots',
   },
   {
     title: 'Donate',
@@ -24,7 +24,7 @@ const helpItems = [
       'The AI safety field is constrained by funding—financial help is critical at this moment',
     impact: 'Highest indirect impact',
     icon: PiggyBank,
-    route: '/howcanihelppage/donate',
+    action: '/howcanihelp/donate',
   },
   {
     title: 'Volunteer',
@@ -32,7 +32,7 @@ const helpItems = [
       'Help us build important AI safety infrastructure—all skill sets and levels of time-commitment are wanted',
     impact: 'Best for partial commitment',
     icon: Hand,
-    route: '/howcanihelppage/volunteer',
+    action: '/howcanihelp/volunteer',
   },
   {
     title: 'Build your knowledge',
@@ -40,7 +40,7 @@ const helpItems = [
       'Learning about AI safety equips you to effectively contribute to discussions and influence its development',
     impact: 'Enables impact',
     icon: Book,
-    route: '/howcanihelppage/knowledge',
+    action: '/howcanihelp/knowledge',
   },
   {
     title: 'Join a community',
@@ -48,7 +48,7 @@ const helpItems = [
       'Joining a community is motivating, and will help guide your efforts to contribute and get involved',
     impact: 'Enables impact',
     icon: People,
-    route: '/howcanihelppage/community',
+    action: '/howcanihelp/community',
   },
 ]
 

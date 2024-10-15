@@ -1,5 +1,6 @@
 .card-small {
   padding: var(--spacing-24);
+  align-items: start;
   display: flex;
   flex-direction: column;
   background-color: var(--colors-cool-grey-100);

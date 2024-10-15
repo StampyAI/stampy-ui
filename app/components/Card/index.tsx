@@ -1,5 +1,5 @@
 import {SVGProps} from 'react'
-import ButtonOrLink from '../ButtonOrLink'
+import Button from '../Button'
 import './card.css'
 
 interface CardProps {
@@ -7,38 +7,21 @@ interface CardProps {
   description: string
   impact: string
   icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
-  route?: string
-  onClick?: () => void
+  action: string
   className?: string
 }
 
-export default function Card({
-  title,
-  description,
-  impact,
-  icon,
-  route,
-  onClick,
-  className,
-}: CardProps) {
+export default function Card({title, description, impact, icon, action, className}: CardProps) {
   className = `card bordered ${className}`
 
-  const commonContent = (
-    <>
+  return (
+    <Button action={action} className={className}>
       <div className="card-icon">{icon({})}</div>
       <div className="card-content">
         <h3 className="large-bold padding-bottom-8">{title}</h3>
         <p className="grey padding-bottom-16">{description}</p>
         <p className="card-impact small">{impact}</p>
       </div>
-    </>
-  )
-  return (
-    <ButtonOrLink
-      commonContent={commonContent}
-      route={route}
-      onClick={onClick}
-      className={className}
-    />
+    </Button>
   )
 }

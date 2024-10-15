@@ -1,13 +1,13 @@
-import {useEffect} from 'react'
 import Page from '~/components/Page'
 import HelpGrid from '~/components/HelpGrid'
 import '~/components/HowCanIHelp/howcanihelp.css'
+import {MetaFunction} from '@remix-run/node'
+
+export const meta: MetaFunction = () => {
+  return [{title: 'How Can I Help? - AISafety.info'}]
+}
 
 export default function HowCanIHelp() {
-  useEffect(() => {
-    document.title = 'How Can I Help? - AISafety.info'
-  }, [])
-
   return (
     <Page>
       <div className="page-body padding-top-40">

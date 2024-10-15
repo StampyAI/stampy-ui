@@ -1,4 +1,4 @@
-import './community.css'
+import './howcanihelp.css'
 
 export default function Community() {
   return (

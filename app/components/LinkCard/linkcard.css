@@ -11,6 +11,9 @@
   position: relative;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
+  width: 100%;
+  align-items: start;
+  box-shadow: 0 0 0 0 transparent;
 }
 
 .link-card:hover {

@@ -1,15 +1,15 @@
 import {Link, useParams} from '@remix-run/react'
-import {useEffect} from 'react'
 import Page from '~/components/Page'
 import {howCanIHelpComponents} from '~/components/HowCanIHelp'
+import {MetaFunction} from '@remix-run/node'
+
+export const meta: MetaFunction = () => {
+  return [{title: 'How Can I Help? - AISafety.info'}]
+}
 
 export default function HowCanIHelp() {
-  const {'*': subpage} = useParams()
-  const Component = howCanIHelpComponents[subpage as keyof typeof howCanIHelpComponents]
-
-  useEffect(() => {
-    document.title = `How Can I Help: ${subpage} - AISafety.info`
-  }, [subpage])
+  const {page} = useParams()
+  const Component = howCanIHelpComponents[page as keyof typeof howCanIHelpComponents]
 
   if (!Component) {
     return <div>Page not found</div>
