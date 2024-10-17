@@ -18,9 +18,9 @@ export default function Card({title, description, impact, icon, action, classNam
     <Button action={action} className={className}>
       <div className="card-icon">{icon({})}</div>
       <div className="card-content">
-        <h3 className="large-bold padding-bottom-8">{title}</h3>
+        <p className="large-bold padding-bottom-8">{title}</p>
         <p className="grey padding-bottom-16">{description}</p>
-        <p className="card-impact small">{impact}</p>
+        <p className="tag xs">{impact}</p>
       </div>
     </Button>
   )

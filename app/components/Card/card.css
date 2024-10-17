@@ -4,7 +4,10 @@
   display: flex;
   background-color: var(--colors-cool-grey-100);
   border-radius: var(--border-radius);
-  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
+}
+
+.card:hover {
+  border-color: var(--colors-teal-200);
 }
 
 .card-content {
@@ -23,18 +26,6 @@
   border-radius: var(--border-radius);
   width: 30%;
   flex-shrink: 0;
-}
-
-.card-impact {
-  color: var(--colors-teal-500);
-  height: fit-content;
-  width: fit-content;
-  padding-left: 10px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-right: 10px;
-  background-color: var(--colors-teal-50);
-  border-radius: var(--border-radius);
 }
 
 @media (max-width: 780px) {

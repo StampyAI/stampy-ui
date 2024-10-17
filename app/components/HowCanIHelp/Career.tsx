@@ -3,6 +3,7 @@ import CardSmall from '../CardSmall'
 import DropDown from '../DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '../icons-generated'
 import LinkCard from '../LinkCard'
+import Testimonial from '../Testimonial'
 import './howcanihelp.css'
 
 export default function Career() {
@@ -64,10 +65,10 @@ export default function Career() {
               independently; or on industry safety teams*, usually at major AI companies like
               OpenAI.
             </p>
-            <p className="grey default">
-              *Note: Beware of the risk of joining "safety" teams, as this work often leaks to
-              non-safety parts of the organization which improves the AI technology itself—and so
-              ends up causing harm.
+            <p className="grey small">
+              <span className="small-bold">*Note:</span> Beware of the risk of joining "safety"
+              teams, as this work often leaks to non-safety parts of the organization which improves
+              the AI technology itself—and so ends up causing harm.
             </p>
           </div>
           <div>
@@ -90,7 +91,7 @@ export default function Career() {
         </div>
         <div className="section-split padding-bottom-40">
           <div>
-            <p className="default-bold padding-bottom-16">
+            <p className="large-bold padding-bottom-16">
               Read the 80,000 Hours Technical AI Safety Career Review
             </p>
             <p className="grey default">
@@ -108,7 +109,7 @@ export default function Career() {
         </div>
         <div className="section-split padding-bottom-40">
           <div>
-            <p className="default-bold padding-bottom-16">
+            <p className="large-bold padding-bottom-16">
               Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)
             </p>
             <p className="grey default padding-bottom-16">
@@ -128,7 +129,7 @@ export default function Career() {
         </div>
         <div className="section-split">
           <div>
-            <p className="default-bold padding-bottom-16">
+            <p className="large-bold padding-bottom-16">
               A process note: Form your own understanding of the AI alignment technical challenge
             </p>
             <p className="grey default">
@@ -213,6 +214,24 @@ export default function Career() {
           }
         />
       </div>
+      <div className="padding-bottom-80 section-split">
+        <Testimonial
+          src="/assets/guy.jpeg"
+          title="Lorem ipsum"
+          description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        />
+        <Testimonial
+          src="/assets/guy.jpeg"
+          title="Lorem ipsum"
+          description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        />
+      </div>
       <div className="padding-bottom-80">
         <h2 className="teal-500 padding-bottom-40">AI governance & policy</h2>
         <div className="section-grid">
@@ -254,6 +273,92 @@ export default function Career() {
             </p>
           </div>
         </div>
+      </div>
+      <div className="padding-bottom-80">
+        <div className="section-split padding-bottom-56">
+          <h2>Interested in pursuing this career path?</h2>
+          <p>
+            Take the following steps to (1) learn more & further assess your fit; (2) learn how to
+            make the transition
+          </p>
+        </div>
+        <div className="section-split padding-bottom-40">
+          <div>
+            <p className="large-bold padding-bottom-16">
+              Read the 80,000 Hours Technical AI Safety Career Review
+            </p>
+            <p className="grey default">
+              <p className="padding-bottom-16">The review takes about one hour and addresses:</p>
+              <ul>
+                <li>What this career path involves</li>
+                <li>How to predict your fit</li>
+                <li>The upsides and downsides of this career path</li>
+                <li>Compensation</li>
+                <li>How to enter or transition into this career</li>
+              </ul>
+            </p>
+          </div>
+          <LinkCard action="#" tag="Top recommendation" title="Technical AI Safety Career Review" />
+        </div>
+        <div className="section-split padding-bottom-40">
+          <div>
+            <p className="large-bold padding-bottom-16">
+              Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)
+            </p>
+            <p className="grey default padding-bottom-16">
+              Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
+              address your specific questions about the field, confirm your interest and fit, and
+              provide tailored recommendations to help you make the transition.
+            </p>
+            <p className="grey small">
+              <span className="small-bold">Note:</span> 80,000 Hours does not accept all applicants.
+            </p>
+          </div>
+          <div>
+            <LinkCard action="#" title="Book your AI Safety Quest call" />
+            <div className="padding-bottom-16" />
+            <LinkCard action="#" title="Book your 80,000 Hours call" />
+          </div>
+        </div>
+        <div className="section-split">
+          <div>
+            <p className="large-bold padding-bottom-16">
+              A process note: Form your own understanding of the AI alignment technical challenge
+            </p>
+            <p className="grey default">
+              AI safety is a relatively new field with diverse opinions on how best to solve the
+              technical challenge of AI alignment. Many unexplored avenues and important questions
+              likely remain unaddressed. Therefore, it's crucial for (aspiring) AI alignment
+              researchers to think independently and develop their own models on this topic. If you
+              pursue a career in this field, we recommend deeply educating yourself on the technical
+              challenge of alignment, engaging with other AI safety experts, and thinking critically
+              about the topic and current paradigms.
+            </p>
+          </div>
+          <div>
+            <LinkCard action="#" title="Our ‘Build your knowledge’ guide" />
+            <div className="padding-bottom-16" />
+            <LinkCard action="#" title="Our ‘Join a community’ guide" />
+          </div>
+        </div>
+      </div>
+      <div className="padding-bottom-80 section-split">
+        <Testimonial
+          title="Lorem ipsum"
+          src="/assets/guy.jpeg"
+          description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        />
+        <Testimonial
+          title="Lorem ipsum"
+          src="/assets/guy.jpeg"
+          description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        />
       </div>
       <div className="padding-bottom-80">
         <h2 className="teal-500 padding-bottom-40">AI safety field-building</h2>
@@ -438,6 +543,64 @@ export default function Career() {
               </div>
             </div>
           }
+        />
+      </div>
+      <div className="padding-bottom-80">
+        <div className="section-split padding-bottom-56">
+          <h2>Interested in pursuing this career path?</h2>
+          <p>
+            Take the following steps to (1) learn more & further assess your fit; (2) learn how to
+            make the transition
+          </p>
+        </div>
+        <div className="section-split padding-bottom-40">
+          <div>
+            <p className="large-bold padding-bottom-16">
+              Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)
+            </p>
+            <p className="grey default padding-bottom-16">
+              Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
+              address your specific questions about the field, confirm your interest and fit, and
+              provide tailored recommendations to help you make the transition.
+            </p>
+            <p className="grey small">
+              <span className="small-bold">Note:</span> 80,000 Hours does not accept all applicants.
+            </p>
+          </div>
+          <div>
+            <LinkCard action="#" title="Book your AI Safety Quest call" />
+            <div className="padding-bottom-16" />
+            <LinkCard action="#" title="Book your 80,000 Hours call" />
+          </div>
+        </div>
+        <div className="section-split">
+          <div>
+            <p className="large-bold padding-bottom-16">
+              A process note: Form your own understanding of the AI alignment technical challenge
+            </p>
+            <p className="grey default">
+              AI safety is a relatively new field with diverse opinions on how best to solve the
+              technical challenge of AI alignment. Many unexplored avenues and important questions
+              likely remain unaddressed. Therefore, it's crucial for (aspiring) AI alignment
+              researchers to think independently and develop their own models on this topic. If you
+              pursue a career in this field, we recommend deeply educating yourself on the technical
+              challenge of alignment, engaging with other AI safety experts, and thinking critically
+              about the topic and current paradigms.
+            </p>
+          </div>
+          <div>
+            <LinkCard action="#" title="Our ‘Build your knowledge’ guide" />
+            <div className="padding-bottom-16" />
+            <LinkCard action="#" title="Our ‘Join a community’ guide" />
+          </div>
+        </div>
+      </div>
+      <div className="padding-bottom-80">
+        <Testimonial
+          src="/assets/bryce.png"
+          title="Bryce Robertson"
+          layout="expanded"
+          description="Having decided to change my career to one focused on AI safety, I began searching for field-building roles. While staying on scholarship at the EA Hotel (CEEALAR) I spent five months doing volunteer work for Alignment Ecosystem Development (AED) and when the founder stepped back to focus on other projects, he asked me to take over its operations. I applied for and received funding from the Long-Term Future Fund which has allowed me to now lead AED full-time."
         />
       </div>
       <div className="help-footer">
