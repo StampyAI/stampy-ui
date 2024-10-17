@@ -30,4 +30,10 @@
   .paths-grid {
     grid-template-columns: 1fr;
   }
+  .section-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-split {
+    grid-template-columns: 1fr;
+  }
 }

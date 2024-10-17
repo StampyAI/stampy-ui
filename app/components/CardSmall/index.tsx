@@ -26,7 +26,7 @@ export default function CardSmall({
       <div style={{backgroundColor: iconColor}} className="card-small-icon">
         {icon({})}
       </div>
-      <h3 className="large-bold padding-bottom-8">{title}</h3>
+      <p className="large-bold padding-bottom-8">{title}</p>
       <p className="grey">{description}</p>
     </Button>
   )
