@@ -342,104 +342,103 @@ h2 {
 /* note I may change these to vars later */
 
 /* standard grid - 1056px wide, 51px columns, 40px gutters */
-  .col-1 {
-    width: 51px;
-  }
+.col-1 {
+  width: 51px;
+}
 
-  .col-2 {
-    width: 143px;
-  }
+.col-2 {
+  width: 143px;
+}
 
-  .col-3 {
-    width: 234px;
-  }
+.col-3 {
+  width: 234px;
+}
 
-  .col-4 {
-    width: 325px;
-  }
+.col-4 {
+  width: 325px;
+}
 
-  .col-5 {
-    width: 417px;
-  }
+.col-5 {
+  width: 417px;
+}
 
-  .col-6 {
-    width: 508px;
-  }
+.col-6 {
+  width: 508px;
+}
 
-  .col-7 {
-    width: 599px;
-  }
+.col-7 {
+  width: 599px;
+}
 
-  .col-8 {
-    width: 691px;
-  }
+.col-8 {
+  width: 691px;
+}
 
-  .col-9 {
-    width: 782px;
-  }
+.col-9 {
+  width: 782px;
+}
 
-  .col-10 {
-    width: 873px;
-  }
+.col-10 {
+  width: 873px;
+}
 
-  .col-11 {
-    width: 965px;
-  }
+.col-11 {
+  width: 965px;
+}
 
-  .col-12 {
-    width: 1056px;
-  }
+.col-12 {
+  width: 1056px;
+}
 
-  /* Alternate grid for extra spacing between elements - 1056px wide, 29px columns, 64px gutters */
+/* Alternate grid for extra spacing between elements - 1056px wide, 29px columns, 64px gutters */
 
-  .col-1-alt {
-    width: 29px;
-  }
-  
-  .col-2-alt {
-    width: 123px;
-  }
-  
-  .col-3-alt {
-    width: 216px;
-  }
-  
-  .col-4-alt {
-    width: 309px;
-  }
-  
-  .col-5-alt {
-    width: 403px;
-  }
-  
-  .col-6-alt {
-    width: 496px;
-  }
-  
-  .col-7-alt {
-    width: 589px;
-  }
-  
-  .col-8-alt {
-    width: 683px;
-  }
-  
-  .col-9-alt {
-    width: 776px;
-  }
-  
-  .col-10-alt {
-    width: 869px;
-  }
-  
-  .col-11-alt {
-    width: 963px;
-  }
-  
-  .col-12-alt {
-    width: 1056px;
-  }
-  
+.col-1-alt {
+  width: 29px;
+}
+
+.col-2-alt {
+  width: 123px;
+}
+
+.col-3-alt {
+  width: 216px;
+}
+
+.col-4-alt {
+  width: 309px;
+}
+
+.col-5-alt {
+  width: 403px;
+}
+
+.col-6-alt {
+  width: 496px;
+}
+
+.col-7-alt {
+  width: 589px;
+}
+
+.col-8-alt {
+  width: 683px;
+}
+
+.col-9-alt {
+  width: 776px;
+}
+
+.col-10-alt {
+  width: 869px;
+}
+
+.col-11-alt {
+  width: 963px;
+}
+
+.col-12-alt {
+  width: 1056px;
+}
 
 .full-width {
   width: 100%;
@@ -642,7 +641,30 @@ button {
 
   /* by default, all widths (.col-* and .col-*-alt) will transition to taking up full-width (87.2vw) on mobile */
 
-  .col-1, .col-2,.col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col-1-alt, .col-2-alt,.col-3-alt, .col-4-alt, .col-5-alt, .col-6-alt, .col-7-alt, .col-8-alt, .col-9-alt, .col-10-alt, .col-11-alt, .col-12-alt,  {
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12,
+  .col-1-alt,
+  .col-2-alt,
+  .col-3-alt,
+  .col-4-alt,
+  .col-5-alt,
+  .col-6-alt,
+  .col-7-alt,
+  .col-8-alt,
+  .col-9-alt,
+  .col-10-alt,
+  .col-11-alt,
+  .col-12-alt {
     width: 87.2vw;
   }
 
