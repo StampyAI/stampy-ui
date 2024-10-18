@@ -1,0 +1,43 @@
+.carousel {
+  background-color: var(--colors-teal-50);
+  padding: var(--spacing-40);
+  margin-top: var(--spacing-80);
+}
+
+.carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: var(--spacing-32);
+}
+
+.carousel .navigation {
+  display: flex;
+  gap: 10px;
+}
+
+.carousel .navigation .button {
+  padding: var(--spacing-8);
+}
+
+.carousel h2 {
+  max-width: 550px;
+}
+
+.carousel .items {
+  display: flex;
+  height: 230px;
+  gap: var(--spacing-32);
+}
+
+.carousel-item {
+  flex: 1;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
+  max-width: 300px;
+  height: 230px;
+  padding: var(--spacing-40);
+  text-align: left;
+}

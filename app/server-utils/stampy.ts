@@ -83,6 +83,7 @@ export type Question = {
   parents?: string[]
   children?: Question[]
   order?: number
+  ttr: number
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -263,6 +264,11 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   return html
 }
 
+export const ttr = (text: string, rate = 160) => {
+  const time = text.split(' ')
+  return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
+}
+
 // Icons can be returned as strings or objects
 const extractIcon = (val?: string | string[] | Entity | Entity[]): string | undefined => {
   if (!val) return val
@@ -286,29 +292,33 @@ const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
     .map((name) => (mapper && mapper[name]) || {name})
     .filter((i) => i)
 
-const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => ({
-  title: name,
-  pageid: extractText(values['UI ID']),
-  text: renderText(extractText(values['UI ID']), values['Rich Text']),
-  markdown: extractText(values['Rich Text']),
-  answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
-  tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
-  banners: extractJoined(values['Banners'] || [], allBanners),
-  relatedQuestions:
-    values['Related Answers'] && values['Related IDs']
-      ? values['Related Answers'].map(({name}, i) => ({
-          title: name,
-          pageid: extractText(values['Related IDs'][i]),
-        }))
-      : [],
-  status: values['Status']?.name as QuestionStatus,
-  alternatePhrasings: extractText(values['Alternate Phrasings']),
-  subtitle: extractText(values.Subtitle),
-  icon: extractIcon(values.Icon),
-  parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
-  updatedAt: updatedAt || values['Doc Last Edited'],
-  order: values.Order || 0,
-})
+const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => {
+  const markdown = extractText(values['Rich Text'])
+  return {
+    title: name,
+    pageid: extractText(values['UI ID']),
+    text: renderText(extractText(values['UI ID']), values['Rich Text']),
+    markdown: markdown,
+    ttr: markdown ? ttr(markdown) : 0,
+    answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
+    tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
+    banners: extractJoined(values['Banners'] || [], allBanners),
+    relatedQuestions:
+      values['Related Answers'] && values['Related IDs']
+        ? values['Related Answers'].map(({name}, i) => ({
+            title: name,
+            pageid: extractText(values['Related IDs'][i]),
+          }))
+        : [],
+    status: values['Status']?.name as QuestionStatus,
+    alternatePhrasings: extractText(values['Alternate Phrasings']),
+    subtitle: extractText(values.Subtitle),
+    icon: extractIcon(values.Icon),
+    parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
+    updatedAt: updatedAt || values['Doc Last Edited'],
+    order: values.Order || 0,
+  }
+}
 
 export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
   // Make sure all tags are loaded. This shouldn't be needed often, as it's double cached

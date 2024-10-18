@@ -89,13 +89,13 @@ const ArticleActions = ({answerEditLink}: Question) => {
   )
 }
 
+export const ttr = (text: string, rate = 160) => {
+  const time = text.split(' ')
+  return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
+}
+
 const ArticleMeta = ({question, className}: {question: Question; className?: string}) => {
   const {text} = question
-
-  const ttr = (text: string, rate = 160) => {
-    const time = text.split(' ')
-    return Math.ceil(time.length / rate) // ceil to avoid "0 min read"
-  }
 
   return (
     !isLoading(question) && (

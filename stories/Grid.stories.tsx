@@ -8,6 +8,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section1',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 0,
   },
   {
@@ -16,6 +17,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section2',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 0,
   },
   {
@@ -24,6 +26,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section3',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 0,
   },
   {
@@ -32,6 +35,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section4',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 0,
   },
   {
@@ -40,6 +44,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section5',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 0,
   },
   {
@@ -48,6 +53,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section6',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 10,
   },
   {
@@ -56,6 +62,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section7',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 20,
   },
   {
@@ -64,6 +71,7 @@ const toc = [
     icon: 'https://cataas.com/cat/says/section8',
     pageid: 'https://google.com',
     hasText: true,
+    ttr: 1,
     order: 30,
   },
 ]

@@ -17,6 +17,7 @@ export type TOCItem = {
   children?: TOCItem[]
   category?: Category
   order: number
+  ttr: number
 }
 type LoaderResp = {
   data: TOCItem[]
@@ -33,8 +34,9 @@ const getCategory = (tags: string[]): Category => {
 const byOrder = (a: TOCItem, b: TOCItem) => a.order - b.order
 const formatQuestion =
   (level: number) =>
-  ({title, pageid, subtitle, icon, children, text, tags, order}: Question): TOCItem => ({
+  ({title, pageid, subtitle, icon, children, text, tags, order, ttr}: Question): TOCItem => ({
     title,
+    ttr,
     subtitle: subtitle ? subtitle : undefined,
     pageid,
     icon: icon ? icon : undefined,

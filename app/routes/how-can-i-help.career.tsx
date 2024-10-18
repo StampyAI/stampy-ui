@@ -7,6 +7,7 @@ import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-ge
 import HelpMethods from '~/components/HowCanIHelp/HelpMethods'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import {helpUrl} from '~/routesMapper'
+import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 /* import './howcanihelp.css' */
 
 export const meta: MetaFunction = () => {
@@ -172,56 +173,64 @@ const ResearchPath = () => (
           travel, organizing events, and ensuring they can focus on impactful AI safety efforts.
         </HelpItem>
       </DropDown>
+
+      <CategoryCarousel
+        title="Our articles on pursuing a career in alignment research"
+        category="8TJV"
+      />
     </div>
   </>
 )
 
 const GovernancePath = () => (
-  <>
-    <div className="padding-bottom-80">
-      <h2 className="teal-500 padding-bottom-40" id="governance">
-        AI governance & policy
-      </h2>
-      <div className="section-grid">
-        <div>
-          <p className="default-bold padding-bottom-16">What</p>
-          <p className="grey default">
-            AI alignment research is the field dedicated to ensuring that advanced artificial
-            intelligence systems act in ways that are beneficial to humans and aligned with human
-            values and goals. It involves developing methods and principles to guide AI behavior so
-            that as these systems become more capable and autonomous, they continue to operate
-            safely and ethically within the intentions set by their human creators.
-          </p>
-        </div>
-        <div>
-          <p className="default-bold padding-bottom-16">Why this is important</p>
-          <p className="grey default">
-            To ensure humanity benefits from advanced AI and mitigates risks—like unintended
-            behaviors or misalignment with human values—we must first solve the technical challenge
-            of AI alignment through dedicated research, and then collaborate globally to carefully
-            deploy solutions. While experts believe alignment is solvable, it remains a complex
-            problem that demands significant high-quality intellectual talent.
-          </p>
-        </div>
-        <div>
-          <p className="default-bold padding-bottom-16">Where AI alignment researchers work</p>
-          <p className="grey default">
-            AI alignment researchers typically work at non-profit organizations dedicated to AI
-            safety and alignment; in academia (i.e. universities and academic institutions);
-            independently; or on industry safety teams*, usually at major AI companies like OpenAI.
-          </p>
-        </div>
-        <div>
-          <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
-          <p className="grey default">
-            You might be a good fit as an AI alignment researcher if you have a quantitative
-            background, you enjoy programming, or you're skilled at breaking down problems
-            logically, hypothesizing, and testing various solutions with high attention to detail.
-          </p>
-        </div>
+  <div className="padding-bottom-80">
+    <h2 className="teal-500 padding-bottom-40" id="governance">
+      AI governance & policy
+    </h2>
+    <div className="section-grid">
+      <div>
+        <p className="default-bold padding-bottom-16">What</p>
+        <p className="grey default">
+          AI alignment research is the field dedicated to ensuring that advanced artificial
+          intelligence systems act in ways that are beneficial to humans and aligned with human
+          values and goals. It involves developing methods and principles to guide AI behavior so
+          that as these systems become more capable and autonomous, they continue to operate safely
+          and ethically within the intentions set by their human creators.
+        </p>
+      </div>
+      <div>
+        <p className="default-bold padding-bottom-16">Why this is important</p>
+        <p className="grey default">
+          To ensure humanity benefits from advanced AI and mitigates risks—like unintended behaviors
+          or misalignment with human values—we must first solve the technical challenge of AI
+          alignment through dedicated research, and then collaborate globally to carefully deploy
+          solutions. While experts believe alignment is solvable, it remains a complex problem that
+          demands significant high-quality intellectual talent.
+        </p>
+      </div>
+      <div>
+        <p className="default-bold padding-bottom-16">Where AI alignment researchers work</p>
+        <p className="grey default">
+          AI alignment researchers typically work at non-profit organizations dedicated to AI safety
+          and alignment; in academia (i.e. universities and academic institutions); independently;
+          or on industry safety teams*, usually at major AI companies like OpenAI.
+        </p>
+      </div>
+      <div>
+        <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
+        <p className="grey default">
+          You might be a good fit as an AI alignment researcher if you have a quantitative
+          background, you enjoy programming, or you're skilled at breaking down problems logically,
+          hypothesizing, and testing various solutions with high attention to detail.
+        </p>
       </div>
     </div>
-  </>
+
+    <CategoryCarousel
+      title="Our articles on pursuing a career in AI governance & policy"
+      category="8TJV"
+    />
+  </div>
 )
 
 const FieldBuildingPath = () => (
@@ -389,6 +398,11 @@ const FieldBuildingPath = () => (
         </HelpItem>
       </DropDown>
     </div>
+
+    <CategoryCarousel
+      title="Our articles on pursuing a career in AI safety field-building"
+      category="8TJV"
+    />
   </>
 )
 
