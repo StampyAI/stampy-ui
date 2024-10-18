@@ -1,7 +1,6 @@
 import Card from '../Card'
-import CardSmall from '../CardSmall'
 import DropDown from '../DropDown'
-import {Microscope, GovermentBuilding, PuzzlePieces} from '../icons-generated'
+import {PuzzlePieces} from '../icons-generated'
 import LinkCard from '../LinkCard'
 import './knowledge.css'
 
