@@ -1,13 +1,12 @@
 import {SVGProps} from 'react'
-import ButtonOrLink from '../ButtonOrLink'
 import './cardsmall.css'
+import Button from '../Button'
 
 interface CardSmallProps {
   title: string
   description: string
   icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
-  route?: string
-  onClick?: () => void
+  action: string
   className?: string
   iconColor?: string
 }
@@ -16,28 +15,19 @@ export default function CardSmall({
   title,
   description,
   icon,
-  route,
-  onClick,
+  action,
   className,
   iconColor = 'var(--colors-teal-50)',
 }: CardSmallProps) {
   className = `card-small bordered ${className}`
 
-  const commonContent = (
-    <>
+  return (
+    <Button action={action} className={className}>
       <div style={{backgroundColor: iconColor}} className="card-small-icon">
         {icon({})}
       </div>
       <h3 className="large-bold padding-bottom-8">{title}</h3>
       <p className="grey">{description}</p>
-    </>
-  )
-  return (
-    <ButtonOrLink
-      commonContent={commonContent}
-      route={route}
-      onClick={onClick}
-      className={className}
-    />
+    </Button>
   )
 }

@@ -3,7 +3,7 @@ import CardSmall from '../CardSmall'
 import DropDown from '../DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '../icons-generated'
 import LinkCard from '../LinkCard'
-import './career.css'
+import './howcanihelp.css'
 
 export default function Career() {
   return (
@@ -12,18 +12,21 @@ export default function Career() {
       <p className="grey default padding-bottom-32">There are 3 major career paths in AI safety:</p>
       <div className="paths-grid padding-bottom-80">
         <CardSmall
+          action="#"
           iconColor="var(--colors-teal-700)"
           title="AI alignment research"
           description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
           icon={Microscope}
         />
         <CardSmall
+          action="#"
           iconColor="var(--colors-teal-700)"
           title="AI governance & policy"
           description="Roles focused on developing and implementing policies that guide AI development and usage"
           icon={GovermentBuilding}
         />
         <CardSmall
+          action="#"
           iconColor="var(--colors-teal-700)"
           title="AI safety field-building"
           description="Roles that direct people or funding towards AI risk, rather than working on the problem directly"
@@ -101,7 +104,7 @@ export default function Career() {
               </ul>
             </p>
           </div>
-          <LinkCard tag="Top recommendation" title="Technical AI Safety Career Review" />
+          <LinkCard action="#" tag="Top recommendation" title="Technical AI Safety Career Review" />
         </div>
         <div className="section-split padding-bottom-40">
           <div>
@@ -118,9 +121,9 @@ export default function Career() {
             </p>
           </div>
           <div>
-            <LinkCard title="Book your AI Safety Quest call" />
+            <LinkCard action="#" title="Book your AI Safety Quest call" />
             <div className="padding-bottom-16" />
-            <LinkCard title="Book your 80,000 Hours call" />
+            <LinkCard action="#" title="Book your 80,000 Hours call" />
           </div>
         </div>
         <div className="section-split">
@@ -139,9 +142,9 @@ export default function Career() {
             </p>
           </div>
           <div>
-            <LinkCard title="Our ‘Build your knowledge’ guide" />
+            <LinkCard action="#" title="Our ‘Build your knowledge’ guide" />
             <div className="padding-bottom-16" />
-            <LinkCard title="Our ‘Join a community’ guide" />
+            <LinkCard action="#" title="Our ‘Join a community’ guide" />
           </div>
         </div>
       </div>
@@ -171,7 +174,7 @@ export default function Career() {
                   </p>
                 </div>
                 <div>
-                  <LinkCard title="Read 80k’s guide on operations work" />
+                  <LinkCard action="#" title="Read 80k’s guide on operations work" />
                 </div>
               </div>
               <div className="section-split padding-bottom-40">
@@ -187,7 +190,7 @@ export default function Career() {
                   </p>
                 </div>
                 <div>
-                  <LinkCard title="Read 80k’s guide on research management" />
+                  <LinkCard action="#" title="Read 80k’s guide on research management" />
                 </div>
               </div>
               <div className="section-split">
@@ -203,7 +206,7 @@ export default function Career() {
                   </p>
                 </div>
                 <div>
-                  <LinkCard title="Read 80k’s guide on being an executive assistant" />
+                  <LinkCard action="#" title="Read 80k’s guide on being an executive assistant" />
                 </div>
               </div>
             </div>
@@ -299,7 +302,7 @@ export default function Career() {
             </p>
           </div>
           <div>
-            <LinkCard title="Read 80k’s guide on communications" />
+            <LinkCard action="#" title="Read 80k’s guide on communications" />
           </div>
         </div>
         <div className="section-split padding-bottom-40">
@@ -314,7 +317,7 @@ export default function Career() {
             </p>
           </div>
           <div>
-            <LinkCard title="Read 80k’s guide on being a grantmaker" />
+            <LinkCard action="#" title="Read 80k’s guide on being a grantmaker" />
           </div>
         </div>
         <div className="section-split">
@@ -328,7 +331,7 @@ export default function Career() {
             </p>
           </div>
           <div>
-            <LinkCard title="Read 80k’s guide on founding high-impact projects" />
+            <LinkCard action="#" title="Read 80k’s guide on founding high-impact projects" />
           </div>
         </div>
       </div>
@@ -361,7 +364,7 @@ export default function Career() {
                     </p>
                   </div>
                   <div>
-                    <LinkCard title="Read 80k’s guide on operations work" />
+                    <LinkCard action="#" title="Read 80k’s guide on operations work" />
                   </div>
                 </div>
                 <div className="section-split padding-bottom-40">
@@ -377,7 +380,7 @@ export default function Career() {
                     </p>
                   </div>
                   <div>
-                    <LinkCard title="Read 80k’s guide on research management" />
+                    <LinkCard action="#" title="Read 80k’s guide on research management" />
                   </div>
                 </div>
                 <div className="section-split">
@@ -393,7 +396,7 @@ export default function Career() {
                     </p>
                   </div>
                   <div>
-                    <LinkCard title="Read 80k’s guide on being an executive assistant" />
+                    <LinkCard action="#" title="Read 80k’s guide on being an executive assistant" />
                   </div>
                 </div>
               </div>
@@ -411,7 +414,10 @@ export default function Career() {
                     </p>
                   </div>
                   <div>
-                    <LinkCard title="Read 80k’s guide on Information security in high-impact areas" />
+                    <LinkCard
+                      action="#"
+                      title="Read 80k’s guide on Information security in high-impact areas"
+                    />
                   </div>
                 </div>
                 <div className="section-split">
@@ -426,7 +432,7 @@ export default function Career() {
                     </p>
                   </div>
                   <div>
-                    <LinkCard title="Read 80k’s guide on expertise in AI hardware" />
+                    <LinkCard action="#" title="Read 80k’s guide on expertise in AI hardware" />
                   </div>
                 </div>
               </div>
@@ -440,12 +446,14 @@ export default function Career() {
         </h2>
         <div className="section-split padding-bottom-80">
           <Card
+            action="#"
             title="Build your knowledge"
             description="Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field"
             icon={PuzzlePieces}
             impact="We'll show you how"
           />
           <Card
+            action="#"
             title="Join a community"
             description="Connecting with others online or in person will help you navigate the transition to a career in AI safety"
             icon={PuzzlePieces}
@@ -458,19 +466,19 @@ export default function Career() {
             title="Donate"
             description="The AI safety field is constrained by funding—financial help is critical at this moment"
             icon={PuzzlePieces}
-            route="/howcanihelppage/donate"
+            action="/howcanihelp/donate"
           />
           <CardSmall
             title="Volunteer"
             description="Help us build important AI safety infrastructure—all skill sets and levels of time—commitment are wanted"
             icon={PuzzlePieces}
-            route="/howcanihelppage/volunteer"
+            action="/howcanihelp/volunteer"
           />
           <CardSmall
             title="Spread the word & grassroots activism"
             description="For anyone—help us spread the word about this issue"
             icon={PuzzlePieces}
-            route="/howcanihelppage/spread-the-word"
+            action="/howcanihelp/spread-the-word"
           />
         </div>
       </div>
