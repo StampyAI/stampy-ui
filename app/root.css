@@ -129,7 +129,7 @@ h2 {
   letter-spacing: -0.18px;
   /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
 }
- 
+
 .default-bold {
   font-size: 18px;
   font-weight: 500;

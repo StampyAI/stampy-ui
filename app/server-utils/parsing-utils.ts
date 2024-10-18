@@ -49,6 +49,7 @@ md.renderer.rules.footnote_caption = (tokens, idx) => {
 }
 
 export const convertToHtmlAndWrapInDetails = (markdown: string): string => {
+  console.log(markdown)
   // Recursively wrap any [See more...] segments in HTML Details
   const seeMoreToken = 'SEE-MORE-BUTTON'
   const wrap = ([chunk, ...rest]: string[]): string => {
