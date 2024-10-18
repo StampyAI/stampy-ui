@@ -4,7 +4,7 @@ import {Briefcase, Megaphone, PiggyBank, Hand, Book, People} from '../icons-gene
 
 const helpItems = [
   {
-    title: 'Start a career in AI Safety',
+    title: 'Start a career in AI safety',
     description:
       'For both technical and non-technical roles in AI alignment, governance, and field-building',
     impact: 'Highest direct impact',

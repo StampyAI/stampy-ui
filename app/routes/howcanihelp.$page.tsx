@@ -19,7 +19,7 @@ export default function HowCanIHelp() {
     <Page>
       <div className="page-body">
         <div className="padding-bottom-16">
-          <Link to="/howcanihelp">How can I help with AI Safety?</Link>
+          <Link to="/howcanihelp">How can I help with AI safety?</Link>
         </div>
         <Component />
       </div>
