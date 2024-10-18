@@ -1,0 +1,37 @@
+.link-card {
+  min-height: 100px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--spacing-8);
+  padding: var(--spacing-16);
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+  align-items: start;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.link-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-card .tag {
+  background-color: var(--colors-teal-50);
+  height: fit-content;
+  width: fit-content;
+  padding-left: var(--spacing-8);
+  padding-right: var(--spacing-8);
+  border-radius: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+.link-card .arrow {
+  position: absolute;
+  top: var(--spacing-8);
+  right: var(--spacing-8);
+}
