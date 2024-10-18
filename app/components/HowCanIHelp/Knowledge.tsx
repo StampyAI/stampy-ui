@@ -2,7 +2,7 @@ import Card from '../Card'
 import DropDown from '../DropDown'
 import {PuzzlePieces} from '../icons-generated'
 import LinkCard from '../LinkCard'
-import './knowledge.css'
+import './howcanihelp.css'
 
 export default function Knowledge() {
   return (
