@@ -237,14 +237,14 @@ export default function Knowledge() {
             title="Start a career in AI Safety"
             description="Help us build important AI safety infrastructure—all skill sets and levels of time—commitment are wanted"
             icon={PuzzlePieces}
-            route="/howcanihelppage/career"
+            action="/howcanihelppage/career"
             impact={'TODO'}
           />
           <Card
             title="Spread the word & grassroots activism"
             description="For anyone—help us spread the word about this issue"
             icon={PuzzlePieces}
-            route="/howcanihelppage/spread-the-word"
+            action="/howcanihelppage/spread-the-word"
             impact={'TODO'}
           />
         </div>
@@ -253,14 +253,14 @@ export default function Knowledge() {
             title="Donate"
             description="The AI safety field is constrained by funding—financial help is critical at this moment"
             icon={PuzzlePieces}
-            route="/howcanihelppage/donate"
+            action="/howcanihelppage/donate"
             impact={'TODO'}
           />
           <Card
             title="Volunteer"
             description="Help us build important AI safety infrastructure—all skill sets and levels of time—commitment are wanted"
             icon={PuzzlePieces}
-            route="/howcanihelppage/volunteer"
+            action="/howcanihelppage/volunteer"
             impact={'TODO'}
           />
         </div>
