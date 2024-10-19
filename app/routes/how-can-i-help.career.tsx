@@ -4,6 +4,8 @@ import DropDown from '../DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '../icons-generated'
 import LinkCard from '../LinkCard'
 import './howcanihelp.css'
+import {MetaFunction} from '@remix-run/node'
+import Base from '~/components/HowCanIHelp/Base'
 
 export default function Career() {
   return (
