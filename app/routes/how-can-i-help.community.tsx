@@ -6,5 +6,9 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Community() {
-  return <Base title="Join the community" subpage="community" />
+  return (
+    <Base title="Join the community" subpage="community">
+      <div>fill me out, please</div>
+    </Base>
+  )
 }

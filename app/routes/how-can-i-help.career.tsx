@@ -1,14 +1,11 @@
-import {Link} from '@remix-run/react'
-import Page from '~/components/Page'
 import {MetaFunction} from '@remix-run/node'
 import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
-import HelpMethods from '~/components/HowCanIHelp/HelpMethods'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import {helpUrl} from '~/routesMapper'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
+import Base from '~/components/HowCanIHelp/Base'
 /* import './howcanihelp.css' */
 
 export const meta: MetaFunction = () => {
@@ -613,25 +610,14 @@ const CareerPaths = () => (
 
 export default function HowCanIHelp() {
   return (
-    <Page>
-      <div className="page-body">
-        <div className="padding-bottom-16">
-          <Link to={helpUrl()}>How can I help with AI Safety?</Link>
-        </div>
+    <Base title="Start a career" subpage="career">
+      <CareerPaths />
 
-        <div>
-          <h1 className="teal-500 padding-bottom-40">Start a career</h1>
-          <CareerPaths />
+      <ResearchPath />
 
-          <ResearchPath />
+      <GovernancePath />
 
-          <GovernancePath />
-
-          <FieldBuildingPath />
-
-          <HelpMethods current="career" />
-        </div>
-      </div>
-    </Page>
+      <FieldBuildingPath />
+    </Base>
   )
 }

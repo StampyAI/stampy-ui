@@ -6,5 +6,9 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Donate() {
-  return <Base title="Donate to AISafety.info" subpage="donate" />
+  return (
+    <Base title="Donate to AISafety.info" subpage="donate">
+      <div>fill me out, please</div>
+    </Base>
+  )
 }
