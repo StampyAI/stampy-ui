@@ -15,8 +15,8 @@ export default function DropDown({title, children}: DropDownProps) {
       <button onClick={() => setIsOpen(!isOpen)} className="drop-down-header">
         <p className="large-bold teal-500">{title}</p>
         <ChevronRight
-          height={22}
-          width={22}
+          height={24}
+          width={24}
           className={`${isOpen ? 'rotate-90' : ''} drop-down-chevron`}
         />
       </button>

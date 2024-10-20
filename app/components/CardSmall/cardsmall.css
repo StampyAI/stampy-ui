@@ -1,11 +1,16 @@
 .card-small {
   padding: var(--spacing-24);
   align-items: start;
+  justify-content: start;
   display: flex;
   flex-direction: column;
   background-color: var(--colors-cool-grey-100);
+  border: 1px solid var(--colors-cool-grey-200);
   border-radius: var(--border-radius);
-  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
+}
+
+.card-small:hover {
+  border-color: var(--colors-teal-200);
 }
 
 .card-small-icon {

@@ -1,6 +1,6 @@
 .drop-down {
-  border-top: 1px solid var(--colors-teal-500);
-  border-bottom: 1px solid var(--colors-teal-500);
+  border-top: 1px solid var(--colors-teal-200);
+  border-bottom: 1px solid var(--colors-teal-200);
 }
 
 .drop-down-header {

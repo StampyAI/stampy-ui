@@ -4,6 +4,7 @@ import DropDown from '~/components/DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
+import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 /* import './howcanihelp.css' */
 
@@ -45,10 +46,10 @@ const ResearchPath = () => (
             safety and alignment; in academia (i.e. universities and academic institutions);
             independently; or on industry safety teams*, usually at major AI companies like OpenAI.
           </p>
-          <p className="grey default">
-            *Note: Beware of the risk of joining "safety" teams, as this work often leaks to
-            non-safety parts of the organization which improves the AI technology itself—and so ends
-            up causing harm.
+          <p className="grey small">
+            <span className="small-bold">*Note:</span> Beware of the risk of joining "safety" teams,
+            as this work often leaks to non-safety parts of the organization which improves the AI
+            technology itself—and so ends up causing harm.
           </p>
         </div>
         <div>
@@ -61,7 +62,8 @@ const ResearchPath = () => (
         </div>
       </div>
     </div>
-    <div className="padding-bottom-80">
+
+    <div className="padding-bottom-24">
       <div className="section-split padding-bottom-56">
         <h2>Interested in pursuing this career path?</h2>
         <p>
@@ -75,6 +77,7 @@ const ResearchPath = () => (
           {
             tag: 'Top recommendation',
             title: 'Technical AI Safety Career Review',
+            action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
       >
@@ -92,9 +95,11 @@ const ResearchPath = () => (
         links={[
           {
             title: 'Book your AI Safety Quest call',
+            action: 'https://aisafety.quest/#calls',
           },
           {
             title: 'Book your 80,000 Hours call',
+            action: 'https://80000hours.org/speak-with-us/',
           },
         ]}
       >
@@ -170,7 +175,28 @@ const ResearchPath = () => (
           travel, organizing events, and ensuring they can focus on impactful AI safety efforts.
         </HelpItem>
       </DropDown>
+    </div>
 
+    <div className="section-split padding-bottom-32">
+      <Testimonial
+        src="/assets/guy.jpeg"
+        title="Lorem ipsum"
+        description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+      />
+      <Testimonial
+        src="/assets/guy.jpeg"
+        title="Lorem ipsum"
+        description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+      />
+    </div>
+
+    <div className="padding-bottom-80">
       <CategoryCarousel
         title="Our articles on pursuing a career in alignment research"
         category="8TJV"
@@ -181,46 +207,131 @@ const ResearchPath = () => (
 
 const GovernancePath = () => (
   <div className="padding-bottom-80">
-    <h2 className="teal-500 padding-bottom-40" id="governance">
-      AI governance & policy
-    </h2>
-    <div className="section-grid">
-      <div>
-        <p className="default-bold padding-bottom-16">What</p>
-        <p className="grey default">
-          AI alignment research is the field dedicated to ensuring that advanced artificial
-          intelligence systems act in ways that are beneficial to humans and aligned with human
-          values and goals. It involves developing methods and principles to guide AI behavior so
-          that as these systems become more capable and autonomous, they continue to operate safely
-          and ethically within the intentions set by their human creators.
+    <div className="padding-bottom-80">
+      <h2 className="teal-500 padding-bottom-40" id="governance">
+        AI governance & policy
+      </h2>
+      <div className="section-grid">
+        <div>
+          <p className="default-bold padding-bottom-16">What</p>
+          <p className="grey default">
+            AI alignment research is the field dedicated to ensuring that advanced artificial
+            intelligence systems act in ways that are beneficial to humans and aligned with human
+            values and goals. It involves developing methods and principles to guide AI behavior so
+            that as these systems become more capable and autonomous, they continue to operate
+            safely and ethically within the intentions set by their human creators.
+          </p>
+        </div>
+        <div>
+          <p className="default-bold padding-bottom-16">Why this is important</p>
+          <p className="grey default">
+            To ensure humanity benefits from advanced AI and mitigates risks—like unintended
+            behaviors or misalignment with human values—we must first solve the technical challenge
+            of AI alignment through dedicated research, and then collaborate globally to carefully
+            deploy solutions. While experts believe alignment is solvable, it remains a complex
+            problem that demands significant high-quality intellectual talent.
+          </p>
+        </div>
+        <div>
+          <p className="default-bold padding-bottom-16">Where AI alignment researchers work</p>
+          <p className="grey default">
+            AI alignment researchers typically work at non-profit organizations dedicated to AI
+            safety and alignment; in academia (i.e. universities and academic institutions);
+            independently; or on industry safety teams*, usually at major AI companies like OpenAI.
+          </p>
+        </div>
+        <div>
+          <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
+          <p className="grey default">
+            You might be a good fit as an AI alignment researcher if you have a quantitative
+            background, you enjoy programming, or you're skilled at breaking down problems
+            logically, hypothesizing, and testing various solutions with high attention to detail.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="padding-bottom-24">
+      <div className="section-split padding-bottom-56">
+        <h2>Interested in pursuing this career path?</h2>
+        <p>
+          Take the following steps to (1) learn more & further assess your fit; (2) learn how to
+          make the transition
         </p>
       </div>
-      <div>
-        <p className="default-bold padding-bottom-16">Why this is important</p>
-        <p className="grey default">
-          To ensure humanity benefits from advanced AI and mitigates risks—like unintended behaviors
-          or misalignment with human values—we must first solve the technical challenge of AI
-          alignment through dedicated research, and then collaborate globally to carefully deploy
-          solutions. While experts believe alignment is solvable, it remains a complex problem that
-          demands significant high-quality intellectual talent.
+      <HelpItem
+        title="Read the 80,000 Hours Technical AI Safety Career Review"
+        links={[
+          {
+            tag: 'Top recommendation',
+            title: 'Technical AI Safety Career Review',
+          },
+        ]}
+      >
+        <p className="padding-bottom-16">The review takes about one hour and addresses:</p>
+        <ul>
+          <li>What this career path involves</li>
+          <li>How to predict your fit</li>
+          <li>The upsides and downsides of this career path</li>
+          <li>Compensation</li>
+          <li>How to enter or transition into this career</li>
+        </ul>
+      </HelpItem>
+      <HelpItem
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        links={[
+          {
+            title: 'Book your AI Safety Quest call',
+          },
+          {
+            title: 'Book your 80,000 Hours call',
+          },
+        ]}
+      >
+        <p className="grey default padding-bottom-16">
+          Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
+          address your specific questions about the field, confirm your interest and fit, and
+          provide tailored recommendations to help you make the transition.
         </p>
-      </div>
-      <div>
-        <p className="default-bold padding-bottom-16">Where AI alignment researchers work</p>
-        <p className="grey default">
-          AI alignment researchers typically work at non-profit organizations dedicated to AI safety
-          and alignment; in academia (i.e. universities and academic institutions); independently;
-          or on industry safety teams*, usually at major AI companies like OpenAI.
+        <p className="grey small">
+          <span className="small-bold">Note:</span> 80,000 Hours does not accept all applicants.
         </p>
-      </div>
-      <div>
-        <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
-        <p className="grey default">
-          You might be a good fit as an AI alignment researcher if you have a quantitative
-          background, you enjoy programming, or you're skilled at breaking down problems logically,
-          hypothesizing, and testing various solutions with high attention to detail.
-        </p>
-      </div>
+      </HelpItem>
+
+      <HelpItem
+        title="A process note: Form your own understanding of the AI alignment technical challenge"
+        links={[
+          {title: 'Our ‘Build your knowledge’ guide'},
+          {title: 'Our ‘Join a community’ guide'},
+        ]}
+      >
+        AI safety is a relatively new field with diverse opinions on how best to solve the technical
+        challenge of AI alignment. Many unexplored avenues and important questions likely remain
+        unaddressed. Therefore, it's crucial for (aspiring) AI alignment researchers to think
+        independently and develop their own models on this topic. If you pursue a career in this
+        field, we recommend deeply educating yourself on the technical challenge of alignment,
+        engaging with other AI safety experts, and thinking critically about the topic and current
+        paradigms.
+      </HelpItem>
+    </div>
+
+    <div className="section-split padding-bottom-32">
+      <Testimonial
+        src="/assets/guy.jpeg"
+        title="Lorem ipsum"
+        description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+      />
+      <Testimonial
+        src="/assets/guy.jpeg"
+        title="Lorem ipsum"
+        description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
+        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
+        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+      />
     </div>
 
     <CategoryCarousel
@@ -267,10 +378,12 @@ const FieldBuildingPath = () => (
         </div>
       </div>
     </div>
-    <div className="padding-bottom-80">
+
+    <div className="padding-bottom-24">
       <p className="padding-bottom-40 large-bold">Most common field-building roles</p>
 
       <HelpItem
+        titleFont="default-bold"
         title="Communications & advocacy"
         links={[
           {
@@ -286,6 +399,7 @@ const FieldBuildingPath = () => (
       </HelpItem>
 
       <HelpItem
+        titleFont="default-bold"
         title="Being a grantmaker"
         links={[
           {
@@ -301,6 +415,7 @@ const FieldBuildingPath = () => (
       </HelpItem>
 
       <HelpItem
+        titleFont="default-bold"
         title="Founding new projects"
         links={[
           {
@@ -315,6 +430,7 @@ const FieldBuildingPath = () => (
         that can continue without you.
       </HelpItem>
     </div>
+
     <div className="padding-bottom-80">
       <DropDown title="What are some other miscellaneous roles?">
         <HelpItem title="Supporting roles">
@@ -324,6 +440,7 @@ const FieldBuildingPath = () => (
           best and have an impact. Some of these roles include:
         </HelpItem>
         <HelpItem
+          titleFont="default-bold"
           title="Operations management at an AI safety research organization"
           links={[
             {
@@ -338,6 +455,7 @@ const FieldBuildingPath = () => (
         </HelpItem>
 
         <HelpItem
+          titleFont="default-bold"
           title="Research management AI safety research organization"
           links={[
             {
@@ -353,6 +471,7 @@ const FieldBuildingPath = () => (
         </HelpItem>
 
         <HelpItem
+          titleFont="default-bold"
           title="Being an executive assistant to an AI safety researcher"
           links={[
             {
@@ -369,6 +488,7 @@ const FieldBuildingPath = () => (
         <p className="large-bold padding-bottom-32">Other technical roles</p>
 
         <HelpItem
+          titleFont="default-bold"
           title="Working in information security to protect AI (or the results of key experiments) from misuse, theft, or tampering"
           links={[
             {
@@ -382,6 +502,7 @@ const FieldBuildingPath = () => (
         </HelpItem>
 
         <HelpItem
+          titleFont="default-bold"
           title="Becoming an expert in AI hardware as a way of steering AI progress in safer directions"
           links={[
             {
@@ -394,6 +515,61 @@ const FieldBuildingPath = () => (
           Suspendisse nunc id lacus sit interdum sit.
         </HelpItem>
       </DropDown>
+    </div>
+
+    <div className="padding-bottom-24">
+      <div className="section-split padding-bottom-56">
+        <h2>Interested in pursuing this career path?</h2>
+        <p>
+          Take the following steps to (1) learn more & further assess your fit; (2) learn how to
+          make the transition
+        </p>
+      </div>
+      <HelpItem
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        links={[
+          {
+            title: 'Book your AI Safety Quest call',
+          },
+          {
+            title: 'Book your 80,000 Hours call',
+          },
+        ]}
+      >
+        <p className="grey default padding-bottom-16">
+          Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
+          address your specific questions about the field, confirm your interest and fit, and
+          provide tailored recommendations to help you make the transition.
+        </p>
+        <p className="grey small">
+          <span className="small-bold">Note:</span> 80,000 Hours does not accept all applicants.
+        </p>
+      </HelpItem>
+
+      <HelpItem
+        title="A process note: Form your own understanding of the AI alignment technical challenge"
+        links={[
+          {title: 'Our ‘Build your knowledge’ guide'},
+          {title: 'Our ‘Join a community’ guide'},
+        ]}
+      >
+        AI safety is a relatively new field with diverse opinions on how best to solve the technical
+        challenge of AI alignment. Many unexplored avenues and important questions likely remain
+        unaddressed. Therefore, it's crucial for (aspiring) AI alignment researchers to think
+        independently and develop their own models on this topic. If you pursue a career in this
+        field, we recommend deeply educating yourself on the technical challenge of alignment,
+        engaging with other AI safety experts, and thinking critically about the topic and current
+        paradigms.
+      </HelpItem>
+    </div>
+
+    <div className="padding-bottom-24">
+      <Testimonial
+        src="/assets/bryce.png"
+        title="Bryce Robertson"
+        layout="expanded"
+        description="Having decided to change my career to one focused on AI safety, I began searching for field-building roles. While staying on scholarship at the EA Hotel (CEEALAR) I spent five months doing volunteer work for Alignment Ecosystem Development (AED) and when the founder stepped back to focus on other projects, he asked me to take over its operations. I applied for and received funding from the Long-Term Future Fund which has allowed me to now lead AED full-time."
+      />
     </div>
 
     <CategoryCarousel
