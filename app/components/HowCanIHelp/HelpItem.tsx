@@ -16,8 +16,8 @@ const HelpItem = ({title, children, links, titleFont = 'large-bold'}: HelpItemPr
       </div>
       <div>
         {links?.map((link) => (
-          <div className="padding-bottom-16">
-            <LinkCard key={link.title} action={link.action || '#'} {...link} />
+          <div key={link.title} className="padding-bottom-16">
+            <LinkCard action={link.action || '#'} {...link} />
           </div>
         ))}
       </div>

@@ -48,7 +48,7 @@ const Button = ({
   const LinkComponent = !action.startsWith('http')
     ? Link
     : ({to, children, ...props}: {[k: string]: any}) => (
-        <a href={to} target="_blank" {...props}>
+        <a href={to} rel="noreferrer" target="_blank" {...props}>
           {children}
         </a>
       )
