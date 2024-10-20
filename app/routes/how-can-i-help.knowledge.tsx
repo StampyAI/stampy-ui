@@ -6,5 +6,9 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Knowledge() {
-  return <Base title="Share knowledge about AI Safety" subpage="knowledge" />
+  return (
+    <Base title="Share knowledge about AI Safety" subpage="knowledge">
+      <div>fill me out, please</div>
+    </Base>
+  )
 }

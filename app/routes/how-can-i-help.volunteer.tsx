@@ -6,5 +6,9 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Volunteer() {
-  return <Base title="Volunteer for AISafety.info" subpage="volunteer" />
+  return (
+    <Base title="Volunteer for AISafety.info" subpage="volunteer">
+      <div>fill me out, please</div>
+    </Base>
+  )
 }
