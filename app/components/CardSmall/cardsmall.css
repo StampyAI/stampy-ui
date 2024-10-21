@@ -4,7 +4,7 @@
   justify-content: start;
   display: flex;
   flex-direction: column;
-  background-color: var(--colors-cool-grey-100);
+  background-color: var(--colors-white);
   border: 1px solid var(--colors-cool-grey-200);
   border-radius: var(--border-radius);
 }

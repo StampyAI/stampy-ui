@@ -1,4 +1,4 @@
-.howcanihelp-header {
+/* .howcanihelp-header {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
@@ -36,4 +36,4 @@
   .section-split {
     grid-template-columns: 1fr;
   }
-}
+} */

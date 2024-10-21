@@ -9,12 +9,12 @@ type HelpItemProps = {
 }
 const HelpItem = ({title, children, links, titleFont = 'large-bold'}: HelpItemProps) => {
   return (
-    <div className="section-split padding-bottom-40">
-      <div>
+    <div className="flexbox padding-bottom-40">
+      <div className="col-6">
         {title && <p className={`padding-bottom-16 ${titleFont}`}>{title}</p>}
         <p className="grey default padding-bottom-16"> {children} </p>
       </div>
-      <div>
+      <div className="col-6">
         {links?.map((link) => (
           <div key={link.title} className="padding-bottom-16">
             <LinkCard action={link.action || '#'} {...link} />

@@ -19,15 +19,15 @@ export default function CardSmall({
   className,
   iconColor = 'var(--colors-teal-50)',
 }: CardSmallProps) {
-  className = `card-small bordered ${className}`
+  className = `card-small bordered col-4 ${className}`
 
   return (
     <Button action={action} className={className}>
       <div style={{backgroundColor: iconColor}} className="card-small-icon">
         {icon({})}
       </div>
-      <p className="large-bold padding-bottom-8">{title}</p>
-      <p className="grey">{description}</p>
+      <p className="default-bold padding-bottom-8">{title}</p>
+      <p className="grey small">{description}</p>
     </Button>
   )
 }
