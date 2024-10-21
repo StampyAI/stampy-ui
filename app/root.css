@@ -392,104 +392,104 @@ h2 {
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
-  /* standard grid - 1056px wide, 51px columns, 40px gutters */
-  .col-1 {
-    width: 51px;
-  }
+/* standard grid - 1056px wide, 51px columns, 40px gutters */
+.col-1 {
+  width: 51px;
+}
 
-  .col-2 {
-    width: 143px;
-  }
+.col-2 {
+  width: 143px;
+}
 
-  .col-3 {
-    width: 234px;
-  }
+.col-3 {
+  width: 234px;
+}
 
-  .col-4 {
-    width: 325px;
-  }
+.col-4 {
+  width: 325px;
+}
 
-  .col-5 {
-    width: 417px;
-  }
+.col-5 {
+  width: 417px;
+}
 
-  .col-6 {
-    width: 508px;
-  }
+.col-6 {
+  width: 508px;
+}
 
-  .col-7 {
-    width: 599px;
-  }
+.col-7 {
+  width: 599px;
+}
 
-  .col-8 {
-    width: 691px;
-  }
+.col-8 {
+  width: 691px;
+}
 
-  .col-9 {
-    width: 782px;
-  }
+.col-9 {
+  width: 782px;
+}
 
-  .col-10 {
-    width: 873px;
-  }
+.col-10 {
+  width: 873px;
+}
 
-  .col-11 {
-    width: 965px;
-  }
+.col-11 {
+  width: 965px;
+}
 
-  .col-12 {
-    width: 1056px;
-  }
+.col-12 {
+  width: 1056px;
+}
 
-  /* Alternate grid for extra spacing between elements - 1056px wide, 29px columns, 64px gutters */
+/* Alternate grid for extra spacing between elements - 1056px wide, 29px columns, 64px gutters */
 
-  .col-1-alt {
-    width: 29px;
-  }
+.col-1-alt {
+  width: 29px;
+}
 
-  .col-2-alt {
-    width: 123px;
-  }
+.col-2-alt {
+  width: 123px;
+}
 
-  .col-3-alt {
-    width: 216px;
-  }
+.col-3-alt {
+  width: 216px;
+}
 
-  .col-4-alt {
-    width: 309px;
-  }
+.col-4-alt {
+  width: 309px;
+}
 
-  .col-5-alt {
-    width: 403px;
-  }
+.col-5-alt {
+  width: 403px;
+}
 
-  .col-6-alt {
-    width: 496px;
-  }
+.col-6-alt {
+  width: 496px;
+}
 
-  .col-7-alt {
-    width: 589px;
-  }
+.col-7-alt {
+  width: 589px;
+}
 
-  .col-8-alt {
-    width: 683px;
-  }
+.col-8-alt {
+  width: 683px;
+}
 
-  .col-9-alt {
-    width: 776px;
-  }
+.col-9-alt {
+  width: 776px;
+}
 
-  .col-10-alt {
-    width: 869px;
-  }
+.col-10-alt {
+  width: 869px;
+}
 
-  .col-11-alt {
-    width: 963px;
-  }
+.col-11-alt {
+  width: 963px;
+}
 
-  .col-12-alt {
-    width: 1056px;
-  }
+.col-12-alt {
+  width: 1056px;
+}
 
 /* etc width, height */
 
@@ -506,15 +506,15 @@ h2 {
 
 .flexbox {
   display: flex;
-  flex-direction: row; 
-  flex-wrap: wrap; 
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--spacing-40);
 }
 
 .flexbox-alt {
   display: flex;
-  flex-direction: row; 
-  flex-wrap: wrap; 
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--spacing-64);
 }
 
@@ -746,7 +746,6 @@ button {
     width: 87.2vw;
   }
 
-
   /* typography tags for mobile */
 
   h1 {
@@ -819,6 +818,6 @@ button {
     background-color: var(--colors-white);
     width: 85%;
   }
-} 
+}
 
 /* end mobile */
