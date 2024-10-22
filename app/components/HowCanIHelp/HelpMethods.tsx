@@ -2,6 +2,12 @@ import Card from '~/components/Card'
 import CardSmall from '~/components/CardSmall'
 import {HelpPage, helpUrl} from '~/routesMapper'
 import {PuzzlePieces} from '~/components/icons-generated'
+import {Book} from '~/components/icons-generated'
+import {People} from '~/components/icons-generated'
+import {Briefcase} from '~/components/icons-generated'
+import {Megaphone} from '~/components/icons-generated'
+import {PiggyBank} from '~/components/icons-generated'
+import {Hand} from '~/components/icons-generated'
 
 type HelpMethodsProps = {
   current?: HelpPage
@@ -21,7 +27,7 @@ const HelpMethods = ({
           action={helpUrl('knowledge')}
           title="Build your knowledge"
           description="Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field"
-          icon={PuzzlePieces}
+          icon={Book}
           impact="We'll show you how"
           className="col-6"
         />
@@ -31,7 +37,7 @@ const HelpMethods = ({
           action={helpUrl('community')}
           title="Join a community"
           description="Connecting with others online or in person will help you navigate the transition to a career in AI safety"
-          icon={PuzzlePieces}
+          icon={People}
           impact="Find your community"
           className="col-6"
         />
@@ -44,7 +50,7 @@ const HelpMethods = ({
           action={helpUrl('career')}
           title="Start a career in AI Safety"
           description="For both technical and non-technical roles in research, policy, and field-building"
-          icon={PuzzlePieces}
+          icon={Briefcase}
           className="col-4"
         />
       )}
@@ -53,7 +59,7 @@ const HelpMethods = ({
           action={helpUrl('donate')}
           title="Donate"
           description="The AI safety field is constrained by funding—financial help is critical at this moment"
-          icon={PuzzlePieces}
+          icon={PiggyBank}
           className="col-4"
         />
       )}
@@ -62,7 +68,7 @@ const HelpMethods = ({
           action={helpUrl('volunteer')}
           title="Volunteer"
           description="Help us build important AI safety infrastructure—all skill sets and levels of time—commitment are wanted"
-          icon={PuzzlePieces}
+          icon={Hand}
           className="col-4"
         />
       )}
@@ -71,7 +77,7 @@ const HelpMethods = ({
           action={helpUrl('grassroots')}
           title="Spread the word & grassroots activism"
           description="For anyone—help us spread the word about this issue"
-          icon={PuzzlePieces}
+          icon={Megaphone}
           className="col-4"
         />
       )}
