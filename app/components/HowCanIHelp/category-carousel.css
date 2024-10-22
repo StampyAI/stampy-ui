@@ -40,4 +40,5 @@
   height: 230px;
   padding: var(--spacing-40);
   text-align: left;
+  gap: var(--spacing-16);
 }

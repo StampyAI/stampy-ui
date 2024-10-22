@@ -13,8 +13,8 @@ export default function Base({title, subpage, children}: BaseProps) {
   return (
     <Page>
       <div className="page-body">
-        <div className="padding-bottom-16">
-          <Link to={helpUrl()}>How can I help with AI Safety?</Link>
+        <div className="padding-bottom-16 padding-top-48 large">
+          <Link to={helpUrl()}>How can I help with AI safety?</Link>
         </div>
 
         <div>
