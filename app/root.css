@@ -297,8 +297,16 @@ h2 {
   padding-top: var(--spacing-40) !important;
 }
 
+.padding-top-48 {
+  padding-top: var(--spacing-48) !important;
+}
+
 .padding-top-56 {
   padding-top: var(--spacing-56) !important;
+}
+
+.padding-top-64 {
+  padding-top: var(--spacing-64) !important;
 }
 
 .padding-top-80 {
@@ -693,16 +701,19 @@ button {
 
 .tag {
   color: var(--colors-teal-500);
-  height: fit-content;
+  height: 24px;
   width: fit-content;
   padding: 4px 8px;
   background-color: var(--colors-teal-50);
   border-radius: var(--border-radius);
+  display: flex; /* Added for flexbox layout */
+  align-items: center; /* Align children vertically in the center */
+  justify-content: center; /* Center horizontally, optional based on design */
 }
 
 /* hide elements designed for only mobile on desktop */
 
-@media (min-width: 780px) {
+@media (min-width: 1136px) {
   .mobile-only {
     display: none !important;
   }
@@ -712,7 +723,7 @@ button {
 
 /* mobile */
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .page-body {
     width: 87.2vw;
   }

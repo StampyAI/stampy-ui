@@ -2,7 +2,7 @@
   height: 328px;
   padding: var(--spacing-24);
   display: flex;
-  background-color: var(--colors-cool-grey-100);
+  background-color: var(--colors-white);
   border-radius: var(--border-radius);
 }
 
