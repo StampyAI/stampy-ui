@@ -1,7 +1,6 @@
 import Card from '~/components/Card'
 import CardSmall from '~/components/CardSmall'
 import {HelpPage, helpUrl} from '~/routesMapper'
-import {PuzzlePieces} from '~/components/icons-generated'
 import {Book} from '~/components/icons-generated'
 import {People} from '~/components/icons-generated'
 import {Briefcase} from '~/components/icons-generated'
