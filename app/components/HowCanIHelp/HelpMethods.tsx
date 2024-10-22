@@ -23,7 +23,7 @@ const HelpMethods = ({
           description="Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field"
           icon={PuzzlePieces}
           impact="We'll show you how"
-          className='col-6'
+          className="col-6"
         />
       )}
       {current !== 'community' && (
@@ -33,7 +33,7 @@ const HelpMethods = ({
           description="Connecting with others online or in person will help you navigate the transition to a career in AI safety"
           icon={PuzzlePieces}
           impact="Find your community"
-          className='col-6'
+          className="col-6"
         />
       )}
     </div>
@@ -45,7 +45,7 @@ const HelpMethods = ({
           title="Start a career in AI Safety"
           description="For both technical and non-technical roles in research, policy, and field-building"
           icon={PuzzlePieces}
-          className='col-4'
+          className="col-4"
         />
       )}
       {current !== 'donate' && (
@@ -54,7 +54,7 @@ const HelpMethods = ({
           title="Donate"
           description="The AI safety field is constrained by funding—financial help is critical at this moment"
           icon={PuzzlePieces}
-          className='col-4'
+          className="col-4"
         />
       )}
       {current !== 'volunteer' && (
@@ -63,7 +63,7 @@ const HelpMethods = ({
           title="Volunteer"
           description="Help us build important AI safety infrastructure—all skill sets and levels of time—commitment are wanted"
           icon={PuzzlePieces}
-          className='col-4'
+          className="col-4"
         />
       )}
       {current !== 'grassroots' && (
@@ -72,7 +72,7 @@ const HelpMethods = ({
           title="Spread the word & grassroots activism"
           description="For anyone—help us spread the word about this issue"
           icon={PuzzlePieces}
-          className='col-4'
+          className="col-4"
         />
       )}
     </div>

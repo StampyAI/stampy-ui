@@ -706,10 +706,9 @@ button {
   padding: 4px 8px;
   background-color: var(--colors-teal-50);
   border-radius: var(--border-radius);
-  display: flex;                  /* Added for flexbox layout */
-  align-items: center;            /* Align children vertically in the center */
-  justify-content: center;        /* Center horizontally, optional based on design */
-
+  display: flex; /* Added for flexbox layout */
+  align-items: center; /* Align children vertically in the center */
+  justify-content: center; /* Center horizontally, optional based on design */
 }
 
 /* hide elements designed for only mobile on desktop */
