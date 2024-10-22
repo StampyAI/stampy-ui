@@ -39,6 +39,7 @@
   --spacing-40: clamp(24px, 2.78vw, 40px);
   --spacing-48: clamp(24px, 3.33vw, 48px);
   --spacing-56: clamp(24px, 3.89vw, 56px);
+  --spacing-64: clamp(32px, 4.45vw, 64px);
   --spacing-80: clamp(40px, 5.56vw, 80px);
   --spacing-104: clamp(56px, 7.22vw, 104px);
   --spacing-128: clamp(56px, 8.89vw, 128px);
@@ -98,42 +99,59 @@ h2 {
   letter-spacing: -0.57px;
 }
 
+/* typography tags */
+
+h1 {
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 125%; /* 80px */
+  letter-spacing: -1.28px;
+}
+
+h2 {
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 130%; /* 49.4px */
+  letter-spacing: -0.57px;
+}
+
 /* typography classes */
 
 .large {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  letter-spacing: -0.44px;
 }
 
 .large-reading {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 190%; /* 30.6px */
-  letter-spacing: -0.18px;
+  letter-spacing: -0.44px;
+  /* this is only for the body of articles, don't use it anywhere else */
 }
 
 .large-bold {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  letter-spacing: -0.44px;
 }
 
 .default {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 300;
   line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
+  letter-spacing: -0.18px;
   /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
 }
 
 .default-bold {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
+  letter-spacing: -0.18px;
 }
 
 .small {
@@ -174,6 +192,7 @@ h2 {
 .leading-0 {
   line-height: 0 !important;
 }
+
 /* color classes */
 
 .black {
@@ -373,53 +392,106 @@ h2 {
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
+/* standard grid - 1056px wide, 51px columns, 40px gutters */
 .col-1 {
-  width: clamp(0px, 3.54vw, 53px);
+  width: 51px;
 }
 
 .col-2 {
-  width: clamp(0px, 9.93vw, 171px);
+  width: 143px;
 }
 
 .col-3 {
-  width: clamp(0px, 16.25vw, 288px);
+  width: 234px;
 }
 
 .col-4 {
-  width: clamp(0px, 22.57vw, 405px);
+  width: 325px;
 }
 
 .col-5 {
-  width: clamp(0px, 28.96vw, 523px);
+  width: 417px;
 }
 
 .col-6 {
-  width: clamp(270px, 35.28vw, 640px);
+  width: 508px;
 }
 
 .col-7 {
-  width: clamp(0px, 41.6vw, 757px);
+  width: 599px;
 }
 
 .col-8 {
-  width: clamp(0px, 47.99vw, 875px);
+  width: 691px;
 }
 
 .col-9 {
-  width: clamp(0px, 54.31vw, 992px);
+  width: 782px;
 }
 
 .col-10 {
-  width: clamp(300px, 60.62vw, 1109px);
+  width: 873px;
 }
 
 .col-11 {
-  width: clamp(0px, 67.01vw, 1227px);
+  width: 965px;
 }
 
 .col-12 {
-  width: clamp(0px, 73.33vw, 1344px);
+  width: 1056px;
 }
+
+/* Alternate grid for extra spacing between elements - 1056px wide, 29px columns, 64px gutters */
+
+.col-1-alt {
+  width: 29px;
+}
+
+.col-2-alt {
+  width: 123px;
+}
+
+.col-3-alt {
+  width: 216px;
+}
+
+.col-4-alt {
+  width: 309px;
+}
+
+.col-5-alt {
+  width: 403px;
+}
+
+.col-6-alt {
+  width: 496px;
+}
+
+.col-7-alt {
+  width: 589px;
+}
+
+.col-8-alt {
+  width: 683px;
+}
+
+.col-9-alt {
+  width: 776px;
+}
+
+.col-10-alt {
+  width: 869px;
+}
+
+.col-11-alt {
+  width: 963px;
+}
+
+.col-12-alt {
+  width: 1056px;
+}
+
+/* etc width, height */
 
 .full-width {
   width: 100%;
@@ -428,6 +500,22 @@ h2 {
 .full-height {
   height: fit-content;
   min-height: 100%;
+}
+
+/* flexbox */
+
+.flexbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-40);
+}
+
+.flexbox-alt {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-64);
 }
 
 /* z-index classes */
@@ -543,6 +631,18 @@ svg {
   overflow: hidden;
 }
 
+p,
+textarea,
+button {
+  font-family: Poppins;
+}
+.margin-top-40 {
+  margin-top: var(--spacing-40);
+}
+.relative {
+  position: relative;
+}
+
 /* for troubleshooting */
 
 .pink {
@@ -550,9 +650,10 @@ svg {
   background: pink !important;
 }
 
-/* defines the standard left and right margins */
+/* defines the standard left and right margins on every page */
 .page-body {
-  padding: 0px var(--spacing-128);
+  width: 1056px;
+  margin: 0 auto;
 }
 
 /* all other classes */
@@ -599,20 +700,53 @@ svg {
   border-radius: var(--border-radius);
 }
 
+/* hide elements designed for only mobile on desktop */
+
 @media (min-width: 780px) {
   .mobile-only {
     display: none !important;
   }
 }
 
+/* ---------------------------------------------------------------------------------------------------------------------------------- */
+
 /* mobile */
 
 @media (max-width: 780px) {
   .page-body {
-    padding: 0px var(--spacing-48);
+    width: 87.2vw;
   }
 
-  /* typography tags */
+  /* by default, all widths (.col-* and .col-*-alt) will transition to taking up full-width (87.2vw) on mobile */
+
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12,
+  .col-1-alt,
+  .col-2-alt,
+  .col-3-alt,
+  .col-4-alt,
+  .col-5-alt,
+  .col-6-alt,
+  .col-7-alt,
+  .col-8-alt,
+  .col-9-alt,
+  .col-10-alt,
+  .col-11-alt,
+  .col-12-alt {
+    width: 87.2vw;
+  }
+
+  /* typography tags for mobile */
 
   h1 {
     font-size: 38px;
@@ -630,7 +764,7 @@ svg {
     letter-spacing: -0.52px;
   }
 
-  /* typography classes */
+  /* typography classes for mobile */
 
   .large {
     font-size: 18px;
@@ -656,7 +790,7 @@ svg {
     letter-spacing: -0.18px;
   }
 
-  /* other one-off classes */
+  /* other one-off classes for mobile */
 
   .desktop-only {
     display: none !important;
@@ -684,15 +818,6 @@ svg {
     background-color: var(--colors-white);
     width: 85%;
   }
-} /* end mobile */
-p,
-textarea,
-button {
-  font-family: Poppins;
 }
-.margin-top-40 {
-  margin-top: var(--spacing-40);
-}
-.relative {
-  position: relative;
-}
+
+/* end mobile */

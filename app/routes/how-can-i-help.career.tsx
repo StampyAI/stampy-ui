@@ -18,8 +18,8 @@ const ResearchPath = () => (
       <h2 className="teal-500 padding-bottom-40" id="research">
         AI alignment research
       </h2>
-      <div className="section-grid">
-        <div>
+      <div className="flexbox-alt">
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
           <p className="grey default">
             AI alignment research is the field dedicated to ensuring that advanced artificial
@@ -29,7 +29,7 @@ const ResearchPath = () => (
             safely and ethically within the intentions set by their human creators.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
             To ensure humanity benefits from advanced AI and mitigates risks—like unintended
@@ -39,7 +39,7 @@ const ResearchPath = () => (
             problem that demands significant high-quality intellectual talent.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Where AI alignment researchers work</p>
           <p className="grey default padding-bottom-24">
             AI alignment researchers typically work at non-profit organizations dedicated to AI
@@ -52,7 +52,7 @@ const ResearchPath = () => (
             technology itself—and so ends up causing harm.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
           <p className="grey default">
             You might be a good fit as an AI alignment researcher if you have a quantitative
@@ -64,9 +64,9 @@ const ResearchPath = () => (
     </div>
 
     <div className="padding-bottom-24">
-      <div className="section-split padding-bottom-56">
-        <h2>Interested in pursuing this career path?</h2>
-        <p>
+      <div className="flexbox padding-bottom-56">
+        <h2 className="col-6">Interested in pursuing this career path?</h2>
+        <p className="col-6 large">
           Take the following steps to (1) learn more & further assess your fit; (2) learn how to
           make the transition
         </p>
@@ -177,7 +177,7 @@ const ResearchPath = () => (
       </DropDown>
     </div>
 
-    <div className="section-split padding-bottom-32">
+    <div className="flexbox padding-bottom-32">
       <Testimonial
         src="/assets/guy.jpeg"
         title="Lorem ipsum"
@@ -185,6 +185,7 @@ const ResearchPath = () => (
         enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
         enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
         molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        className="col-6"
       />
       <Testimonial
         src="/assets/guy.jpeg"
@@ -192,7 +193,9 @@ const ResearchPath = () => (
         description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
         enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
         enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor. leo mi euismod. Nulla in sit
         molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        className="col-6"
       />
     </div>
 
@@ -211,8 +214,8 @@ const GovernancePath = () => (
       <h2 className="teal-500 padding-bottom-40" id="governance">
         AI governance & policy
       </h2>
-      <div className="section-grid">
-        <div>
+      <div className="flexbox-alt">
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
           <p className="grey default">
             AI alignment research is the field dedicated to ensuring that advanced artificial
@@ -222,7 +225,7 @@ const GovernancePath = () => (
             safely and ethically within the intentions set by their human creators.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
             To ensure humanity benefits from advanced AI and mitigates risks—like unintended
@@ -232,7 +235,7 @@ const GovernancePath = () => (
             problem that demands significant high-quality intellectual talent.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Where AI alignment researchers work</p>
           <p className="grey default">
             AI alignment researchers typically work at non-profit organizations dedicated to AI
@@ -240,7 +243,7 @@ const GovernancePath = () => (
             independently; or on industry safety teams*, usually at major AI companies like OpenAI.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
           <p className="grey default">
             You might be a good fit as an AI alignment researcher if you have a quantitative
@@ -252,9 +255,9 @@ const GovernancePath = () => (
     </div>
 
     <div className="padding-bottom-24">
-      <div className="section-split padding-bottom-56">
-        <h2>Interested in pursuing this career path?</h2>
-        <p>
+      <div className="flexbox padding-bottom-56">
+        <h2 className="col-6">Interested in pursuing this career path?</h2>
+        <p className="col-6 large">
           Take the following steps to (1) learn more & further assess your fit; (2) learn how to
           make the transition
         </p>
@@ -315,7 +318,7 @@ const GovernancePath = () => (
       </HelpItem>
     </div>
 
-    <div className="section-split padding-bottom-32">
+    <div className="flexbox padding-bottom-32">
       <Testimonial
         src="/assets/guy.jpeg"
         title="Lorem ipsum"
@@ -323,6 +326,7 @@ const GovernancePath = () => (
         enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
         enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
         molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        className="col-6"
       />
       <Testimonial
         src="/assets/guy.jpeg"
@@ -330,7 +334,9 @@ const GovernancePath = () => (
         description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
         enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
         enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
+        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor. leo mi euismod. Nulla in sit
         molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        className="col-6"
       />
     </div>
 
@@ -347,8 +353,8 @@ const FieldBuildingPath = () => (
       <h2 className="teal-500 padding-bottom-40" id="field-building">
         AI safety field-building
       </h2>
-      <div className="section-grid">
-        <div>
+      <div className="flexbox-alt">
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
           <p className="grey default">
             AI alignment research is the field dedicated to ensuring that advanced artificial
@@ -358,7 +364,7 @@ const FieldBuildingPath = () => (
             safely and ethically within the intentions set by their human creators.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
             To ensure humanity benefits from advanced AI and mitigates risks—like unintended
@@ -368,7 +374,7 @@ const FieldBuildingPath = () => (
             problem that demands significant high-quality intellectual talent.
           </p>
         </div>
-        <div>
+        <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
           <p className="grey default">
             You might be a good fit as an AI alignment researcher if you have a quantitative
@@ -518,9 +524,9 @@ const FieldBuildingPath = () => (
     </div>
 
     <div className="padding-bottom-24">
-      <div className="section-split padding-bottom-56">
-        <h2>Interested in pursuing this career path?</h2>
-        <p>
+      <div className="flexbox padding-bottom-56">
+        <h2 className="col-6">Interested in pursuing this career path?</h2>
+        <p className="col-6">
           Take the following steps to (1) learn more & further assess your fit; (2) learn how to
           make the transition
         </p>
@@ -582,7 +588,7 @@ const FieldBuildingPath = () => (
 const CareerPaths = () => (
   <>
     <p className="grey default padding-bottom-32">There are 3 major career paths in AI safety:</p>
-    <div className="paths-grid padding-bottom-80">
+    <div className="flexbox padding-bottom-80">
       <CardSmall
         action="#research"
         iconColor="var(--colors-teal-700)"
