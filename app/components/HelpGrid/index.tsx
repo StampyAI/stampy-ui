@@ -1,4 +1,3 @@
-import './helpgrid.css'
 import Card from '../Card'
 import {Briefcase, Megaphone, PiggyBank, Hand, Book, People} from '../icons-generated'
 import {helpUrl} from '~/routesMapper'
