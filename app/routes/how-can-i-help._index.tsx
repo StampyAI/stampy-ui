@@ -12,7 +12,9 @@ export default function HowCanIHelp() {
     <Page>
       <div className="page-body padding-top-56">
         <div className="flexbox padding-bottom-80">
-          <h1 className="teal-500 col-7">How can I help with<br></br> AI safety?</h1>
+          <h1 className="teal-500 col-7">
+            How can I help with<br></br> AI safety?
+          </h1>
           <p className="large col-5">
             The AI safety movement is still relatively new, and your actions could have significant
             impact. Here's what you can do:
