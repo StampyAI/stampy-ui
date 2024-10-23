@@ -527,6 +527,15 @@ h2 {
   gap: var(--spacing-64);
 }
 
+.gap-16 {
+  gap: var(--spacing-16) !important;
+}
+
+.center-align {
+  align-items: center;
+}
+
+
 /* z-index classes */
 .z-index-1 {
   z-index: 1;

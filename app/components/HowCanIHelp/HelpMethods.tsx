@@ -47,7 +47,7 @@ const HelpMethods = ({
       {current !== 'career' && (
         <CardSmall
           action={helpUrl('career')}
-          title="Start a career in AI Safety"
+          title="Start a career in AI safety"
           description="For both technical and non-technical roles in research, policy, and field-building"
           icon={Briefcase}
           className="col-4"

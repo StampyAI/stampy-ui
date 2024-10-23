@@ -25,7 +25,7 @@ export const Primary: Story = {
     className: 'teal-background',
     title: (
       <>
-        <div className="white">New to AI Safety?</div>
+        <div className="white">New to AI safety?</div>
         <div className="teal-200">
           Something about <br />
           reading and quick
@@ -44,7 +44,7 @@ export const Primary: Story = {
         loading="lazy"
         src="/assets/book-circle.svg"
         className="content-box-right-icon"
-        alt="AI Safety Image"
+        alt="AI safety Image"
       />
     ),
   },

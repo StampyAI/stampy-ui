@@ -57,7 +57,7 @@ const fetchQuestion = async (request: Request) => {
 }
 
 const TITLE = 'AISafety.info'
-const DESCRIPTION = 'AI Safety FAQ'
+const DESCRIPTION = 'AI safety FAQ'
 const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)

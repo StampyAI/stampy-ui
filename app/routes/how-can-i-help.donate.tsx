@@ -46,7 +46,7 @@ const ResearchPath = () => (
         ]}
         additionalInfo={
           <>
-            Or browse our <a href="">other grantmaker recommendations</a>
+            Or, browse our <a href="https://www.aisafety.com/donation-guide" className="small-bold teal-500">other grantmaker recommendations</a>
           </>
         }
       >
@@ -61,15 +61,9 @@ const ResearchPath = () => (
         </p>
       </HelpItem>
 
-      <HelpItem title="Donating to grantmakers">
+      <HelpItem title="Donating directly" tag="Highest impact">
         <p className="padding-bottom-16">
-          Essentially, AI safety field experts allocate your funds where they believe they will be
-          the most impactful within AI alignment research, AI governance, or AI safety
-          field-building.
-        </p>
-        <p>
-          We recommend the Long-Term Future Fund, the go-to grantmaker for identifying and funding
-          high-value projects worldwide.
+        If you’re deeply involved in the AI safety community, we encourage you to directly fund research, projects, or miscellaneous expenses that you think are valuable. Donating directly puts you in the seat of the grantmaker—if you have knowledge of an avenue that deserves funds, you’re likely to make a better decision than a grantmaker.
         </p>
       </HelpItem>
     </div>
@@ -78,7 +72,7 @@ const ResearchPath = () => (
       <Testimonial
         src="/assets/guy.jpeg"
         title="Søren Elverlin"
-        description="I've directly funded several small-scale AI Safety projects and found it highly rewarding. The field is often funding-constrained, and many valuable projects are overlooked by large funders. By taking time to understand individuals’ goals and approaches, I’ve been able to make a meaningful impact with targeted, direct donations."
+        description="I've directly funded several small-scale AI safety projects and found it highly rewarding. The field is often funding-constrained, and many valuable projects are overlooked by large funders. By taking time to understand individuals’ goals and approaches, I’ve been able to make a meaningful impact with targeted, direct donations."
         className="col-6"
       />
       <Testimonial
