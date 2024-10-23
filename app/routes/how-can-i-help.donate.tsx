@@ -1,7 +1,4 @@
 import {MetaFunction} from '@remix-run/node'
-import CardSmall from '~/components/CardSmall'
-import DropDown from '~/components/DropDown'
-import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
@@ -18,13 +15,17 @@ const ResearchPath = () => (
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Who</p>
           <p className="grey default">
-          All donations are helpful. A kind-hearted person with $10 extra a month, a mid-salary professional wishing to donate 10% of their income, or a well-off philanthropist looking to create major change for good can all financially contribute to advance this effort.
+            All donations are helpful. A kind-hearted person with $10 extra a month, a mid-salary
+            professional wishing to donate 10% of their income, or a well-off philanthropist looking
+            to create major change for good can all financially contribute to advance this effort.
           </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
-          The AI safety field is funding-limited as of mid-2023, and there are important avenues in AI alignment research and AI governance that cannot currently be explored due to this lack of funding.
+            The AI safety field is funding-limited as of mid-2023, and there are important avenues
+            in AI alignment research and AI governance that cannot currently be explored due to this
+            lack of funding.
           </p>
         </div>
       </div>
@@ -38,21 +39,33 @@ const ResearchPath = () => (
           {
             tag: 'Top recommendation',
             title: 'Long-Term Future Fund',
-            action: 'https://www.givingwhatwecan.org/charities/long-term-future-fund?utm_source=eafunds',
+            action:
+              'https://www.givingwhatwecan.org/charities/long-term-future-fund?utm_source=eafunds',
           },
         ]}
       >
-        <p className="padding-bottom-16">Essentially, AI safety field experts allocate your funds where they believe they will be the most impactful within AI alignment research, AI governance, or AI safety field-building.</p>
-        <p>We recommend the Long-Term Future Fund, the go-to grantmaker for identifying and funding high-value projects worldwide.</p>
+        <p className="padding-bottom-16">
+          Essentially, AI safety field experts allocate your funds where they believe they will be
+          the most impactful within AI alignment research, AI governance, or AI safety
+          field-building.
+        </p>
+        <p>
+          We recommend the Long-Term Future Fund, the go-to grantmaker for identifying and funding
+          high-value projects worldwide.
+        </p>
       </HelpItem>
 
-      <HelpItem
-        title="Donating to grantmakers"
-      >
-        <p className="padding-bottom-16">Essentially, AI safety field experts allocate your funds where they believe they will be the most impactful within AI alignment research, AI governance, or AI safety field-building.</p>
-        <p>We recommend the Long-Term Future Fund, the go-to grantmaker for identifying and funding high-value projects worldwide.</p>
+      <HelpItem title="Donating to grantmakers">
+        <p className="padding-bottom-16">
+          Essentially, AI safety field experts allocate your funds where they believe they will be
+          the most impactful within AI alignment research, AI governance, or AI safety
+          field-building.
+        </p>
+        <p>
+          We recommend the Long-Term Future Fund, the go-to grantmaker for identifying and funding
+          high-value projects worldwide.
+        </p>
       </HelpItem>
-
     </div>
 
     <div className="flexbox padding-bottom-32">
@@ -75,10 +88,7 @@ const ResearchPath = () => (
     </div>
 
     <div className="padding-bottom-80">
-      <CategoryCarousel
-        title="Our articles on donating"
-        category="NM1B"
-      />
+      <CategoryCarousel title="Our articles on donating" category="NM1B" />
     </div>
   </>
 )
@@ -86,9 +96,7 @@ const ResearchPath = () => (
 export default function HowCanIHelp() {
   return (
     <Base title="Donate" subpage="donate">
-
       <ResearchPath />
-      
     </Base>
   )
 }
