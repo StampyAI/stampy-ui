@@ -4,7 +4,7 @@ import './button.css'
 import useIsMobile from '~/hooks/isMobile'
 
 type ButtonProps = {
-  action?: string | (() => void)
+  action?: string | ((e: React.MouseEvent<HTMLButtonElement>) => void)
   children?: ReactNode
   className?: string
   tooltip?: string
