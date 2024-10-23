@@ -2,9 +2,9 @@ import {useEffect, useRef, useState} from 'react'
 import useToC from '~/hooks/useToC'
 import {PageId} from '~/server-utils/stampy'
 import Button from '~/components/Button'
-import './category-carousel.css'
 import {ArrowRight} from '~/components/icons-generated'
 import {questionUrl} from '~/routesMapper'
+import './category-carousel.css'
 
 const PER_BOX = 320
 
@@ -12,7 +12,7 @@ const CategoryCarousel = ({title, category}: {title: string; category: PageId}) 
   const componentRef = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(0)
   const [offset, setOffset] = useState(0)
-  const {findSection} = useToC()
+  const {getArticle} = useToC()
 
   useEffect(() => {
     const updateWidth = () => {
@@ -28,8 +28,7 @@ const CategoryCarousel = ({title, category}: {title: string; category: PageId}) 
     return () => window.removeEventListener('resize', updateWidth)
   }, [])
 
-  const section = findSection(category)
-  console.log(section)
+  const section = getArticle(category)
   return (
     <div className="carousel rounded" ref={componentRef}>
       <div className="carousel-header">

@@ -201,7 +201,7 @@ const ResearchPath = () => (
     <div className="padding-bottom-80">
       <CategoryCarousel
         title="Our articles on pursuing a career in alignment research"
-        category="8TJV"
+        category="NM1D"
       />
     </div>
   </>
@@ -341,7 +341,7 @@ const GovernancePath = () => (
 
     <CategoryCarousel
       title="Our articles on pursuing a career in AI governance & policy"
-      category="8TJV"
+      category="NM2N"
     />
   </div>
 )
@@ -579,7 +579,7 @@ const FieldBuildingPath = () => (
 
     <CategoryCarousel
       title="Our articles on pursuing a career in AI safety field-building"
-      category="8TJV"
+      category="NM2M"
     />
   </>
 )
