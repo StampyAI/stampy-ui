@@ -30,7 +30,7 @@ const useToC = () => {
     //  * ["123", "ABC"]
     //  * ["324", "ABC"]
     //  * ["ABC"]
-    // Then that the shorter the path, the better
+    // Then the shorter the path, the better
     return (toc || [])
       .filter(checker)
       .sort((a, b) => (checker(a)?.length || 20) - (checker(b)?.length || 20))[0]

@@ -35,6 +35,7 @@ const ResearchPath = () => (
       <h2 className="col-6 padding-bottom-56 teal-500">How & where to donate</h2>
       <HelpItem
         title="Donating to grantmakers"
+        tag="Easiest & most common"
         links={[
           {
             tag: 'Top recommendation',
@@ -43,6 +44,11 @@ const ResearchPath = () => (
               'https://www.givingwhatwecan.org/charities/long-term-future-fund?utm_source=eafunds',
           },
         ]}
+        additionalInfo={
+          <>
+            Or browse our <a href="">other grantmaker recommendations</a>
+          </>
+        }
       >
         <p className="padding-bottom-16">
           Essentially, AI safety field experts allocate your funds where they believe they will be
