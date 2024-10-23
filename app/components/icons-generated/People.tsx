@@ -1,48 +1,48 @@
 import type {SVGProps} from 'react'
 const SvgPeople = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={72} height={72} fill="none" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={80} height={80} fill="none" {...props}>
     <path
       fill="url(#people_svg__a)"
-      d="M22.5 35.429c5.503 0 9.964-4.478 9.964-10s-4.46-10-9.964-10c-5.503 0-9.964 4.477-9.964 10s4.461 10 9.964 10"
+      d="M53.572 39.365c6.114 0 11.071-4.975 11.071-11.111s-4.957-11.111-11.071-11.111c-6.115 0-11.072 4.974-11.072 11.11 0 6.137 4.957 11.112 11.072 11.112"
       style={{
         mixBlendMode: 'multiply',
       }}
     />
     <path
       fill="url(#people_svg__b)"
-      d="M22.5 40.429c-10.234 0-18.68 7.636-19.911 17.505-.171 1.37.968 2.495 2.353 2.495h35.116c1.385 0 2.525-1.125 2.354-2.495-1.233-9.869-9.677-17.505-19.912-17.505"
+      d="M53.572 44.92c-11.372 0-20.755 8.486-22.124 19.45-.19 1.523 1.076 2.773 2.615 2.773H73.08c1.54 0 2.805-1.25 2.615-2.772-1.368-10.965-10.752-19.45-22.123-19.45"
       style={{
         mixBlendMode: 'multiply',
       }}
     />
     <path
       fill="#fff"
-      fillOpacity={0.6}
-      stroke="#A6D9D7"
-      d="M57.678 25.429c0 5.248-4.239 9.5-9.464 9.5s-9.465-4.252-9.465-9.5 4.24-9.5 9.465-9.5 9.464 4.251 9.464 9.5Zm-28.88 32.567c1.201-9.62 9.435-17.067 19.416-17.067s18.214 7.447 19.415 17.067c.128 1.028-.727 1.933-1.857 1.933H30.656c-1.13 0-1.986-.905-1.858-1.933Z"
+      fillOpacity={0.8}
+      stroke="#7AC0BE"
+      d="M35.572 28.254c0 5.862-4.735 10.611-10.572 10.611S14.43 34.116 14.43 28.254 19.163 17.643 25 17.643s10.572 4.749 10.572 10.61Zm-32.2 36.179C4.712 53.716 13.883 45.42 25 45.42s20.29 8.295 21.628 19.012c.147 1.18-.835 2.21-2.119 2.21H5.492c-1.284 0-2.267-1.03-2.12-2.21Z"
     />
     <defs>
       <linearGradient
         id="people_svg__a"
-        x1={42.429}
-        x2={-6.541}
-        y1={60.429}
-        y2={44.478}
+        x1={75.9}
+        x2={21.188}
+        y1={66.832}
+        y2={48.749}
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#4DA7A6" />
-        <stop offset={1} stopColor="#D3F2F0" />
+        <stop stopColor="#17736E" />
+        <stop offset={1} stopColor="#7AC0BE" />
       </linearGradient>
       <linearGradient
         id="people_svg__b"
-        x1={42.429}
-        x2={-6.541}
-        y1={60.429}
-        y2={44.478}
+        x1={75.9}
+        x2={21.188}
+        y1={66.832}
+        y2={48.749}
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#4DA7A6" />
-        <stop offset={1} stopColor="#D3F2F0" />
+        <stop stopColor="#17736E" />
+        <stop offset={1} stopColor="#7AC0BE" />
       </linearGradient>
     </defs>
   </svg>

@@ -66,8 +66,7 @@ const ResearchPath = () => (
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
-          Take the following steps to (1) learn more & further assess your fit; (2) learn how to
-          make the transition
+          Take the following steps to further assess your fit and learn how to make the transition:
         </p>
       </div>
       <HelpItem
@@ -257,8 +256,7 @@ const GovernancePath = () => (
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
-          Take the following steps to (1) learn more & further assess your fit; (2) learn how to
-          make the transition
+          Take the following steps to further assess your fit and learn how to make the transition:
         </p>
       </div>
       <HelpItem
@@ -393,14 +391,14 @@ const FieldBuildingPath = () => (
         links={[
           {
             title: "Read 80k's guide on communications",
-            action: '#',
+            action: 'https://80000hours.org/skills/communication/',
           },
         ]}
       >
         Communications involves educating the public or spreading the word about AI safety—most
-        typically through websites or social media. People with computer skills and creative skills
-        can typically find a place within communications. More specifically, roles could include
-        being an independent content producer, software engineering, project management, or design.
+        typically through websites or social media. People with computer skills and creative skills can typically find a place within communications. Roles could
+        include independent content production, software engineering, project management, or
+        design.
       </HelpItem>
 
       <HelpItem
@@ -409,7 +407,7 @@ const FieldBuildingPath = () => (
         links={[
           {
             title: "Read 80k's guide on being a grantmaker",
-            action: '#',
+            action: 'https://80000hours.org/career-reviews/grantmaker',
           },
         ]}
       >
@@ -425,7 +423,7 @@ const FieldBuildingPath = () => (
         links={[
           {
             title: "Read 80k's guide on founding high-impact projects",
-            action: '#',
+            action: 'https://80000hours.org/career-reviews/founder-impactful-organisations',
           },
         ]}
       >
@@ -439,10 +437,11 @@ const FieldBuildingPath = () => (
     <div className="padding-bottom-80">
       <DropDown title="What are some other miscellaneous roles?">
         <HelpItem title="Supporting roles">
-          There are many roles that support the work of AI alignment researchers, and having
-          high-performing people in these roles is crucial. In a research organisation around half
-          of the staff will be doing other tasks essential for the organisation to perform at its
-          best and have an impact. Some of these roles include:
+          There are many roles that support the work of AI alignment researchers or people
+          in AI governance, and having high-performing people in these roles is crucial.
+          In a research organisation, for example, around half of the staff will be doing
+          other tasks essential for the organisation to perform at its best and have an
+          impact. Some of the most common supporting roles in AI safety include:
         </HelpItem>
         <HelpItem
           titleFont="default-bold"
@@ -450,7 +449,7 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on operations work",
-              action: '#',
+              action: 'https://80000hours.org/articles/operations-management',
             },
           ]}
         >
@@ -465,7 +464,7 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on research management",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/research-management',
             },
           ]}
         >
@@ -477,17 +476,18 @@ const FieldBuildingPath = () => (
 
         <HelpItem
           titleFont="default-bold"
-          title="Being an executive assistant to an AI safety researcher"
+          title="Being an executive assistant to someone doing important work on safety and governance"
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person',
             },
           ]}
         >
-          This involves managing administrative tasks to enhance this person's productivity.
-          Responsibilities include scheduling meetings, handling correspondence, coordinating
-          travel, organizing events, and ensuring they can focus on impactful AI safety efforts.
+          This involves managing administrative tasks to enhance their productivity.
+          Responsibilities include scheduling meetings, handling correspondence,
+          coordinating travel, organizing events, and ensuring they can focus on
+          impactful AI safety or governance efforts.
         </HelpItem>
 
         <p className="large-bold padding-bottom-32">Other technical roles</p>
@@ -498,12 +498,10 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on Information security in high-impact areas",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/information-security',
             },
           ]}
         >
-          Lorem ipsum dolor sit amet consectetur. Sapien ullamcorper morbi habitasse justo magna.
-          Suspendisse nunc id lacus sit interdum sit.
         </HelpItem>
 
         <HelpItem
@@ -512,12 +510,10 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on expertise in AI hardware",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/become-an-expert-in-ai-hardware',
             },
           ]}
         >
-          Lorem ipsum dolor sit amet consectetur. Sapien ullamcorper morbi habitasse justo magna.
-          Suspendisse nunc id lacus sit interdum sit.
         </HelpItem>
       </DropDown>
     </div>
@@ -526,8 +522,7 @@ const FieldBuildingPath = () => (
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6">
-          Take the following steps to (1) learn more & further assess your fit; (2) learn how to
-          make the transition
+          Take the following steps to further assess your fit and learn how to make the transition:
         </p>
       </div>
       <HelpItem
@@ -554,8 +549,14 @@ const FieldBuildingPath = () => (
       <HelpItem
         title="A process note: Form your own understanding of the AI alignment technical challenge"
         links={[
-          {title: 'Our ‘Build your knowledge’ guide'},
-          {title: 'Our ‘Join a community’ guide'},
+          {
+            title: 'Our ‘Build your knowledge’ guide',
+            action: 'https://aisafety.info/howcanihelp/knowledge',
+          },
+          {
+            title: 'Our ‘Join a community’ guide',
+            action: 'https://aisafety.info/howcanihelp/community',
+          },
         ]}
       >
         AI safety is a relatively new field with diverse opinions on how best to solve the technical
@@ -586,7 +587,7 @@ const FieldBuildingPath = () => (
 
 const CareerPaths = () => (
   <>
-    <p className="grey default padding-bottom-32">There are 3 major career paths in AI safety:</p>
+    <p className="grey default padding-bottom-32">There are three major career paths:</p>
     <div className="flexbox padding-bottom-80">
       <CardSmall
         action="#research"
@@ -615,7 +616,7 @@ const CareerPaths = () => (
 
 export default function HowCanIHelp() {
   return (
-    <Base title="Start a career" subpage="career">
+    <Base title="Start a career in AI safety" subpage="career">
       <CareerPaths />
 
       <ResearchPath />
