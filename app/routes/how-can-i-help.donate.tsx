@@ -46,7 +46,10 @@ const ResearchPath = () => (
         ]}
         additionalInfo={
           <>
-            Or, browse our <a href="https://www.aisafety.com/donation-guide" className="small-bold teal-500">other grantmaker recommendations</a>
+            Or, browse our{' '}
+            <a href="https://www.aisafety.com/donation-guide" className="small-bold teal-500">
+              other grantmaker recommendations
+            </a>
           </>
         }
       >
@@ -63,7 +66,10 @@ const ResearchPath = () => (
 
       <HelpItem title="Donating directly" tag="Highest impact">
         <p className="padding-bottom-16">
-        If you’re deeply involved in the AI safety community, we encourage you to directly fund research, projects, or miscellaneous expenses that you think are valuable. Donating directly puts you in the seat of the grantmaker—if you have knowledge of an avenue that deserves funds, you’re likely to make a better decision than a grantmaker.
+          If you’re deeply involved in the AI safety community, we encourage you to directly fund
+          research, projects, or miscellaneous expenses that you think are valuable. Donating
+          directly puts you in the seat of the grantmaker—if you have knowledge of an avenue that
+          deserves funds, you’re likely to make a better decision than a grantmaker.
         </p>
       </HelpItem>
     </div>
