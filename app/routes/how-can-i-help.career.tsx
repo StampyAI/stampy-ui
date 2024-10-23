@@ -584,36 +584,34 @@ const FieldBuildingPath = () => (
   </>
 )
 
-const CareerPaths = () => {
-  return (
-    <>
-      <p className="grey default padding-bottom-32">There are 3 major career paths in AI safety:</p>
-      <div className="flexbox padding-bottom-80">
-        <CardSmall
-          action="#research"
-          iconColor="var(--colors-teal-700)"
-          title="AI alignment research"
-          description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
-          icon={Microscope}
-        />
-        <CardSmall
-          action="#governance"
-          iconColor="var(--colors-teal-700)"
-          title="AI governance & policy"
-          description="Roles focused on developing and implementing policies that guide AI development and usage"
-          icon={GovermentBuilding}
-        />
-        <CardSmall
-          action="#field-building"
-          iconColor="var(--colors-teal-700)"
-          title="AI safety field-building"
-          description="Roles that direct people or funding towards AI risk, rather than working on the problem directly"
-          icon={PuzzlePieces}
-        />
-      </div>
-    </>
-  )
-}
+const CareerPaths = () => (
+  <>
+    <p className="grey default padding-bottom-32">There are 3 major career paths in AI safety:</p>
+    <div className="flexbox padding-bottom-80">
+      <CardSmall
+        action="#research"
+        iconColor="var(--colors-teal-700)"
+        title="AI alignment research"
+        description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
+        icon={Microscope}
+      />
+      <CardSmall
+        action="#governance"
+        iconColor="var(--colors-teal-700)"
+        title="AI governance & policy"
+        description="Roles focused on developing and implementing policies that guide AI development and usage"
+        icon={GovermentBuilding}
+      />
+      <CardSmall
+        action="#field-building"
+        iconColor="var(--colors-teal-700)"
+        title="AI safety field-building"
+        description="Roles that direct people or funding towards AI risk, rather than working on the problem directly"
+        icon={PuzzlePieces}
+      />
+    </div>
+  </>
+)
 
 export default function HowCanIHelp() {
   return (
