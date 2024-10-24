@@ -18,7 +18,7 @@ export default function Base({title, subpage, children}: BaseProps) {
         </div>
 
         <div>
-          <h1 className="teal-500 padding-bottom-40">{title}</h1>
+          <h1 className="teal-500 padding-bottom-56">{title}</h1>
 
           {children}
 
