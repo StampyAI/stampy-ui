@@ -188,7 +188,7 @@ const SplashScreen = ({
     <IconStampyLarge />
     <div className="col-6 padding-bottom-40 padding-top-40">
       <h2 className="teal-500">Hi there, I’m Stampy.</h2>
-      <h2>I can answer your questions about AI Safety.</h2>
+      <h2>I can answer your questions about AI safety.</h2>
     </div>
     <Followups
       title="Not sure where to start? Try these:"

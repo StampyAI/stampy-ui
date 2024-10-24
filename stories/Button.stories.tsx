@@ -79,7 +79,7 @@ export const Link1: Story = {
     children: (
       <>
         <SvgAisafety />
-        <div className="white">New to AI Safety?</div>
+        <div className="white">New to AI safety?</div>
         <div className="teal-200">
           Something about <br />
           reading and quick

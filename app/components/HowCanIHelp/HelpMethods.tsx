@@ -27,7 +27,6 @@ const HelpMethods = ({
           title="Build your knowledge"
           description="Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field"
           icon={Book}
-          impact="We'll show you how"
           className="col-6"
         />
       )}
@@ -37,7 +36,6 @@ const HelpMethods = ({
           title="Join a community"
           description="Connecting with others online or in person will help you navigate the transition to a career in AI safety"
           icon={People}
-          impact="Find your community"
           className="col-6"
         />
       )}

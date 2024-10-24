@@ -71,11 +71,11 @@ const ResearchPath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI Safety Career Review"
+        title="Read the 80,000 Hours Technical AI safety Career Review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI Safety Career Review',
+            title: 'Technical AI safety Career Review',
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
@@ -90,10 +90,10 @@ const ResearchPath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
         links={[
           {
-            title: 'Book your AI Safety Quest call',
+            title: 'Book your AI safety Quest call',
             action: 'https://aisafety.quest/#calls',
           },
           {
@@ -262,11 +262,11 @@ const GovernancePath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI Safety Career Review"
+        title="Read the 80,000 Hours Technical AI safety Career Review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI Safety Career Review',
+            title: 'Technical AI safety Career Review',
           },
         ]}
       >
@@ -280,10 +280,10 @@ const GovernancePath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
         links={[
           {
-            title: 'Book your AI Safety Quest call',
+            title: 'Book your AI safety Quest call',
           },
           {
             title: 'Book your 80,000 Hours call',
@@ -531,10 +531,10 @@ const FieldBuildingPath = () => (
         </p>
       </div>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
         links={[
           {
-            title: 'Book your AI Safety Quest call',
+            title: 'Book your AI safety Quest call',
           },
           {
             title: 'Book your 80,000 Hours call',

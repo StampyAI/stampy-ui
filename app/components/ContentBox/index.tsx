@@ -44,7 +44,7 @@ export const ContentBoxMain = () => (
     classNameTable={'content-box-table main'}
     title={
       <>
-        <div className="white">New to AI Safety?</div>
+        <div className="white">New to AI safety?</div>
         <div className="teal-200">Jump into the basics.</div>
       </>
     }
