@@ -46,9 +46,9 @@ const ResearchPath = () => (
             independently; or on industry safety teams*.
           </p>
           <p className="grey small">
-            <span className="small-bold">*Note:</span> Beware of the risk of joining industry "safety" teams,
-            as this work often leaks to non-safety parts of the organization which improves the AI
-            technology itself—and so ends up causing harm.
+            <span className="small-bold">*Note:</span> Beware of the risk of joining industry
+            "safety" teams, as this work often leaks to non-safety parts of the organization which
+            improves the AI technology itself—and so ends up causing harm.
           </p>
         </div>
         <div className="col-6-alt">
@@ -112,11 +112,16 @@ const ResearchPath = () => (
       </HelpItem>
 
       <HelpItem
-        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
+        title={
+          <>
+            A process note: Form your <em>own</em> understanding of the AI alignment technical
+            challenge
+          </>
+        }
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
-          action: 'https://aisafety.info/howcanihelp/knowledge',
+            action: 'https://aisafety.info/howcanihelp/knowledge',
           },
           {
             title: 'Our ‘Join a community’ guide',
@@ -126,11 +131,11 @@ const ResearchPath = () => (
       >
         AI safety is a relatively new field with diverse opinions on how best to solve the technical
         challenge of AI alignment. Many unexplored avenues and important questions likely remain
-        unaddressed. Therefore, it's crucial for AI alignment researchers (or 
-        aspiring researchers) to think independently and develop their own models on this topic.
-        If you pursue a career in this field, we recommend deeply educating yourself on the
-        technical challenge of alignment, engaging with other AI safety experts, and thinking
-        critically about the topic and current paradigms.
+        unaddressed. Therefore, it's crucial for AI alignment researchers (or aspiring researchers)
+        to think independently and develop their own models on this topic. If you pursue a career in
+        this field, we recommend deeply educating yourself on the technical challenge of alignment,
+        engaging with other AI safety experts, and thinking critically about the topic and current
+        paradigms.
       </HelpItem>
     </div>
 
@@ -148,7 +153,8 @@ const ResearchPath = () => (
             {
               title: 'Read 80k’s guide on operations management',
               action: 'https://80000hours.org/articles/operations-management/',
-            }]}
+            },
+          ]}
         >
           This involves overseeing the day-to-day activities that enable the organization to
           function efficiently and effectively. Responsibilities may include administrative support,
@@ -225,27 +231,19 @@ const GovernancePath = () => (
       <div className="flexbox-alt">
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
-          <p className="grey default">
-            Lorem ipsum
-          </p>
+          <p className="grey default">Lorem ipsum</p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
-          <p className="grey default">
-            Lorem ipsum
-          </p>
+          <p className="grey default">Lorem ipsum</p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Where these people usually work</p>
-          <p className="grey default">
-            Lorem ipsum
-          </p>
+          <p className="grey default">Lorem ipsum</p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
-          <p className="grey default">
-            Lorem ipsum
-          </p>
+          <p className="grey default">Lorem ipsum</p>
         </div>
       </div>
     </div>
@@ -263,7 +261,7 @@ const GovernancePath = () => (
           {
             tag: 'Top recommendation',
             title: 'Technical AI Safety Career Review',
-            action: ''
+            action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
       >
@@ -285,7 +283,7 @@ const GovernancePath = () => (
           },
           {
             title: 'Book your 80,000 Hours call',
-            action: ''
+            action: 'https://80000hours.org/speak-with-us/',
           },
         ]}
       >
@@ -304,7 +302,7 @@ const GovernancePath = () => (
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
-          action: 'https://aisafety.info/howcanihelp/knowledge',
+            action: 'https://aisafety.info/howcanihelp/knowledge',
           },
           {
             title: 'Our ‘Join a community’ guide',
@@ -370,10 +368,10 @@ const FieldBuildingPath = () => (
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
             The AI safety field is still in its early stages, with significant room for growth and
-            maturation. It is important to capitalize on this potential because it may be the deciding
-            factor between successfully solving the alignment problem and mitigating AI risk through
-            global coordination, or not. This growth will largely result from field-building efforts
-            specifically.
+            maturation. It is important to capitalize on this potential because it may be the
+            deciding factor between successfully solving the alignment problem and mitigating AI
+            risk through global coordination, or not. This growth will largely result from
+            field-building efforts specifically.
           </p>
         </div>
         <div className="col-6-alt">
@@ -382,8 +380,8 @@ const FieldBuildingPath = () => (
             Field-building may be the way to go if neither alignment research nor governance appeals
             to you or fits your skillset. You may be a particularly good fit if you have a strong
             sense of agency or leadership, or you are creative. That said, a large variety of roles
-            exist within field-building, so it’s likely that you can adapt your skillset—whatever
-            it is—to a role.
+            exist within field-building, so it’s likely that you can adapt your skillset—whatever it
+            is—to a role.
           </p>
         </div>
       </div>
@@ -403,9 +401,9 @@ const FieldBuildingPath = () => (
         ]}
       >
         Communications involves educating the public or spreading the word about AI safety—most
-        typically through websites or social media. People with computer skills and creative skills can typically find a place within communications. Roles could
-        include independent content production, software engineering, project management, or
-        design.
+        typically through websites or social media. People with computer skills and creative skills
+        can typically find a place within communications. Roles could include independent content
+        production, software engineering, project management, or design.
       </HelpItem>
 
       <HelpItem
@@ -444,11 +442,11 @@ const FieldBuildingPath = () => (
     <div className="padding-bottom-80">
       <DropDown title="What are some other miscellaneous roles?">
         <HelpItem title="Supporting roles">
-          There are many roles that support the work of AI alignment researchers or people
-          in AI governance, and having high-performing people in these roles is crucial.
-          In a research organisation, for example, around half of the staff will be doing
-          other tasks essential for the organisation to perform at its best and have an
-          impact. Some of the most common supporting roles in AI safety include:
+          There are many roles that support the work of AI alignment researchers or people in AI
+          governance, and having high-performing people in these roles is crucial. In a research
+          organisation, for example, around half of the staff will be doing other tasks essential
+          for the organisation to perform at its best and have an impact. Some of the most common
+          supporting roles in AI safety include:
         </HelpItem>
         <HelpItem
           titleFont="default-bold"
@@ -492,9 +490,9 @@ const FieldBuildingPath = () => (
           ]}
         >
           This involves managing administrative tasks to enhance their productivity.
-          Responsibilities include scheduling meetings, handling correspondence,
-          coordinating travel, organizing events, and ensuring they can focus on
-          impactful AI safety or governance efforts.
+          Responsibilities include scheduling meetings, handling correspondence, coordinating
+          travel, organizing events, and ensuring they can focus on impactful AI safety or
+          governance efforts.
         </HelpItem>
 
         <p className="large-bold padding-bottom-32">Other technical roles</p>
@@ -509,6 +507,7 @@ const FieldBuildingPath = () => (
             },
           ]}
         >
+          {null}
         </HelpItem>
 
         <HelpItem
@@ -521,6 +520,7 @@ const FieldBuildingPath = () => (
             },
           ]}
         >
+          {null}
         </HelpItem>
       </DropDown>
     </div>
@@ -557,7 +557,12 @@ const FieldBuildingPath = () => (
       </HelpItem>
 
       <HelpItem
-        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
+        title={
+          <>
+            A process note: Form your <em>own</em> understanding of the AI alignment technical
+            challenge
+          </>
+        }
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -570,12 +575,12 @@ const FieldBuildingPath = () => (
         ]}
       >
         AI safety is a relatively new field with diverse opinions on how best to solve the technical
-        challenge of AI alignment. Many unexplored avenues and important questions  likely remain unaddressed.
-        Therefore, it's crucial for AI alignment researchers (or 
-        aspiring researchers) to think independently and develop their own models on this topic.
-        If you pursue a career in this field, we recommend deeply educating yourself on the
-        technical challenge of alignment, engaging with other AI safety experts, and thinking
-        critically about the topic and current paradigms.
+        challenge of AI alignment. Many unexplored avenues and important questions likely remain
+        unaddressed. Therefore, it's crucial for AI alignment researchers (or aspiring researchers)
+        to think independently and develop their own models on this topic. If you pursue a career in
+        this field, we recommend deeply educating yourself on the technical challenge of alignment,
+        engaging with other AI safety experts, and thinking critically about the topic and current
+        paradigms.
       </HelpItem>
     </div>
 
