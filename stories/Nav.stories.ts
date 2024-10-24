@@ -160,7 +160,7 @@ export const Primary: Story = {
             ],
           },
           {
-            title: 'Introduction to AI Safety',
+            title: 'Introduction to AI safety',
             pageid: 'NH50',
             hasText: false,
             ttr: 1,

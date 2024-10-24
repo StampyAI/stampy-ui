@@ -21,9 +21,9 @@ const HelpItem = ({
     <div className="flexbox padding-bottom-40">
       <div className="col-6">
         {title && (
-          <p className={`flexbox padding-bottom-16 ${titleFont}`}>
+          <p className={`flexbox gap-16 center-align padding-bottom-16 ${titleFont}`}>
             <span>{title}</span>
-            {tag && <span className="tag small">{tag}</span>}
+            {tag && <span className="tag xs">{tag}</span>}
           </p>
         )}
         <p className="grey default padding-bottom-16"> {children} </p>

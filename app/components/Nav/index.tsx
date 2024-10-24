@@ -33,7 +33,7 @@ export const Nav = ({toc, categories}: NavProps) => {
             primary={true}
             link="/chat/"
             icon={<BotIcon />}
-            text="AI Safety Chatbot"
+            text="AI safety Chatbot"
             reload
           />
           <li className="top-menu-item">

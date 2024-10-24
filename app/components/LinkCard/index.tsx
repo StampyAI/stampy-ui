@@ -15,7 +15,7 @@ export type LinkCardProps = Link & {
 
 const LinkCard: React.FC<LinkCardProps> = ({title, tag, action, className}) => (
   <Button action={action} className={`link-card ${className}`}>
-    {tag && <div className="tag small teal-500">{tag}</div>}
+    {tag && <div className="tag xs teal-500">{tag}</div>}
     <p className="default-bold">{title}</p>
     <ArrowUpRight className="arrow" />
   </Button>

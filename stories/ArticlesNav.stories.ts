@@ -96,7 +96,7 @@ const article = {
       ],
     },
     {
-      title: 'Introduction to AI Safety',
+      title: 'Introduction to AI safety',
       pageid: 'NH53',
       hasText: false,
       ttr: 1,

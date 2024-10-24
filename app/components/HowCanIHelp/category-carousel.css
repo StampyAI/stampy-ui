@@ -1,7 +1,7 @@
 .carousel {
   background-color: var(--colors-teal-50);
-  padding: var(--spacing-40);
-  margin-top: var(--spacing-80);
+  padding: var(--spacing-56);
+  margin-top: var(--spacing-104);
 }
 
 .carousel-header {
@@ -13,11 +13,7 @@
 
 .carousel .navigation {
   display: flex;
-  gap: 10px;
-}
-
-.carousel .navigation .button {
-  padding: var(--spacing-8);
+  gap: var(--spacing-8);
 }
 
 .carousel h2 {
@@ -27,17 +23,15 @@
 .carousel .items {
   display: flex;
   height: 230px;
-  gap: var(--spacing-32);
+  gap: var(--spacing-40);
 }
 
 .carousel-item {
-  flex: 1;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  width: 100%;
-  max-width: 400px;
-  height: 230px;
+  width: 288px;
+  height: 240px;
   padding: var(--spacing-40);
   text-align: left;
   gap: var(--spacing-16);

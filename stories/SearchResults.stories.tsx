@@ -19,7 +19,7 @@ export const Default: Story = {
         description:
           'Instrumental convergence is the idea that as an AI becomes more intelligent and capable, it will converge on certain instrumental goals, such as self-preservation and resource acquisition.',
         url: '/what-is-instrumental-convergence',
-        source: 'From Introduction to AI Safety',
+        source: 'From Introduction to AI safety',
       },
       {
         title: "A post that doesn't have the keyword in the title",

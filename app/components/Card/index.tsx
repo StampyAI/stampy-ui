@@ -5,7 +5,7 @@ import './card.css'
 interface CardProps {
   title: string
   description: string
-  impact: string
+  impact?: string
   icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
   action: string
   className?: string
@@ -20,7 +20,7 @@ export default function Card({title, description, impact, icon, action, classNam
       <div className="card-content">
         <p className="large-bold padding-bottom-8">{title}</p>
         <p className="grey padding-bottom-16">{description}</p>
-        <p className="tag xs">{impact}</p>
+        {impact && <p className="tag xs">{impact}</p>}
       </div>
     </Button>
   )

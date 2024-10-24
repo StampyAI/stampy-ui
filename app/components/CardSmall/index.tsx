@@ -6,7 +6,7 @@ interface CardSmallProps {
   title: string
   description: string
   icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
-  action: string
+  action: string | ((e: React.MouseEvent<HTMLButtonElement>) => void)
   className?: string
   iconColor?: string
 }

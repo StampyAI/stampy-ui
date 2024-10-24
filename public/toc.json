@@ -4,7 +4,7 @@
     "content" : "🆕 New to AI safety? Start here.",
     "items" : [
       {
-        "content" : "📘 Introduction to AI Safety",
+        "content" : "📘 Introduction to AI safety",
         "items" : [
           {
             "pageId" : "8486",
@@ -645,7 +645,7 @@
             ]
           },
           {
-            "content" : "Impact of AI Safety",
+            "content" : "Impact of AI safety",
             "items" : [
               {
                 "pageId" : "3486",
@@ -911,7 +911,7 @@
             "items" : [
               {
                 "pageId" : "8201",
-                "content" : "What is AI Safety via Debate?",
+                "content" : "What is AI safety via Debate?",
                 "items" : [ ]
               },
               {
@@ -1543,7 +1543,7 @@
         "items" : [
           {
             "pageId" : "2222",
-            "content" : "Where can I find videos about AI Safety?",
+            "content" : "Where can I find videos about AI safety?",
             "items" : [ ]
           },
           {
@@ -1558,7 +1558,7 @@
           },
           {
             "pageId" : "MEME",
-            "content" : "AI Safety Memes Wiki",
+            "content" : "AI safety Memes Wiki",
             "items" : [ ]
           },
           {

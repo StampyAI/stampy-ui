@@ -6,6 +6,7 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
+import {useEffect} from 'react'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -70,11 +71,11 @@ const ResearchPath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI Safety Career Review"
+        title="Read the 80,000 Hours Technical AI safety Career Review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI Safety Career Review',
+            title: 'Technical AI safety Career Review',
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
@@ -89,10 +90,10 @@ const ResearchPath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
         links={[
           {
-            title: 'Book your AI Safety Quest call',
+            title: 'Book your AI safety Quest call',
             action: 'https://aisafety.quest/#calls',
           },
           {
@@ -256,7 +257,7 @@ const GovernancePath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI Safety Career Review"
+        title="Read the 80,000 Hours Technical AI safety Career Review"
         links={[
           {
             tag: 'Top recommendation',
@@ -275,7 +276,7 @@ const GovernancePath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -534,7 +535,7 @@ const FieldBuildingPath = () => (
         </p>
       </div>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -630,6 +631,12 @@ const CareerPaths = () => (
 )
 
 export default function HowCanIHelp() {
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth'
+    return () => {
+      document.documentElement.style.scrollBehavior = 'auto'
+    }
+  }, [])
   return (
     <Base title="Start a career in AI safety" subpage="career">
       <CareerPaths />

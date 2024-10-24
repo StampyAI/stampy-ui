@@ -1,4 +1,3 @@
-import './helpgrid.css'
 import Card from '../Card'
 import {Briefcase, Megaphone, PiggyBank, Hand, Book, People} from '../icons-generated'
 import {helpUrl} from '~/routesMapper'
@@ -55,9 +54,9 @@ const helpItems = [
 
 export default function HelpGrid() {
   return (
-    <div className="help-grid">
+    <div className="flexbox">
       {helpItems.map((item, index) => (
-        <Card key={index} {...item} />
+        <Card key={index} {...item} className="col-6" />
       ))}
     </div>
   )
