@@ -17,16 +17,17 @@ export default function Donate() {
             <p className="default-bold padding-bottom-16">Who</p>
             <p className="grey default">
               All donations are helpful. A kind-hearted person with $10 extra a month, a mid-salary
-              professional wishing to donate 10% of their income, or a well-off philanthropist looking
-              to create major change for good can all financially contribute to advance this effort.
+              professional wishing to donate 10% of their income, or a well-off philanthropist
+              looking to create major change for good can all financially contribute to advance this
+              effort.
             </p>
           </div>
           <div className="col-6-alt">
             <p className="default-bold padding-bottom-16">Why this is important</p>
             <p className="grey default">
               The AI safety field is funding-limited as of mid-2023, and there are important avenues
-              in AI alignment research and AI governance that cannot currently be explored due to this
-              lack of funding.
+              in AI alignment research and AI governance that cannot currently be explored due to
+              this lack of funding.
             </p>
           </div>
         </div>
