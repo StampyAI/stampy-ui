@@ -22,18 +22,22 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "'Intro to AI Safety' micro-course",
+            title: "'Intro to AI safety' micro-course",
+            action: 'https://aisafety.info/questions/9OGZ/',
+          },
+          {
+            title: "Intro to AI safety video playlist",
             action: 'https://aisafety.info/questions/9OGZ/',
           },
         ]}
       >
         {/* TODO: add video */}
         <p className="grey default padding-bottom-24">
-          Our website’s “Intro to AI Safety” micro-course includes several short readings that act
+          Our website’s “Intro to AI safety” micro-course includes several short readings that act
           as a comprehensive introduction the topic of AI safety.
         </p>
         <p className="grey default">
-          Our Intro to AI Safety video playlist illustrates many of the most important points about
+          Our Intro to AI safety video playlist illustrates many of the most important points about
           AI safety in a way that is entertaining and easy to understand.
         </p>
       </HelpItem>
@@ -64,7 +68,7 @@ const Dropdowns = () => (
       <p>TODO fill this</p>
     </DropDown>
     {/* TODO: fix the double line */}
-    <DropDown title="I want something I can subscribe to, so I can learn more about AI Safety consistently">
+    <DropDown title="I want something I can subscribe to, so I can learn more about AI safety consistently">
       <p>TODO fill this</p>
     </DropDown>
   </div>
