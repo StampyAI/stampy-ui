@@ -26,7 +26,7 @@ const NewToAISafety = () => (
             action: 'https://aisafety.info/questions/9OGZ/',
           },
           {
-            title: "Intro to AI safety video playlist",
+            title: 'Intro to AI safety video playlist',
             action: 'https://aisafety.info/questions/9OGZ/',
           },
         ]}
