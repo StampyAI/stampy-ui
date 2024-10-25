@@ -1,10 +1,7 @@
 import {MetaFunction} from '@remix-run/node'
-import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
-import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
-import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
 
