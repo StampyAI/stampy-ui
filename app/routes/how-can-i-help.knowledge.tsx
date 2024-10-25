@@ -26,8 +26,9 @@ const NewToAISafety = () => (
             action: 'https://aisafety.info/questions/9OGZ/',
           },
           {
-            title: "Intro to AI safety video playlist",
-            action: 'https://www.youtube.com/watch?v=fa8k8IQ1_X0&list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE&index=1&t=904s&ab_channel=Kurzgesagt%E2%80%93InaNutshell',
+            title: 'Intro to AI safety video playlist',
+            action:
+              'https://www.youtube.com/watch?v=fa8k8IQ1_X0&list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE&index=1&t=904s&ab_channel=Kurzgesagt%E2%80%93InaNutshell',
           },
         ]}
       >
@@ -72,31 +73,32 @@ const NewToAISafety = () => (
 const Dropdowns = () => (
   <div className="padding-bottom-80">
     <DropDown title="Books are more my thing">
-        <HelpItem
-          links={[
-            {
-              tag: 'Top recommendation',
-              title: 'Uncontrollable',
-              action: 'https://www.goodreads.com/book/show/202416160-uncontrollable',
-            },
-          ]}
-          additionalInfo={
-            <>
-              Or, read our{' '}
-              <a href="https://aisafety.info/questions/8159" className="small-bold teal-500">
-                full list of AI safety book recommendations
-              </a>
-            </>
-          }
-        >
-          We recommend the book "Uncontrollable," which concisely examines the risks posed by advanced AI. 
-          The book highlights the need for effective AI governance and safety measures, and offers practical 
-          solutions to ensure AI benefits society while minimizing risks.
-        </HelpItem>
+      <HelpItem
+        links={[
+          {
+            tag: 'Top recommendation',
+            title: 'Uncontrollable',
+            action: 'https://www.goodreads.com/book/show/202416160-uncontrollable',
+          },
+        ]}
+        additionalInfo={
+          <>
+            Or, read our{' '}
+            <a href="https://aisafety.info/questions/8159" className="small-bold teal-500">
+              full list of AI safety book recommendations
+            </a>
+          </>
+        }
+      >
+        We recommend the book "Uncontrollable," which concisely examines the risks posed by advanced
+        AI. The book highlights the need for effective AI governance and safety measures, and offers
+        practical solutions to ensure AI benefits society while minimizing risks.
+      </HelpItem>
     </DropDown>
 
     <DropDown title="I want something I can subscribe to (Youtube channels, newsletters, etc.)">
-      <HelpItem title="Youtube"
+      <HelpItem
+        title="Youtube"
         links={[
           {
             tag: 'Top recommendation',
@@ -105,12 +107,14 @@ const Dropdowns = () => (
           },
         ]}
       >
-        We recommend the Youtube channel Robert Miles AI Safety, which presents complex AI safety concepts 
-        in an accessible format to foster understanding and awareness about the ethical and safety considerations 
-        in AI development. (Rob is also the founder of this site, AISafety.info)
+        We recommend the Youtube channel Robert Miles AI Safety, which presents complex AI safety
+        concepts in an accessible format to foster understanding and awareness about the ethical and
+        safety considerations in AI development. (Rob is also the founder of this site,
+        AISafety.info)
       </HelpItem>
 
-      <HelpItem title="Podcast series"
+      <HelpItem
+        title="Podcast series"
         links={[
           {
             tag: 'Top recommendation',
@@ -127,11 +131,13 @@ const Dropdowns = () => (
           </>
         }
       >
-        We recommend the 80,000 Hours Podcast, which explores a range of topics centered on existential risks 
-        and high-impact altruism. Many episodes feature high-quality and easy-to-understand content on AI safety.
+        We recommend the 80,000 Hours Podcast, which explores a range of topics centered on
+        existential risks and high-impact altruism. Many episodes feature high-quality and
+        easy-to-understand content on AI safety.
       </HelpItem>
 
-      <HelpItem title="Newsletter"
+      <HelpItem
+        title="Newsletter"
         links={[
           {
             tag: 'Top recommendation',
@@ -140,11 +146,13 @@ const Dropdowns = () => (
           },
         ]}
       >
-        We recommend the AI Safety Newsletter by the Center for AI Safety (CAIS), which offers curated updates on key AI safety developments. 
-        It breaks down complex topics into simple segments that are accessible to both beginners and deep divers to AI safety.
+        We recommend the AI Safety Newsletter by the Center for AI Safety (CAIS), which offers
+        curated updates on key AI safety developments. It breaks down complex topics into simple
+        segments that are accessible to both beginners and deep divers to AI safety.
       </HelpItem>
 
-      <HelpItem title="Twitter"
+      <HelpItem
+        title="Twitter"
         links={[
           {
             tag: 'Top recommendation',
@@ -154,7 +162,8 @@ const Dropdowns = () => (
           // TODO: what's the link for agi safety core? I never heard of them
         ]}
       >
-        We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety and alignment.
+        We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety
+        and alignment.
       </HelpItem>
     </DropDown>
   </div>
@@ -209,9 +218,13 @@ const DiveDeeper = () => (
         <p className="grey default padding-bottom-24">
           <b>Note:</b> If you take the AISF courses, consider exploring additional views on AI
           safety to help avoid homogeneity in the field, such as{' '}
-          <a href="https://www.cold-takes.com/most-important-century/" className="teal-500 small-bold">
+          <a
+            href="https://www.cold-takes.com/most-important-century/"
+            className="teal-500 small-bold"
+          >
             The Most Important Century blog post series
-          </a>.
+          </a>
+          .
         </p>
         <p className="grey default padding-bottom-24">
           <b>Note:</b> AISF courses do not accept all applicants, but we still recommend taking the
