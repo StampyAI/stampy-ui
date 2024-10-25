@@ -24,7 +24,7 @@ const SvgGovermentBuilding = (props: SVGProps<SVGSVGElement>) => (
       fill="url(#goverment_building_svg__b)"
       d="M40 5a1 1 0 0 1 1-1h10.138a.5.5 0 0 1 .434.748l-1.289 2.256a1 1 0 0 0 0 .992l1.29 2.256a.5.5 0 0 1-.435.748H41a1 1 0 0 1-1-1z"
       style={{
-        mixBlendMode: 'multiply',
+        mixBlendMode: 'normal',
       }}
     />
     <defs>
