@@ -26,12 +26,12 @@ const NewToAISafety = () => (
             action: 'https://aisafety.info/questions/9OGZ/',
           },
           {
-            title: 'Intro to AI safety video playlist',
-            action: 'https://aisafety.info/questions/9OGZ/',
+            title: "Intro to AI safety video playlist",
+            action: 'https://www.youtube.com/watch?v=fa8k8IQ1_X0&list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE&index=1&t=904s&ab_channel=Kurzgesagt%E2%80%93InaNutshell',
           },
         ]}
       >
-        {/* TODO: add video */}
+        {/* TODO: add video png*/}
         <p className="grey default padding-bottom-24">
           Our website’s “Intro to AI safety” micro-course includes several short readings that act
           as a comprehensive introduction the topic of AI safety.
@@ -50,8 +50,15 @@ const NewToAISafety = () => (
             action: 'https://www.dwarkeshpatel.com/p/paul-christiano',
           },
         ]}
+        additionalInfo={
+          <>
+            Browse our{' '}
+            <a href="https://aisafety.info/questions/7619" className="small-bold teal-500">
+              full list of podcasts
+            </a>
+          </>
+        }
       >
-        {/* TODO: add Browse full list */}
         <p className="grey default padding-bottom-24">
           We recommend Dwarkesh Patel’s interview with Paul Christiano, a leading researcher in AI
           alignment and safety. The interview provides an introduction to AI risk and discusses many
@@ -65,11 +72,90 @@ const NewToAISafety = () => (
 const Dropdowns = () => (
   <div className="padding-bottom-80">
     <DropDown title="Books are more my thing">
-      <p>TODO fill this</p>
+        <HelpItem
+          links={[
+            {
+              tag: 'Top recommendation',
+              title: 'Uncontrollable',
+              action: 'https://www.goodreads.com/book/show/202416160-uncontrollable',
+            },
+          ]}
+          additionalInfo={
+            <>
+              Or, read our{' '}
+              <a href="https://aisafety.info/questions/8159" className="small-bold teal-500">
+                full list of AI safety book recommendations
+              </a>
+            </>
+          }
+        >
+          We recommend the book "Uncontrollable," which concisely examines the risks posed by advanced AI. 
+          The book highlights the need for effective AI governance and safety measures, and offers practical 
+          solutions to ensure AI benefits society while minimizing risks.
+        </HelpItem>
     </DropDown>
-    {/* TODO: fix the double line */}
-    <DropDown title="I want something I can subscribe to, so I can learn more about AI safety consistently">
-      <p>TODO fill this</p>
+
+    <DropDown title="I want something I can subscribe to (Youtube channels, newsletters, etc.)">
+      <HelpItem title="Youtube"
+        links={[
+          {
+            tag: 'Top recommendation',
+            title: 'Rob Miles AI Safety',
+            action: 'https://www.youtube.com/c/robertmilesai',
+          },
+        ]}
+      >
+        We recommend the Youtube channel Robert Miles AI Safety, which presents complex AI safety concepts 
+        in an accessible format to foster understanding and awareness about the ethical and safety considerations 
+        in AI development. (Rob is also the founder of this site, AISafety.info)
+      </HelpItem>
+
+      <HelpItem title="Podcast series"
+        links={[
+          {
+            tag: 'Top recommendation',
+            title: '80,000 Hours',
+            action: 'https://80000hours.org/podcast/',
+          },
+        ]}
+        additionalInfo={
+          <>
+            Or, browse our{' '}
+            <a href="https://aisafety.info/questions/7619" className="small-bold teal-500">
+              full list of podcasts
+            </a>
+          </>
+        }
+      >
+        We recommend the 80,000 Hours Podcast, which explores a range of topics centered on existential risks 
+        and high-impact altruism. Many episodes feature high-quality and easy-to-understand content on AI safety.
+      </HelpItem>
+
+      <HelpItem title="Newsletter"
+        links={[
+          {
+            tag: 'Top recommendation',
+            title: 'Center for AI Safety Newsletter',
+            action: 'https://newsletter.safe.ai/',
+          },
+        ]}
+      >
+        We recommend the AI Safety Newsletter by the Center for AI Safety (CAIS), which offers curated updates on key AI safety developments. 
+        It breaks down complex topics into simple segments that are accessible to both beginners and deep divers to AI safety.
+      </HelpItem>
+
+      <HelpItem title="Twitter"
+        links={[
+          {
+            tag: 'Top recommendation',
+            title: 'AGI Safety Core',
+            action: 'https://zombo.com/',
+          },
+          // TODO: what's the link for agi safety core? I never heard of them
+        ]}
+      >
+        We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety and alignment.
+      </HelpItem>
     </DropDown>
   </div>
 )
@@ -96,7 +182,15 @@ const DiveDeeper = () => (
             action: 'https://aisafetyfundamentals.com/alignment/',
           },
         ]}
-        // TODO: add "full list of courses"
+        additionalInfo={
+          <>
+            Or, browse our{' '}
+            <a href="https://www.aisafety.com/courses" className="small-bold teal-500">
+              full list of courses
+            </a>
+          </>
+        }
+        // TODO: fix additionalInfo appearing for each link
       >
         <p className="grey default padding-bottom-24">
           We recommend taking an online course if your interests have narrowed to a specific subset
@@ -115,10 +209,9 @@ const DiveDeeper = () => (
         <p className="grey default padding-bottom-24">
           <b>Note:</b> If you take the AISF courses, consider exploring additional views on AI
           safety to help avoid homogeneity in the field, such as{' '}
-          <a href="https://www.cold-takes.com/most-important-century/" className="teal-500">
+          <a href="https://www.cold-takes.com/most-important-century/" className="teal-500 small-bold">
             The Most Important Century blog post series
-          </a>
-          .{/* TODO: fix bold on link */}
+          </a>.
         </p>
         <p className="grey default padding-bottom-24">
           <b>Note:</b> AISF courses do not accept all applicants, but we still recommend taking the
@@ -155,8 +248,15 @@ const DiveDeeper = () => (
             title: 'EAGx',
             action: 'https://www.effectivealtruism.org/ea-global',
           },
-          // TODO: add "browse full list"
         ]}
+        additionalInfo={
+          <>
+            Or, browse our{' '}
+            <a href="https://www.aisafety.com/events-and-training" className="small-bold teal-500">
+              full list of events
+            </a>
+          </>
+        }
       >
         <p className="grey default padding-bottom-24">
           Events, typically conferences and talks, are often held in person and last one to three
@@ -212,7 +312,7 @@ export default function Knowledge() {
 
       <OurArticles />
 
-      {/* TODO: Boost your learning efforts */}
+      {/* TODO: Boost your learning efforts, Nemo's job */}
     </Base>
   )
 }
