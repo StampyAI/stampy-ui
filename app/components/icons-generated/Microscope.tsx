@@ -5,7 +5,7 @@ const SvgMicroscope = (props: SVGProps<SVGSVGElement>) => (
       fill="url(#microscope_svg__a)"
       d="M19 74a3 3 0 0 1 3-3h36a3 3 0 0 1 3 3v2a1 1 0 0 1-1 1H20a1 1 0 0 1-1-1z"
       style={{
-        mixBlendMode: 'multiply',
+        mixBlendMode: 'normal',
       }}
     />
     <path
@@ -14,7 +14,7 @@ const SvgMicroscope = (props: SVGProps<SVGSVGElement>) => (
       d="m42.645 33.089 1.344 1.69a4.33 4.33 0 0 0 3.208 1.635l1.23.052a2.17 2.17 0 0 1 2.056 1.868l.164 1.15a12.08 12.08 0 0 1-2.66 9.405l-.272.33a2.17 2.17 0 0 1-2.95.372l-2.116-1.545a2 2 0 0 0-3.112 1.098l-3.269 12.2c-.565 2.11 1.054 4.165 3.175 3.686 8.37-1.892 15.598-8.653 18.113-18.04 3.06-11.416-1.862-22.956-11.218-27.908q-.004.24-.068.48z"
       clipRule="evenodd"
       style={{
-        mixBlendMode: 'multiply',
+        mixBlendMode: 'normal',
       }}
     />
     <rect
