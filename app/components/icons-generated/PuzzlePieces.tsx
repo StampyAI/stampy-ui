@@ -5,7 +5,7 @@ const SvgPuzzlePieces = (props: SVGProps<SVGSVGElement>) => (
       fill="url(#puzzle_pieces_svg__a)"
       d="M8 15.571A2.57 2.57 0 0 1 10.571 13H32.43A2.57 2.57 0 0 1 35 15.571V22h-2.571a4.5 4.5 0 1 0 0 9H35v6a3 3 0 0 0 3 3h21.429A2.57 2.57 0 0 1 62 42.571V64.43A2.57 2.57 0 0 1 59.429 67H10.57A2.57 2.57 0 0 1 8 64.429z"
       style={{
-        mixBlendMode: 'multiply',
+        mixBlendMode: 'normal',
       }}
     />
     <path
