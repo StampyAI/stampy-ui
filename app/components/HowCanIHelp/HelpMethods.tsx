@@ -70,6 +70,7 @@ const KnowledgeCard = ({current}: {current?: HelpPage}) => {
   return (
     <Card
       action={helpUrl('knowledge')}
+      actionDesc="We'll show you how"
       title="Build your knowledge"
       description={
         knowledgeDescriptions[current as keyof typeof knowledgeDescriptions] || defaultDescription
@@ -87,6 +88,7 @@ const CommunityCard = ({current}: {current?: string}) => {
   return (
     <Card
       action={helpUrl('community')}
+      actionDesc="Find your community"
       title="Join a community"
       description={
         communityDescriptions[current as keyof typeof communityDescriptions] || defaultDescription

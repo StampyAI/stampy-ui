@@ -1,17 +1,27 @@
-import {SVGProps} from 'react'
-import Button from '../Button'
+import {ReactNode, SVGProps} from 'react'
+import Button from '~/components/Button'
+import {ArrowRight} from '~/components/icons-generated'
 import './card.css'
 
 interface CardProps {
   title: string
-  description: string
+  description: ReactNode
   impact?: string
   icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
   action: string
+  actionDesc?: string
   className?: string
 }
 
-export default function Card({title, description, impact, icon, action, className}: CardProps) {
+export default function Card({
+  title,
+  description,
+  impact,
+  icon,
+  action,
+  actionDesc,
+  className,
+}: CardProps) {
   className = `card bordered ${className}`
 
   return (
@@ -20,6 +30,12 @@ export default function Card({title, description, impact, icon, action, classNam
       <div className="card-content">
         <p className="large-bold padding-bottom-8">{title}</p>
         <p className="grey padding-bottom-16">{description}</p>
+        {actionDesc && (
+          <p className="default-bold teal-500">
+            <span className="padding-right-8">{actionDesc}</span>
+            <ArrowRight />
+          </p>
+        )}
         {impact && <p className="tag xs">{impact}</p>}
       </div>
     </Button>
