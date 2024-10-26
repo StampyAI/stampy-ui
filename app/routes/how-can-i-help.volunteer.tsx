@@ -72,7 +72,13 @@ const Options = () => (
           },
         ]}
       >
+        <div>
         <p className="padding-bottom-16">Get personalized volunteering advice in a thirty minute or one hour video call. We recommend booking both!</p>
+        <div>
+          <span className="small-bold"> Note: </span>
+          <span className="small">80,000 Hours does not accept all applicants</span>
+        </div>
+        </div>
       </HelpItem>
 
       <HelpItem
@@ -113,10 +119,7 @@ const Options = () => (
       <Testimonial
         src={LonsImg}
         title="Chris Lons"
-        description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
-        enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
-        enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
-        molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
+        description="Lorem ipsum"
         className="col-6"
       />
       <Testimonial
