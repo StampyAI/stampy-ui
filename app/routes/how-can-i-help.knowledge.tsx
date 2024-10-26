@@ -4,6 +4,8 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
+import VideoImg from '~/assets/video_thumbnail.png'
+import PlayIcon from '~/components/icons-generated/Play'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -28,6 +30,18 @@ const NewToAISafety = () => (
           {
             title: 'Intro to AI safety video playlist',
             action: 'https://aisafety.info/questions/9OGZ/',
+            image: (
+              <div style={{position: 'relative'}}>
+                <img src={VideoImg} alt="video-playlist" />
+                <PlayIcon
+                  style={{
+                    position: 'absolute',
+                    top: '38%',
+                    left: '38%',
+                  }}
+                />
+              </div>
+            ),
           },
         ]}
       >
@@ -67,7 +81,6 @@ const Dropdowns = () => (
     <DropDown title="Books are more my thing">
       <p>TODO fill this</p>
     </DropDown>
-    {/* TODO: fix the double line */}
     <DropDown title="I want something I can subscribe to, so I can learn more about AI safety consistently">
       <p>TODO fill this</p>
     </DropDown>
