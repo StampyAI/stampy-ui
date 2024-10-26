@@ -7,7 +7,7 @@ export const meta: MetaFunction = () => {
 
 export default function Grassroots() {
   return (
-    <Base title="Help with grassroots AI safety" subpage="grassroots">
+    <Base title="Help with grassroots AI safety" current="grassroots">
       <div>fill me out, please</div>
     </Base>
   )
