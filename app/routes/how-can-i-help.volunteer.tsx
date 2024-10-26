@@ -147,14 +147,13 @@ export default function Volunteer() {
     }
   }, [])
   return (
-    <Base title={<span>Volunteer</span>} subpage="volunteer">
+    <Base title={<span>Volunteer</span>} current="volunteer">
 
       <TopText />
 
       <Dropdowns />
 
       <Options />
-
     </Base>
   )
 }

@@ -1,15 +1,14 @@
 import {Link} from '@remix-run/react'
 import Page from '~/components/Page'
-import HelpMethods from '~/components/HowCanIHelp/HelpMethods'
-import {HelpPage, helpUrl} from '~/routesMapper'
+import HelpMethods, {HelpMethodsProps} from '~/components/HowCanIHelp/HelpMethods'
+import {helpUrl} from '~/routesMapper'
 import {ReactNode} from 'react'
 
 type BaseProps = {
   title: string
-  subpage: HelpPage
   children: ReactNode
-}
-export default function Base({title, subpage, children}: BaseProps) {
+} & HelpMethodsProps
+export default function Base({title, current, children, ...props}: BaseProps) {
   return (
     <Page>
       <div className="page-body">
@@ -22,7 +21,7 @@ export default function Base({title, subpage, children}: BaseProps) {
 
           {children}
 
-          <HelpMethods current={subpage} />
+          <HelpMethods current={current} {...props} />
         </div>
       </div>
     </Page>
