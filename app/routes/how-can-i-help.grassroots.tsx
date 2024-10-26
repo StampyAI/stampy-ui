@@ -7,6 +7,8 @@ import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
+import VideoImg from '~/assets/video_thumbnail.png'
+import PlayIcon from '~/components/icons-generated/Play'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -48,7 +50,18 @@ const WhatYouCanDo = () => (
             tag: 'Top recommendation',
             title: 'A.I. - Humanity\'s Final Invention?',
             action: 'https://youtu.be/fa8k8IQ1_X0?si=b2l0Ex6KQvt6JyQD',
-            image: '',
+            image: (
+              <div style={{position: 'relative'}}>
+                <img src={VideoImg} alt="video-playlist" />
+                <PlayIcon
+                  style={{
+                    position: 'absolute',
+                    top: '38%',
+                    left: '38%',
+                  }}
+                />
+              </div>
+            )
           },
         ]}
         additionalInfo={
