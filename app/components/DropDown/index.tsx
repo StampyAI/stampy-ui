@@ -1,6 +1,6 @@
 import {ReactNode, useState} from 'react'
+import {ChevronRight} from '~/components/icons-generated'
 import './dropdown.css'
-import {ChevronRight} from '../icons-generated'
 
 interface DropDownProps {
   title: string
