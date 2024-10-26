@@ -638,7 +638,7 @@ export default function HowCanIHelp() {
     }
   }, [])
   return (
-    <Base title="Start a career in AI safety" subpage="career">
+    <Base title="Start a career in AI safety" current="career">
       <CareerPaths />
 
       <ResearchPath />

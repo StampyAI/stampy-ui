@@ -216,7 +216,7 @@ export default function Knowledge() {
     }
   }, [])
   return (
-    <Base title="Share knowledge about AI safety" subpage="knowledge">
+    <Base title="Share knowledge about AI safety" current="knowledge">
       <NewToAISafety />
 
       <Dropdowns />

@@ -148,7 +148,7 @@ export default function Grassroots() {
     }
   }, [])
   return (
-    <Base title={<span>Spread the word & <br/> grassroots activism</span>} subpage="grassroots">
+    <Base title={<span>Spread the word & <br/> grassroots activism</span>} current="grassroots">
 
       <TopText />
 
