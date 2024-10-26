@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 
 export default function Donate() {
   return (
-    <Base title="Donate" subpage="donate">
+    <Base title="Donate" current="donate">
       <div className="padding-bottom-80">
         <div className="flexbox-alt">
           <div className="col-6-alt">
