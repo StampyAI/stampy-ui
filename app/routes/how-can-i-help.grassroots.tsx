@@ -48,6 +48,7 @@ const WhatYouCanDo = () => (
             tag: 'Top recommendation',
             title: 'A.I. - Humanity\'s Final Invention?',
             action: 'https://youtu.be/fa8k8IQ1_X0?si=b2l0Ex6KQvt6JyQD',
+            image: '',
           },
         ]}
         additionalInfo={
