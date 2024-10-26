@@ -844,30 +844,3 @@ button {
 }
 
 /* end mobile */
-.video-thumbnail-wrapper {
-  position: relative;
-}
-
-.video-thumbnail-container {
-  position: relative;
-}
-
-.play-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.top-recommendation-tag {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #f0f9f8;
-  color: #008080;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  z-index: 1;
-}
