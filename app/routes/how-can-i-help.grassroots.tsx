@@ -5,6 +5,7 @@ import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
 import VideoImg from '~/assets/video_thumbnail.png'
 import PlayIcon from '~/components/icons-generated/Play'
+import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail';
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -45,17 +46,11 @@ const WhatYouCanDo = () => (
             title: "A.I. - Humanity's Final Invention?",
             action: 'https://youtu.be/fa8k8IQ1_X0?si=b2l0Ex6KQvt6JyQD',
             image: (
-              <div style={{position: 'relative'}}>
-                <img src={VideoImg} alt="video-playlist" />
-                <PlayIcon
-                  style={{
-                    position: 'absolute',
-                    top: '38%',
-                    left: '38%',
-                  }}
-                />
-              </div>
-            ),
+              <VideoThumbnail
+                imageUrl={VideoImg}
+                altText="video-playlist"
+              />
+            )
           },
         ]}
         additionalInfo={
