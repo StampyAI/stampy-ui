@@ -28,7 +28,7 @@ const InPerson = () => (
         title="AI safety-specific coommunities"
         links={[
           {
-            title: "Our list of in-person communities",
+            title: 'Our list of in-person communities',
             action: 'https://www.aisafety.com/communities',
           },
         ]}
@@ -43,7 +43,7 @@ const InPerson = () => (
         title="Related communities"
         links={[
           {
-            title: "EA groups map",
+            title: 'EA groups map',
             action: 'https://forum.effectivealtruism.org/groups',
           },
           {
@@ -51,7 +51,6 @@ const InPerson = () => (
             action: 'https://www.lesswrong.com/community',
           },
         ]}
-
       >
         <p className="grey default padding-bottom-24">
           AI Safety is a major topic in Effective Altruism (EA) and Rationalism. Consider joining a
@@ -67,7 +66,7 @@ const Online = () => (
     <div className="padding-bottom-24">
       <div className="flexbox padding-bottom-56">
         <h2 className="teal-500 padding-bottom-40" id="new-to-aisafety">
-        Online communities
+          Online communities
         </h2>
         <p className="grey default">
           Online communities typically exist on Slack, Discord (an app like Slack), or website
@@ -80,8 +79,9 @@ const Online = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "AI alignment slack",
-            action: 'https://ai-alignment.slack.com/join/shared_invite/zt-1vd2yu4ib-3dLG4D82H7eXF_THvTdUKg#/shared-invite/email',
+            title: 'AI alignment slack',
+            action:
+              'https://ai-alignment.slack.com/join/shared_invite/zt-1vd2yu4ib-3dLG4D82H7eXF_THvTdUKg#/shared-invite/email',
           },
         ]}
         additionalInfo={
@@ -98,9 +98,7 @@ const Online = () => (
         </p>
       </HelpItem>
 
-      <HelpItem
-        title="Focused on one activity"
-      >
+      <HelpItem title="Focused on one activity">
         <p className="grey default padding-bottom-24">
           Such as volunteering for a certain project or organizing and attending protests.
         </p>
@@ -112,7 +110,7 @@ const Online = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "Lesswrong",
+            title: 'Lesswrong',
             action: 'https://www.lesswrong.com/',
           },
           // TODO: do we want to link to a specific tag here?
@@ -126,9 +124,6 @@ const Online = () => (
   </>
 )
 
-
-
-
 export default function Community() {
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth'
@@ -139,9 +134,8 @@ export default function Community() {
   return (
     <Base title="Join the community" current="community">
       <InPerson />
-      
+
       <Online />
     </Base>
   )
 }
-
