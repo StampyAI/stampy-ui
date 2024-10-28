@@ -39,7 +39,7 @@ const titles = {
     </div>
   ),
   knowledge: (
-    <div>
+    <div className="col-6">
       Boost your learning efforts:
       <br />
       Join a community
@@ -55,15 +55,27 @@ const titles = {
 }
 
 const knowledgeDescriptions = {
-  donate: 'The more you know about this topic, the further your donation efforts will go',
+  donate: 'The more you know about this topic, the further your donation efforts can go',
+  grassroots:
+    'The second-best way to increase your impact as an advocate is educating yourself on your own',
+  volunteer:
+    'The more you know about this topic, the further your volunteer efforts will go',
+  community:
+    'Learning about AI Safety equips you to effectively contribute to discussions and influence its development',
 }
 
 const communityDescriptions = {
   donate:
     'Connecting with other advocates online or in person will help guide donation decisions, and can be motivating',
+  grassroots:
+    'Connecting with other advocates online or in person will be supportive in your advocacy efforts',
+  volunteer:
+    'Connecting with other volunteers online or in person will be supportive in your volunteer efforts',
+  knowledge:
+    'Connecting with others interested in AI safety can be inspiring, and will help guide your learning efforts',
 }
 
-const KnowledgeCard = ({current}: {current?: HelpPage}) => {
+const KnowledgeCard = ({current, className = "col-6"}: {current?: HelpPage, className?: string}) => {
   if (current == 'knowledge') return null
   const defaultDescription =
     'Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field'
@@ -76,12 +88,12 @@ const KnowledgeCard = ({current}: {current?: HelpPage}) => {
         knowledgeDescriptions[current as keyof typeof knowledgeDescriptions] || defaultDescription
       }
       icon={Book}
-      className="col-6"
+      className={className}
     />
   )
 }
 
-const CommunityCard = ({current}: {current?: string}) => {
+const CommunityCard = ({current, className = "col-6"}: {current?: string, className?: string}) => {
   if (current === 'community') return null
   const defaultDescription =
     'Connecting with others online or in person will help you navigate the transition to a career in AI safety'
@@ -94,7 +106,7 @@ const CommunityCard = ({current}: {current?: string}) => {
         communityDescriptions[current as keyof typeof communityDescriptions] || defaultDescription
       }
       icon={People}
-      className="col-6"
+      className={className}
     />
   )
 }
@@ -112,8 +124,14 @@ const HelpMethods = ({
   <div className="help-footer">
     <h2 className="teal-500 padding-bottom-56">{footerTitle || (current && titles[current])}</h2>
     <div className="flexbox padding-bottom-80">
-      <KnowledgeCard current={current} />
-      <CommunityCard current={current} />
+      <KnowledgeCard 
+        current={current} 
+        className={`col-6 ${current === 'grassroots' || current === 'volunteer' || current === 'donate' ? 'order-2' : ''}`} 
+      />
+      <CommunityCard 
+        current={current} 
+        className={`col-6 ${current === 'grassroots' || current === 'volunteer' || current === 'donate' ? 'order-1' : ''}`} 
+      />
     </div>
     <p className="large-bold padding-bottom-40">{footerSubheader}</p>
     <div className="flexbox">
