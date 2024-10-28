@@ -1,13 +1,13 @@
-import React from 'react';
-import PlayIcon from '~/components/icons-generated/Play';
+import React from 'react'
+import PlayIcon from '~/components/icons-generated/Play'
 
 interface VideoThumbnailProps {
-  imageUrl: string;
-  altText: string;
-  tag?: string;
+  imageUrl: string
+  altText: string
+  tag?: string
 }
 
-const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ imageUrl, altText, tag }) => {
+const VideoThumbnail: React.FC<VideoThumbnailProps> = ({imageUrl, altText, tag}) => {
   return (
     <div className="relative rounded-lg overflow-hidden shadow-md">
       {tag && (
@@ -22,7 +22,7 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({ imageUrl, altText, tag 
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VideoThumbnail;
+export default VideoThumbnail
