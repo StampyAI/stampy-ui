@@ -5,7 +5,7 @@ import {helpUrl} from '~/routesMapper'
 import {ReactNode} from 'react'
 
 type BaseProps = {
-  title: string | ReactNode
+  title: ReactNode
   children: ReactNode
 } & HelpMethodsProps
 

@@ -8,7 +8,7 @@ import './category-carousel.css'
 
 const PER_BOX = 320
 
-interface CategoryCarouselProps {
+type CategoryCarouselProps = {
   title: React.ReactNode;
   category: PageId;
 }
