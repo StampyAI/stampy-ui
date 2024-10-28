@@ -1,14 +1,10 @@
 import {MetaFunction} from '@remix-run/node'
-import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
-import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
-import VideoImg from '~/assets/video_thumbnail.png'
-import PlayIcon from '~/components/icons-generated/Play'
 import BaginskiImg from '~/assets/Baginski.jpeg'
 import LonsImg from '~/assets/Lons.jpg'
 
@@ -23,41 +19,52 @@ const TopText = () => (
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Who</p>
           <p className="grey default">
-            Pretty much any skill set can be adapted to a volunteer role. Some commonly sought-after skills include technical expertise (such as math and code), communications, project management, and general organizing.
+            Pretty much any skill set can be adapted to a volunteer role. Some commonly sought-after
+            skills include technical expertise (such as math and code), communications, project
+            management, and general organizing.
           </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
-          Volunteering, especially in areas of field-building and movement-building, supports efforts that are important but bottlenecked by AI safety’s funding shortage – such as AISafety.com and AI Safety Quest.
+            Volunteering, especially in areas of field-building and movement-building, supports
+            efforts that are important but bottlenecked by AI safety’s funding shortage – such as
+            AISafety.com and AI Safety Quest.
           </p>
         </div>
       </div>
     </div>
-    </>
+  </>
 )
 
 const Dropdowns = () => (
-<div className="padding-bottom-80 grey default">
-  <DropDown title="What does volunteering involve?">
-    <div className="col-7-alt">
-      <p>About 90% of volunteer work is online, and involves field-building through communication, advocacy, or software development; providing feedback on research; or building or organizing online groups. In-person volunteer work would entail organizing meetups, protests, or retreats.</p>
-    </div>  
-  </DropDown>
-  <DropDown title="What level of commitment is required?">
-    <div className="col-7-alt">
-      <p>Typically volunteers commit up to several hours a week for at least a few months. However, volunteers that accomplished one 15 minute task a week, consistently, have also been very helpful. What’s most important is that you understand how much you are able to commit upfront, and follow through with that commitment.</p>
-    </div>
-  </DropDown>
-</div>
+  <div className="padding-bottom-80 grey default">
+    <DropDown title="What does volunteering involve?">
+      <div className="col-7-alt">
+        <p>
+          About 90% of volunteer work is online, and involves field-building through communication,
+          advocacy, or software development; providing feedback on research; or building or
+          organizing online groups. In-person volunteer work would entail organizing meetups,
+          protests, or retreats.
+        </p>
+      </div>
+    </DropDown>
+    <DropDown title="What level of commitment is required?">
+      <div className="col-7-alt">
+        <p>
+          Typically volunteers commit up to several hours a week for at least a few months. However,
+          volunteers that accomplished one 15 minute task a week, consistently, have also been very
+          helpful. What’s most important is that you understand how much you are able to commit
+          upfront, and follow through with that commitment.
+        </p>
+      </div>
+    </DropDown>
+  </div>
 )
-
 
 const Options = () => (
   <>
-    <h2 className="teal-500 padding-bottom-64">
-      Options for getting started
-    </h2>
+    <h2 className="teal-500 padding-bottom-64">Options for getting started</h2>
     <div>
       <HelpItem
         title="Sign up for free 1-on-1 volunteering advice with AI Safety Quest & 80,000 Hours"
@@ -73,11 +80,14 @@ const Options = () => (
         ]}
       >
         <div>
-        <p className="padding-bottom-16">Get personalized volunteering advice in a thirty minute or one hour video call. We recommend booking both!</p>
-        <div>
-          <span className="small-bold"> Note: </span>
-          <span className="small">80,000 Hours does not accept all applicants</span>
-        </div>
+          <p className="padding-bottom-16">
+            Get personalized volunteering advice in a thirty minute or one hour video call. We
+            recommend booking both!
+          </p>
+          <div>
+            <span className="small-bold"> Note: </span>
+            <span className="small">80,000 Hours does not accept all applicants</span>
+          </div>
         </div>
       </HelpItem>
 
@@ -86,19 +96,25 @@ const Options = () => (
         links={[
           {
             title: 'Add the next AED call to your calendar',
-            action: 'https://calendar.google.com/calendar/u/0/share?slt=1AUWfa3j72XM5H9AQ6Wsx-PYfhAraCnI2kGks7D3h5TiLPtleaCfXXecE2a2NAhXU4S5dOqYYPpJHG2i4UtbUuzdMNJXFAA2FjsyL',
+            action:
+              'https://calendar.google.com/calendar/u/0/share?slt=1AUWfa3j72XM5H9AQ6Wsx-PYfhAraCnI2kGks7D3h5TiLPtleaCfXXecE2a2NAhXU4S5dOqYYPpJHG2i4UtbUuzdMNJXFAA2FjsyL',
           },
         ]}
         additionalInfo={
           <>
             Or, learn more about AED on{' '}
             <a href="https://alignment.dev/" className="small-bold teal-500">
-            their website
+              their website
             </a>
           </>
         }
       >
-        <p className="padding-bottom-16"> Alignment Ecosystem Development (AED) is a community of volunteers supporting online AI safety field-building projects like AISafety.com and AISafety Quest. Join an existing project or pitch your own and recruit help.</p>
+        <p className="padding-bottom-16">
+          {' '}
+          Alignment Ecosystem Development (AED) is a community of volunteers supporting online AI
+          safety field-building projects like AISafety.com and AISafety Quest. Join an existing
+          project or pitch your own and recruit help.
+        </p>
       </HelpItem>
 
       <HelpItem
@@ -110,18 +126,15 @@ const Options = () => (
           },
         ]}
       >
-        <p className="padding-bottom-16">Browse our list of online AI safety field-building projects. Email the contact person expressing your interest.</p>
+        <p className="padding-bottom-16">
+          Browse our list of online AI safety field-building projects. Email the contact person
+          expressing your interest.
+        </p>
       </HelpItem>
-
     </div>
 
     <div className="flexbox padding-bottom-32">
-      <Testimonial
-        src={LonsImg}
-        title="Chris Lons"
-        description="Lorem ipsum"
-        className="col-6"
-      />
+      <Testimonial src={LonsImg} title="Chris Lons" description="Lorem ipsum" className="col-6" />
       <Testimonial
         src={BaginskiImg}
         title="Mateusz Bagiński"
@@ -131,10 +144,7 @@ const Options = () => (
     </div>
 
     <div className="padding-bottom-80">
-      <CategoryCarousel
-        title={<span>Our articles on volunteering</span>}
-        category="NM18"
-      />
+      <CategoryCarousel title={<span>Our articles on volunteering</span>} category="NM18" />
     </div>
   </>
 )
@@ -148,7 +158,6 @@ export default function Volunteer() {
   }, [])
   return (
     <Base title={<span>Volunteer</span>} current="volunteer">
-
       <TopText />
 
       <Dropdowns />
