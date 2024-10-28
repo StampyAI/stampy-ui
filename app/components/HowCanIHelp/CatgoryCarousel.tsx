@@ -8,7 +8,12 @@ import './category-carousel.css'
 
 const PER_BOX = 320
 
-const CategoryCarousel = ({title, category}: {title: string; category: PageId}) => {
+interface CategoryCarouselProps {
+  title: React.ReactNode;
+  category: PageId;
+}
+
+const CategoryCarousel = ({title, category}: CategoryCarouselProps) => {
   const componentRef = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(0)
   const [offset, setOffset] = useState(0)

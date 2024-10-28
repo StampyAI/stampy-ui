@@ -5,9 +5,10 @@ import {helpUrl} from '~/routesMapper'
 import {ReactNode} from 'react'
 
 type BaseProps = {
-  title: string
+  title: string | ReactNode
   children: ReactNode
 } & HelpMethodsProps
+
 export default function Base({title, current, children, ...props}: BaseProps) {
   return (
     <Page>
