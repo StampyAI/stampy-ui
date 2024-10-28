@@ -1,3 +1,4 @@
+import {ReactNode} from 'react'
 import Card from '~/components/Card'
 import CardSmall from '~/components/CardSmall'
 import {HelpPage, helpUrl} from '~/routesMapper'
@@ -8,39 +9,113 @@ import {Megaphone} from '~/components/icons-generated'
 import {PiggyBank} from '~/components/icons-generated'
 import {Hand} from '~/components/icons-generated'
 
-type HelpMethodsProps = {
+const titles = {
+  career: (
+    <div>
+      Multiply your impact:
+      <br />
+      Support your career pursuit
+    </div>
+  ),
+  grassroots: (
+    <div>
+      Multiply your positive impact:
+      <br />
+      Support your advocacy efforts
+    </div>
+  ),
+  donate: (
+    <div>
+      Multiply your postive impact:
+      <br />
+      Support your donation efforts
+    </div>
+  ),
+  volunteer: (
+    <div>
+      Multiply your positive impact:
+      <br />
+      Support your volunteer efforts
+    </div>
+  ),
+  knowledge: (
+    <div>
+      Boost your learning efforts:
+      <br />
+      Join a community
+    </div>
+  ),
+  community: (
+    <div>
+      Boost your efforts:
+      <br />
+      Learn more about AI safety
+    </div>
+  ),
+}
+
+const knowledgeDescriptions = {
+  donate: 'The more you know about this topic, the further your donation efforts will go',
+}
+
+const communityDescriptions = {
+  donate:
+    'Connecting with other advocates online or in person will help guide donation decisions, and can be motivating',
+}
+
+const KnowledgeCard = ({current}: {current?: HelpPage}) => {
+  if (current == 'knowledge') return null
+  const defaultDescription =
+    'Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field'
+  return (
+    <Card
+      action={helpUrl('knowledge')}
+      actionDesc="We'll show you how"
+      title="Build your knowledge"
+      description={
+        knowledgeDescriptions[current as keyof typeof knowledgeDescriptions] || defaultDescription
+      }
+      icon={Book}
+      className="col-6"
+    />
+  )
+}
+
+const CommunityCard = ({current}: {current?: string}) => {
+  if (current === 'community') return null
+  const defaultDescription =
+    'Connecting with others online or in person will help you navigate the transition to a career in AI safety'
+  return (
+    <Card
+      action={helpUrl('community')}
+      actionDesc="Find your community"
+      title="Join a community"
+      description={
+        communityDescriptions[current as keyof typeof communityDescriptions] || defaultDescription
+      }
+      icon={People}
+      className="col-6"
+    />
+  )
+}
+
+export type HelpMethodsProps = {
   current?: HelpPage
-  header?: string
-  subheader?: string
+  footerTitle?: ReactNode
+  footerSubheader?: ReactNode
 }
 const HelpMethods = ({
   current,
-  header = 'Multiply your impact: Support your career pursuit',
-  subheader = 'Or, explore more ways to help directly',
+  footerTitle,
+  footerSubheader = 'Or, explore more ways to help directly',
 }: HelpMethodsProps) => (
   <div className="help-footer">
-    <h2 className="teal-500 padding-bottom-56">{header}</h2>
+    <h2 className="teal-500 padding-bottom-56">{footerTitle || (current && titles[current])}</h2>
     <div className="flexbox padding-bottom-80">
-      {current !== 'knowledge' && (
-        <Card
-          action={helpUrl('knowledge')}
-          title="Build your knowledge"
-          description="Learning more about AI safety and the alignment problem is essential if you want to pursue a career in this field"
-          icon={Book}
-          className="col-6"
-        />
-      )}
-      {current !== 'community' && (
-        <Card
-          action={helpUrl('community')}
-          title="Join a community"
-          description="Connecting with others online or in person will help you navigate the transition to a career in AI safety"
-          icon={People}
-          className="col-6"
-        />
-      )}
+      <KnowledgeCard current={current} />
+      <CommunityCard current={current} />
     </div>
-    <p className="large-bold padding-bottom-40">{subheader}</p>
+    <p className="large-bold padding-bottom-40">{footerSubheader}</p>
     <div className="flexbox">
       {current !== 'career' && (
         <CardSmall

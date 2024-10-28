@@ -4,6 +4,8 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
+import VideoImg from '~/assets/video_thumbnail.png'
+import PlayIcon from '~/components/icons-generated/Play'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -27,8 +29,19 @@ const NewToAISafety = () => (
           },
           {
             title: 'Intro to AI safety video playlist',
-            action:
-              'https://www.youtube.com/watch?v=fa8k8IQ1_X0&list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE&index=1&t=904s&ab_channel=Kurzgesagt%E2%80%93InaNutshell',
+            action: 'https://aisafety.info/questions/9OGZ/',
+            image: (
+              <div style={{position: 'relative'}}>
+                <img src={VideoImg} alt="video-playlist" />
+                <PlayIcon
+                  style={{
+                    position: 'absolute',
+                    top: '38%',
+                    left: '38%',
+                  }}
+                />
+              </div>
+            ),
           },
         ]}
       >
@@ -316,7 +329,7 @@ export default function Knowledge() {
     }
   }, [])
   return (
-    <Base title="Share knowledge about AI safety" subpage="knowledge">
+    <Base title="Share knowledge about AI safety" current="knowledge">
       <NewToAISafety />
 
       <Dropdowns />
