@@ -45,7 +45,6 @@ const NewToAISafety = () => (
           },
         ]}
       >
-        {/* TODO: add video png*/}
         <p className="grey default padding-bottom-24">
           Our website’s “Intro to AI safety” micro-course includes several short readings that act
           as a comprehensive introduction the topic of AI safety.
