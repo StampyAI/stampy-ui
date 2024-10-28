@@ -170,9 +170,8 @@ const Dropdowns = () => (
           {
             tag: 'Top recommendation',
             title: 'AGI Safety Core',
-            action: 'https://zombo.com/',
+            action: 'https://x.com/i/lists/1185207859728076800',
           },
-          // TODO: what's the link for agi safety core? I never heard of them
         ]}
       >
         We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety
