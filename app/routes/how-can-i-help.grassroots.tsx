@@ -95,9 +95,7 @@ const WhatYouCanDo = () => (
           },
         ]}
       >
-        <p>
-          Protests happen in major cities globally, and need people like you!
-        </p>
+        <p>Protests happen in major cities globally, and need people like you!</p>
       </HelpItem>
 
       <HelpItem

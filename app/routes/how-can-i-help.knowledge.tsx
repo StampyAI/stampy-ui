@@ -91,9 +91,9 @@ const Dropdowns = () => (
 const DiveDeeper = () => (
   <>
     <div>
-        <h2 className="teal-500 padding-bottom-40" id="dive-deeper">
-          If you want to dive deeper
-        </h2>
+      <h2 className="teal-500 padding-bottom-40" id="dive-deeper">
+        If you want to dive deeper
+      </h2>
       <HelpItem
         title="Take an online course"
         className="padding-bottom-40"
@@ -128,14 +128,18 @@ const DiveDeeper = () => (
         <p className="grey small padding-bottom-24">
           <span className="small-bold">Note:</span> If you take the AISF courses, consider exploring
           additional views on AI safety to help avoid homogeneity in the field, such as{' '}
-          <a href="https://www.cold-takes.com/most-important-century/" className="teal-500 small-bold">
+          <a
+            href="https://www.cold-takes.com/most-important-century/"
+            className="teal-500 small-bold"
+          >
             The Most Important Century blog post series
           </a>
           .{/* TODO: fix bold on link */}
         </p>
         <p className="grey small">
-          <span className="small-bold">Note:</span> AISF courses do not accept all applicants, but we
-          still recommend taking the courses through self-study if your application is unsuccessful.
+          <span className="small-bold">Note:</span> AISF courses do not accept all applicants, but
+          we still recommend taking the courses through self-study if your application is
+          unsuccessful.
         </p>
       </HelpItem>
 
