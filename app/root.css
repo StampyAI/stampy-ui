@@ -711,6 +711,14 @@ button {
   stroke: var(--colors-teal-600);
 }
 
+.order-1 {
+  order: 1 !important;
+}
+
+.order-2 {
+  order: 2 !important;
+}
+
 .tag {
   color: var(--colors-teal-500);
   height: 24px;
