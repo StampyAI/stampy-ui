@@ -34,17 +34,17 @@
   --spacing-8: 8px;
   --spacing-12: 12px;
   --spacing-16: 16px;
-  --spacing-24: clamp(16px, 1.67vw, 24px);
-  --spacing-32: clamp(24px, 2.22vw, 32px);
-  --spacing-40: clamp(24px, 2.78vw, 40px);
-  --spacing-48: clamp(24px, 3.33vw, 48px);
-  --spacing-56: clamp(24px, 3.89vw, 56px);
-  --spacing-64: clamp(32px, 4.45vw, 64px);
-  --spacing-80: clamp(40px, 5.56vw, 80px);
-  --spacing-104: clamp(56px, 7.22vw, 104px);
-  --spacing-128: clamp(56px, 8.89vw, 128px);
-  --spacing-192: clamp(80px, 13.33vw, 192px);
-  --spacing-288: clamp(128px, 20vw, 288px);
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-104: 104px;
+  --spacing-128: 128px;
+  --spacing-192: 192px;
+  --spacing-288: 288px;
 
   /* height */
   --height-48: 48px;

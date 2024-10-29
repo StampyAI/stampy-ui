@@ -63,7 +63,7 @@ const ResearchPath = () => (
       </div>
     </div>
 
-    <div className="padding-bottom-24">
+    <div className="padding-bottom-56">
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
@@ -79,6 +79,7 @@ const ResearchPath = () => (
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
+        className="padding-bottom-40"
       >
         <p className="padding-bottom-16">The review takes about one hour and addresses:</p>
         <ul>
@@ -101,6 +102,7 @@ const ResearchPath = () => (
             action: 'https://80000hours.org/speak-with-us/',
           },
         ]}
+        className="padding-bottom-40"
       >
         <p className="grey default padding-bottom-16">
           Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
@@ -142,12 +144,12 @@ const ResearchPath = () => (
 
     <div className="padding-bottom-80">
       <DropDown title="I’m interested in non-technical or supporting roles in AI alignment">
-        <HelpItem>
+        <p className="padding-bottom-40 col-6 grey">
           There are many roles that support the work of AI alignment researchers, and having
           high-performing people in these roles is crucial. In a research organisation around half
           of the staff will be doing other tasks essential for the organisation to perform at its
           best and have an impact. Some of these roles include:
-        </HelpItem>
+        </p>
         <HelpItem
           title="Operations management at an AI safety research organization"
           links={[
@@ -156,6 +158,7 @@ const ResearchPath = () => (
               action: 'https://80000hours.org/articles/operations-management/',
             },
           ]}
+          className="padding-bottom-40"
         >
           This involves overseeing the day-to-day activities that enable the organization to
           function efficiently and effectively. Responsibilities may include administrative support,
@@ -169,6 +172,7 @@ const ResearchPath = () => (
               action: '#',
             },
           ]}
+          className="padding-bottom-40"
         >
           This involves overseeing and coordinating research activities to ensure they align with
           the mission of promoting safe AI development. Responsibilities include setting research
@@ -192,7 +196,7 @@ const ResearchPath = () => (
       </DropDown>
     </div>
 
-    <div className="flexbox padding-bottom-32">
+    <div className="flexbox">
       <Testimonial
         src="/assets/guy.jpeg"
         title="Lorem ipsum"
@@ -214,7 +218,7 @@ const ResearchPath = () => (
       />
     </div>
 
-    <div className="padding-bottom-80">
+    <div className="padding-bottom-104">
       <CategoryCarousel
         title="Our articles on pursuing a career in alignment research"
         category="NM1D"
@@ -224,7 +228,7 @@ const ResearchPath = () => (
 )
 
 const GovernancePath = () => (
-  <div className="padding-bottom-80">
+  <div className="padding-bottom-104">
     <div className="padding-bottom-80">
       <h2 className="teal-500 padding-bottom-40" id="governance">
         AI governance & policy
@@ -249,7 +253,7 @@ const GovernancePath = () => (
       </div>
     </div>
 
-    <div className="padding-bottom-24">
+    <div className="padding-bottom-80">
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
@@ -265,6 +269,7 @@ const GovernancePath = () => (
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
+        className="padding-bottom-40"
       >
         <p className="padding-bottom-16">The review takes about one hour and addresses:</p>
         <ul>
@@ -277,6 +282,7 @@ const GovernancePath = () => (
       </HelpItem>
       <HelpItem
         title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        className="padding-bottom-40"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -321,7 +327,7 @@ const GovernancePath = () => (
       </HelpItem>
     </div>
 
-    <div className="flexbox padding-bottom-32">
+    <div className="flexbox">
       <Testimonial
         src="/assets/guy.jpeg"
         title="Lorem ipsum"
@@ -388,12 +394,13 @@ const FieldBuildingPath = () => (
       </div>
     </div>
 
-    <div className="padding-bottom-24">
+    <div className="padding-bottom-56">
       <p className="padding-bottom-40 large-bold">Most common field-building roles</p>
 
       <HelpItem
         titleFont="default-bold"
         title="Communications & advocacy"
+        className="padding-bottom-40"
         links={[
           {
             title: "Read 80k's guide on communications",
@@ -410,6 +417,7 @@ const FieldBuildingPath = () => (
       <HelpItem
         titleFont="default-bold"
         title="Being a grantmaker"
+        className="padding-bottom-40"
         links={[
           {
             title: "Read 80k's guide on being a grantmaker",
@@ -442,7 +450,7 @@ const FieldBuildingPath = () => (
 
     <div className="padding-bottom-80">
       <DropDown title="What are some other miscellaneous roles?">
-        <HelpItem title="Supporting roles">
+        <HelpItem title="Supporting roles" className="padding-bottom-40">
           There are many roles that support the work of AI alignment researchers or people in AI
           governance, and having high-performing people in these roles is crucial. In a research
           organisation, for example, around half of the staff will be doing other tasks essential
@@ -452,6 +460,7 @@ const FieldBuildingPath = () => (
         <HelpItem
           titleFont="default-bold"
           title="Operations management at an AI safety research organization"
+          className="padding-bottom-40"
           links={[
             {
               title: "Read 80k's guide on operations work",
@@ -467,6 +476,7 @@ const FieldBuildingPath = () => (
         <HelpItem
           titleFont="default-bold"
           title="Research management at an AI safety research organization"
+          className="padding-bottom-40"
           links={[
             {
               title: "Read 80k's guide on research management",
@@ -483,6 +493,7 @@ const FieldBuildingPath = () => (
         <HelpItem
           titleFont="default-bold"
           title="Being an executive assistant to someone doing important work on safety and governance"
+          className="padding-bottom-40"
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
@@ -501,6 +512,7 @@ const FieldBuildingPath = () => (
         <HelpItem
           titleFont="default-bold"
           title="Working in information security to protect AI (or the results of key experiments) from misuse, theft, or tampering"
+          className="padding-bottom-40"
           links={[
             {
               title: "Read 80k's guide on Information security in high-impact areas",
@@ -526,7 +538,7 @@ const FieldBuildingPath = () => (
       </DropDown>
     </div>
 
-    <div className="padding-bottom-24">
+    <div className="padding-bottom-80">
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6">
@@ -536,6 +548,7 @@ const FieldBuildingPath = () => (
       </div>
       <HelpItem
         title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        className="padding-bottom-40"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -585,7 +598,7 @@ const FieldBuildingPath = () => (
       </HelpItem>
     </div>
 
-    <div className="padding-bottom-24">
+    <div>
       <Testimonial
         src="/assets/bryce.png"
         title="Bryce Robertson"

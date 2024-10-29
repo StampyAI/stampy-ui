@@ -8,6 +8,7 @@ type HelpItemProps = {
   links?: Link[]
   additionalInfo?: ReactNode
   titleFont?: 'large-bold' | 'default-bold'
+  className?: string
 }
 const HelpItem = ({
   title,
@@ -16,9 +17,10 @@ const HelpItem = ({
   links,
   additionalInfo,
   titleFont = 'large-bold',
+  className = '',
 }: HelpItemProps) => {
   return (
-    <div className="flexbox padding-bottom-40">
+    <div className={`flexbox ${className}`}>
       <div className="col-6">
         {title && (
           <p className={`flexbox gap-16 center-align padding-bottom-16 ${titleFont}`}>
@@ -26,7 +28,7 @@ const HelpItem = ({
             {tag && <span className="tag xs">{tag}</span>}
           </p>
         )}
-        <p className="grey default padding-bottom-16"> {children} </p>
+        <p className="grey default"> {children} </p>
       </div>
       <div className="col-6">
         {links?.map((link) => (

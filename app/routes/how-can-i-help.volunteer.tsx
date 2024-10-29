@@ -64,10 +64,12 @@ const Dropdowns = () => (
 
 const Options = () => (
   <>
+    <div className='padding-bottom-80'>
     <h2 className="teal-500 padding-bottom-64">Options for getting started</h2>
     <div>
       <HelpItem
         title="Sign up for free 1-on-1 volunteering advice with AI Safety Quest & 80,000 Hours"
+        className="padding-bottom-40"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -80,7 +82,7 @@ const Options = () => (
         ]}
       >
         <div>
-          <p className="padding-bottom-16">
+          <p className="padding-bottom-24">
             Get personalized volunteering advice in a thirty minute or one hour video call. We
             recommend booking both!
           </p>
@@ -93,6 +95,7 @@ const Options = () => (
 
       <HelpItem
         title="Join the monthly AED calls"
+        className="padding-bottom-40"
         links={[
           {
             title: 'Add the next AED call to your calendar',
@@ -109,7 +112,7 @@ const Options = () => (
           </>
         }
       >
-        <p className="padding-bottom-16">
+        <p>
           {' '}
           Alignment Ecosystem Development (AED) is a community of volunteers supporting online AI
           safety field-building projects like AISafety.com and AISafety Quest. Join an existing
@@ -126,14 +129,15 @@ const Options = () => (
           },
         ]}
       >
-        <p className="padding-bottom-16">
+        <p>
           Browse our list of online AI safety field-building projects. Email the contact person
           expressing your interest.
         </p>
       </HelpItem>
     </div>
+    </div>
 
-    <div className="flexbox padding-bottom-32">
+    <div className="flexbox">
       <Testimonial src={LonsImg} title="Chris Lons" description="Lorem ipsum" className="col-6" />
       <Testimonial
         src={BaginskiImg}
@@ -143,7 +147,7 @@ const Options = () => (
       />
     </div>
 
-    <div className="padding-bottom-80">
+    <div>
       <CategoryCarousel title={<span>Our articles on volunteering</span>} category="NM18" />
     </div>
   </>

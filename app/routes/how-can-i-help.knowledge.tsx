@@ -13,14 +13,15 @@ export const meta: MetaFunction = () => {
 
 const NewToAISafety = () => (
   <>
-    <div className="padding-bottom-24">
+    <div className="padding-bottom-80">
       <div className="flexbox padding-bottom-56">
-        <h2 className="teal-500 padding-bottom-40" id="new-to-aisafety">
+        <h2 className="teal-500 padding-bottom-4 col-8" id="new-to-aisafety">
           If you're somewhat new to AI safety, we recommend an introductory overview
         </h2>
       </div>
       <HelpItem
         title="Browse our introductory content"
+        className="padding-bottom-40"
         links={[
           {
             tag: 'Top recommendation',
@@ -46,7 +47,7 @@ const NewToAISafety = () => (
         ]}
       >
         {/* TODO: add video */}
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           Our website’s “Intro to AI safety” micro-course includes several short readings that act
           as a comprehensive introduction the topic of AI safety.
         </p>
@@ -66,7 +67,7 @@ const NewToAISafety = () => (
         ]}
       >
         {/* TODO: add Browse full list */}
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           We recommend Dwarkesh Patel’s interview with Paul Christiano, a leading researcher in AI
           alignment and safety. The interview provides an introduction to AI risk and discusses many
           important AI safety concepts.
@@ -89,14 +90,13 @@ const Dropdowns = () => (
 
 const DiveDeeper = () => (
   <>
-    <div className="padding-bottom-24">
-      <div className="flexbox padding-bottom-56">
+    <div>
         <h2 className="teal-500 padding-bottom-40" id="dive-deeper">
           If you want to dive deeper
         </h2>
-      </div>
       <HelpItem
         title="Take an online course"
+        className="padding-bottom-40"
         links={[
           {
             tag: 'Highlight course',
@@ -111,11 +111,11 @@ const DiveDeeper = () => (
         ]}
         // TODO: add "full list of courses"
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default padding-bottom-16">
           We recommend taking an online course if your interests have narrowed to a specific subset
           of AI safety, such as AI alignment research or AI governance.
         </p>
-        <p className="grey default padding-bottom-24">
+        <p className="grey default padding-bottom-16">
           The AI Safety Fundamentals (AISF) Governance Course, for example, is especially suited for
           policymakers and similar stakeholders interested in AI governance mechanisms. It explores
           policy levers for steering the future of AI development.
@@ -125,22 +125,23 @@ const DiveDeeper = () => (
           interested in AI alignment research. It explores research agendas for aligning AI systems
           with human interests.
         </p>
-        <p className="grey default padding-bottom-24">
-          <b>Note:</b> If you take the AISF courses, consider exploring additional views on AI
-          safety to help avoid homogeneity in the field, such as{' '}
-          <a href="https://www.cold-takes.com/most-important-century/" className="teal-500">
+        <p className="grey small padding-bottom-24">
+          <span className="small-bold">Note:</span> If you take the AISF courses, consider exploring
+          additional views on AI safety to help avoid homogeneity in the field, such as{' '}
+          <a href="https://www.cold-takes.com/most-important-century/" className="teal-500 small-bold">
             The Most Important Century blog post series
           </a>
           .{/* TODO: fix bold on link */}
         </p>
-        <p className="grey default padding-bottom-24">
-          <b>Note:</b> AISF courses do not accept all applicants, but we still recommend taking the
-          courses through self-study if your application is unsuccessful.
+        <p className="grey small">
+          <span className="small-bold">Note:</span> AISF courses do not accept all applicants, but we
+          still recommend taking the courses through self-study if your application is unsuccessful.
         </p>
       </HelpItem>
 
       <HelpItem
         title="Get into Lesswrong and its subset, the Alignment Forum"
+        className="padding-bottom-40"
         links={[
           {
             tag: 'Most widely-used',
@@ -153,7 +154,7 @@ const DiveDeeper = () => (
           },
         ]}
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           Most people who are really into AI existential safety ultimately end up in this online,
           forum-based community which fosters high-quality discussions about AI safety research and
           governance.
@@ -162,6 +163,7 @@ const DiveDeeper = () => (
 
       <HelpItem
         title="Sign up for events"
+        className="padding-bottom-40"
         links={[
           {
             tag: 'Top recommendation',
@@ -175,7 +177,7 @@ const DiveDeeper = () => (
           Events, typically conferences and talks, are often held in person and last one to three
           days.
         </p>
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           We've highlighted EAGx, an Effective Altruism conference dedicated to networking and
           learning about important global issues, with a strong focus on AI safety. Several EAGx's
           are held annually in various major cities across the world.
@@ -191,7 +193,7 @@ const DiveDeeper = () => (
           },
         ]}
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           AI safety fellowships typically last one to three weeks and are offered both online and in
           person. They focus on developing safe and ethical AI practices through research,
           mentorship, and collaboration on innovative solutions.
@@ -202,7 +204,7 @@ const DiveDeeper = () => (
 )
 const OurArticles = () => (
   <>
-    <div className="padding-bottom-80">
+    <div>
       <CategoryCarousel title="Our articles on building your knowledge" category="NM19" />
     </div>
   </>
@@ -216,7 +218,7 @@ export default function Knowledge() {
     }
   }, [])
   return (
-    <Base title="Share knowledge about AI safety" current="knowledge">
+    <Base title="Build your knowledge" current="knowledge">
       <NewToAISafety />
 
       <Dropdowns />

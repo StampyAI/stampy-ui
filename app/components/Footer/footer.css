@@ -1,27 +1,7 @@
-.footer {
-  margin-top: var(--spacing-104);
-}
-
-.footer-contents {
-  /* display: flex;
-  gap: var(--spacing-32);
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: baseline;
-  margin: var(--spacing-104) var(--spacing-80) var(--spacing-80) var(--spacing-80); */
-}
-
 @media (max-width: 1136px) {
   .footer-contents {
     flex-direction: column;
     gap: 32px;
     margin-bottom: 0;
-  }
-
-  .col-5,
-  .col-4,
-  .col-3 {
-    width: 100%;
   }
 }
