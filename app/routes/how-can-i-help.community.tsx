@@ -105,9 +105,8 @@ const Online = () => (
           {
             tag: 'Top recommendation',
             title: 'Lesswrong',
-            action: 'https://www.lesswrong.com/',
+            action: 'https://www.lesswrong.com/tag/ai',
           },
-          // TODO: do we want to link to a specific tag here?
         ]}
       >
         <p className="grey default padding-bottom-24">
