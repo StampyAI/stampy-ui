@@ -92,11 +92,20 @@ const Online = () => (
         </p>
       </HelpItem>
 
-      <HelpItem title="Focused on one activity">
+      <HelpItem
+        title="Focused on one activity"
+        links={[
+          {
+            title: 'Join a PauseAI event',
+            action: 'https://pauseai.info/events',
+          },
+        ]}
+      >
         <p className="grey default padding-bottom-24">
-          Such as volunteering for a certain project or organizing and attending protests.
+          You can volunteering for projects and attend protests. People are divided regarding
+          whether protests or a pause in AI development are a good idea, but if it's something you
+          want to do, PauseAI is a reliable organization in that space.
         </p>
-        {/* TODO there seems to be lacking text or a link in the figma */}
       </HelpItem>
 
       <HelpItem
