@@ -114,14 +114,14 @@ const Dropdowns = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Rob Miles AI Safety',
+            title: 'Robert Miles AI Safety',
             action: 'https://www.youtube.com/c/robertmilesai',
           },
         ]}
       >
-        We recommend the Youtube channel Robert Miles AI Safety, which presents complex AI safety
+        We recommend the YouTube channel Robert Miles AI Safety, which presents complex AI safety
         concepts in an accessible format to foster understanding and awareness about the ethical and
-        safety considerations in AI development. (Rob is also the founder of this site,
+        safety considerations in AI development. (Robert is also the founder of this site,
         AISafety.info)
       </HelpItem>
 
@@ -335,8 +335,6 @@ export default function Knowledge() {
       <DiveDeeper />
 
       <OurArticles />
-
-      {/* TODO: Boost your learning efforts, Nemo's job */}
     </Base>
   )
 }
