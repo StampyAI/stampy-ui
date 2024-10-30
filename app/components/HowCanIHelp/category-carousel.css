@@ -36,3 +36,10 @@
   text-align: left;
   gap: var(--spacing-16);
 }
+
+@media (max-width: 1136px) {
+  .carousel-item {
+    width: 100%;
+    height: auto;
+  }
+}

@@ -33,11 +33,12 @@ export default function Donate() {
         </div>
       </div>
 
-      <div className="padding-bottom-24">
+      <div className="padding-bottom-80">
         <h2 className="col-6 padding-bottom-56 teal-500">How & where to donate</h2>
         <HelpItem
           title="Donating to grantmakers"
           tag="Easiest & most common"
+          className="padding-bottom-40"
           links={[
             {
               tag: 'Top recommendation',
@@ -67,7 +68,7 @@ export default function Donate() {
         </HelpItem>
 
         <HelpItem title="Donating directly" tag="Highest impact">
-          <p className="padding-bottom-16">
+          <p>
             If you're deeply involved in the AI safety community, we encourage you to directly fund
             research, projects, or miscellaneous expenses that you think are valuable. Donating
             directly puts you in the seat of the grantmaker—if you have knowledge of an avenue that
@@ -76,7 +77,7 @@ export default function Donate() {
         </HelpItem>
       </div>
 
-      <div className="flexbox padding-bottom-32">
+      <div className="flexbox">
         <Testimonial
           src="/assets/guy.jpeg"
           title="Søren Elverlin"
@@ -95,7 +96,7 @@ export default function Donate() {
         />
       </div>
 
-      <div className="padding-bottom-80">
+      <div>
         <CategoryCarousel title="Our articles on donating" category="NM1B" />
       </div>
     </Base>

@@ -37,6 +37,7 @@ const WhatYouCanDo = () => (
     <h2 className="teal-500 padding-bottom-64">What you can do, right now</h2>
     <div>
       <HelpItem
+        className="padding-bottom-40"
         title="Share a video or article on social media"
         tag="2 min"
         links={[
@@ -59,13 +60,14 @@ const WhatYouCanDo = () => (
           </>
         }
       >
-        <p className="padding-bottom-16">
-          We recommend sharing “A.I. - Humanity’s Final Invention?”, which gives an accessible
+        <p>
+          We recommend sharing "A.I. - Humanity's Final Invention?", which gives an accessible
           overview to the topic of AI and existential risk
         </p>
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Send an email to a politician"
         tag="8 min"
         links={[
@@ -75,7 +77,7 @@ const WhatYouCanDo = () => (
           },
         ]}
       >
-        <p className="padding-bottom-16">
+        <p>
           {' '}
           Contacting politicians raises awareness among those who can shape policy and make a real
           difference
@@ -83,6 +85,7 @@ const WhatYouCanDo = () => (
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Join a PauseAI Protest"
         tag="3–6 hours"
         links={[
@@ -92,12 +95,11 @@ const WhatYouCanDo = () => (
           },
         ]}
       >
-        <p className="padding-bottom-16">
-          Protests happen in major cities globally, and need people like you!
-        </p>
+        <p>Protests happen in major cities globally, and need people like you!</p>
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Talk to people about this topic"
         links={[
           {
@@ -106,7 +108,7 @@ const WhatYouCanDo = () => (
           },
         ]}
       >
-        <p className="padding-bottom-16">
+        <p>
           Take whatever chance you can to promote this topic to friends, those in your social media
           or professional network, or whomever
         </p>
@@ -137,16 +139,14 @@ const WhatYouCanDo = () => (
       </HelpItem>
     </div>
 
-    <div className="padding-bottom-80">
-      <CategoryCarousel
-        title={
-          <span>
-            Our articles on spreading the <br /> word & grassroots activism
-          </span>
-        }
-        category="NM1A"
-      />
-    </div>
+    <CategoryCarousel
+      title={
+        <span>
+          Our articles on spreading the <br /> word & grassroots activism
+        </span>
+      }
+      category="NM1A"
+    />
   </>
 )
 
