@@ -1,11 +1,7 @@
 import {MetaFunction} from '@remix-run/node'
-import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import {useEffect} from 'react'
-import VideoImg from '~/assets/video_thumbnail.png'
-import PlayIcon from '~/components/icons-generated/Play'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
