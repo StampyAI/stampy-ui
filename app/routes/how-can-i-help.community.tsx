@@ -29,7 +29,7 @@ const InPerson = () => (
         ]}
       >
         <p className="grey default padding-bottom-24">
-          There are about 60 in-person AI Safety communities across the globe, mostly in major
+          There are about 60 in-person AI safety communities across the globe, mostly in major
           cities. These communities typically host weekly meetups in which members network,
           socialize, or review AI safety material in the form of talks or workshops.
         </p>
@@ -48,8 +48,8 @@ const InPerson = () => (
         ]}
       >
         <p className="grey default padding-bottom-24">
-          AI Safety is a major topic in Effective Altruism (EA) and Rationalism. Consider joining a
-          local EA or Rationalist group if you can't find an AI Safety community near you.
+          AI safety is a major topic in Effective Altruism (EA) and Rationalism. Consider joining a
+          local EA or Rationalist group if you can't find an AI safety community near you.
         </p>
       </HelpItem>
     </div>
