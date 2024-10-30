@@ -10,15 +10,14 @@ export const meta: MetaFunction = () => {
 const InPerson = () => (
   <>
     <div className="padding-bottom-24">
-      <div className="flexbox padding-bottom-56">
-        <h2 className="teal-500 padding-bottom-40" id="new-to-aisafety">
+      <div className="padding-bottom-56">
+        <h2 className="teal-500 padding-bottom-40" id="in-person-communities">
           In-person communities
         </h2>
-        <p className="grey default">
+        <p className="grey default col-6">
           In-person communities provide general purpose support, networking, and socializing for
           anyone interested in contributing to AI safety.
         </p>
-        {/* TODO make this only appear in left part of page */}
       </div>
       <HelpItem
         title="AI safety-specific coommunities"
@@ -60,15 +59,14 @@ const InPerson = () => (
 const Online = () => (
   <>
     <div className="padding-bottom-24">
-      <div className="flexbox padding-bottom-56">
-        <h2 className="teal-500 padding-bottom-40" id="new-to-aisafety">
+      <div className="padding-bottom-56">
+        <h2 className="teal-500 padding-bottom-40" id="online-communities">
           Online communities
         </h2>
-        <p className="grey default">
+        <p className="grey default col-6">
           Online communities typically exist on Slack, Discord (an app like Slack), or website
           forums, and tend to serve more specific purposes:
         </p>
-        {/* TODO make this only appear in left part of page */}
       </div>
       <HelpItem
         title="General resources & support"
