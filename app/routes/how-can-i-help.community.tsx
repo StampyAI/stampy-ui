@@ -12,10 +12,10 @@ const InPerson = () => (
     <div className="padding-bottom-24">
       <div className="flexbox padding-bottom-56">
         <h2 className="teal-500 padding-bottom-40" id="new-to-aisafety">
-          In person communities
+          In-person communities
         </h2>
         <p className="grey default">
-          In person communities provide general purpose support, networking, and socializing for
+          In-person communities provide general purpose support, networking, and socializing for
           anyone interested in contributing to AI safety.
         </p>
         {/* TODO make this only appear in left part of page */}
