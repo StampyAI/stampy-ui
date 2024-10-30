@@ -138,7 +138,7 @@ const Options = () => (
       <Testimonial
         src={BaginskiImg}
         title="Mateusz Bagiński"
-        description="I have some software engineering skills, and wanted to contribute towards reducing AI existential risk, so I joined the AISafety.info team in September 2022. Over the next year, I put in several volunteering hours a week, when I had time. I worked on various software tasks that improved AISafety.info, like optimizing the AI Safety bot and migrating our entire article database into Google docs."
+        description="I have some software engineering skills, and wanted to contribute towards reducing AI existential risk, so I joined the AISafety.info team in September 2022. Over the next year, I put in several volunteering hours a week, when I had time. I worked on various software tasks that improved AISafety.info, like optimizing the AI Safety Chatbot and migrating our entire article database into Google docs."
         className="col-6"
       />
     </div>

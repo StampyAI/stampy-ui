@@ -54,7 +54,7 @@ const WhatYouCanDo = () => (
               href="https://www.youtube.com/playlist?list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE"
               className="small-bold teal-500"
             >
-              Intro to AI Safety video playlist
+              AI Safety Intro video playlist
             </a>
           </>
         }
@@ -132,7 +132,7 @@ const WhatYouCanDo = () => (
       >
         <p>
           Add your signature next to Elon Musk, Steve Wozniak, and Stuart Russel in the most
-          well-known AI Safety petition, “Pause Giant AI Experiments: An Open Letter”
+          well-known AI safety petition, “Pause Giant AI Experiments: An Open Letter”
         </p>
       </HelpItem>
     </div>

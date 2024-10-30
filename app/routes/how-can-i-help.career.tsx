@@ -71,11 +71,11 @@ const ResearchPath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI safety Career Review"
+        title="Read the 80,000 Hours Technical AI Safety Career Review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI safety Career Review',
+            title: 'Technical AI Safety Career Review',
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
@@ -90,10 +90,10 @@ const ResearchPath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
         links={[
           {
-            title: 'Book your AI safety Quest call',
+            title: 'Book your AI Safety Quest call',
             action: 'https://aisafety.quest/#calls',
           },
           {
@@ -144,8 +144,8 @@ const ResearchPath = () => (
       <DropDown title="I’m interested in non-technical or supporting roles in AI alignment">
         <HelpItem>
           There are many roles that support the work of AI alignment researchers, and having
-          high-performing people in these roles is crucial. In a research organisation around half
-          of the staff will be doing other tasks essential for the organisation to perform at its
+          high-performing people in these roles is crucial. In a research organization around half
+          of the staff will be doing other tasks essential for the organization to perform at its
           best and have an impact. Some of these roles include:
         </HelpItem>
         <HelpItem
@@ -257,7 +257,7 @@ const GovernancePath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI safety Career Review"
+        title="Read the 80,000 Hours Technical AI Safety Career Review"
         links={[
           {
             tag: 'Top recommendation',
@@ -276,7 +276,7 @@ const GovernancePath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -299,7 +299,7 @@ const GovernancePath = () => (
       </HelpItem>
 
       <HelpItem
-        title="A process note: Form your <i> own </i> understanding of the AI alignment technical challenge"
+        title={<span>A process note: Form your <em> own </em> understanding of the AI alignment technical challenge</span>}
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -434,7 +434,7 @@ const FieldBuildingPath = () => (
         ]}
       >
         Founding a new project in AI safety involves identifying a gap in a pressing problem area,
-        formulating a solution, investigating it, and then helping to build an organisation by
+        formulating a solution, investigating it, and then helping to build an organization by
         investing in strategy, hiring, management, culture, and so on—ideally building something
         that can continue without you.
       </HelpItem>
@@ -445,8 +445,8 @@ const FieldBuildingPath = () => (
         <HelpItem title="Supporting roles">
           There are many roles that support the work of AI alignment researchers or people in AI
           governance, and having high-performing people in these roles is crucial. In a research
-          organisation, for example, around half of the staff will be doing other tasks essential
-          for the organisation to perform at its best and have an impact. Some of the most common
+          organization, for example, around half of the staff will be doing other tasks essential
+          for the organization to perform at its best and have an impact. Some of the most common
           supporting roles in AI safety include:
         </HelpItem>
         <HelpItem
@@ -535,7 +535,7 @@ const FieldBuildingPath = () => (
         </p>
       </div>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
         links={[
           {
             title: 'Book your AI Safety Quest call',
@@ -609,7 +609,7 @@ const CareerPaths = () => (
         action="#research"
         iconColor="var(--colors-teal-700)"
         title="AI alignment research"
-        description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
+        description="Research roles dedicated to solving the technical challenge of AI alignment, and non-technical supporting roles"
         icon={Microscope}
       />
       <CardSmall
