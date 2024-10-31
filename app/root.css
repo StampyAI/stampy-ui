@@ -530,8 +530,68 @@ h2 {
   gap: var(--spacing-64);
 }
 
+.gap-4 {
+  gap: var(--spacing-4) !important;
+}
+
+.gap-8 {
+  gap: var(--spacing-8) !important;
+}
+
+.gap-12 {
+  gap: var(--spacing-12) !important;
+}
+
 .gap-16 {
   gap: var(--spacing-16) !important;
+}
+
+.gap-24 {
+  gap: var(--spacing-24) !important;
+}
+
+.gap-32 {
+  gap: var(--spacing-32) !important;
+}
+
+.gap-40 {
+  gap: var(--spacing-40) !important;
+}
+
+.gap-48 {
+  gap: var(--spacing-48) !important;
+}
+
+.gap-56 {
+  gap: var(--spacing-56) !important;
+}
+
+.gap-64 {
+  gap: var(--spacing-64) !important;
+}
+
+.gap-80 {
+  gap: var(--spacing-80) !important;
+}
+
+.gap-104 {
+  gap: var(--spacing-104) !important;
+}
+
+.gap-128 {
+  gap: var(--spacing-128) !important;
+}
+
+.gap-192 {
+  gap: var(--spacing-192) !important;
+}
+
+.gap-288 {
+  gap: var(--spacing-288) !important;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .center-align {
@@ -746,6 +806,21 @@ button {
 @media (max-width: 1136px) {
   .page-body {
     width: 87.2vw;
+  }
+
+  /* mobile variables - this makes it so padding and margin on desktop is smaller on mobile */
+  :root {
+    --spacing-24: 16px;
+    --spacing-32: 24px;
+    --spacing-40: 24px;
+    --spacing-48: 32px;
+    --spacing-56: 32px;
+    --spacing-64: 40px;
+    --spacing-80: 48px;
+    --spacing-104: 64px;
+    --spacing-128: 64px;
+    --spacing-192: 80px;
+    --spacing-288: 128px;
   }
 
   /* by default, all widths (.col-* and .col-*-alt) will transition to taking up full-width (87.2vw) on mobile */
