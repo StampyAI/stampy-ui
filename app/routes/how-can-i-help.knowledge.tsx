@@ -33,10 +33,7 @@ const NewToAISafety = () => (
             action: 'https://aisafety.info/questions/9OGZ/',
             image: (
               <div>
-                <img 
-                  src={VideoImg} 
-                  alt="video-playlist"
-                />
+                <img src={VideoImg} alt="video-playlist" />
                 <PlayIcon />
               </div>
             ),

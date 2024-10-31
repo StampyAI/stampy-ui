@@ -11,9 +11,7 @@ const InPerson = () => (
   <>
     <div className="padding-bottom-56">
       <div className="padding-bottom-40">
-        <h2 className="teal-500 padding-bottom-40">
-          In-person communities
-        </h2>
+        <h2 className="teal-500 padding-bottom-40">In-person communities</h2>
         <p className="grey default col-6">
           In-person communities provide general purpose support, networking, and socializing for
           anyone interested in contributing to AI safety.
@@ -59,71 +57,69 @@ const InPerson = () => (
 
 const Online = () => (
   <>
-      <div className="padding-bottom-40">
-        <h2 className="teal-500 padding-bottom-40">
-          Online communities
-        </h2>
-        <p className="grey default col-6">
-          Online communities typically exist on Slack, Discord (an app like Slack), or website
-          forums, and tend to serve more specific purposes:
-        </p>
-      </div>
-      <HelpItem
-        title="General resources & support"
-        links={[
-          {
-            tag: 'Top recommendation',
-            title: 'AI alignment slack',
-            action:
-              'https://ai-alignment.slack.com/join/shared_invite/zt-1vd2yu4ib-3dLG4D82H7eXF_THvTdUKg#/shared-invite/email',
-          },
-        ]}
-        className="padding-bottom-40"
-        additionalInfo={
-          <>
-            Or, browse our{' '}
-            <a href="https://www.aisafety.com/communities" className="small-bold teal-500">
-              full list of communities
-            </a>
-          </>
-        }
-      >
-        <p className="grey default">
-          General hubs for support, motivation, discussion, and information-gathering.
-        </p>
-      </HelpItem>
+    <div className="padding-bottom-40">
+      <h2 className="teal-500 padding-bottom-40">Online communities</h2>
+      <p className="grey default col-6">
+        Online communities typically exist on Slack, Discord (an app like Slack), or website forums,
+        and tend to serve more specific purposes:
+      </p>
+    </div>
+    <HelpItem
+      title="General resources & support"
+      links={[
+        {
+          tag: 'Top recommendation',
+          title: 'AI alignment slack',
+          action:
+            'https://ai-alignment.slack.com/join/shared_invite/zt-1vd2yu4ib-3dLG4D82H7eXF_THvTdUKg#/shared-invite/email',
+        },
+      ]}
+      className="padding-bottom-40"
+      additionalInfo={
+        <>
+          Or, browse our{' '}
+          <a href="https://www.aisafety.com/communities" className="small-bold teal-500">
+            full list of communities
+          </a>
+        </>
+      }
+    >
+      <p className="grey default">
+        General hubs for support, motivation, discussion, and information-gathering.
+      </p>
+    </HelpItem>
 
-      <HelpItem
-        title="Focused on one activity"
-        links={[
-          {
-            title: 'Join a PauseAI event',
-            action: 'https://pauseai.info/events',
-          },
-        ]}
-        className="padding-bottom-40"
-      >
-        <p className="grey default">
-          You can volunteering for projects and attend protests. People are divided regarding
-          whether protests or a pause in AI development are a good idea, but if it's something you
-          want to do, PauseAI is a reliable organization in that space.
-        </p>
-      </HelpItem>
+    <HelpItem
+      title="Focused on one activity"
+      links={[
+        {
+          title: 'Join a PauseAI event',
+          action: 'https://pauseai.info/events',
+        },
+      ]}
+      className="padding-bottom-40"
+    >
+      <p className="grey default">
+        You can volunteering for projects and attend protests. People are divided regarding whether
+        protests or a pause in AI development are a good idea, but if it's something you want to do,
+        PauseAI is a reliable organization in that space.
+      </p>
+    </HelpItem>
 
-      <HelpItem
-        title="Detailed strategic discussion"
-        links={[
-          {
-            tag: 'Top recommendation',
-            title: 'Lesswrong',
-            action: 'https://www.lesswrong.com/tag/ai',
-          },
-        ]}
-      >
-        <p className="grey default">
-          Deep strategic and technical discussions regarding AI alignment and AI governance.
-        </p>
-      </HelpItem>
+    <HelpItem
+      title="Detailed strategic discussion"
+      links={[
+        {
+          tag: 'Top recommendation',
+          title: 'Lesswrong',
+          action: 'https://www.lesswrong.com/tag/ai',
+        },
+      ]}
+    >
+      <p className="grey default">
+        Deep strategic and technical discussions regarding AI alignment and AI governance.
+      </p>
+    </HelpItem>
   </>
 )
 
