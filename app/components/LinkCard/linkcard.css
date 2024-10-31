@@ -1,7 +1,6 @@
 .link-card {
   min-height: 104px;
   height: fit-content;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   gap: var(--spacing-8);
@@ -23,4 +22,19 @@
   position: absolute;
   top: var(--spacing-8);
   right: var(--spacing-8);
+}
+
+.link-card .image img {
+  display: block;
+}
+
+.link-card .image {
+  position: relative;
+}
+
+.link-card .image svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

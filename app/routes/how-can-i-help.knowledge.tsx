@@ -32,21 +32,18 @@ const NewToAISafety = () => (
             title: 'Intro to AI safety video playlist',
             action: 'https://aisafety.info/questions/9OGZ/',
             image: (
-              <div style={{position: 'relative'}}>
-                <img src={VideoImg} alt="video-playlist" />
-                <PlayIcon
-                  style={{
-                    position: 'absolute',
-                    top: '38%',
-                    left: '38%',
-                  }}
+              <div>
+                <img 
+                  src={VideoImg} 
+                  alt="video-playlist"
                 />
+                <PlayIcon />
               </div>
             ),
           },
         ]}
       >
-        <p className="grey default">
+        <p className="grey default padding-bottom-16">
           Our website’s “Intro to AI safety” micro-course includes several short readings that act
           as a comprehensive introduction the topic of AI safety.
         </p>
@@ -87,6 +84,7 @@ const Dropdowns = () => (
   <div className="padding-bottom-80">
     <DropDown title="Books are more my thing">
       <HelpItem
+        className="padding-bottom-40"
         links={[
           {
             tag: 'Top recommendation',
@@ -103,7 +101,7 @@ const Dropdowns = () => (
           </>
         }
       >
-        We recommend the book "Uncontrollable," which concisely examines the risks posed by advanced
+        We recommend the book "Uncontrollable", which concisely examines the risks posed by advanced
         AI. The book highlights the need for effective AI governance and safety measures, and offers
         practical solutions to ensure AI benefits society while minimizing risks.
       </HelpItem>
@@ -111,6 +109,7 @@ const Dropdowns = () => (
 
     <DropDown title="I want something I can subscribe to (Youtube channels, newsletters, etc.)">
       <HelpItem
+        className="padding-bottom-40"
         title="Youtube"
         links={[
           {
@@ -122,11 +121,12 @@ const Dropdowns = () => (
       >
         We recommend the YouTube channel Robert Miles AI Safety, which presents complex AI safety
         concepts in an accessible format to foster understanding and awareness about the ethical and
-        safety considerations in AI development. (Robert is also the founder of this site,
+        safety considerations in AI development. (Rob is also the founder of this site,
         AISafety.info)
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Podcast series"
         links={[
           {
@@ -150,6 +150,7 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Newsletter"
         links={[
           {
@@ -192,12 +193,12 @@ const DiveDeeper = () => (
         className="padding-bottom-40"
         links={[
           {
-            tag: 'Highlight course',
+            tag: 'Highlighted course',
             title: 'AISF Governance Course',
             action: 'https://aisafetyfundamentals.com/governance/',
           },
           {
-            tag: 'Highlight course',
+            tag: 'Highlighted course',
             title: 'AISF Alignment Course',
             action: 'https://aisafetyfundamentals.com/alignment/',
           },

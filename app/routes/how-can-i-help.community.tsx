@@ -9,9 +9,9 @@ export const meta: MetaFunction = () => {
 
 const InPerson = () => (
   <>
-    <div className="padding-bottom-24">
-      <div className="padding-bottom-56">
-        <h2 className="teal-500 padding-bottom-40" id="in-person-communities">
+    <div className="padding-bottom-56">
+      <div className="padding-bottom-40">
+        <h2 className="teal-500 padding-bottom-40">
           In-person communities
         </h2>
         <p className="grey default col-6">
@@ -20,15 +20,16 @@ const InPerson = () => (
         </p>
       </div>
       <HelpItem
-        title="AI safety-specific coommunities"
+        title="AI safety-specific communities"
         links={[
           {
             title: 'Our list of in-person communities',
             action: 'https://www.aisafety.com/communities',
           },
         ]}
+        className="padding-bottom-40"
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           There are about 60 in-person AI safety communities across the globe, mostly in major
           cities. These communities typically host weekly meetups in which members network,
           socialize, or review AI safety material in the form of talks or workshops.
@@ -58,9 +59,8 @@ const InPerson = () => (
 
 const Online = () => (
   <>
-    <div className="padding-bottom-24">
-      <div className="padding-bottom-56">
-        <h2 className="teal-500 padding-bottom-40" id="online-communities">
+      <div className="padding-bottom-40">
+        <h2 className="teal-500 padding-bottom-40">
           Online communities
         </h2>
         <p className="grey default col-6">
@@ -78,6 +78,7 @@ const Online = () => (
               'https://ai-alignment.slack.com/join/shared_invite/zt-1vd2yu4ib-3dLG4D82H7eXF_THvTdUKg#/shared-invite/email',
           },
         ]}
+        className="padding-bottom-40"
         additionalInfo={
           <>
             Or, browse our{' '}
@@ -87,7 +88,7 @@ const Online = () => (
           </>
         }
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           General hubs for support, motivation, discussion, and information-gathering.
         </p>
       </HelpItem>
@@ -100,8 +101,9 @@ const Online = () => (
             action: 'https://pauseai.info/events',
           },
         ]}
+        className="padding-bottom-40"
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           You can volunteering for projects and attend protests. People are divided regarding
           whether protests or a pause in AI development are a good idea, but if it's something you
           want to do, PauseAI is a reliable organization in that space.
@@ -118,11 +120,10 @@ const Online = () => (
           },
         ]}
       >
-        <p className="grey default padding-bottom-24">
+        <p className="grey default">
           Deep strategic and technical discussions regarding AI alignment and AI governance.
         </p>
       </HelpItem>
-    </div>
   </>
 )
 
