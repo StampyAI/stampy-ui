@@ -4,7 +4,6 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 import BaginskiImg from '~/assets/Baginski.jpeg'
 import LonsImg from '~/assets/Lons.jpg'
 
@@ -154,12 +153,6 @@ const Options = () => (
 )
 
 export default function Volunteer() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title={<span>Volunteer</span>} current="volunteer">
       <TopText />
