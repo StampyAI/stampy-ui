@@ -1,7 +1,6 @@
 import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -124,12 +123,6 @@ const Online = () => (
 )
 
 export default function Community() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title="Join the community" current="community">
       <InPerson />

@@ -3,7 +3,6 @@ import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 import VideoImg from '~/assets/video_thumbnail.png'
 import PlayIcon from '~/components/icons-generated/Play'
 
@@ -321,12 +320,6 @@ const OurArticles = () => (
 )
 
 export default function Knowledge() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title="Build your knowledge" current="knowledge">
       <NewToAISafety />

@@ -2,7 +2,6 @@ import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
 
@@ -151,12 +150,6 @@ const WhatYouCanDo = () => (
 )
 
 export default function Grassroots() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base
       title={

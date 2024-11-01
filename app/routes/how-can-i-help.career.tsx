@@ -6,7 +6,6 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -614,42 +613,45 @@ const FieldBuildingPath = () => (
   </>
 )
 
-const CareerPaths = () => (
-  <>
-    <p className="grey default padding-bottom-32">There are three major career paths:</p>
-    <div className="flexbox padding-bottom-80">
-      <CardSmall
-        action="#research"
-        iconColor="var(--colors-teal-700)"
-        title="AI alignment research"
-        description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
-        icon={Microscope}
-      />
-      <CardSmall
-        action="#governance"
-        iconColor="var(--colors-teal-700)"
-        title="AI governance & policy"
-        description="Roles focused on developing and implementing policies that guide AI development and usage"
-        icon={GovermentBuilding}
-      />
-      <CardSmall
-        action="#field-building"
-        iconColor="var(--colors-teal-700)"
-        title="AI safety field-building"
-        description="Roles that direct talent or resources toward AI safety, educate the public, or build the AI safety community"
-        icon={PuzzlePieces}
-      />
-    </div>
-  </>
-)
+const CareerPaths = () => {
+  const smoothScroll = (id: string) => {
+    const element = document.getElementById(id)
+    if (element) {
+      element.scrollIntoView({behavior: 'smooth'})
+      window.history.pushState(null, '', `#${id}`)
+    }
+  }
+  return (
+    <>
+      <p className="grey default padding-bottom-32">There are three major career paths:</p>
+      <div className="flexbox padding-bottom-80">
+        <CardSmall
+          action={() => smoothScroll('research')}
+          iconColor="var(--colors-teal-700)"
+          title="AI alignment research"
+          description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
+          icon={Microscope}
+        />
+        <CardSmall
+          action={() => smoothScroll('governance')}
+          iconColor="var(--colors-teal-700)"
+          title="AI governance & policy"
+          description="Roles focused on developing and implementing policies that guide AI development and usage"
+          icon={GovermentBuilding}
+        />
+        <CardSmall
+          action={() => smoothScroll('field-building')}
+          iconColor="var(--colors-teal-700)"
+          title="AI safety field-building"
+          description="Roles that direct talent or resources toward AI safety, educate the public, or build the AI safety community"
+          icon={PuzzlePieces}
+        />
+      </div>
+    </>
+  )
+}
 
 export default function HowCanIHelp() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title="Start a career in AI safety" current="career">
       <CareerPaths />
