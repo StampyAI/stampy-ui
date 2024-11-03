@@ -163,7 +163,7 @@ const ResearchPath = () => (
           links={[
             {
               title: "Read 80k's guide on research management",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/research-management/',
             },
           ]}
           className="padding-bottom-40"
@@ -179,7 +179,7 @@ const ResearchPath = () => (
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
             },
           ]}
         >
@@ -488,7 +488,7 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
             },
           ]}
         >
