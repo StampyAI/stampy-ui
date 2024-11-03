@@ -27,7 +27,7 @@ export default function CardSmall({
         {icon({})}
       </div>
       <p className="default-bold padding-bottom-8">{title}</p>
-      <p className="grey small">{description}</p>
+      <p className="grey small text-align-left">{description}</p>
     </Button>
   )
 }
