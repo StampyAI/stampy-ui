@@ -114,12 +114,7 @@ const ResearchPath = () => (
       </HelpItem>
 
       <HelpItem
-        title={
-          <>
-            A process note: Form your <em>own</em> understanding of the AI alignment technical
-            challenge
-          </>
-        }
+        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -260,12 +255,12 @@ const GovernancePath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI safety Career Review"
+        title="Read the 80,000 Hours AI governance and policy Career Review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI Safety Career Review',
-            action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
+            title: 'AI governance and policy Career Review',
+            action: 'https://80000hours.org/career-reviews/ai-policy-and-strategy/',
           },
         ]}
         className="padding-bottom-40"
@@ -304,7 +299,7 @@ const GovernancePath = () => (
       </HelpItem>
 
       <HelpItem
-        title="A process note: Form your <i> own </i> understanding of the AI alignment technical challenge"
+        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -570,12 +565,7 @@ const FieldBuildingPath = () => (
       </HelpItem>
 
       <HelpItem
-        title={
-          <>
-            A process note: Form your <em>own</em> understanding of the AI alignment technical
-            challenge
-          </>
-        }
+        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
