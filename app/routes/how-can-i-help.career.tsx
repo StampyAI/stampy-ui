@@ -179,7 +179,8 @@ const ResearchPath = () => (
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: 'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
+              action:
+                'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
             },
           ]}
         >
@@ -299,7 +300,12 @@ const GovernancePath = () => (
       </HelpItem>
 
       <HelpItem
-        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
+        title={
+          <>
+            A process note: Form your <em>own</em> understanding of the AI alignment technical
+            challenge
+          </>
+        }
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -488,7 +494,8 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: 'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
+              action:
+                'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
             },
           ]}
         >
@@ -562,7 +569,12 @@ const FieldBuildingPath = () => (
       </HelpItem>
 
       <HelpItem
-        title={<>A process note: Form your <em>own</em> understanding of the AI alignment technical challenge</>}
+        title={
+          <>
+            A process note: Form your <em>own</em> understanding of the AI alignment technical
+            challenge
+          </>
+        }
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
