@@ -114,12 +114,7 @@ const ResearchPath = () => (
       </HelpItem>
 
       <HelpItem
-        title={
-          <>
-            A process note: Form your <em>own</em> understanding of the AI alignment technical
-            challenge
-          </>
-        }
+        title="A process note: Build your knowledge so you can think critically about the roles you pursue"
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -168,7 +163,7 @@ const ResearchPath = () => (
           links={[
             {
               title: "Read 80k's guide on research management",
-              action: '#',
+              action: 'https://80000hours.org/career-reviews/research-management/',
             },
           ]}
           className="padding-bottom-40"
@@ -184,7 +179,8 @@ const ResearchPath = () => (
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: '#',
+              action:
+                'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
             },
           ]}
         >
@@ -260,12 +256,12 @@ const GovernancePath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI safety Career Review"
+        title="Read the 80,000 Hours AI governance and policy Career Review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI Safety Career Review',
-            action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
+            title: 'AI governance and policy Career Review',
+            action: 'https://80000hours.org/career-reviews/ai-policy-and-strategy/',
           },
         ]}
         className="padding-bottom-40"
@@ -304,7 +300,12 @@ const GovernancePath = () => (
       </HelpItem>
 
       <HelpItem
-        title="A process note: Form your <i> own </i> understanding of the AI alignment technical challenge"
+        title={
+          <>
+            A process note: Form your <em>own</em> understanding of the AI alignment technical
+            challenge
+          </>
+        }
         links={[
           {
             title: 'Our ‘Build your knowledge’ guide',
@@ -316,13 +317,10 @@ const GovernancePath = () => (
           },
         ]}
       >
-        AI safety is a relatively new field with diverse opinions on how best to solve the technical
-        challenge of AI alignment. Many unexplored avenues and important questions likely remain
-        unaddressed. Therefore, it's crucial for (aspiring) AI alignment researchers to think
-        independently and develop their own models on this topic. If you pursue a career in this
-        field, we recommend deeply educating yourself on the technical challenge of alignment,
-        engaging with other AI safety experts, and thinking critically about the topic and current
-        paradigms.
+        Many roles that appear to advance safety may actually end up advancing AI capabilities, and
+        thus cause harm. We recommend learning more about AI safety—particularly the alignment
+        problem—and carefully considering that a role or action will make AI safer before pursuing
+        it.
       </HelpItem>
     </div>
 
@@ -496,7 +494,8 @@ const FieldBuildingPath = () => (
           links={[
             {
               title: "Read 80k's guide on being an executive assistant",
-              action: '#',
+              action:
+                'https://80000hours.org/career-reviews/executive-assistant-for-an-impactful-person/',
             },
           ]}
         >
