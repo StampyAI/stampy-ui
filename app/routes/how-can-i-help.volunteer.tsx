@@ -4,7 +4,6 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 import BaginskiImg from '~/assets/Baginski.jpeg'
 import LonsImg from '~/assets/Lons.jpg'
 
@@ -64,76 +63,80 @@ const Dropdowns = () => (
 
 const Options = () => (
   <>
-    <h2 className="teal-500 padding-bottom-64">Options for getting started</h2>
-    <div>
-      <HelpItem
-        title="Sign up for free 1-on-1 volunteering advice with AI Safety Quest & 80,000 Hours"
-        links={[
-          {
-            title: 'Book your AI Safety Quest call',
-            action: 'https://aisafety.quest/#calls',
-          },
-          {
-            title: 'Book your 80,000 Hours call',
-            action: 'https://80000hours.org/speak-with-us',
-          },
-        ]}
-      >
-        <div>
-          <p className="padding-bottom-16">
-            Get personalized volunteering advice in a thirty minute or one hour video call. We
-            recommend booking both!
-          </p>
+    <div className="padding-bottom-80">
+      <h2 className="teal-500 padding-bottom-64">Options for getting started</h2>
+      <div>
+        <HelpItem
+          title="Sign up for free 1-on-1 volunteering advice with AI Safety Quest & 80,000 Hours"
+          className="padding-bottom-40"
+          links={[
+            {
+              title: 'Book your AI Safety Quest call',
+              action: 'https://aisafety.quest/#calls',
+            },
+            {
+              title: 'Book your 80,000 Hours call',
+              action: 'https://80000hours.org/speak-with-us',
+            },
+          ]}
+        >
           <div>
-            <span className="small-bold"> Note: </span>
-            <span className="small">80,000 Hours does not accept all applicants</span>
+            <p className="padding-bottom-24">
+              Get personalized volunteering advice in a thirty minute or one hour video call. We
+              recommend booking both!
+            </p>
+            <div>
+              <span className="small-bold"> Note: </span>
+              <span className="small">80,000 Hours does not accept all applicants</span>
+            </div>
           </div>
-        </div>
-      </HelpItem>
+        </HelpItem>
 
-      <HelpItem
-        title="Join the monthly AED calls"
-        links={[
-          {
-            title: 'Add the next AED call to your calendar',
-            action:
-              'https://calendar.google.com/calendar/u/0/share?slt=1AUWfa3j72XM5H9AQ6Wsx-PYfhAraCnI2kGks7D3h5TiLPtleaCfXXecE2a2NAhXU4S5dOqYYPpJHG2i4UtbUuzdMNJXFAA2FjsyL',
-          },
-        ]}
-        additionalInfo={
-          <>
-            Or, learn more about AED on{' '}
-            <a href="https://alignment.dev/" className="small-bold teal-500">
-              their website
-            </a>
-          </>
-        }
-      >
-        <p className="padding-bottom-16">
-          {' '}
-          Alignment Ecosystem Development (AED) is a community of volunteers supporting online AI
-          safety field-building projects like AISafety.com and AISafety Quest. Join an existing
-          project or pitch your own and recruit help.
-        </p>
-      </HelpItem>
+        <HelpItem
+          title="Join the monthly AED calls"
+          className="padding-bottom-40"
+          links={[
+            {
+              title: 'Add the next AED call to your calendar',
+              action:
+                'https://calendar.google.com/calendar/u/0/share?slt=1AUWfa3j72XM5H9AQ6Wsx-PYfhAraCnI2kGks7D3h5TiLPtleaCfXXecE2a2NAhXU4S5dOqYYPpJHG2i4UtbUuzdMNJXFAA2FjsyL',
+            },
+          ]}
+          additionalInfo={
+            <>
+              Or, learn more about AED on{' '}
+              <a href="https://alignment.dev/" className="small-bold teal-500">
+                their website
+              </a>
+            </>
+          }
+        >
+          <p>
+            {' '}
+            Alignment Ecosystem Development (AED) is a community of volunteers supporting online AI
+            safety field-building projects like AISafety.com and AISafety Quest. Join an existing
+            project or pitch your own and recruit help.
+          </p>
+        </HelpItem>
 
-      <HelpItem
-        title="Join one of our projects seeking volunteer help"
-        links={[
-          {
-            title: 'Browse our list of projects',
-            action: 'https://www.aisafety.com/projects',
-          },
-        ]}
-      >
-        <p className="padding-bottom-16">
-          Browse our list of online AI safety field-building projects. Email the contact person
-          expressing your interest.
-        </p>
-      </HelpItem>
+        <HelpItem
+          title="Join one of our projects seeking volunteer help"
+          links={[
+            {
+              title: 'Browse our list of projects',
+              action: 'https://www.aisafety.com/projects',
+            },
+          ]}
+        >
+          <p>
+            Browse our list of online AI safety field-building projects. Email the contact person
+            expressing your interest.
+          </p>
+        </HelpItem>
+      </div>
     </div>
 
-    <div className="flexbox padding-bottom-32">
+    <div className="flexbox">
       <Testimonial src={LonsImg} title="Chris Lons" description="Lorem ipsum" className="col-6" />
       <Testimonial
         src={BaginskiImg}
@@ -143,19 +146,13 @@ const Options = () => (
       />
     </div>
 
-    <div className="padding-bottom-80">
+    <div>
       <CategoryCarousel title={<span>Our articles on volunteering</span>} category="NM18" />
     </div>
   </>
 )
 
 export default function Volunteer() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title={<span>Volunteer</span>} current="volunteer">
       <TopText />

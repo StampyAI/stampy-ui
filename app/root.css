@@ -34,17 +34,17 @@
   --spacing-8: 8px;
   --spacing-12: 12px;
   --spacing-16: 16px;
-  --spacing-24: clamp(16px, 1.67vw, 24px);
-  --spacing-32: clamp(24px, 2.22vw, 32px);
-  --spacing-40: clamp(24px, 2.78vw, 40px);
-  --spacing-48: clamp(24px, 3.33vw, 48px);
-  --spacing-56: clamp(24px, 3.89vw, 56px);
-  --spacing-64: clamp(32px, 4.45vw, 64px);
-  --spacing-80: clamp(40px, 5.56vw, 80px);
-  --spacing-104: clamp(56px, 7.22vw, 104px);
-  --spacing-128: clamp(56px, 8.89vw, 128px);
-  --spacing-192: clamp(80px, 13.33vw, 192px);
-  --spacing-288: clamp(128px, 20vw, 288px);
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-104: 104px;
+  --spacing-128: 128px;
+  --spacing-192: 192px;
+  --spacing-288: 288px;
 
   /* height */
   --height-48: 48px;
@@ -530,8 +530,68 @@ h2 {
   gap: var(--spacing-64);
 }
 
+.gap-4 {
+  gap: var(--spacing-4) !important;
+}
+
+.gap-8 {
+  gap: var(--spacing-8) !important;
+}
+
+.gap-12 {
+  gap: var(--spacing-12) !important;
+}
+
 .gap-16 {
   gap: var(--spacing-16) !important;
+}
+
+.gap-24 {
+  gap: var(--spacing-24) !important;
+}
+
+.gap-32 {
+  gap: var(--spacing-32) !important;
+}
+
+.gap-40 {
+  gap: var(--spacing-40) !important;
+}
+
+.gap-48 {
+  gap: var(--spacing-48) !important;
+}
+
+.gap-56 {
+  gap: var(--spacing-56) !important;
+}
+
+.gap-64 {
+  gap: var(--spacing-64) !important;
+}
+
+.gap-80 {
+  gap: var(--spacing-80) !important;
+}
+
+.gap-104 {
+  gap: var(--spacing-104) !important;
+}
+
+.gap-128 {
+  gap: var(--spacing-128) !important;
+}
+
+.gap-192 {
+  gap: var(--spacing-192) !important;
+}
+
+.gap-288 {
+  gap: var(--spacing-288) !important;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .center-align {
@@ -746,6 +806,21 @@ button {
 @media (max-width: 1136px) {
   .page-body {
     width: 87.2vw;
+  }
+
+  /* mobile variables - this makes it so padding and margin on desktop is smaller on mobile */
+  :root {
+    --spacing-24: 16px;
+    --spacing-32: 24px;
+    --spacing-40: 24px;
+    --spacing-48: 32px;
+    --spacing-56: 32px;
+    --spacing-64: 40px;
+    --spacing-80: 48px;
+    --spacing-104: 64px;
+    --spacing-128: 64px;
+    --spacing-192: 80px;
+    --spacing-288: 128px;
   }
 
   /* by default, all widths (.col-* and .col-*-alt) will transition to taking up full-width (87.2vw) on mobile */
