@@ -54,6 +54,8 @@ export default function Tags() {
                   <div className="padding-bottom-24">
                     {selectedTag.questions.length === 0
                       ? 'No pages found'
+                      : selectedTag.questions.length === 1
+                      ? `1 page tagged "${selectedTag.name}"`
                       : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
                   </div>
                   {selectedTag && (
