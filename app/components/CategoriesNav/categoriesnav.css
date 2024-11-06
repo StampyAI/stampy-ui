@@ -7,7 +7,7 @@
   padding: var(--spacing-16);
 }
 .categoryTitle {
-  padding: var(--spacing-24);
+  padding: var(--spacing-16);
   cursor: pointer;
   display: inline-block;
   width: 100%;
