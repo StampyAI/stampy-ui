@@ -4,7 +4,7 @@ import './footer.css'
 const year = new Date().getFullYear()
 
 const Link = ({to, title}: {to: string; title: string}) => (
-  <div>
+  <div style={{marginBottom: '0.5rem'}}>
     <a href={to} target="_blank" rel="noreferrer">
       {title}
     </a>
