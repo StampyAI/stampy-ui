@@ -180,11 +180,6 @@ const Contents = ({
       const target = e.target as HTMLElement
       target.classList.toggle('visible')
     }
-    Array.from(document.getElementsByClassName('see-more')).forEach((e) => {
-      const elem = e.cloneNode(true)
-      elem.addEventListener('click', toggleClass)
-      e.replaceWith(elem)
-    })
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {

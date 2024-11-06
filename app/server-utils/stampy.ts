@@ -4,7 +4,7 @@ import {
   allLinksOnNewTab,
   uniqueFootnotes,
   urlToIframe,
-  convertToHtmlAndWrapInDetails,
+  convertMarkdownToHtml,
 } from '~/server-utils/parsing-utils'
 import {
   ALL_ANSWERS_TABLE,
@@ -255,7 +255,7 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   markdown = extractText(markdown)
   markdown = urlToIframe(markdown || '')
 
-  let html = convertToHtmlAndWrapInDetails(markdown)
+  let html = convertMarkdownToHtml(markdown)
   html = uniqueFootnotes(html, pageid)
   html = cleanUpDoubleBold(html)
   html = allLinksOnNewTab(html)
