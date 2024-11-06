@@ -25,9 +25,9 @@ export default function Donate() {
           <div className="col-6-alt">
             <p className="default-bold padding-bottom-16">Why this is important</p>
             <p className="grey default">
-              The AI safety field is funding-limited as of late 2024, and there are important avenues
-              in AI alignment research and AI governance that cannot currently be explored due to
-              this lack of funding.
+              The AI safety field is funding-limited as of late 2024, and there are important
+              avenues in AI alignment research and AI governance that cannot currently be explored
+              due to this lack of funding.
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function Donate() {
           description="I've directly funded several small-scale AI safety projects and found it highly rewarding. The field is often funding-constrained, and many valuable projects are overlooked by large funders. By taking time to understand individuals' goals and approaches, I've been able to make a meaningful impact with targeted, direct donations."
           layout="expanded"
         />
-      {/* TESTIMONIALS TEMPORARILY REMOVED
+        {/* TESTIMONIALS TEMPORARILY REMOVED
         <Testimonial
           src="/assets/guy.jpeg"
           title="Lorem ipsum"

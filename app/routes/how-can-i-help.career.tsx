@@ -31,9 +31,11 @@ const ResearchPath = () => (
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
-          To ensure humanity benefits from advanced AI and mitigates catastrophic risks, we must first solve the technical challenge of AI alignment through dedicated research, and then collaborate globally to carefully deploy solutions. While experts believe alignment is solvable, it remains a complex problem that demands significant high-quality intellectual talent.
-
-
+            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, we must
+            first solve the technical challenge of AI alignment through dedicated research, and then
+            collaborate globally to carefully deploy solutions. While experts believe alignment is
+            solvable, it remains a complex problem that demands significant high-quality
+            intellectual talent.
           </p>
         </div>
         <div className="col-6-alt">
@@ -45,8 +47,8 @@ const ResearchPath = () => (
           </p>
           <p className="grey small">
             <span className="small-bold">*Note:</span> Beware of the risk of joining industry
-            &ldquo;safety&rdquo; teams, as this work often leaks to non-safety parts of the organization which
-            improves the AI technology itself—and so ends up causing harm.
+            &ldquo;safety&rdquo; teams, as this work often leaks to non-safety parts of the
+            organization which improves the AI technology itself—and so ends up causing harm.
           </p>
         </div>
         <div className="col-6-alt">
@@ -72,7 +74,7 @@ const ResearchPath = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: '80k\'s technical AI safety career review',
+            title: "80k's technical AI safety career review",
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
@@ -188,7 +190,7 @@ const ResearchPath = () => (
         </HelpItem>
       </DropDown>
     </div>
-  {/* TESTIMONIALS TEMPORARILY REMOVED
+    {/* TESTIMONIALS TEMPORARILY REMOVED
     <div className="flexbox">
       <Testimonial
         src="/assets/guy.jpeg"
@@ -229,12 +231,24 @@ const GovernancePath = () => (
       <div className="flexbox-alt">
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
-          <p className="grey default">AI governance is an emerging field focused on shaping how AI technology is developed and deployed through policy, corporate practices, and international coordination. Professionals in this space work to prevent catastrophic risks from advanced AI systems, ensure AI benefits society while minimizing harms, and create frameworks for safe and responsible AI development.</p>
+          <p className="grey default">
+            AI governance is an emerging field focused on shaping how AI technology is developed and
+            deployed through policy, corporate practices, and international coordination.
+            Professionals in this space work to prevent catastrophic risks from advanced AI systems,
+            ensure AI benefits society while minimizing harms, and create frameworks for safe and
+            responsible AI development.
+          </p>
         </div>
-        {/* I think the following three paragraphs need some more editing */}
+        {/* Melissa is still editing the following three paragraphs */}
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
-          <p className="grey default">To ensure humanity benefits from advanced AI and mitigates catastrophic risks, working to solve the technical challenge of AI alignment is not enough. We must ensure that before it is solved, AI is tested, overseen, and does not grow too quickly. If AI alignment is solved, we must carefully deploy solutions. Both these tasks will require organized efforts and global coordination.</p>
+          <p className="grey default">
+            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, working
+            to solve the technical challenge of AI alignment is not enough. We must ensure that
+            before it is solved, AI is tested, overseen, and does not grow too quickly. If AI
+            alignment is solved, we must carefully deploy solutions. Both these tasks will require
+            organized efforts and global coordination.
+          </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Where these people usually work</p>
@@ -242,7 +256,16 @@ const GovernancePath = () => (
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
-          <p className="grey default">You might want to consider working in these areas if the following tasks fit your abilities and interests: Building support for international treaties regulating AI; preventing the deployment of AI systems that pose a significant and direct threat of catastrophe; mitigating the negative impact of AI technology on other catastrophic risks, such as nuclear weapons and biotechnology; slowing down AI progress when we aren't on track to make AI safe; building government capacity to evaluate frontier AI for danger; examining the threats misaligned AI poses to social infrastructure; analysing which policies would discourage an AI arms race. .</p>
+          <p className="grey default">
+            You might want to consider working in these areas if the following tasks fit your
+            abilities and interests: Building support for international treaties regulating AI;
+            preventing the deployment of AI systems that pose a significant and direct threat of
+            catastrophe; mitigating the negative impact of AI technology on other catastrophic
+            risks, such as nuclear weapons and biotechnology; slowing down AI progress when we
+            aren't on track to make AI safe; building government capacity to evaluate frontier AI
+            for danger; examining the threats misaligned AI poses to social infrastructure;
+            analyzing which policies would discourage an AI arms race.
+          </p>
         </div>
       </div>
     </div>
@@ -259,7 +282,7 @@ const GovernancePath = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: '80k\'s AI governance and policy career review',
+            title: "80k's AI governance and policy career review",
             action: 'https://80000hours.org/career-reviews/ai-policy-and-strategy/',
           },
         ]}
@@ -289,7 +312,9 @@ const GovernancePath = () => (
         ]}
       >
         <p className="grey default padding-bottom-16">
-        Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will address your specific questions about the field of AI governance and policy, confirm your interest and fit, and provide tailored recommendations to help you make the transition.
+          Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
+          address your specific questions about the field of AI governance and policy, confirm your
+          interest and fit, and provide tailored recommendations to help you make the transition.
         </p>
         <p className="grey small">
           <span className="small-bold">Note:</span> 80,000 Hours does not accept all applicants.
@@ -299,7 +324,8 @@ const GovernancePath = () => (
       <HelpItem
         title={
           <>
-            A process note: Build your knowledge so you can think critically about the roles you pursue
+            A process note: Build your knowledge so you can think critically about the roles you
+            pursue
           </>
         }
         links={[
@@ -315,7 +341,7 @@ const GovernancePath = () => (
         it.
       </HelpItem>
     </div>
-  {/* TESTIMONIALS TEMPORARILY REMOVED
+    {/* TESTIMONIALS TEMPORARILY REMOVED
     <div className="flexbox">
       <Testimonial
         src="/assets/guy.jpeg"
@@ -564,7 +590,8 @@ const FieldBuildingPath = () => (
       <HelpItem
         title={
           <>
-            A process note: Build your knowledge so you can think critically about the roles you pursue
+            A process note: Build your knowledge so you can think critically about the roles you
+            pursue
           </>
         }
         links={[
@@ -574,7 +601,10 @@ const FieldBuildingPath = () => (
           },
         ]}
       >
-        Many roles that appear to advance safety may actually end up advancing AI capabilities, and thus cause harm. We recommend learning more about AI safety—particularly the alignment problem—and carefully considering that a role or action will make AI safer before pursuing it.
+        Many roles that appear to advance safety may actually end up advancing AI capabilities, and
+        thus cause harm. We recommend learning more about AI safety—particularly the alignment
+        problem—and carefully considering that a role or action will make AI safer before pursuing
+        it.
       </HelpItem>
     </div>
 

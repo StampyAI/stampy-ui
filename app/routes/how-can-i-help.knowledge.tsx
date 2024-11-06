@@ -24,7 +24,7 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "\u201CIntro to AI safety\u201D micro-course",
+            title: '\u201CIntro to AI safety\u201D micro-course',
             action: 'https://aisafety.info/questions/9OGZ/',
           },
           {
@@ -53,7 +53,7 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "Paul Christiano—Preventing an AI Takeover",
+            title: 'Paul Christiano—Preventing an AI Takeover',
             action: 'https://www.dwarkeshpatel.com/p/paul-christiano',
           },
         ]}
@@ -107,9 +107,10 @@ const Dropdowns = () => (
           </>
         }
       >
-        We recommend the book &ldquo;Uncontrollable&rdquo; by Darren McKee, which concisely examines the risks posed by advanced
-        AI. The book highlights the need for effective AI governance and safety measures, and offers
-        practical solutions to ensure AI benefits society while minimizing risks.
+        We recommend the book &ldquo;Uncontrollable&rdquo; by Darren McKee, which concisely examines
+        the risks posed by advanced AI. The book highlights the need for effective AI governance and
+        safety measures, and offers practical solutions to ensure AI benefits society while
+        minimizing risks.
       </HelpItem>
     </DropDown>
 
@@ -257,7 +258,8 @@ const DiveDeeper = () => (
           .
         </p>
         <p className="grey small">
-          <span className="small-bold">Note:</span> AISF courses do not accept all applicants. We recommend taking the courses through self-study if your application is unsuccessful.
+          <span className="small-bold">Note:</span> AISF courses do not accept all applicants. We
+          recommend taking the courses through self-study if your application is unsuccessful.
         </p>
       </HelpItem>
 

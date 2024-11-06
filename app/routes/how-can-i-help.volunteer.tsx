@@ -5,7 +5,6 @@ import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import BaginskiImg from '~/assets/Baginski.jpeg'
-import LonsImg from '~/assets/Lons.jpg'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -118,9 +117,9 @@ const Options = () => (
         >
           <p>
             {' '}
-            Alignment Ecosystem Development (AED) is an organization and community of volunteers supporting online AI
-            safety field-building projects like AISafety.com and AI Safety Quest. You can join an existing
-            project or pitch your own to recruit help.
+            Alignment Ecosystem Development (AED) is an organization and community of volunteers
+            supporting online AI safety field-building projects like AISafety.com and AI Safety
+            Quest. You can join an existing project or pitch your own to recruit help.
           </p>
         </HelpItem>
 
@@ -142,7 +141,7 @@ const Options = () => (
     </div>
 
     <div className="flexbox">
-    {/* TESTIMONIALS TEMPORARILY REMOVED
+      {/* TESTIMONIALS TEMPORARILY REMOVED
       <Testimonial
       src={LonsImg}
       title="Chris Lons"
