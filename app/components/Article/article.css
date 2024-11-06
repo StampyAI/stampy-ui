@@ -176,15 +176,6 @@ article .footer-comtainer {
   margin-bottom: var(--spacing-24);
   gap: var(--spacing-16);
 }
-article a.see-more:not(.visible) + div.see-more-contents {
-  display: none;
-}
-article a.see-more:after {
-  content: 'See more...';
-}
-article a.see-more.visible:after {
-  content: 'See less';
-}
 
 article .banner {
   padding: var(--spacing-12) var(--spacing-24);

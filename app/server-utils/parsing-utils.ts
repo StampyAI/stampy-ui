@@ -48,25 +48,8 @@ md.renderer.rules.footnote_caption = (tokens, idx) => {
   return n
 }
 
-export const convertToHtmlAndWrapInDetails = (markdown: string): string => {
-  // Recursively wrap any [See more...] segments in HTML Details
-  const seeMoreToken = 'SEE-MORE-BUTTON'
-  const wrap = ([chunk, ...rest]: string[]): string => {
-    if (!rest || rest.length == 0) return chunk
-    return `<div>${chunk}</div>
-           <a href="" class="see-more"></a>
-           <div class="see-more-contents">${wrap(rest)}</div>`
-  }
-  // Add magic to handle markdown shortcomings.
-  // The [See more...] button will be transformed into an empty link if processed.
-  // On the other hand, if the whole text isn't rendered as one, footnotes will break.
-  // To get round this, replace the [See more...] button with a magic string, render the
-  // markdown, then mangle the resulting HTML to add an appropriate button link
-  markdown = markdown.replaceAll(/\[[Ss]ee more\W*?\]/g, seeMoreToken)
-  markdown = md.render(markdown)
-  markdown = wrap(markdown.split(seeMoreToken))
-
-  return markdown
+export const convertMarkdownToHtml = (markdown: string): string => {
+  return md.render(markdown)
 }
 
 export const uniqueFootnotes = (html: string, pageid: string): string => {
