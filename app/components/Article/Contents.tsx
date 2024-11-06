@@ -175,12 +175,6 @@ const Contents = ({
 
     updateTextNodes(el, insertGlossary(pageid, glossary))
 
-    const toggleClass = (e: Event) => {
-      e.preventDefault()
-      const target = e.target as HTMLElement
-      target.classList.toggle('visible')
-    }
-
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
       const footnote = footnoteHTML(el, e as HTMLAnchorElement)
