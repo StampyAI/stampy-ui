@@ -25,7 +25,7 @@ export default function Donate() {
           <div className="col-6-alt">
             <p className="default-bold padding-bottom-16">Why this is important</p>
             <p className="grey default">
-              The AI safety field is funding-limited as of mid-2023, and there are important avenues
+              The AI safety field is funding-limited as of late 2024, and there are important avenues
               in AI alignment research and AI governance that cannot currently be explored due to
               this lack of funding.
             </p>
@@ -50,7 +50,12 @@ export default function Donate() {
           additionalInfo={
             <>
               Or, browse our{' '}
-              <a href="https://www.aisafety.com/donation-guide" className="small-bold teal-500">
+              <a
+                href="https://www.aisafety.com/donation-guide"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="small-bold teal-500"
+              >
                 other grantmaker recommendations
               </a>
             </>
@@ -82,8 +87,9 @@ export default function Donate() {
           src="/assets/guy.jpeg"
           title="Søren Elverlin"
           description="I've directly funded several small-scale AI safety projects and found it highly rewarding. The field is often funding-constrained, and many valuable projects are overlooked by large funders. By taking time to understand individuals' goals and approaches, I've been able to make a meaningful impact with targeted, direct donations."
-          className="col-6"
+          layout="expanded"
         />
+      {/* TESTIMONIALS TEMPORARILY REMOVED
         <Testimonial
           src="/assets/guy.jpeg"
           title="Lorem ipsum"
@@ -94,6 +100,7 @@ export default function Donate() {
           molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
           className="col-6"
         />
+      */}
       </div>
 
       <div>

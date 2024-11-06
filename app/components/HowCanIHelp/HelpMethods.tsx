@@ -55,7 +55,7 @@ const titles = {
 }
 
 const knowledgeDescriptions = {
-  donate: 'The more you know about this topic, the further your donation efforts can go',
+  donate: 'Knowing more about this topic will allow you to make wiser donation decisions, meaning your funds will have a greater impact',
   grassroots:
     'The second-best way to increase your impact as an advocate is educating yourself on your own',
   volunteer: 'The more you know about this topic, the further your volunteer efforts will go',

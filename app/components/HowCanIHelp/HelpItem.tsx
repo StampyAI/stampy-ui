@@ -7,7 +7,7 @@ type HelpItemProps = {
   children: ReactNode
   links?: Link[]
   additionalInfo?: ReactNode
-  titleFont?: 'large-bold' | 'default-bold'
+  titleFont?: 'large-bold' | 'default-bold' | 'extra-large-bold'
   className?: string
 }
 const HelpItem = ({
@@ -16,7 +16,7 @@ const HelpItem = ({
   children,
   links,
   additionalInfo,
-  titleFont = 'large-bold',
+  titleFont = 'extra-large-bold',
   className = '',
 }: HelpItemProps) => {
   return (

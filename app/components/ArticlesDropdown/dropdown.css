@@ -33,3 +33,17 @@
     border-right: 0;
   }
 }
+
+.articles-dropdown-container .secondary span {
+  white-space: nowrap;
+  font-size: 16px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
+}
+
+.articles-dropdown-container .secondary {
+  width: fit-content;
+  min-width: max-content;
+}
