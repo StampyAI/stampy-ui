@@ -55,8 +55,8 @@ export default function Tags() {
                     {selectedTag.questions.length === 0
                       ? 'No pages found'
                       : selectedTag.questions.length === 1
-                      ? `1 page tagged "${selectedTag.name}"`
-                      : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
+                        ? `1 page tagged "${selectedTag.name}"`
+                        : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
                   </div>
                   {selectedTag && (
                     <ListTable
