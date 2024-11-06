@@ -52,9 +52,15 @@ export default function Tags() {
                 <article>
                   <h1 className="padding-bottom-40">{selectedTag.name}</h1>
                   <div className="padding-bottom-24">
-                    {selectedTag.questions.length === 0
-                      ? 'No pages found'
-                      : `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`}
+                    {(() => {
+                      if (selectedTag.questions.length === 0) {
+                        return 'No pages found'
+                      } else if (selectedTag.questions.length === 1) {
+                        return `1 page tagged "${selectedTag.name}"`
+                      } else {
+                        return `${selectedTag.questions.length} pages tagged "${selectedTag.name}"`
+                      }
+                    })()}
                   </div>
                   {selectedTag && (
                     <ListTable
