@@ -243,28 +243,31 @@ const GovernancePath = () => (
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
-            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, working
-            to solve the technical challenge of AI alignment is not enough. We must ensure that
-            before it is solved, AI is tested, overseen, and does not grow too quickly. If AI
-            alignment is solved, we must carefully deploy solutions. Both these tasks will require
-            organized efforts and global coordination.
+            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, technical
+            solutions for AI alignment must be complemented by effective public policy and corporate
+            oversight to keep development tightly controlled and at a cautious pace. Even with
+            successful AI alignment, robust governance is essential to ensure consistent
+            implementation across all sectors and regions.
           </p>
         </div>
         <div className="col-6-alt">
-          <p className="default-bold padding-bottom-16">Where these people usually work</p>
-          <p className="grey default">Coming soon...</p>
+          <p className="default-bold padding-bottom-16">
+            Where professionanls in AI governance usually work
+          </p>
+          <p className="grey default">
+            AI governance professionals work in settings like government agencies, international
+            organizations, regulatory bodies, think tanks, research institutions, and private
+            companies, developing policies, analyzing risks, and shaping governance frameworks for
+            the safe use of AI technologies.
+          </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
           <p className="grey default">
-            You might want to consider working in these areas if the following tasks fit your
-            abilities and interests: Building support for international treaties regulating AI;
-            preventing the deployment of AI systems that pose a significant and direct threat of
-            catastrophe; mitigating the negative impact of AI technology on other catastrophic
-            risks, such as nuclear weapons and biotechnology; slowing down AI progress when we
-            aren't on track to make AI safe; building government capacity to evaluate frontier AI
-            for danger; examining the threats misaligned AI poses to social infrastructure;
-            analyzing which policies would discourage an AI arms race.
+            You might be a good fit for a career in AI governance if you have a background in
+            political science, law, international relations, or economics, or if you have technical
+            expertise in AI or cybersecurity. You could also thrive in this field if you're skilled
+            in research, advocacy, or communicating complex ideas clearly.
           </p>
         </div>
       </div>

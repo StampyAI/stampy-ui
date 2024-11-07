@@ -94,15 +94,15 @@ export default function Donate() {
           }
         >
           <p className="padding-bottom-16">
-            If you are involved in the AI safety community, we encourage you to directly fund
-            research, projects, or other expenses (e.g. a plane ticket to a conference) for
-            impactful individuals or small organizations.
+            If you have insights into the key obstacles or opportunities that could make a big
+            difference, we encourage you to directly fund research, projects, or other expenses
+            (like a plane ticket to a conference) for impactful individuals or small organizations.
           </p>
           <p>
-            Donating directly puts you in the seat of the grantmaker. If you have insight into an
-            avenue that deserves funding, you're often likely to make a better decision than a
-            grantmaker, who may lack nuanced understanding of individuals and smaller organizations
-            in the space.
+            Donating directly can bypass traditional grantmaking, provide immediate impact, and
+            allow you to share valuable insights. It diversifies funding sources, reduces reliance
+            on large donors, and supports those who would otherwise face a lengthy grant application
+            process.
           </p>
         </HelpItem>
 
