@@ -16,10 +16,12 @@ export type LinkCardProps = Link & {
 
 const LinkCard: React.FC<LinkCardProps> = ({title, image, tag, action, className}) => (
   <Button action={action} className={`link-card ${className}`}>
-    {tag && <div className="tag xs teal-500">{tag}</div>}
-    <p className="default-bold flexbox center-align">
+    <p className="default-bold flexbox gap-16 center-align">
       {image && <span className="image">{image}</span>}
-      {title}
+      <div className="flexbox flex-column gap-8">
+        {tag && <div className="tag xs teal-500">{tag}</div>}
+        {title}
+      </div>
     </p>
     <ArrowUpRight className="arrow" />
   </Button>

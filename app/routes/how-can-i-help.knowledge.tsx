@@ -3,7 +3,6 @@ import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 import VideoImg from '~/assets/video_thumbnail.png'
 import PlayIcon from '~/components/icons-generated/Play'
 
@@ -25,28 +24,22 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "'Intro to AI safety' micro-course",
+            title: '\u201CIntro to AI safety\u201D micro-course',
             action: 'https://aisafety.info/questions/9OGZ/',
           },
           {
             title: 'Intro to AI safety video playlist',
-            action: 'https://aisafety.info/questions/9OGZ/',
+            action: 'https://www.youtube.com/playlist?list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE',
             image: (
-              <div style={{position: 'relative'}}>
+              <div>
                 <img src={VideoImg} alt="video-playlist" />
-                <PlayIcon
-                  style={{
-                    position: 'absolute',
-                    top: '38%',
-                    left: '38%',
-                  }}
-                />
+                <PlayIcon />
               </div>
             ),
           },
         ]}
       >
-        <p className="grey default">
+        <p className="grey default padding-bottom-16">
           Our website’s “Intro to AI safety” micro-course includes several short readings that act
           as a comprehensive introduction the topic of AI safety.
         </p>
@@ -60,14 +53,19 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "'Paul Christiano - Preventing an AI Takeover'",
+            title: 'Paul Christiano—Preventing an AI Takeover',
             action: 'https://www.dwarkeshpatel.com/p/paul-christiano',
           },
         ]}
         additionalInfo={
           <>
             Browse our{' '}
-            <a href="https://aisafety.info/questions/7619" className="small-bold teal-500">
+            <a
+              href="https://aisafety.info/questions/7619"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of podcasts
             </a>
           </>
@@ -87,31 +85,39 @@ const Dropdowns = () => (
   <div className="padding-bottom-80">
     <DropDown title="Books are more my thing">
       <HelpItem
+        className="padding-bottom-40"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Uncontrollable',
+            title: '\u201CUncontrollable\u201D by Darren McKee',
             action: 'https://www.goodreads.com/book/show/202416160-uncontrollable',
           },
         ]}
         additionalInfo={
           <>
             Or, read our{' '}
-            <a href="https://aisafety.info/questions/8159" className="small-bold teal-500">
+            <a
+              href="https://aisafety.info/questions/8159"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of AI safety book recommendations
             </a>
           </>
         }
       >
-        We recommend the book "Uncontrollable," which concisely examines the risks posed by advanced
-        AI. The book highlights the need for effective AI governance and safety measures, and offers
-        practical solutions to ensure AI benefits society while minimizing risks.
+        We recommend the book &ldquo;Uncontrollable&rdquo; by Darren McKee, which concisely examines
+        the risks posed by advanced AI. The book highlights the need for effective AI governance and
+        safety measures, and offers practical solutions to ensure AI benefits society while
+        minimizing risks.
       </HelpItem>
     </DropDown>
 
-    <DropDown title="I want something I can subscribe to (Youtube channels, newsletters, etc.)">
+    <DropDown title="I want something I can subscribe to (YouTube channels, newsletters, etc.)">
       <HelpItem
-        title="Youtube"
+        className="padding-bottom-40"
+        title="YouTube"
         links={[
           {
             tag: 'Top recommendation',
@@ -122,11 +128,12 @@ const Dropdowns = () => (
       >
         We recommend the YouTube channel Robert Miles AI Safety, which presents complex AI safety
         concepts in an accessible format to foster understanding and awareness about the ethical and
-        safety considerations in AI development. (Robert is also the founder of this site,
-        AISafety.info)
+        safety considerations in AI development. (Rob is also the founder of this site,
+        AISafety.info).
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Podcast series"
         links={[
           {
@@ -138,7 +145,12 @@ const Dropdowns = () => (
         additionalInfo={
           <>
             Or, browse our{' '}
-            <a href="https://aisafety.info/questions/7619" className="small-bold teal-500">
+            <a
+              href="https://aisafety.info/questions/7619"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of podcasts
             </a>
           </>
@@ -150,11 +162,12 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
+        className="padding-bottom-40"
         title="Newsletter"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Center for AI Safety Newsletter',
+            title: 'AI Safety Newsletter',
             action: 'https://newsletter.safe.ai/',
           },
         ]}
@@ -165,7 +178,7 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
-        title="Twitter"
+        title="Twitter/X"
         links={[
           {
             tag: 'Top recommendation',
@@ -192,12 +205,12 @@ const DiveDeeper = () => (
         className="padding-bottom-40"
         links={[
           {
-            tag: 'Highlight course',
+            tag: 'Highlighted course',
             title: 'AISF Governance Course',
             action: 'https://aisafetyfundamentals.com/governance/',
           },
           {
-            tag: 'Highlight course',
+            tag: 'Highlighted course',
             title: 'AISF Alignment Course',
             action: 'https://aisafetyfundamentals.com/alignment/',
           },
@@ -205,7 +218,12 @@ const DiveDeeper = () => (
         additionalInfo={
           <>
             Or, browse our{' '}
-            <a href="https://www.aisafety.com/courses" className="small-bold teal-500">
+            <a
+              href="https://www.aisafety.com/courses"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of courses
             </a>
           </>
@@ -231,6 +249,8 @@ const DiveDeeper = () => (
           additional views on AI safety to help avoid homogeneity in the field, such as{' '}
           <a
             href="https://www.cold-takes.com/most-important-century/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="teal-500 small-bold"
           >
             The Most Important Century blog post series
@@ -238,19 +258,18 @@ const DiveDeeper = () => (
           .
         </p>
         <p className="grey small">
-          <span className="small-bold">Note:</span> AISF courses do not accept all applicants, but
-          we still recommend taking the courses through self-study if your application is
-          unsuccessful.
+          <span className="small-bold">Note:</span> AISF courses do not accept all applicants. We
+          recommend taking the courses through self-study if your application is unsuccessful.
         </p>
       </HelpItem>
 
       <HelpItem
-        title="Get into Lesswrong and its subset, the Alignment Forum"
+        title="Get into LessWrong and its subset, the Alignment Forum"
         className="padding-bottom-40"
         links={[
           {
             tag: 'Most widely-used',
-            title: 'Lesswrong',
+            title: 'LessWrong',
             action: 'https://www.lesswrong.com/',
           },
           {
@@ -279,8 +298,13 @@ const DiveDeeper = () => (
         additionalInfo={
           <>
             Or, browse our{' '}
-            <a href="https://www.aisafety.com/events-and-training" className="small-bold teal-500">
-              full list of events
+            <a
+              href="https://www.aisafety.com/events-and-training"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
+              full list of upcoming events
             </a>
           </>
         }
@@ -323,12 +347,6 @@ const OurArticles = () => (
 )
 
 export default function Knowledge() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title="Build your knowledge" current="knowledge">
       <NewToAISafety />

@@ -4,9 +4,7 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
-import {useEffect} from 'react'
 import BaginskiImg from '~/assets/Baginski.jpeg'
-import LonsImg from '~/assets/Lons.jpg'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -19,7 +17,7 @@ const TopText = () => (
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Who</p>
           <p className="grey default">
-            Pretty much any skill set can be adapted to a volunteer role. Some commonly sought-after
+            Almost any skill set can be adapted to a volunteer role. Some commonly sought-after
             skills include technical expertise (such as math and code), communications, project
             management, and general organizing.
           </p>
@@ -28,8 +26,8 @@ const TopText = () => (
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
             Volunteering, especially in areas of field-building and movement-building, supports
-            efforts that are important but bottlenecked by AI safety’s funding shortage – such as
-            AISafety.com and AI Safety Quest.
+            efforts that are important but bottlenecked by AI safety’s funding shortage—such as
+            AISafety.com and AI Safety Quest
           </p>
         </div>
       </div>
@@ -106,7 +104,12 @@ const Options = () => (
           additionalInfo={
             <>
               Or, learn more about AED on{' '}
-              <a href="https://alignment.dev/" className="small-bold teal-500">
+              <a
+                href="https://alignment.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="small-bold teal-500"
+              >
                 their website
               </a>
             </>
@@ -114,9 +117,9 @@ const Options = () => (
         >
           <p>
             {' '}
-            Alignment Ecosystem Development (AED) is a community of volunteers supporting online AI
-            safety field-building projects like AISafety.com and AISafety Quest. Join an existing
-            project or pitch your own and recruit help.
+            Alignment Ecosystem Development (AED) is an organization and community of volunteers
+            supporting online AI safety field-building projects like AISafety.com and AI Safety
+            Quest. You can join an existing project or pitch your own to recruit help.
           </p>
         </HelpItem>
 
@@ -138,12 +141,19 @@ const Options = () => (
     </div>
 
     <div className="flexbox">
-      <Testimonial src={LonsImg} title="Chris Lons" description="Lorem ipsum" className="col-6" />
+      {/* TESTIMONIALS TEMPORARILY REMOVED
+      <Testimonial
+      src={LonsImg}
+      title="Chris Lons"
+      description="Lorem ipsum"
+      className="col-6"
+      />
+    */}
       <Testimonial
         src={BaginskiImg}
         title="Mateusz Bagiński"
-        description="I have some software engineering skills, and wanted to contribute towards reducing AI existential risk, so I joined the AISafety.info team in September 2022. Over the next year, I put in several volunteering hours a week, when I had time. I worked on various software tasks that improved AISafety.info, like optimizing the AI Safety bot and migrating our entire article database into Google docs."
-        className="col-6"
+        description="I have some software engineering skills, and wanted to contribute towards reducing AI existential risk, so I joined the AISafety.info team in September 2022. Over the next year, I put in several volunteering hours a week, when I had time. I worked on various software tasks that improved AISafety.info, like optimizing the AI Safety Chatbot and migrating our entire article database into Google Docs."
+        layout="expanded"
       />
     </div>
 
@@ -154,12 +164,6 @@ const Options = () => (
 )
 
 export default function Volunteer() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth'
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto'
-    }
-  }, [])
   return (
     <Base title={<span>Volunteer</span>} current="volunteer">
       <TopText />
