@@ -89,9 +89,16 @@ export default function Donate() {
           }
         >
           <p className="padding-bottom-16">
-          If you are involved in the AI safety community, we encourage you to directly fund research, projects, or other expenses (e.g. a plane ticket to a conference) for impactful individuals or small organizations.
+            If you are involved in the AI safety community, we encourage you to directly fund
+            research, projects, or other expenses (e.g. a plane ticket to a conference) for
+            impactful individuals or small organizations.
           </p>
-          <p>Donating directly puts you in the seat of the grantmaker. If you have insight into an avenue that deserves funding, you're often likely to make a better decision than a grantmaker, who may lack nuanced understanding of individuals and smaller organizations in the space.</p>
+          <p>
+            Donating directly puts you in the seat of the grantmaker. If you have insight into an
+            avenue that deserves funding, you're often likely to make a better decision than a
+            grantmaker, who may lack nuanced understanding of individuals and smaller organizations
+            in the space.
+          </p>
         </HelpItem>
 
         <HelpItem
@@ -99,19 +106,20 @@ export default function Donate() {
           links={[
             {
               title: 'AI Safety Landscape Map',
-              action:
-                'https://www.aisafety.com/landscape-map',
+              action: 'https://www.aisafety.com/landscape-map',
             },
           ]}
         >
           <p className="padding-bottom-16">
-          Direct donations to larger organizations are less common, as grantmakers typically have a comprehensive understanding of the major players in this space and are often well-positioned to make informed funding decisions.
+            Direct donations to larger organizations are less common, as grantmakers typically have
+            a comprehensive understanding of the major players in this space and are often
+            well-positioned to make informed funding decisions.
           </p>
           <p>
-          However, if there is a specific organization you believe is doing exceptional work and would benefit from additional funds, contributing directly can still be a great choice.
+            However, if there is a specific organization you believe is doing exceptional work and
+            would benefit from additional funds, contributing directly can still be a great choice.
           </p>
         </HelpItem>
-
       </div>
 
       <div className="flexbox">
