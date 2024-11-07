@@ -72,12 +72,57 @@ export default function Donate() {
           </p>
         </HelpItem>
 
-        <HelpItem title="Donating directly" tag="Highest impact">
+        <HelpItem
+          title="Donating directly to individuals & smaller organizations"
+          tag="Potential for highest impact"
+          className="padding-bottom-40"
+          links={[
+            {
+              tag: 'Top recommendation',
+              title: 'Long-Term Future Fund',
+              action:
+                'https://www.givingwhatwecan.org/charities/long-term-future-fund?utm_source=eafunds',
+            },
+          ]}
+          additionalInfo={
+            <>
+              Or, browse our{' '}
+              <a href="https://www.aisafety.com/donation-guide" className="small-bold teal-500">
+                other grantmaker recommendations
+              </a>
+            </>
+          }
+        >
+          <p className="padding-bottom-16">
+            If you are involved in the AI safety community, we encourage you to directly fund
+            research, projects, or other expenses (e.g. a plane ticket to a conference) for
+            impactful individuals or small organizations.
+          </p>
           <p>
-            If you're deeply involved in the AI safety community, we encourage you to directly fund
-            research, projects, or miscellaneous expenses that you think are valuable. Donating
-            directly puts you in the seat of the grantmaker—if you have knowledge of an avenue that
-            deserves funds, you're likely to make a better decision than a grantmaker.
+            Donating directly puts you in the seat of the grantmaker. If you have insight into an
+            avenue that deserves funding, you're often likely to make a better decision than a
+            grantmaker, who may lack nuanced understanding of individuals and smaller organizations
+            in the space.
+          </p>
+        </HelpItem>
+
+        <HelpItem
+          title="Donating directly to larger organizations"
+          links={[
+            {
+              title: 'AI Safety Landscape Map',
+              action: 'https://www.aisafety.com/landscape-map',
+            },
+          ]}
+        >
+          <p className="padding-bottom-16">
+            Direct donations to larger organizations are less common, as grantmakers typically have
+            a comprehensive understanding of the major players in this space and are often
+            well-positioned to make informed funding decisions.
+          </p>
+          <p>
+            However, if there is a specific organization you believe is doing exceptional work and
+            would benefit from additional funds, contributing directly can still be a great choice.
           </p>
         </HelpItem>
       </div>
