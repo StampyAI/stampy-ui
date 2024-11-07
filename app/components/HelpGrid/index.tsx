@@ -21,7 +21,7 @@ const helpItems = [
   {
     title: 'Donate',
     description:
-      'The AI safety field is constrained by funding—financial help is critical at this moment',
+      'The AI safety field is constrained by funding—financial help is critical at the moment',
     impact: 'Highest indirect impact',
     icon: PiggyBank,
     action: helpUrl('donate'),
@@ -29,7 +29,7 @@ const helpItems = [
   {
     title: 'Volunteer',
     description:
-      'Help us build important AI safety infrastructure—all skill sets and levels of time-commitment are wanted',
+      'Help us build important AI safety infrastructure—all skill sets and levels of time-commitment are valuable',
     impact: 'Best for partial commitment',
     icon: Hand,
     action: helpUrl('volunteer'),

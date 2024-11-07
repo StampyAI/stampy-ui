@@ -24,12 +24,12 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "'Intro to AI safety' micro-course",
+            title: '\u201CIntro to AI safety\u201D micro-course',
             action: 'https://aisafety.info/questions/9OGZ/',
           },
           {
             title: 'Intro to AI safety video playlist',
-            action: 'https://aisafety.info/questions/9OGZ/',
+            action: 'https://www.youtube.com/playlist?list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE',
             image: (
               <div>
                 <img src={VideoImg} alt="video-playlist" />
@@ -53,14 +53,19 @@ const NewToAISafety = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: "'Paul Christiano - Preventing an AI Takeover'",
+            title: 'Paul Christiano—Preventing an AI Takeover',
             action: 'https://www.dwarkeshpatel.com/p/paul-christiano',
           },
         ]}
         additionalInfo={
           <>
             Browse our{' '}
-            <a href="https://aisafety.info/questions/7619" className="small-bold teal-500">
+            <a
+              href="https://aisafety.info/questions/7619"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of podcasts
             </a>
           </>
@@ -84,29 +89,35 @@ const Dropdowns = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Uncontrollable',
+            title: '\u201CUncontrollable\u201D by Darren McKee',
             action: 'https://www.goodreads.com/book/show/202416160-uncontrollable',
           },
         ]}
         additionalInfo={
           <>
             Or, read our{' '}
-            <a href="https://aisafety.info/questions/8159" className="small-bold teal-500">
+            <a
+              href="https://aisafety.info/questions/8159"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of AI safety book recommendations
             </a>
           </>
         }
       >
-        We recommend the book "Uncontrollable", which concisely examines the risks posed by advanced
-        AI. The book highlights the need for effective AI governance and safety measures, and offers
-        practical solutions to ensure AI benefits society while minimizing risks.
+        We recommend the book &ldquo;Uncontrollable&rdquo; by Darren McKee, which concisely examines
+        the risks posed by advanced AI. The book highlights the need for effective AI governance and
+        safety measures, and offers practical solutions to ensure AI benefits society while
+        minimizing risks.
       </HelpItem>
     </DropDown>
 
-    <DropDown title="I want something I can subscribe to (Youtube channels, newsletters, etc.)">
+    <DropDown title="I want something I can subscribe to (YouTube channels, newsletters, etc.)">
       <HelpItem
         className="padding-bottom-40"
-        title="Youtube"
+        title="YouTube"
         links={[
           {
             tag: 'Top recommendation',
@@ -118,7 +129,7 @@ const Dropdowns = () => (
         We recommend the YouTube channel Robert Miles AI Safety, which presents complex AI safety
         concepts in an accessible format to foster understanding and awareness about the ethical and
         safety considerations in AI development. (Rob is also the founder of this site,
-        AISafety.info)
+        AISafety.info).
       </HelpItem>
 
       <HelpItem
@@ -134,7 +145,12 @@ const Dropdowns = () => (
         additionalInfo={
           <>
             Or, browse our{' '}
-            <a href="https://aisafety.info/questions/7619" className="small-bold teal-500">
+            <a
+              href="https://aisafety.info/questions/7619"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of podcasts
             </a>
           </>
@@ -151,7 +167,7 @@ const Dropdowns = () => (
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Center for AI Safety Newsletter',
+            title: 'AI Safety Newsletter',
             action: 'https://newsletter.safe.ai/',
           },
         ]}
@@ -162,7 +178,7 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
-        title="Twitter"
+        title="Twitter/X"
         links={[
           {
             tag: 'Top recommendation',
@@ -202,7 +218,12 @@ const DiveDeeper = () => (
         additionalInfo={
           <>
             Or, browse our{' '}
-            <a href="https://www.aisafety.com/courses" className="small-bold teal-500">
+            <a
+              href="https://www.aisafety.com/courses"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               full list of courses
             </a>
           </>
@@ -228,6 +249,8 @@ const DiveDeeper = () => (
           additional views on AI safety to help avoid homogeneity in the field, such as{' '}
           <a
             href="https://www.cold-takes.com/most-important-century/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="teal-500 small-bold"
           >
             The Most Important Century blog post series
@@ -235,19 +258,18 @@ const DiveDeeper = () => (
           .
         </p>
         <p className="grey small">
-          <span className="small-bold">Note:</span> AISF courses do not accept all applicants, but
-          we still recommend taking the courses through self-study if your application is
-          unsuccessful.
+          <span className="small-bold">Note:</span> AISF courses do not accept all applicants. We
+          recommend taking the courses through self-study if your application is unsuccessful.
         </p>
       </HelpItem>
 
       <HelpItem
-        title="Get into Lesswrong and its subset, the Alignment Forum"
+        title="Get into LessWrong and its subset, the Alignment Forum"
         className="padding-bottom-40"
         links={[
           {
             tag: 'Most widely-used',
-            title: 'Lesswrong',
+            title: 'LessWrong',
             action: 'https://www.lesswrong.com/',
           },
           {
@@ -276,8 +298,13 @@ const DiveDeeper = () => (
         additionalInfo={
           <>
             Or, browse our{' '}
-            <a href="https://www.aisafety.com/events-and-training" className="small-bold teal-500">
-              full list of events
+            <a
+              href="https://www.aisafety.com/events-and-training"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
+              full list of upcoming events
             </a>
           </>
         }

@@ -31,11 +31,11 @@ const ResearchPath = () => (
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
           <p className="grey default">
-            To ensure humanity benefits from advanced AI and mitigates risks—like unintended
-            behaviors or misalignment with human values—we must first solve the technical challenge
-            of AI alignment through dedicated research, and then collaborate globally to carefully
-            deploy solutions. While experts believe alignment is solvable, it remains a complex
-            problem that demands significant high-quality intellectual talent.
+            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, we must
+            first solve the technical challenge of AI alignment through dedicated research, and then
+            collaborate globally to carefully deploy solutions. While experts believe alignment is
+            solvable, it remains a complex problem that demands significant high-quality
+            intellectual talent.
           </p>
         </div>
         <div className="col-6-alt">
@@ -47,8 +47,8 @@ const ResearchPath = () => (
           </p>
           <p className="grey small">
             <span className="small-bold">*Note:</span> Beware of the risk of joining industry
-            "safety" teams, as this work often leaks to non-safety parts of the organization which
-            improves the AI technology itself—and so ends up causing harm.
+            &ldquo;safety&rdquo; teams, as this work often leaks to non-safety parts of the
+            organization which improves the AI technology itself—and so ends up causing harm.
           </p>
         </div>
         <div className="col-6-alt">
@@ -65,22 +65,22 @@ const ResearchPath = () => (
     <div className="padding-bottom-56">
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
-        <p className="col-6 large">
+        <p className="col-6 extra-large">
           Take the following steps to further assess your fit and learn how to make the transition:
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours Technical AI safety Career Review"
+        title="Read the 80,000 Hours technical AI safety career review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'Technical AI safety Career Review',
+            title: "80k's technical AI safety career review",
             action: 'https://80000hours.org/career-reviews/ai-safety-researcher/',
           },
         ]}
         className="padding-bottom-40"
       >
-        <p className="padding-bottom-16">The review takes about one hour and addresses:</p>
+        <p className="padding-bottom-16">The review takes about one hour to read and addresses:</p>
         <ul>
           <li>What this career path involves</li>
           <li>How to predict your fit</li>
@@ -90,10 +90,10 @@ const ResearchPath = () => (
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
         links={[
           {
-            title: 'Book your AI safety Quest call',
+            title: 'Book your AI Safety Quest call',
             action: 'https://aisafety.quest/#calls',
           },
           {
@@ -117,12 +117,12 @@ const ResearchPath = () => (
         title="A process note: Build your knowledge so you can think critically about the roles you pursue"
         links={[
           {
-            title: 'Our ‘Build your knowledge’ guide',
-            action: 'https://aisafety.info/howcanihelp/knowledge',
+            title: 'Our \u201CBuild your knowledge\u201D guide',
+            action: 'https://aisafety.info/how-can-i-help/knowledge',
           },
           {
-            title: 'Our ‘Join a community’ guide',
-            action: 'https://aisafety.info/howcanihelp/community',
+            title: 'Our \u201CJoin a community\u201D guide',
+            action: 'https://aisafety.info/how-can-i-help/community',
           },
         ]}
       >
@@ -140,8 +140,8 @@ const ResearchPath = () => (
       <DropDown title="I’m interested in non-technical or supporting roles in AI alignment">
         <p className="padding-bottom-40 col-6 grey">
           There are many roles that support the work of AI alignment researchers, and having
-          high-performing people in these roles is crucial. In a research organisation around half
-          of the staff will be doing other tasks essential for the organisation to perform at its
+          high-performing people in these roles is crucial. In a research organization around half
+          of the staff will be doing other tasks essential for the organization to perform at its
           best and have an impact. Some of these roles include:
         </p>
         <HelpItem
@@ -190,7 +190,7 @@ const ResearchPath = () => (
         </HelpItem>
       </DropDown>
     </div>
-
+    {/* TESTIMONIALS TEMPORARILY REMOVED
     <div className="flexbox">
       <Testimonial
         src="/assets/guy.jpeg"
@@ -212,7 +212,7 @@ const ResearchPath = () => (
         className="col-6"
       />
     </div>
-
+    */}
     <div className="padding-bottom-104">
       <CategoryCarousel
         title="Our articles on pursuing a career in alignment research"
@@ -231,19 +231,41 @@ const GovernancePath = () => (
       <div className="flexbox-alt">
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">
+            AI governance is an emerging field focused on shaping how AI technology is developed and
+            deployed through policy, corporate practices, and international coordination.
+            Professionals in this space work to prevent catastrophic risks from advanced AI systems,
+            ensure AI benefits society while minimizing harms, and create frameworks for safe and
+            responsible AI development.
+          </p>
         </div>
+        {/* Melissa is still editing the following three paragraphs */}
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">
+            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, working
+            to solve the technical challenge of AI alignment is not enough. We must ensure that
+            before it is solved, AI is tested, overseen, and does not grow too quickly. If AI
+            alignment is solved, we must carefully deploy solutions. Both these tasks will require
+            organized efforts and global coordination.
+          </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Where these people usually work</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">Coming soon...</p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">
+            You might want to consider working in these areas if the following tasks fit your
+            abilities and interests: Building support for international treaties regulating AI;
+            preventing the deployment of AI systems that pose a significant and direct threat of
+            catastrophe; mitigating the negative impact of AI technology on other catastrophic
+            risks, such as nuclear weapons and biotechnology; slowing down AI progress when we
+            aren't on track to make AI safe; building government capacity to evaluate frontier AI
+            for danger; examining the threats misaligned AI poses to social infrastructure;
+            analyzing which policies would discourage an AI arms race.
+          </p>
         </div>
       </div>
     </div>
@@ -256,27 +278,27 @@ const GovernancePath = () => (
         </p>
       </div>
       <HelpItem
-        title="Read the 80,000 Hours AI governance and policy Career Review"
+        title="Read the 80,000 Hours AI governance and policy career review"
         links={[
           {
             tag: 'Top recommendation',
-            title: 'AI governance and policy Career Review',
+            title: "80k's AI governance and policy career review",
             action: 'https://80000hours.org/career-reviews/ai-policy-and-strategy/',
           },
         ]}
         className="padding-bottom-40"
       >
-        <p className="padding-bottom-16">The review takes about one hour and addresses:</p>
+        <p className="padding-bottom-16">The review takes about one hour to read and addresses:</p>
         <ul>
-          <li>What this career path involves</li>
+          <li>The 6 categories within AI governance</li>
           <li>How to predict your fit</li>
-          <li>The upsides and downsides of this career path</li>
-          <li>Compensation</li>
           <li>How to enter or transition into this career</li>
+          <li>Where AI governance work is typically done</li>
+          <li>How this career path can go wrong</li>
         </ul>
       </HelpItem>
       <HelpItem
-        title="Sign up for 1-on-1 career advice with AI safety Quest & 80,000 Hours (free)"
+        title="Sign up for 1-on-1 career advice with AI Safety Quest & 80,000 Hours (free)"
         className="padding-bottom-40"
         links={[
           {
@@ -291,8 +313,8 @@ const GovernancePath = () => (
       >
         <p className="grey default padding-bottom-16">
           Schedule a 30-minute or 1-hour video call—we recommend booking both! These calls will
-          address your specific questions about the field, confirm your interest and fit, and
-          provide tailored recommendations to help you make the transition.
+          address your specific questions about the field of AI governance and policy, confirm your
+          interest and fit, and provide tailored recommendations to help you make the transition.
         </p>
         <p className="grey small">
           <span className="small-bold">Note:</span> 80,000 Hours does not accept all applicants.
@@ -302,18 +324,14 @@ const GovernancePath = () => (
       <HelpItem
         title={
           <>
-            A process note: Form your <em>own</em> understanding of the AI alignment technical
-            challenge
+            A process note: Build your knowledge so you can think critically about the roles you
+            pursue
           </>
         }
         links={[
           {
-            title: 'Our ‘Build your knowledge’ guide',
-            action: 'https://aisafety.info/howcanihelp/knowledge',
-          },
-          {
-            title: 'Our ‘Join a community’ guide',
-            action: 'https://aisafety.info/howcanihelp/community',
+            title: 'Our \u201CBuild your knowledge\u201D guide',
+            action: 'https://aisafety.info/how-can-i-help/knowledge',
           },
         ]}
       >
@@ -323,7 +341,7 @@ const GovernancePath = () => (
         it.
       </HelpItem>
     </div>
-
+    {/* TESTIMONIALS TEMPORARILY REMOVED
     <div className="flexbox">
       <Testimonial
         src="/assets/guy.jpeg"
@@ -345,6 +363,7 @@ const GovernancePath = () => (
         className="col-6"
       />
     </div>
+  */}
 
     <CategoryCarousel
       title="Our articles on pursuing a career in AI governance & policy"
@@ -406,7 +425,7 @@ const FieldBuildingPath = () => (
         ]}
       >
         Communications involves educating the public or spreading the word about AI safety—most
-        typically through websites or social media. People with computer skills and creative skills
+        typically through websites or social media. People with computer skills or creative skills
         can typically find a place within communications. Roles could include independent content
         production, software engineering, project management, or design.
       </HelpItem>
@@ -439,7 +458,7 @@ const FieldBuildingPath = () => (
         ]}
       >
         Founding a new project in AI safety involves identifying a gap in a pressing problem area,
-        formulating a solution, investigating it, and then helping to build an organisation by
+        formulating a solution, investigating it, and then helping to build an organization by
         investing in strategy, hiring, management, culture, and so on—ideally building something
         that can continue without you.
       </HelpItem>
@@ -450,8 +469,8 @@ const FieldBuildingPath = () => (
         <HelpItem title="Supporting roles" className="padding-bottom-40">
           There are many roles that support the work of AI alignment researchers or people in AI
           governance, and having high-performing people in these roles is crucial. In a research
-          organisation, for example, around half of the staff will be doing other tasks essential
-          for the organisation to perform at its best and have an impact. Some of the most common
+          organization, for example, around half of the staff will be doing other tasks essential
+          for the organization to perform at its best and have an impact. Some of the most common
           supporting roles in AI safety include:
         </HelpItem>
         <HelpItem
@@ -460,7 +479,7 @@ const FieldBuildingPath = () => (
           className="padding-bottom-40"
           links={[
             {
-              title: "Read 80k's guide on operations work",
+              title: "Read 80k's guide on operations management",
               action: 'https://80000hours.org/articles/operations-management',
             },
           ]}
@@ -513,7 +532,7 @@ const FieldBuildingPath = () => (
           className="padding-bottom-40"
           links={[
             {
-              title: "Read 80k's guide on Information security in high-impact areas",
+              title: "Read 80k's guide on information security in high-impact areas",
               action: 'https://80000hours.org/career-reviews/information-security',
             },
           ]}
@@ -526,7 +545,7 @@ const FieldBuildingPath = () => (
           title="Becoming an expert in AI hardware as a way of steering AI progress in safer directions"
           links={[
             {
-              title: "Read 80k's guide on expertise in AI hardware",
+              title: "Read 80k's guide on becoming an expert in AI hardware",
               action: 'https://80000hours.org/career-reviews/become-an-expert-in-ai-hardware',
             },
           ]}
@@ -539,8 +558,8 @@ const FieldBuildingPath = () => (
     <div className="padding-bottom-80">
       <div className="flexbox padding-bottom-56">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
-        <p className="col-6">
-          Take the following steps to (1) learn more & further assess your fit; (2) learn how to
+        <p className="col-6 extra-large">
+          Take the following steps to (1) learn more and further assess your fit; (2) learn how to
           make the transition
         </p>
       </div>
@@ -571,28 +590,21 @@ const FieldBuildingPath = () => (
       <HelpItem
         title={
           <>
-            A process note: Form your <em>own</em> understanding of the AI alignment technical
-            challenge
+            A process note: Build your knowledge so you can think critically about the roles you
+            pursue
           </>
         }
         links={[
           {
-            title: 'Our ‘Build your knowledge’ guide',
-            action: 'https://aisafety.info/howcanihelp/knowledge',
-          },
-          {
-            title: 'Our ‘Join a community’ guide',
-            action: 'https://aisafety.info/howcanihelp/community',
+            title: 'Our \u201CBuild your knowledge\u201D guide',
+            action: 'https://aisafety.info/how-can-i-help/knowledge',
           },
         ]}
       >
-        AI safety is a relatively new field with diverse opinions on how best to solve the technical
-        challenge of AI alignment. Many unexplored avenues and important questions likely remain
-        unaddressed. Therefore, it's crucial for AI alignment researchers (or aspiring researchers)
-        to think independently and develop their own models on this topic. If you pursue a career in
-        this field, we recommend deeply educating yourself on the technical challenge of alignment,
-        engaging with other AI safety experts, and thinking critically about the topic and current
-        paradigms.
+        Many roles that appear to advance safety may actually end up advancing AI capabilities, and
+        thus cause harm. We recommend learning more about AI safety—particularly the alignment
+        problem—and carefully considering that a role or action will make AI safer before pursuing
+        it.
       </HelpItem>
     </div>
 

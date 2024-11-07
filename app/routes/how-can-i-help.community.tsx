@@ -20,7 +20,7 @@ const InPerson = () => (
         title="AI safety-specific communities"
         links={[
           {
-            title: 'Our list of in-person communities',
+            title: 'Our list of communities',
             action: 'https://www.aisafety.com/communities',
           },
         ]}
@@ -36,11 +36,11 @@ const InPerson = () => (
         title="Related communities"
         links={[
           {
-            title: 'EA groups map',
+            title: 'Map of EA groups',
             action: 'https://forum.effectivealtruism.org/groups',
           },
           {
-            title: 'Rationalist groups map',
+            title: 'Map of Rationalist groups',
             action: 'https://www.lesswrong.com/community',
           },
         ]}
@@ -68,7 +68,7 @@ const Online = () => (
       links={[
         {
           tag: 'Top recommendation',
-          title: 'AI alignment slack',
+          title: 'AI Alignment Slack',
           action:
             'https://ai-alignment.slack.com/join/shared_invite/zt-1vd2yu4ib-3dLG4D82H7eXF_THvTdUKg#/shared-invite/email',
         },
@@ -77,7 +77,12 @@ const Online = () => (
       additionalInfo={
         <>
           Or, browse our{' '}
-          <a href="https://www.aisafety.com/communities" className="small-bold teal-500">
+          <a
+            href="https://www.aisafety.com/communities"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="small-bold teal-500"
+          >
             full list of communities
           </a>
         </>
@@ -99,7 +104,7 @@ const Online = () => (
       className="padding-bottom-40"
     >
       <p className="grey default">
-        You can volunteering for projects and attend protests. People are divided regarding whether
+        You can volunteer for projects and attend protests. People are divided regarding whether
         protests or a pause in AI development are a good idea, but if it's something you want to do,
         PauseAI is a reliable organization in that space.
       </p>
@@ -110,7 +115,7 @@ const Online = () => (
       links={[
         {
           tag: 'Top recommendation',
-          title: 'Lesswrong',
+          title: 'LessWrong',
           action: 'https://www.lesswrong.com/tag/ai',
         },
       ]}

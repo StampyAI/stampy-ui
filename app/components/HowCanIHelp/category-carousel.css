@@ -22,7 +22,7 @@
 
 .carousel .items {
   display: flex;
-  height: 230px;
+  height: 280px;
   gap: var(--spacing-40);
 }
 
@@ -31,7 +31,7 @@
   align-items: start;
   justify-content: start;
   width: 288px;
-  height: 240px;
+  height: 280px;
   padding: var(--spacing-40);
   text-align: left;
   gap: var(--spacing-16);

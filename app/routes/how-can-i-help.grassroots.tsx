@@ -17,7 +17,7 @@ const TopText = () => (
           <p className="default-bold padding-bottom-16">Who</p>
           <p className="grey default">
             For anyone—help us spread the word about this issue to friends, those in your social
-            media or professional network, or whomever.
+            media or professional network, or whomever
           </p>
         </div>
         <div className="col-6-alt">
@@ -52,16 +52,18 @@ const WhatYouCanDo = () => (
             Or, choose another from our{' '}
             <a
               href="https://www.youtube.com/playlist?list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE"
+              target="_blank"
+              rel="noopener noreferrer"
               className="small-bold teal-500"
             >
-              Intro to AI Safety video playlist
+              AI safety intro video playlist
             </a>
           </>
         }
       >
         <p>
-          We recommend sharing "A.I. - Humanity's Final Invention?", which gives an accessible
-          overview to the topic of AI and existential risk
+          We recommend sharing A.I. - &ldquo;Humanity's Final Invention?&rdquo;, which gives an
+          accessible overview of the topic of AI and existential risk
         </p>
       </HelpItem>
 
@@ -85,11 +87,11 @@ const WhatYouCanDo = () => (
 
       <HelpItem
         className="padding-bottom-40"
-        title="Join a PauseAI Protest"
+        title="Join a PauseAI protest"
         tag="3–6 hours"
         links={[
           {
-            title: 'Find a nearby Pause AI Protest',
+            title: 'Find a nearby Pause AI protest',
             action: 'https://pauseai.info/protests',
           },
         ]}
@@ -102,7 +104,7 @@ const WhatYouCanDo = () => (
         title="Talk to people about this topic"
         links={[
           {
-            title: 'A guide to counter-arguments',
+            title: 'A guide to counterarguments',
             action: 'https://pauseai.info/counterarguments',
           },
         ]}
@@ -125,15 +127,20 @@ const WhatYouCanDo = () => (
         additionalInfo={
           <>
             You could also look into{' '}
-            <a href="https://pauseai.info/action" className="small-bold teal-500">
+            <a
+              href="https://pauseai.info/action"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="small-bold teal-500"
+            >
               other major petitions
             </a>
           </>
         }
       >
         <p>
-          Add your signature next to Elon Musk, Steve Wozniak, and Stuart Russel in the most
-          well-known AI Safety petition, “Pause Giant AI Experiments: An Open Letter”
+          Add your signature next to Elon Musk, Steve Wozniak, and “godfather of AI” Yoshua Bengio
+          in the most well-known AI safety petition, “Pause Giant AI Experiments: An Open Letter”
         </p>
       </HelpItem>
     </div>
