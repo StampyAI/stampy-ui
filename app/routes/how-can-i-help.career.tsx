@@ -236,19 +236,43 @@ const GovernancePath = () => (
       <div className="flexbox-alt">
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">
+            AI governance is an emerging field focused on shaping how AI technology is developed and
+            deployed through public policy, corporate practices, and international coordination.
+            Professionals in this space work to prevent catastrophic risks from advanced AI systems,
+            ensure AI benefits society while minimizing harms, and create frameworks for safe and
+            responsible AI development.
+          </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">
+            To ensure humanity benefits from advanced AI and mitigates catastrophic risks, technical
+            solutions for AI alignment must be complemented by effective public policy and corporate
+            oversight to keep development tightly controlled and at a cautious pace. Even with
+            successful AI alignment, robust governance is essential to ensure consistent
+            implementation across all sectors and regions.
+          </p>
         </div>
         <div className="col-6-alt">
-          <p className="default-bold padding-bottom-16">Where these people usually work</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="default-bold padding-bottom-16">
+            Where professionanls in AI governance usually work
+          </p>
+          <p className="grey default">
+            AI governance professionals work in settings like government agencies, international
+            organizations, regulatory bodies, think tanks, research institutions, and private
+            companies, developing policies, analyzing risks, and shaping governance frameworks for
+            the safe use of AI technologies.
+          </p>
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">You might be a good fit if...</p>
-          <p className="grey default">Lorem ipsum</p>
+          <p className="grey default">
+            You might be a good fit for a career in AI governance if you have a background in
+            political science, law, international relations, or economics, or if you have technical
+            expertise in AI or cybersecurity. You could also thrive in this field if you're skilled
+            in research, advocacy, or communicating complex ideas clearly.
+          </p>
         </div>
       </div>
     </div>
