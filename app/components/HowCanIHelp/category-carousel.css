@@ -16,8 +16,27 @@
   gap: var(--spacing-8);
 }
 
+.carousel .navigation button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--colors-cool-grey-200);
+  border-radius: var(--border-radius);
+}
+
+.carousel .navigation button:not(:disabled):hover {
+  border-color: var(--colors-teal-200);
+}
+
+.carousel .navigation button:disabled {
+  opacity: 0.5;
+}
+
 .carousel h2 {
-  max-width: 550px;
+  max-width: 650px;
 }
 
 .carousel .items {

@@ -3,7 +3,7 @@ import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 
@@ -62,7 +62,7 @@ const ResearchPath = () => (
     </div>
 
     <div className="padding-bottom-56">
-      <div className="flexbox padding-bottom-56">
+      <div className="flexbox padding-bottom-40">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
           Take the following steps to further assess your fit and learn how to make the transition:
@@ -135,7 +135,7 @@ const ResearchPath = () => (
       </HelpItem>
     </div>
 
-    <div className="padding-bottom-80">
+    <div className="padding-bottom-0">
       <DropDown title="I’m interested in non-technical or supporting roles in AI alignment">
         <p className="padding-bottom-40 col-6 grey">
           There are many roles that support the work of AI alignment researchers, and having
@@ -231,7 +231,7 @@ const GovernancePath = () => (
       <div className="flexbox-alt">
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">What</p>
-          <p className="grey default">
+          <p className="grey default padding-bottom-0">
             AI governance is an emerging field focused on shaping how AI technology is developed and
             deployed through policy, corporate practices, and international coordination.
             Professionals in this space work to prevent catastrophic risks from advanced AI systems,
@@ -241,7 +241,7 @@ const GovernancePath = () => (
         </div>
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Why this is important</p>
-          <p className="grey default">
+          <p className="grey default padding-bottom-0">
             To ensure humanity benefits from advanced AI and mitigates catastrophic risks, technical
             solutions for AI alignment must be complemented by effective public policy and corporate
             oversight to keep development tightly controlled and at a cautious pace. Even with
@@ -272,8 +272,8 @@ const GovernancePath = () => (
       </div>
     </div>
 
-    <div className="padding-bottom-80">
-      <div className="flexbox padding-bottom-56">
+    <div className="padding-bottom-0">
+      <div className="flexbox padding-bottom-40">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
           Take the following steps to further assess your fit and learn how to make the transition:
@@ -376,7 +376,7 @@ const GovernancePath = () => (
 
 const FieldBuildingPath = () => (
   <>
-    <div className="padding-bottom-80">
+    <div className="padding-bottom-64">
       <h2 className="teal-500 padding-bottom-40" id="field-building">
         AI safety field-building
       </h2>
@@ -412,7 +412,7 @@ const FieldBuildingPath = () => (
     </div>
 
     <div className="padding-bottom-56">
-      <p className="padding-bottom-40 large-bold">Most common field-building roles</p>
+      <p className="padding-bottom-40 large-bold ">Most common field-building roles</p>
 
       <HelpItem
         titleFont="default-bold"
@@ -525,12 +525,12 @@ const FieldBuildingPath = () => (
           governance efforts.
         </HelpItem>
 
-        <p className="large-bold padding-bottom-32">Other technical roles</p>
+        <p className="large-bold padding-bottom-32 padding-top-32">Other technical roles</p>
 
         <HelpItem
           titleFont="default-bold"
           title="Working in information security to protect AI (or the results of key experiments) from misuse, theft, or tampering"
-          className="padding-bottom-40"
+          className="padding-bottom-24"
           links={[
             {
               title: "Read 80k's guide on information security in high-impact areas",
@@ -557,7 +557,7 @@ const FieldBuildingPath = () => (
     </div>
 
     <div className="padding-bottom-80">
-      <div className="flexbox padding-bottom-56">
+      <div className="flexbox padding-bottom-40">
         <h2 className="col-6">Interested in pursuing this career path?</h2>
         <p className="col-6 large">
           Take the following steps to further assess your fit and learn how to make the transition:
@@ -642,6 +642,7 @@ const CareerPaths = () => {
           title="AI alignment research"
           description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
           icon={Microscope}
+          className="col-4"
         />
         <CardSmall
           action={() => smoothScroll('governance')}
@@ -649,6 +650,7 @@ const CareerPaths = () => {
           title="AI governance & policy"
           description="Roles focused on developing and implementing policies that guide AI development and usage"
           icon={GovermentBuilding}
+          className="col-4"
         />
         <CardSmall
           action={() => smoothScroll('field-building')}
@@ -656,6 +658,7 @@ const CareerPaths = () => {
           title="AI safety field-building"
           description="Roles that direct talent or resources toward AI safety, educate the public, or build the AI safety community"
           icon={PuzzlePieces}
+          className="col-4"
         />
       </div>
     </>

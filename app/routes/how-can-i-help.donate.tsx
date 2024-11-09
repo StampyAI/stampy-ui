@@ -1,8 +1,8 @@
 import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 export default function Donate() {
   return (
     <Base title="Donate" current="donate">
-      <div className="padding-bottom-80">
+      <div className="padding-bottom-56">
         <div className="flexbox-alt">
           <div className="col-6-alt">
             <p className="default-bold padding-bottom-16">Who</p>
@@ -38,7 +38,7 @@ export default function Donate() {
         <HelpItem
           title="Donating to grantmakers"
           tag="Easiest & most common"
-          className="padding-bottom-40"
+          className="padding-bottom-56"
           links={[
             {
               tag: 'Top recommendation',
@@ -74,7 +74,7 @@ export default function Donate() {
         <HelpItem
           title="Donating directly to individuals & smaller organizations"
           tag="Potential for highest impact"
-          className="padding-bottom-40"
+          className="padding-bottom-56"
           links={[
             {
               title: 'Shallow review of live agendas in alignment & safety',

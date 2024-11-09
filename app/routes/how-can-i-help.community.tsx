@@ -10,7 +10,7 @@ const InPerson = () => (
   <>
     <div className="padding-bottom-56">
       <div className="padding-bottom-40">
-        <h2 className="teal-500 padding-bottom-40">In-person communities</h2>
+        <h2 className="teal-500 padding-bottom-32">In-person communities</h2>
         <p className="grey default col-6">
           In-person communities provide general support, networking, and socializing for anyone
           interested in contributing to AI safety.
@@ -57,7 +57,7 @@ const InPerson = () => (
 const Online = () => (
   <>
     <div className="padding-bottom-40">
-      <h2 className="teal-500 padding-bottom-40">Online communities</h2>
+      <h2 className="teal-500 padding-bottom-32">Online communities</h2>
       <p className="grey default col-6">
         Online communities typically exist on Slack, Discord (an app like Slack), or website forums,
         and tend to serve more specific purposes:
@@ -130,7 +130,7 @@ const Online = () => (
 
 export default function Community() {
   return (
-    <Base title="Join the community" current="community">
+    <Base title="Join a community" current="community">
       <InPerson />
 
       <Online />

@@ -127,58 +127,118 @@ const HelpMethods = ({
   current,
   footerTitle,
   footerSubheader = 'Or, explore more ways to help directly',
-}: HelpMethodsProps) => (
-  <div className="help-footer">
-    <h2 className="teal-500 padding-bottom-56">{footerTitle || (current && titles[current])}</h2>
-    <div className="flexbox padding-bottom-80">
-      <KnowledgeCard
-        current={current}
-        className={`col-6 ${current === 'grassroots' || current === 'volunteer' || current === 'donate' ? 'order-2' : ''}`}
-      />
-      <CommunityCard
-        current={current}
-        className={`col-6 ${current === 'grassroots' || current === 'volunteer' || current === 'donate' ? 'order-1' : ''}`}
-      />
+}: HelpMethodsProps) => {
+  const showKnowledgeCard = current !== 'knowledge'
+  const showCommunityCard = current !== 'community'
+  const singleCardLayout =
+    (!showKnowledgeCard && showCommunityCard) || (showKnowledgeCard && !showCommunityCard)
+
+  return (
+    <div className="help-footer">
+      <div className="flexbox padding-bottom-80">
+        <div
+          className={`${singleCardLayout ? 'col-6' : 'col-12'} ${singleCardLayout ? 'flexbox center-align' : ''}`}
+        >
+          <h2 className="teal-500">{footerTitle || (current && titles[current])}</h2>
+        </div>
+        {singleCardLayout && (
+          <div className="col-6">
+            {showKnowledgeCard && <KnowledgeCard current={current} className="col-6" />}
+            {showCommunityCard && <CommunityCard current={current} className="col-6" />}
+          </div>
+        )}
+      </div>
+
+      {!singleCardLayout && (
+        <div className="flexbox padding-bottom-80">
+          <KnowledgeCard
+            current={current}
+            className={`col-6 ${current === 'grassroots' || current === 'volunteer' || current === 'donate' ? 'order-2' : ''}`}
+          />
+          <CommunityCard
+            current={current}
+            className={`col-6 ${current === 'grassroots' || current === 'volunteer' || current === 'donate' ? 'order-1' : ''}`}
+          />
+        </div>
+      )}
+
+      <p className="large-bold padding-bottom-40">{footerSubheader}</p>
+
+      <div className={`flexbox ${singleCardLayout ? 'wrap' : ''}`}>
+        {current !== 'career' &&
+          (singleCardLayout ? (
+            <Card
+              action={helpUrl('career')}
+              title="Start a career in AI safety"
+              description="There are both technical and non-technical roles across research, policy, and field-building"
+              icon={Briefcase}
+              className={`col-6`}
+            />
+          ) : (
+            <CardSmall
+              action={helpUrl('career')}
+              title="Start a career in AI safety"
+              description="There are both technical and non-technical roles across research, policy, and field-building"
+              icon={Briefcase}
+              className="col-4"
+            />
+          ))}
+        {current !== 'donate' &&
+          (singleCardLayout ? (
+            <Card
+              action={helpUrl('donate')}
+              title="Donate"
+              description="The AI safety field is constrained by funding—financial help is critical at this moment"
+              icon={PiggyBank}
+              className={`col-6`}
+            />
+          ) : (
+            <CardSmall
+              action={helpUrl('donate')}
+              title="Donate"
+              description="The AI safety field is constrained by funding—financial help is critical at this moment"
+              icon={PiggyBank}
+              className="col-4"
+            />
+          ))}
+        {current !== 'volunteer' &&
+          (singleCardLayout ? (
+            <Card
+              action={helpUrl('volunteer')}
+              title="Volunteer"
+              description="Help us build important AI safety infrastructure—all skill sets and levels of time commitment are valuable"
+              icon={Hand}
+              className="col-6"
+            />
+          ) : (
+            <CardSmall
+              action={helpUrl('volunteer')}
+              title="Volunteer"
+              description="Help us build important AI safety infrastructure—all skill sets and levels of time commitment are valuable"
+              icon={Hand}
+              className="col-4"
+            />
+          ))}
+        {current !== 'grassroots' &&
+          (singleCardLayout ? (
+            <Card
+              action={helpUrl('grassroots')}
+              title="Spread the word & grassroots activism"
+              description="For anyone—help us spread the word about this issue"
+              icon={Megaphone}
+              className="col-6"
+            />
+          ) : (
+            <CardSmall
+              action={helpUrl('grassroots')}
+              title="Spread the word & grassroots activism"
+              description="For anyone—help us spread the word about this issue"
+              icon={Megaphone}
+              className="col-4"
+            />
+          ))}
+      </div>
     </div>
-    <p className="large-bold padding-bottom-40">{footerSubheader}</p>
-    <div className="flexbox">
-      {current !== 'career' && (
-        <CardSmall
-          action={helpUrl('career')}
-          title="Start a career in AI safety"
-          description="There are both technical and non-technical roles across research, policy, and field-building"
-          icon={Briefcase}
-          className="col-4"
-        />
-      )}
-      {current !== 'donate' && (
-        <CardSmall
-          action={helpUrl('donate')}
-          title="Donate"
-          description="The AI safety field is constrained by funding—financial help is critical at this moment"
-          icon={PiggyBank}
-          className="col-4"
-        />
-      )}
-      {current !== 'volunteer' && (
-        <CardSmall
-          action={helpUrl('volunteer')}
-          title="Volunteer"
-          description="Help us build important AI safety infrastructure—all skill sets and levels of time commitment are valuable"
-          icon={Hand}
-          className="col-4"
-        />
-      )}
-      {current !== 'grassroots' && (
-        <CardSmall
-          action={helpUrl('grassroots')}
-          title="Spread the word & grassroots activism"
-          description="For anyone—help us spread the word about this issue"
-          icon={Megaphone}
-          className="col-4"
-        />
-      )}
-    </div>
-  </div>
-)
+  )
+}
 export default HelpMethods

@@ -1,10 +1,10 @@
 import {MetaFunction} from '@remix-run/node'
 import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
-import PlayIcon from '~/components/icons-generated/Play'
+import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -12,15 +12,15 @@ export const meta: MetaFunction = () => {
 
 const NewToAISafety = () => (
   <>
-    <div className="padding-bottom-80">
+    <div className="padding-bottom-56">
       <div className="flexbox padding-bottom-56">
         <h2 className="teal-500 padding-bottom-4 col-8" id="new-to-aisafety">
-          If you're somewhat new to AI safety, we recommend an introductory overview
+          If you{'\u2019'}re somewhat new to AI safety, we recommend an introductory overview
         </h2>
       </div>
       <HelpItem
         title="Browse our introductory content"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Top recommendation',
@@ -30,12 +30,8 @@ const NewToAISafety = () => (
           {
             title: 'Intro to AI safety video playlist',
             action: 'https://www.youtube.com/playlist?list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE',
-            image: (
-              <div>
-                <img src={VideoImg} alt="video-playlist" />
-                <PlayIcon />
-              </div>
-            ),
+            image: <VideoThumbnail imageUrl={VideoImg} altText="video-playlist" />,
+            isVideo: true,
           },
         ]}
       >
@@ -85,7 +81,6 @@ const Dropdowns = () => (
   <div className="padding-bottom-80">
     <DropDown title="Books are more my thing">
       <HelpItem
-        className="padding-bottom-40"
         links={[
           {
             tag: 'Top recommendation',
@@ -116,7 +111,7 @@ const Dropdowns = () => (
 
     <DropDown title="I want something I can subscribe to (YouTube channels, newsletters, etc.)">
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         title="YouTube"
         links={[
           {
@@ -132,7 +127,7 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         title="Podcast series"
         links={[
           {
@@ -161,7 +156,7 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         title="Newsletter"
         links={[
           {
@@ -195,12 +190,12 @@ const Dropdowns = () => (
 const DiveDeeper = () => (
   <>
     <div>
-      <h2 className="teal-500 padding-bottom-40" id="dive-deeper">
+      <h2 className="teal-500 padding-bottom-56" id="dive-deeper">
         If you want to dive deeper
       </h2>
       <HelpItem
         title="Take an online course"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Highlighted course',
@@ -226,7 +221,6 @@ const DiveDeeper = () => (
             </a>
           </>
         }
-        // TODO: fix additionalInfo appearing for each link
       >
         <p className="grey default padding-bottom-16">
           We recommend taking an online course if your interests have narrowed to a specific subset
@@ -263,7 +257,7 @@ const DiveDeeper = () => (
 
       <HelpItem
         title="Get into LessWrong and its subset, the Alignment Forum"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Most widely-used',
@@ -285,7 +279,7 @@ const DiveDeeper = () => (
 
       <HelpItem
         title="Sign up for events"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Top recommendation',

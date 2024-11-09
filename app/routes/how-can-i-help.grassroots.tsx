@@ -1,6 +1,6 @@
 import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
@@ -36,7 +36,7 @@ const WhatYouCanDo = () => (
     <h2 className="teal-500 padding-bottom-64">What you can do, right now</h2>
     <div>
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-64"
         title="Share a video or article on social media"
         tag="2 min"
         links={[
@@ -45,6 +45,7 @@ const WhatYouCanDo = () => (
             title: "A.I. - Humanity's Final Invention?",
             action: 'https://youtu.be/fa8k8IQ1_X0?si=b2l0Ex6KQvt6JyQD',
             image: <VideoThumbnail imageUrl={VideoImg} altText="video-playlist" />,
+            isVideo: true,
           },
         ]}
         additionalInfo={
@@ -68,7 +69,7 @@ const WhatYouCanDo = () => (
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-64"
         title="Send an email to a politician"
         tag="8 min"
         links={[
@@ -86,7 +87,7 @@ const WhatYouCanDo = () => (
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-64"
         title="Join a PauseAI protest"
         tag="3–6 hours"
         links={[
@@ -100,7 +101,7 @@ const WhatYouCanDo = () => (
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-64"
         title="Talk to people about this topic"
         links={[
           {

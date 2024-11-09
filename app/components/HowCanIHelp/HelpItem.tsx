@@ -10,6 +10,7 @@ type HelpItemProps = {
   titleFont?: 'large-bold' | 'default-bold' | 'large-bold'
   className?: string
 }
+
 const HelpItem = ({
   title,
   tag,
@@ -31,14 +32,17 @@ const HelpItem = ({
         <p className="grey default"> {children} </p>
       </div>
       <div className="col-6">
-        {links?.map((link) => (
+        {links?.map((link, index) => (
           <div key={link.title} className="padding-bottom-16">
             <LinkCard action={link.action || '#'} {...link} />
-            {additionalInfo && <p className="small grey padding-top-16">{additionalInfo}</p>}
+            {index === links.length - 1 && additionalInfo && (
+              <p className="small grey padding-top-16">{additionalInfo}</p>
+            )}
           </div>
         ))}
       </div>
     </div>
   )
 }
+
 export default HelpItem

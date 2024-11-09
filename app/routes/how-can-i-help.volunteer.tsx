@@ -1,7 +1,7 @@
 import {MetaFunction} from '@remix-run/node'
 import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import BaginskiImg from '~/assets/Baginski.jpeg'
@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 
 const TopText = () => (
   <>
-    <div className="padding-bottom-80">
+    <div className="padding-bottom-64">
       <div className="flexbox-alt">
         <div className="col-6-alt">
           <p className="default-bold padding-bottom-16">Who</p>
@@ -67,7 +67,7 @@ const Options = () => (
       <div>
         <HelpItem
           title="Sign up for free 1-on-1 volunteering advice with AI Safety Quest & 80,000 Hours"
-          className="padding-bottom-40"
+          className="padding-bottom-64"
           links={[
             {
               title: 'Book your AI Safety Quest call',
@@ -93,7 +93,7 @@ const Options = () => (
 
         <HelpItem
           title="Join the monthly AED calls"
-          className="padding-bottom-40"
+          className="padding-bottom-64"
           links={[
             {
               title: 'Add the next AED call to your calendar',

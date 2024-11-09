@@ -8,14 +8,18 @@ export type Link = {
   image?: ReactNode
   tag?: string
   action?: string
+  isVideo?: boolean
 }
 
 export type LinkCardProps = Link & {
   className?: string
 }
 
-const LinkCard: React.FC<LinkCardProps> = ({title, image, tag, action, className}) => (
-  <Button action={action} className={`link-card ${className}`}>
+const LinkCard: React.FC<LinkCardProps> = ({title, image, tag, action, isVideo, className}) => (
+  <Button
+    action={action}
+    className={`link-card ${className} ${isVideo ? 'video-padding' : 'padding-32'}`}
+  >
     <p className="default-bold flexbox gap-16 center-align">
       {image && <span className="image">{image}</span>}
       <div className="flexbox flex-column gap-8">
