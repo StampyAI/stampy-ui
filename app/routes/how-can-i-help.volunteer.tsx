@@ -41,8 +41,8 @@ const Dropdowns = () => (
       <div className="col-7-alt">
         <p>
           About 90% of volunteer work is online, and involves field-building through communication,
-          advocacy, or software development; providing feedback on research; or building or
-          organizing online groups. In-person volunteer work would entail organizing meetups,
+          advocacy, or software development; providing feedback on research; or establishing or
+          organizing online groups. In-person volunteer work may entail organizing meetups,
           protests, or retreats.
         </p>
       </div>
@@ -51,7 +51,7 @@ const Dropdowns = () => (
       <div className="col-7-alt">
         <p>
           Typically volunteers commit up to several hours a week for at least a few months. However,
-          volunteers that accomplished one 15 minute task a week, consistently, have also been very
+          volunteers that accomplish one 15-minute task a week, consistently, can also be very
           helpful. What’s most important is that you understand how much you are able to commit
           upfront, and follow through with that commitment.
         </p>
@@ -81,7 +81,7 @@ const Options = () => (
         >
           <div>
             <p className="padding-bottom-24">
-              Get personalized volunteering advice in a thirty minute or one hour video call. We
+              Get personalized volunteering advice in a 30-minute or one hour video call. We
               recommend booking both!
             </p>
             <div>
@@ -117,9 +117,9 @@ const Options = () => (
         >
           <p>
             {' '}
-            Alignment Ecosystem Development (AED) is an organization and community of volunteers
-            supporting online AI safety field-building projects like AISafety.com and AI Safety
-            Quest. You can join an existing project or pitch your own to recruit help.
+            Alignment Ecosystem Development (AED) is a nonprofit organization and community of
+            volunteers supporting online AI safety field-building projects like AISafety.com and AI
+            Safety Quest. You can join an existing project or pitch your own to recruit help.
           </p>
         </HelpItem>
 
@@ -133,8 +133,8 @@ const Options = () => (
           ]}
         >
           <p>
-            Browse our list of online AI safety field-building projects. Email the contact person
-            expressing your interest.
+            Browse our list of online AI safety field-building projects and email the contact person
+            expressing your interest
           </p>
         </HelpItem>
       </div>

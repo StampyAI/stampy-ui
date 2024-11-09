@@ -28,7 +28,7 @@ export default function Card({
     <Button action={action} className={className}>
       <div className="card-icon">{icon({})}</div>
       <div className="card-content">
-        <p className="extra-large-bold padding-bottom-8">{title}</p>
+        <p className="large-bold padding-bottom-8">{title}</p>
         <p className="grey padding-bottom-16">{description}</p>
         {actionDesc && (
           <p className="default-bold teal-500">

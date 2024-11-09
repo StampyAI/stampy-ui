@@ -117,13 +117,6 @@ h2 {
 
 /* typography classes */
 
-.extra-large {
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.44px;
-}
-
 .large {
   font-size: 20px;
   font-weight: 300;
@@ -137,13 +130,6 @@ h2 {
   line-height: 190%; /* 30.6px */
   letter-spacing: -0.44px;
   /* this is only for the body of articles, don't use it anywhere else */
-}
-
-.extra-large-bold {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.44px;
 }
 
 .large-bold {

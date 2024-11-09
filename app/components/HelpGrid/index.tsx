@@ -6,7 +6,7 @@ const helpItems = [
   {
     title: 'Start a career in AI safety',
     description:
-      'For both technical and non-technical roles in AI alignment, governance, and field-building',
+      'There are both technical and non-technical roles across research, policy, and field-building',
     impact: 'Highest direct impact',
     icon: Briefcase,
     action: helpUrl('career'),

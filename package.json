@@ -3,10 +3,10 @@
   "description": "",
   "license": "MIT",
   "dependencies": {
-    "@remix-run/cloudflare": "^2.6.0",
-    "@remix-run/cloudflare-workers": "^2.6.0",
-    "@remix-run/css-bundle": "^1.19.3",
-    "@remix-run/react": "^2.6.0",
+    "@remix-run/cloudflare-workers": "^2.13.1",
+    "@remix-run/cloudflare": "^2.13.1",
+    "@remix-run/css-bundle": "^2.13.1",
+    "@remix-run/react": "^2.13.1",
     "client-zip": "^2.4.5",
     "copy-to-clipboard": "^3.3.3",
     "isbot": "^4",
@@ -17,12 +17,12 @@
     "react": "^18.2.0",
     "react-auto-height": "^1.2.1",
     "react-dom": "^18.2.0",
-    "remix": "^2.6.0"
+    "remix": "^2.13.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240129.0",
-    "@remix-run/dev": "^2.6.0",
-    "@remix-run/testing": "^2.6.0",
+    "@remix-run/dev": "^2.13.1",
+    "@remix-run/testing": "^2.13.1",
     "@storybook/addon-designs": "^7.0.9",
     "@storybook/addon-essentials": "^7.6.8",
     "@storybook/addon-interactions": "^7.6.8",
@@ -58,7 +58,7 @@
     "storybook": "^7.6.8",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "~5.3.3",
+    "typescript": "^5.3.3",
     "vite": "^5.0.8",
     "wrangler": "^3.24.0"
   },

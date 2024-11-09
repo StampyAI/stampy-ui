@@ -62,7 +62,7 @@ const WhatYouCanDo = () => (
         }
       >
         <p>
-          We recommend sharing A.I. - &ldquo;Humanity's Final Invention?&rdquo;, which gives an
+          We recommend sharing &ldquo;A.I. - Humanity's Final Invention?&rdquo;, which gives an
           accessible overview of the topic of AI and existential risk
         </p>
       </HelpItem>
@@ -139,8 +139,9 @@ const WhatYouCanDo = () => (
         }
       >
         <p>
-          Add your signature next to Elon Musk, Steve Wozniak, and “godfather of AI” Yoshua Bengio
-          in the most well-known AI safety petition, “Pause Giant AI Experiments: An Open Letter”
+          Add your signature next to that of Elon Musk, Steve Wozniak, and “godfather of AI” Yoshua
+          Bengio in the most well-known AI safety petition, “Pause Giant AI Experiments: An Open
+          Letter”
         </p>
       </HelpItem>
     </div>

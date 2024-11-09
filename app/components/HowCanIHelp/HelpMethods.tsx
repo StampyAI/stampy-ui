@@ -58,15 +58,16 @@ const knowledgeDescriptions = {
   donate:
     'Knowing more about this topic will allow you to make wiser donation decisions, meaning your funds will have a greater impact',
   grassroots:
-    'The second-best way to increase your impact as an advocate is educating yourself on your own',
-  volunteer: 'The more you know about this topic, the further your volunteer efforts will go',
+    'The second-best way to increase your impact as an advocate is to continue educating yourself',
+  volunteer:
+    'Knowing more about this topic will allow you to better allocate your volunteer time, allowing you to have a greater impact',
   community:
     'Learning about AI safety equips you to effectively contribute to discussions and influence its development',
 }
 
 const communityDescriptions = {
   donate:
-    'Connecting with other advocates online or in person will help guide donation decisions, and can be motivating',
+    'Connecting with others in AI safety—either online or in person—will help guide donation decisions, and can be motivating',
   grassroots:
     'Connecting with other advocates online or in person will be supportive in your advocacy efforts',
   volunteer:
@@ -145,7 +146,7 @@ const HelpMethods = ({
         <CardSmall
           action={helpUrl('career')}
           title="Start a career in AI safety"
-          description="For both technical and non-technical roles in research, policy, and field-building"
+          description="There are both technical and non-technical roles across research, policy, and field-building"
           icon={Briefcase}
           className="col-4"
         />
@@ -163,7 +164,7 @@ const HelpMethods = ({
         <CardSmall
           action={helpUrl('volunteer')}
           title="Volunteer"
-          description="Help us build important AI safety infrastructure—all skill sets and levels of time commitment are wanted"
+          description="Help us build important AI safety infrastructure—all skill sets and levels of time commitment are valuable"
           icon={Hand}
           className="col-4"
         />
