@@ -18,7 +18,7 @@ export type LinkCardProps = Link & {
 const LinkCard: React.FC<LinkCardProps> = ({title, image, tag, action, isVideo, className}) => (
   <Button
     action={action}
-    className={`link-card ${className} ${isVideo ? 'video-padding' : 'padding-32'}`}
+    className={`link-card ${className} ${isVideo ? 'video-padding' : 'default-padding'}`}
   >
     <p className="default-bold flexbox gap-16 center-align">
       {image && <span className="image">{image}</span>}

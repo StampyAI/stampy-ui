@@ -32,14 +32,12 @@ const HelpItem = ({
         <p className="grey default"> {children} </p>
       </div>
       <div className="col-6">
-        {links?.map((link, index) => (
+        {links?.map((link) => (
           <div key={link.title} className="padding-bottom-16">
             <LinkCard action={link.action || '#'} {...link} />
-            {index === links.length - 1 && additionalInfo && (
-              <p className="small grey padding-top-16">{additionalInfo}</p>
-            )}
           </div>
         ))}
+        {additionalInfo && <p className="small grey">{additionalInfo}</p>}
       </div>
     </div>
   )
