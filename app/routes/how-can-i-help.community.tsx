@@ -10,10 +10,10 @@ const InPerson = () => (
   <>
     <div className="padding-bottom-56">
       <div className="padding-bottom-40">
-        <h2 className="teal-500 padding-bottom-40">In-person communities</h2>
+        <h2 className="teal-500 padding-bottom-32">In-person communities</h2>
         <p className="grey default col-6">
-          In-person communities provide general purpose support, networking, and socializing for
-          anyone interested in contributing to AI safety.
+          In-person communities provide general support, networking, and socializing for anyone
+          interested in contributing to AI safety.
         </p>
       </div>
       <HelpItem
@@ -57,7 +57,7 @@ const InPerson = () => (
 const Online = () => (
   <>
     <div className="padding-bottom-40">
-      <h2 className="teal-500 padding-bottom-40">Online communities</h2>
+      <h2 className="teal-500 padding-bottom-32">Online communities</h2>
       <p className="grey default col-6">
         Online communities typically exist on Slack, Discord (an app like Slack), or website forums,
         and tend to serve more specific purposes:
@@ -97,16 +97,17 @@ const Online = () => (
       title="Focused on one activity"
       links={[
         {
-          title: 'Join a PauseAI event',
-          action: 'https://pauseai.info/events',
+          title: 'PauseAI Discord',
+          action: 'https://discord.gg/pauseai-1100491867675709580',
         },
       ]}
       className="padding-bottom-40"
     >
       <p className="grey default">
-        You can volunteer for projects and attend protests. People are divided regarding whether
-        protests or a pause in AI development are a good idea, but if it's something you want to do,
-        PauseAI is a reliable organization in that space.
+        Some communities are largely dedicated to one particular activity, such as running volunteer
+        projects or organizing protests. People are divided regarding whether protests are a good
+        idea, but if it's something you want to do, PauseAI is a reliable organization in that
+        space.
       </p>
     </HelpItem>
 
@@ -121,7 +122,7 @@ const Online = () => (
       ]}
     >
       <p className="grey default">
-        Deep strategic and technical discussions regarding AI alignment and AI governance.
+        Deep strategic and technical discussions regarding AI alignment and governance.
       </p>
     </HelpItem>
   </>
@@ -129,7 +130,7 @@ const Online = () => (
 
 export default function Community() {
   return (
-    <Base title="Join the community" current="community">
+    <Base title="Join a community" current="community">
       <InPerson />
 
       <Online />

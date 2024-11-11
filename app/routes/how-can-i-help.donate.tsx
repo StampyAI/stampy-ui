@@ -1,8 +1,8 @@
 import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -11,15 +11,15 @@ export const meta: MetaFunction = () => {
 export default function Donate() {
   return (
     <Base title="Donate" current="donate">
-      <div className="padding-bottom-80">
+      <div className="padding-bottom-56">
         <div className="flexbox-alt">
           <div className="col-6-alt">
             <p className="default-bold padding-bottom-16">Who</p>
             <p className="grey default">
               All donations are helpful. A kind-hearted person with $10 extra a month, a mid-salary
               professional wishing to donate 10% of their income, or a well-off philanthropist
-              looking to create major change for good can all financially contribute to advance this
-              effort.
+              looking to create major change for good can all make a useful contribution to
+              advancing this effort.
             </p>
           </div>
           <div className="col-6-alt">
@@ -38,13 +38,12 @@ export default function Donate() {
         <HelpItem
           title="Donating to grantmakers"
           tag="Easiest & most common"
-          className="padding-bottom-40"
+          className="padding-bottom-56"
           links={[
             {
               tag: 'Top recommendation',
               title: 'Long-Term Future Fund',
-              action:
-                'https://www.givingwhatwecan.org/charities/long-term-future-fund?utm_source=eafunds',
+              action: 'https://www.givingwhatwecan.org/charities/long-term-future-fund',
             },
           ]}
           additionalInfo={
@@ -75,23 +74,14 @@ export default function Donate() {
         <HelpItem
           title="Donating directly to individuals & smaller organizations"
           tag="Potential for highest impact"
-          className="padding-bottom-40"
+          className="padding-bottom-56"
           links={[
             {
-              tag: 'Top recommendation',
-              title: 'Long-Term Future Fund',
+              title: 'Shallow review of live agendas in alignment & safety',
               action:
-                'https://www.givingwhatwecan.org/charities/long-term-future-fund?utm_source=eafunds',
+                'https://www.lesswrong.com/posts/zaaGsFBeDTpCsYHef/shallow-review-of-live-agendas-in-alignment-and-safety',
             },
           ]}
-          additionalInfo={
-            <>
-              Or, browse our{' '}
-              <a href="https://www.aisafety.com/donation-guide" className="small-bold teal-500">
-                other grantmaker recommendations
-              </a>
-            </>
-          }
         >
           <p className="padding-bottom-16">
             If you have insights into the key obstacles or opportunities that could make a big
@@ -99,10 +89,10 @@ export default function Donate() {
             (like a plane ticket to a conference) for impactful individuals or small organizations.
           </p>
           <p>
-            Donating directly can bypass traditional grantmaking, provide immediate impact, and
-            allow you to share valuable insights. It diversifies funding sources, reduces reliance
-            on large donors, and supports those who would otherwise face a lengthy grant application
-            process.
+            Donating directly bypasses traditional grantmaking, providing immediate impact and
+            allowing you to share valuable insights. It diversifies funding sources, reduces
+            reliance on large donors, and supports those who may otherwise face a lengthy grant
+            application process.
           </p>
         </HelpItem>
 

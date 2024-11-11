@@ -6,12 +6,19 @@
   gap: var(--spacing-8);
   border: 1px solid var(--colors-cool-grey-200);
   border-radius: var(--border-radius);
-  padding: var(--spacing-16) var(--spacing-24);
   position: relative;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
   width: 100%;
   align-items: start;
+}
+
+.default-padding {
+  padding: var(--spacing-16) var(--spacing-24);
+}
+
+.video-padding {
+  padding: var(--spacing-8);
 }
 
 .link-card:hover {

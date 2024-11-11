@@ -40,6 +40,7 @@
   --spacing-48: 48px;
   --spacing-56: 56px;
   --spacing-64: 64px;
+  --spacing-76: 76px;
   --spacing-80: 80px;
   --spacing-104: 104px;
   --spacing-128: 128px;
@@ -117,13 +118,6 @@ h2 {
 
 /* typography classes */
 
-.extra-large {
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.44px;
-}
-
 .large {
   font-size: 20px;
   font-weight: 300;
@@ -139,16 +133,9 @@ h2 {
   /* this is only for the body of articles, don't use it anywhere else */
 }
 
-.extra-large-bold {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: -0.44px;
-}
-
 .large-bold {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 170%; /* 30.6px */
   letter-spacing: -0.44px;
 }
@@ -163,7 +150,7 @@ h2 {
 
 .default-bold {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 170%; /* 27.2px */
   letter-spacing: -0.18px;
 }
@@ -271,6 +258,10 @@ h2 {
   padding-bottom: var(--spacing-64) !important;
 }
 
+.padding-bottom-76 {
+  padding-bottom: var(--spacing-76) !important;
+}
+
 .padding-bottom-80 {
   padding-bottom: var(--spacing-80) !important;
 }
@@ -325,6 +316,10 @@ h2 {
 
 .padding-top-64 {
   padding-top: var(--spacing-64) !important;
+}
+
+.padding-top-76 {
+  padding-top: var(--spacing-76) !important;
 }
 
 .padding-top-80 {
@@ -830,6 +825,7 @@ button {
     --spacing-48: 32px;
     --spacing-56: 32px;
     --spacing-64: 40px;
+    --spacing-76: 44px;
     --spacing-80: 48px;
     --spacing-104: 64px;
     --spacing-128: 64px;

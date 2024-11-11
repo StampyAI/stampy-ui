@@ -1,10 +1,10 @@
 import {MetaFunction} from '@remix-run/node'
 import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CatgoryCarousel'
+import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
-import PlayIcon from '~/components/icons-generated/Play'
+import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -12,15 +12,15 @@ export const meta: MetaFunction = () => {
 
 const NewToAISafety = () => (
   <>
-    <div className="padding-bottom-80">
+    <div className="padding-bottom-56">
       <div className="flexbox padding-bottom-56">
         <h2 className="teal-500 padding-bottom-4 col-8" id="new-to-aisafety">
-          If you're somewhat new to AI safety, we recommend an introductory overview
+          If you{'\u2019'}re somewhat new to AI safety, we recommend an introductory overview
         </h2>
       </div>
       <HelpItem
         title="Browse our introductory content"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Top recommendation',
@@ -30,18 +30,14 @@ const NewToAISafety = () => (
           {
             title: 'Intro to AI safety video playlist',
             action: 'https://www.youtube.com/playlist?list=PLWQikawCP4UFM_ziLf9X2rcOLCSbqisRE',
-            image: (
-              <div>
-                <img src={VideoImg} alt="video-playlist" />
-                <PlayIcon />
-              </div>
-            ),
+            image: <VideoThumbnail imageUrl={VideoImg} altText="video-playlist" />,
+            isVideo: true,
           },
         ]}
       >
         <p className="grey default padding-bottom-16">
-          Our website’s “Intro to AI safety” micro-course includes several short readings that act
-          as a comprehensive introduction the topic of AI safety.
+          Our “Intro to AI safety” micro-course is comprised of a collection of short readings that
+          serve as a comprehensive introduction to the topic of AI safety.
         </p>
         <p className="grey default">
           Our Intro to AI safety video playlist illustrates many of the most important points about
@@ -72,9 +68,9 @@ const NewToAISafety = () => (
         }
       >
         <p className="grey default">
-          We recommend Dwarkesh Patel’s interview with Paul Christiano, a leading researcher in AI
-          alignment and safety. The interview provides an introduction to AI risk and discusses many
-          important AI safety concepts.
+          We recommend Dwarkesh Patel’s interview with Paul Christiano, a leading alignment
+          researcher. The interview provides an introduction to AI risk and discusses many important
+          AI safety concepts.
         </p>
       </HelpItem>
     </div>
@@ -85,7 +81,6 @@ const Dropdowns = () => (
   <div className="padding-bottom-80">
     <DropDown title="Books are more my thing">
       <HelpItem
-        className="padding-bottom-40"
         links={[
           {
             tag: 'Top recommendation',
@@ -116,7 +111,7 @@ const Dropdowns = () => (
 
     <DropDown title="I want something I can subscribe to (YouTube channels, newsletters, etc.)">
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         title="YouTube"
         links={[
           {
@@ -127,18 +122,17 @@ const Dropdowns = () => (
         ]}
       >
         We recommend the YouTube channel Robert Miles AI Safety, which presents complex AI safety
-        concepts in an accessible format to foster understanding and awareness about the ethical and
-        safety considerations in AI development. (Rob is also the founder of this site,
-        AISafety.info).
+        concepts in an accessible format to foster awareness and understanding of the ethical and
+        safety considerations in AI development. Note: Rob is also the founder of this site.
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         title="Podcast series"
         links={[
           {
             tag: 'Top recommendation',
-            title: '80,000 Hours',
+            title: '80,000 Hours Podcast',
             action: 'https://80000hours.org/podcast/',
           },
         ]}
@@ -162,7 +156,7 @@ const Dropdowns = () => (
       </HelpItem>
 
       <HelpItem
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         title="Newsletter"
         links={[
           {
@@ -187,8 +181,7 @@ const Dropdowns = () => (
           },
         ]}
       >
-        We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety
-        and alignment.
+        We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety.
       </HelpItem>
     </DropDown>
   </div>
@@ -197,12 +190,12 @@ const Dropdowns = () => (
 const DiveDeeper = () => (
   <>
     <div>
-      <h2 className="teal-500 padding-bottom-40" id="dive-deeper">
+      <h2 className="teal-500 padding-bottom-56" id="dive-deeper">
         If you want to dive deeper
       </h2>
       <HelpItem
         title="Take an online course"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Highlighted course',
@@ -228,7 +221,6 @@ const DiveDeeper = () => (
             </a>
           </>
         }
-        // TODO: fix additionalInfo appearing for each link
       >
         <p className="grey default padding-bottom-16">
           We recommend taking an online course if your interests have narrowed to a specific subset
@@ -265,12 +257,12 @@ const DiveDeeper = () => (
 
       <HelpItem
         title="Get into LessWrong and its subset, the Alignment Forum"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Most widely-used',
             title: 'LessWrong',
-            action: 'https://www.lesswrong.com/',
+            action: 'https://www.lesswrong.com/tag/ai',
           },
           {
             title: 'Alignment Forum',
@@ -287,7 +279,7 @@ const DiveDeeper = () => (
 
       <HelpItem
         title="Sign up for events"
-        className="padding-bottom-40"
+        className="padding-bottom-56"
         links={[
           {
             tag: 'Top recommendation',

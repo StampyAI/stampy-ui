@@ -7,16 +7,17 @@ type HelpItemProps = {
   children: ReactNode
   links?: Link[]
   additionalInfo?: ReactNode
-  titleFont?: 'large-bold' | 'default-bold' | 'extra-large-bold'
+  titleFont?: 'large-bold' | 'default-bold' | 'large-bold'
   className?: string
 }
+
 const HelpItem = ({
   title,
   tag,
   children,
   links,
   additionalInfo,
-  titleFont = 'extra-large-bold',
+  titleFont = 'large-bold',
   className = '',
 }: HelpItemProps) => {
   return (
@@ -34,11 +35,12 @@ const HelpItem = ({
         {links?.map((link) => (
           <div key={link.title} className="padding-bottom-16">
             <LinkCard action={link.action || '#'} {...link} />
-            {additionalInfo && <p className="small grey padding-top-16">{additionalInfo}</p>}
           </div>
         ))}
+        {additionalInfo && <p className="small grey">{additionalInfo}</p>}
       </div>
     </div>
   )
 }
+
 export default HelpItem

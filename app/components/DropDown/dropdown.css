@@ -22,16 +22,24 @@
 .drop-down-content {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-out;
+  transition: max-height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: 0;
+  transition:
+    max-height 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .drop-down-content.open {
   max-height: 2000px;
-  padding-bottom: var(--spacing-40);
+  padding-bottom: var(--spacing-32);
+}
+
+.drop-down-inner {
+  padding-bottom: var(--spacing-32);
 }
 
 .drop-down-chevron {
-  transition: transform 0.3s ease-out;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transform: rotate(90deg);
 }
 
