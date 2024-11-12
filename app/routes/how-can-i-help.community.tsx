@@ -105,9 +105,7 @@ const Online = () => (
     >
       <p className="grey default">
         Some communities are largely dedicated to one particular activity, such as running volunteer
-        projects or organizing protests. People are divided regarding whether protests are a good
-        idea, but if it's something you want to do, PauseAI is a reliable organization in that
-        space.
+        projects or organizing protests.
       </p>
     </HelpItem>
 

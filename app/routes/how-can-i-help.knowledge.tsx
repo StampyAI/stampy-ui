@@ -36,8 +36,8 @@ const NewToAISafety = () => (
         ]}
       >
         <p className="grey default padding-bottom-16">
-          Our “Intro to AI safety” micro-course is comprised of a collection of short readings that
-          serve as a comprehensive introduction to the topic of AI safety.
+          Our “Intro to AI safety” micro-course is a collection of short readings that serve as a
+          comprehensive introduction to the topic of AI safety.
         </p>
         <p className="grey default">
           Our Intro to AI safety video playlist illustrates many of the most important points about
@@ -68,7 +68,7 @@ const NewToAISafety = () => (
         }
       >
         <p className="grey default">
-          We recommend Dwarkesh Patel’s interview with Paul Christiano, a leading alignment
+          We recommend Dwarkesh Patel’s interview with Paul Christiano, a leading AI safety
           researcher. The interview provides an introduction to AI risk and discusses many important
           AI safety concepts.
         </p>

@@ -405,7 +405,7 @@ const FieldBuildingPath = () => (
             to you or fits your skillset. You may be a particularly good fit if you have a strong
             sense of agency or leadership, or you are creative. That said, a large variety of roles
             exist within field-building, so it’s likely that you can adapt whatever skillset you
-            have to be useful.
+            have to a role.
           </p>
         </div>
       </div>
@@ -640,7 +640,7 @@ const CareerPaths = () => {
           action={() => smoothScroll('research')}
           iconColor="var(--colors-teal-700)"
           title="AI alignment research"
-          description="Research roles dedicated to solving the technical challenge of AI alignment, and non—technical supporting roles"
+          description="Research roles dedicated to solving the technical challenge of AI alignment, and non-technical supporting roles"
           icon={Microscope}
           className="col-4"
         />
