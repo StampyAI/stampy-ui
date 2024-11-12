@@ -73,7 +73,7 @@ const Menu = ({state, setState}: MenuProps) => {
         )}
         {isMenu && (
           <MenuItem
-            label="AI safety Chatbot"
+            label="AI Safety Chatbot"
             Icon={BotIcon}
             action={() => (window.location.href = '/chat/')}
           />
