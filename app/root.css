@@ -135,7 +135,7 @@ h2 {
 
 .large-bold {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 170%; /* 30.6px */
   letter-spacing: -0.44px;
 }
@@ -150,7 +150,7 @@ h2 {
 
 .default-bold {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 170%; /* 27.2px */
   letter-spacing: -0.18px;
 }
