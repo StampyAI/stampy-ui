@@ -30,7 +30,7 @@
 }
 
 .drop-down-content.open {
-  max-height: 2000px;
+  max-height: 4000px;
   padding-bottom: var(--spacing-32);
 }
 

@@ -15,7 +15,7 @@ export default function HowCanIHelp() {
           <h1 className="teal-500 col-7">
             How can I help with<br></br> AI safety?
           </h1>
-          <p className="large col-5">
+          <p className="large col-5 desktop-only">
             The AI safety movement is still relatively new, and your actions could have significant
             impact. Here's what you can do:
           </p>

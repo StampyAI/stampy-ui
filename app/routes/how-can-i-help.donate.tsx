@@ -122,20 +122,14 @@ export default function Donate() {
           src="/assets/guy.jpeg"
           title="Søren Elverlin"
           description="I've directly funded several small-scale AI safety projects and found it highly rewarding. The field is often funding-constrained, and many valuable projects are overlooked by large funders. By taking time to understand individuals' goals and approaches, I've been able to make a meaningful impact with targeted, direct donations."
-          layout="expanded"
-        />
-        {/* TESTIMONIALS TEMPORARILY REMOVED
-        <Testimonial
-          src="/assets/guy.jpeg"
-          title="Lorem ipsum"
-          description="Lorem ipsum dolor sit amet consectetur. Ultricies neque pellentesque sit sit diam. Magna
-          enim risus netus lacinia. Metus sit quis mollis est justo posuere dui potenti blandit. Velit
-          enim integer a etiam vel. Nec gravida pulvinar congue integer leo mi euismod. Nulla in sit
-          molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor. leo mi euismod. Nulla in sit
-          molestie ut velit ultricies justo nulla. Ipsum turpis purus tempor."
           className="col-6"
         />
-      */}
+        <Testimonial
+          src="/assets/green.jpg"
+          title="Robin Green"
+          description="Having no expertise in AI safety and being time-poor, I didn’t have the capacity to figure out myself which projects or groups would do the most good. Then I heard about the Long-Term Future Fund, a charity which does the hard work of figuring out what to fund in AI safety. The quality of the people behind the fund and their well-reasoned decisions convinced me to donate through them, and I’m very happy with my choice."
+          className="col-6"
+        />
       </div>
 
       <div>
