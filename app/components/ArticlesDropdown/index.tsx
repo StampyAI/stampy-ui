@@ -29,22 +29,41 @@ type ArticlesSectionProps = {
   className?: string
   hide: () => void
 }
-const ArticlesSection = ({category, toc, className, hide}: ArticlesSectionProps) => (
-  <div className={className || ''}>
-    <div className="default-bold">{category} sections</div>
-    {toc
-      .filter((item) => item.category === category)
-      .map((item: TOCItem) => (
-        <Link
-          key={`${item.pageid}-${item.title}`}
-          to={questionUrl(item)}
-          text={item.title}
-          pageid={item.pageid}
-          onClick={hide}
-        />
-      ))}
-  </div>
-)
+const ArticlesSection = ({category, toc, className, hide}: ArticlesSectionProps) => {
+  // Create the custom TOCItem for "How can I help?" that redirects to the splash page
+  const howCanIHelpItem: TOCItem = {
+    title: 'How can I help?',
+    pageid: 'how-can-i-help',
+    hasText: true,
+    category: INTRODUCTORY,
+    order: 999, // Place it at the end
+    ttr: 15,
+  }
+
+  const items = toc
+    .filter((item) => item.category === category)
+    .concat(category === INTRODUCTORY ? [howCanIHelpItem] : [])
+
+    return (
+      <div className={className || ''}>
+        <div className="default-bold">{category} sections</div>
+        {items.map((item: TOCItem) => {
+          // Determine the correct URL based on whether it's how-can-i-help or not
+          const to = item.pageid === 'how-can-i-help' ? '/how-can-i-help' : questionUrl(item)
+          
+          return (
+            <Link
+              key={`${item.pageid}-${item.title}`}
+              to={to}
+              text={item.title}
+              pageid={item.pageid}
+              onClick={hide}
+            />
+          )
+        })}
+      </div>
+    )
+  }
 
 export type ArticlesDropdownProps = {
   toc: TOCItem[]
