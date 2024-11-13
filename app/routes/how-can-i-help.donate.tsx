@@ -127,7 +127,7 @@ export default function Donate() {
         <Testimonial
           src="/assets/green.jpg"
           title="Robin Green"
-          description="Having no expertise in AI safety and being time-poor, I didn’t have the capacity to figure out myself which projects or groups would do the most good. Then I heard about the Long-Term Future Fund, a charity which does the hard work of figuring out what to fund in AI safety. The quality of the people behind the fund and their well-reasoned decisions convinced me to donate through them, and I’m very happy with my choice."
+          description="With a full-time job and no expertise in AI safety, I didn’t have the time or energy to figure out which projects or groups would do the most good. Then I heard about the Long-Term Future Fund, a charity which does the hard work of figuring out what to fund in AI safety. I read up about the people running it and thought they were making reasonable decisions, so I decided to donate through them. I’m very happy with my choice."
           className="col-6"
         />
       </div>
