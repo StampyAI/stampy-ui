@@ -899,7 +899,7 @@ button {
   }
 
   .large-bold {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     font-weight: 500;
     line-height: 170%; /* 30.6px */
@@ -933,6 +933,16 @@ button {
     margin: 198px auto;
     background-color: var(--colors-white);
     width: 85%;
+  }
+
+  /* ensure card titles stay dark on mobile */
+  .card-small .title {
+    color: var(--colors-black) !important;
+  }
+
+  /* ensure dropdown titles are left-aligned on mobile */
+  .drop-down-header {
+    text-align: left;
   }
 }
 

@@ -163,7 +163,8 @@ export default function Grassroots() {
     <Base
       title={
         <span>
-          Spread the word & <br /> grassroots activism
+          Spread the word & <br className="desktop-only" />
+          grassroots activism
         </span>
       }
       current="grassroots"
