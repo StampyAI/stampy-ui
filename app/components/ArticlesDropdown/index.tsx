@@ -44,26 +44,26 @@ const ArticlesSection = ({category, toc, className, hide}: ArticlesSectionProps)
     .filter((item) => item.category === category)
     .concat(category === INTRODUCTORY ? [howCanIHelpItem] : [])
 
-    return (
-      <div className={className || ''}>
-        <div className="default-bold">{category} sections</div>
-        {items.map((item: TOCItem) => {
-          // Determine the correct URL based on whether it's how-can-i-help or not
-          const to = item.pageid === 'how-can-i-help' ? '/how-can-i-help' : questionUrl(item)
-          
-          return (
-            <Link
-              key={`${item.pageid}-${item.title}`}
-              to={to}
-              text={item.title}
-              pageid={item.pageid}
-              onClick={hide}
-            />
-          )
-        })}
-      </div>
-    )
-  }
+  return (
+    <div className={className || ''}>
+      <div className="default-bold">{category} sections</div>
+      {items.map((item: TOCItem) => {
+        // Determine the correct URL based on whether it's how-can-i-help or not
+        const to = item.pageid === 'how-can-i-help' ? '/how-can-i-help' : questionUrl(item)
+
+        return (
+          <Link
+            key={`${item.pageid}-${item.title}`}
+            to={to}
+            text={item.title}
+            pageid={item.pageid}
+            onClick={hide}
+          />
+        )
+      })}
+    </div>
+  )
+}
 
 export type ArticlesDropdownProps = {
   toc: TOCItem[]
