@@ -90,7 +90,7 @@ export const ContentBoxThird = () => {
   return (
     <ContentBox
       title="Want to help with AI safety?"
-      action={questionUrl(article)}
+      action={'how-can-i-help'}
       actionTitle="Get involved"
       classNameTable="content-box-table main"
     >
