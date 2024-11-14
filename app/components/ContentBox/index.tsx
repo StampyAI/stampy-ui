@@ -86,11 +86,10 @@ export const ContentBoxSecond = () => {
 }
 
 export const ContentBoxThird = () => {
-  const article = {pageid: '8TJV', title: 'Get involved with AI safety'}
   return (
     <ContentBox
       title="Want to help with AI safety?"
-      action={questionUrl(article)}
+      action={'how-can-i-help'}
       actionTitle="Get involved"
       classNameTable="content-box-table main"
     >
