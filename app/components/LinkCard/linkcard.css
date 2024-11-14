@@ -1,0 +1,47 @@
+.link-card {
+  min-height: 104px;
+  height: fit-content;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-8);
+  border: 1px solid var(--colors-cool-grey-200);
+  border-radius: var(--border-radius);
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+  align-items: start;
+}
+
+.default-padding {
+  padding: var(--spacing-16) var(--spacing-24);
+}
+
+.video-padding {
+  padding: var(--spacing-8);
+}
+
+.link-card:hover {
+  border-color: var(--colors-teal-200);
+}
+
+.link-card .arrow {
+  position: absolute;
+  top: var(--spacing-8);
+  right: var(--spacing-8);
+}
+
+.link-card .image img {
+  display: block;
+}
+
+.link-card .image {
+  position: relative;
+}
+
+.link-card .image svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

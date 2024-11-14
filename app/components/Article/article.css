@@ -59,6 +59,7 @@ article .tag {
   border-color: var(--colors-teal-100);
   color: var(--colors-teal-500);
   padding: 0 var(--spacing-16);
+  height: 32px;
 }
 
 article .tag:hover {

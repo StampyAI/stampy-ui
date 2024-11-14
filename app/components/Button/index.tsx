@@ -4,7 +4,7 @@ import './button.css'
 import useIsMobile from '~/hooks/isMobile'
 
 type ButtonProps = {
-  action?: string | (() => void)
+  action?: string | ((e: React.MouseEvent<HTMLButtonElement>) => void)
   children?: ReactNode
   className?: string
   tooltip?: string
@@ -48,7 +48,7 @@ const Button = ({
   const LinkComponent = !action.startsWith('http')
     ? Link
     : ({to, children, ...props}: {[k: string]: any}) => (
-        <a href={to} {...props}>
+        <a href={to} rel="noreferrer" target="_blank" {...props}>
           {children}
         </a>
       )

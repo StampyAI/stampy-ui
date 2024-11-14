@@ -28,22 +28,24 @@
 
   --colors-green-500: #40c075;
 
-  /* spacing - user everywhere for padding and margin */
+  /* spacing - use everywhere for padding and margin */
   --border-radius: 6px;
   --spacing-4: 4px;
   --spacing-8: 8px;
   --spacing-12: 12px;
   --spacing-16: 16px;
-  --spacing-24: clamp(16px, 1.67vw, 24px);
-  --spacing-32: clamp(24px, 2.22vw, 32px);
-  --spacing-40: clamp(24px, 2.78vw, 40px);
-  --spacing-48: clamp(24px, 3.33vw, 48px);
-  --spacing-56: clamp(24px, 3.89vw, 56px);
-  --spacing-80: clamp(40px, 5.56vw, 80px);
-  --spacing-104: clamp(56px, 7.22vw, 104px);
-  --spacing-128: clamp(56px, 8.89vw, 128px);
-  --spacing-192: clamp(80px, 13.33vw, 192px);
-  --spacing-288: clamp(128px, 20vw, 288px);
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-76: 76px;
+  --spacing-80: 80px;
+  --spacing-104: 104px;
+  --spacing-128: 128px;
+  --spacing-192: 192px;
+  --spacing-288: 288px;
 
   /* height */
   --height-48: 48px;
@@ -78,7 +80,7 @@ input {
 
 .page {
   margin: auto;
-  max-width: 1608px; /* multiple of 12 for .col-x, 1 col at max width = 134px */
+  max-width: 1440px;
   min-height: 100vh;
 }
 
@@ -98,42 +100,59 @@ h2 {
   letter-spacing: -0.57px;
 }
 
+/* typography tags */
+
+h1 {
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 125%; /* 80px */
+  letter-spacing: -1.28px;
+}
+
+h2 {
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 130%; /* 49.4px */
+  letter-spacing: -0.57px;
+}
+
 /* typography classes */
 
 .large {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  letter-spacing: -0.44px;
 }
 
 .large-reading {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 190%; /* 30.6px */
-  letter-spacing: -0.18px;
+  letter-spacing: -0.44px;
+  /* this is only for the body of articles, don't use it anywhere else */
 }
 
 .large-bold {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 170%; /* 30.6px */
-  letter-spacing: -0.18px;
+  letter-spacing: -0.44px;
 }
 
 .default {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 300;
   line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
+  letter-spacing: -0.18px;
   /* only use if a parent has been assigned another typography class (otherwise this is defined in body) */
 }
 
 .default-bold {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 170%; /* 27.2px */
-  letter-spacing: -0.16px;
+  letter-spacing: -0.18px;
 }
 
 .small {
@@ -174,6 +193,7 @@ h2 {
 .leading-0 {
   line-height: 0 !important;
 }
+
 /* color classes */
 
 .black {
@@ -234,6 +254,14 @@ h2 {
   padding-bottom: var(--spacing-56) !important;
 }
 
+.padding-bottom-64 {
+  padding-bottom: var(--spacing-64) !important;
+}
+
+.padding-bottom-76 {
+  padding-bottom: var(--spacing-76) !important;
+}
+
 .padding-bottom-80 {
   padding-bottom: var(--spacing-80) !important;
 }
@@ -278,8 +306,20 @@ h2 {
   padding-top: var(--spacing-40) !important;
 }
 
+.padding-top-48 {
+  padding-top: var(--spacing-48) !important;
+}
+
 .padding-top-56 {
   padding-top: var(--spacing-56) !important;
+}
+
+.padding-top-64 {
+  padding-top: var(--spacing-64) !important;
+}
+
+.padding-top-76 {
+  padding-top: var(--spacing-76) !important;
 }
 
 .padding-top-80 {
@@ -336,56 +376,143 @@ h2 {
   padding-left: var(--spacing-80) !important;
 }
 
+/* padding right */
+
+.padding-right-4 {
+  padding-right: var(--spacing-4) !important;
+}
+
+.padding-right-8 {
+  padding-right: var(--spacing-8) !important;
+}
+
+.padding-right-16 {
+  padding-right: var(--spacing-16) !important;
+}
+
+.padding-right-24 {
+  padding-right: var(--spacing-24) !important;
+}
+
+.padding-right-32 {
+  padding-right: var(--spacing-32) !important;
+}
+
+.padding-right-40 {
+  padding-right: var(--spacing-40) !important;
+}
+
+.padding-right-56 {
+  padding-right: var(--spacing-56) !important;
+}
+
+.padding-right-80 {
+  padding-right: var(--spacing-80) !important;
+}
+
 /* width classes. please turn the grid on in figma and then define widths based on how many columns there are! */
 /* note I may change these to vars later */
 
+/* standard grid - 1056px wide, 51px columns, 40px gutters */
 .col-1 {
-  width: clamp(0px, 3.54vw, 53px);
+  width: 51px;
 }
 
 .col-2 {
-  width: clamp(0px, 9.93vw, 171px);
+  width: 143px;
 }
 
 .col-3 {
-  width: clamp(0px, 16.25vw, 288px);
+  width: 234px;
 }
 
 .col-4 {
-  width: clamp(0px, 22.57vw, 405px);
+  width: 325px;
 }
 
 .col-5 {
-  width: clamp(0px, 28.96vw, 523px);
+  width: 417px;
 }
 
 .col-6 {
-  width: clamp(270px, 35.28vw, 640px);
+  width: 508px;
 }
 
 .col-7 {
-  width: clamp(0px, 41.6vw, 757px);
+  width: 599px;
 }
 
 .col-8 {
-  width: clamp(0px, 47.99vw, 875px);
+  width: 691px;
 }
 
 .col-9 {
-  width: clamp(0px, 54.31vw, 992px);
+  width: 782px;
 }
 
 .col-10 {
-  width: clamp(300px, 60.62vw, 1109px);
+  width: 873px;
 }
 
 .col-11 {
-  width: clamp(0px, 67.01vw, 1227px);
+  width: 965px;
 }
 
 .col-12 {
-  width: clamp(0px, 73.33vw, 1344px);
+  width: 1056px;
 }
+
+/* Alternate grid for extra spacing between elements - 1056px wide, 29px columns, 64px gutters */
+
+.col-1-alt {
+  width: 29px;
+}
+
+.col-2-alt {
+  width: 123px;
+}
+
+.col-3-alt {
+  width: 216px;
+}
+
+.col-4-alt {
+  width: 309px;
+}
+
+.col-5-alt {
+  width: 403px;
+}
+
+.col-6-alt {
+  width: 496px;
+}
+
+.col-7-alt {
+  width: 589px;
+}
+
+.col-8-alt {
+  width: 683px;
+}
+
+.col-9-alt {
+  width: 776px;
+}
+
+.col-10-alt {
+  width: 869px;
+}
+
+.col-11-alt {
+  width: 963px;
+}
+
+.col-12-alt {
+  width: 1056px;
+}
+
+/* etc width, height */
 
 .full-width {
   width: 100%;
@@ -394,6 +521,90 @@ h2 {
 .full-height {
   height: fit-content;
   min-height: 100%;
+}
+
+/* flexbox */
+
+.flexbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-40);
+}
+
+.flexbox-alt {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-64);
+}
+
+.gap-4 {
+  gap: var(--spacing-4) !important;
+}
+
+.gap-8 {
+  gap: var(--spacing-8) !important;
+}
+
+.gap-12 {
+  gap: var(--spacing-12) !important;
+}
+
+.gap-16 {
+  gap: var(--spacing-16) !important;
+}
+
+.gap-24 {
+  gap: var(--spacing-24) !important;
+}
+
+.gap-32 {
+  gap: var(--spacing-32) !important;
+}
+
+.gap-40 {
+  gap: var(--spacing-40) !important;
+}
+
+.gap-48 {
+  gap: var(--spacing-48) !important;
+}
+
+.gap-56 {
+  gap: var(--spacing-56) !important;
+}
+
+.gap-64 {
+  gap: var(--spacing-64) !important;
+}
+
+.gap-80 {
+  gap: var(--spacing-80) !important;
+}
+
+.gap-104 {
+  gap: var(--spacing-104) !important;
+}
+
+.gap-128 {
+  gap: var(--spacing-128) !important;
+}
+
+.gap-192 {
+  gap: var(--spacing-192) !important;
+}
+
+.gap-288 {
+  gap: var(--spacing-288) !important;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.center-align {
+  align-items: center;
 }
 
 /* z-index classes */
@@ -509,6 +720,18 @@ svg {
   overflow: hidden;
 }
 
+p,
+textarea,
+button {
+  font-family: Poppins;
+}
+.margin-top-40 {
+  margin-top: var(--spacing-40);
+}
+.relative {
+  position: relative;
+}
+
 /* for troubleshooting */
 
 .pink {
@@ -516,9 +739,10 @@ svg {
   background: pink !important;
 }
 
-/* defines the standard left and right margins */
+/* defines the standard left and right margins on every page */
 .page-body {
-  padding: 0px var(--spacing-128);
+  width: 1056px;
+  margin: 0 auto;
 }
 
 /* all other classes */
@@ -556,20 +780,89 @@ svg {
   stroke: var(--colors-teal-600);
 }
 
-@media (min-width: 780px) {
+.order-1 {
+  order: 1 !important;
+}
+
+.order-2 {
+  order: 2 !important;
+}
+
+.tag {
+  color: var(--colors-teal-500);
+  height: 24px;
+  width: fit-content;
+  padding: 4px 8px;
+  background-color: var(--colors-teal-50);
+  border-radius: var(--border-radius);
+  display: flex; /* Added for flexbox layout */
+  align-items: center; /* Align children vertically in the center */
+  justify-content: center; /* Center horizontally, optional based on design */
+}
+
+/* hide elements designed for only mobile on desktop */
+
+@media (min-width: 1136px) {
   .mobile-only {
     display: none !important;
   }
 }
 
+/* ---------------------------------------------------------------------------------------------------------------------------------- */
+
 /* mobile */
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .page-body {
-    padding: 0px var(--spacing-48);
+    width: 87.2vw;
   }
 
-  /* typography tags */
+  /* mobile variables - this makes it so padding and margin on desktop is smaller on mobile */
+  :root {
+    --spacing-24: 16px;
+    --spacing-32: 24px;
+    --spacing-40: 24px;
+    --spacing-48: 32px;
+    --spacing-56: 32px;
+    --spacing-64: 40px;
+    --spacing-76: 44px;
+    --spacing-80: 48px;
+    --spacing-104: 64px;
+    --spacing-128: 64px;
+    --spacing-192: 80px;
+    --spacing-288: 128px;
+  }
+
+  /* by default, all widths (.col-* and .col-*-alt) will transition to taking up full-width (87.2vw) on mobile */
+
+  .col-1,
+  .col-2,
+  .col-3,
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-9,
+  .col-10,
+  .col-11,
+  .col-12,
+  .col-1-alt,
+  .col-2-alt,
+  .col-3-alt,
+  .col-4-alt,
+  .col-5-alt,
+  .col-6-alt,
+  .col-7-alt,
+  .col-8-alt,
+  .col-9-alt,
+  .col-10-alt,
+  .col-11-alt,
+  .col-12-alt {
+    width: 87.2vw;
+  }
+
+  /* typography tags for mobile */
 
   h1 {
     font-size: 38px;
@@ -587,7 +880,7 @@ svg {
     letter-spacing: -0.52px;
   }
 
-  /* typography classes */
+  /* typography classes for mobile */
 
   .large {
     font-size: 18px;
@@ -606,14 +899,14 @@ svg {
   }
 
   .large-bold {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     font-weight: 500;
     line-height: 170%; /* 30.6px */
     letter-spacing: -0.18px;
   }
 
-  /* other one-off classes */
+  /* other one-off classes for mobile */
 
   .desktop-only {
     display: none !important;
@@ -641,15 +934,16 @@ svg {
     background-color: var(--colors-white);
     width: 85%;
   }
-} /* end mobile */
-p,
-textarea,
-button {
-  font-family: Poppins;
+
+  /* ensure card titles stay dark on mobile */
+  .card-small .title {
+    color: var(--colors-black) !important;
+  }
+
+  /* ensure dropdown titles are left-aligned on mobile */
+  .drop-down-header {
+    text-align: left;
+  }
 }
-.margin-top-40 {
-  margin-top: var(--spacing-40);
-}
-.relative {
-  position: relative;
-}
+
+/* end mobile */

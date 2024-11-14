@@ -44,7 +44,7 @@ export const ContentBoxMain = () => (
     classNameTable={'content-box-table main'}
     title={
       <>
-        <div className="white">New to AI Safety?</div>
+        <div className="white">New to AI safety?</div>
         <div className="teal-200">Jump into the basics.</div>
       </>
     }
@@ -86,11 +86,10 @@ export const ContentBoxSecond = () => {
 }
 
 export const ContentBoxThird = () => {
-  const article = {pageid: '8TJV', title: 'Get involved with AI safety'}
   return (
     <ContentBox
       title="Want to help with AI safety?"
-      action={questionUrl(article)}
+      action={'how-can-i-help'}
       actionTitle="Get involved"
       classNameTable="content-box-table main"
     >
