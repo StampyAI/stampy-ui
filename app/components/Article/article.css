@@ -245,7 +245,7 @@ article .banner h3 .title {
 
 @media only screen and (max-width: 600px) {
   /* Hide the image on mobile */
-  article .glossary-popup .contents+img {
+  article .glossary-popup .contents + img {
     display: none;
   }
 }
