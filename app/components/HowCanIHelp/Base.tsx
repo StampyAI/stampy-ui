@@ -22,7 +22,11 @@ export default function Base({title, current, children, ...props}: BaseProps) {
 
           {children}
 
-          <HelpMethods current={current} {...props} />
+          <HelpMethods
+            footerSubheader="Once you’re educated, here are some ways to help directly"
+            current={current}
+            {...props}
+          />
         </div>
       </div>
     </Page>

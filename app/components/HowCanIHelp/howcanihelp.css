@@ -3,3 +3,7 @@
   padding-top: var(--spacing-104);
   margin-top: var(--spacing-104);
 }
+
+.link-card .image + div {
+  max-width: calc(100% - 105px);
+}

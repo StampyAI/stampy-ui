@@ -147,7 +147,6 @@ article .definition {
   margin-bottom: var(--spacing-32);
 }
 article .link-popup .glossary-popup > img {
-  width: 100%;
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }
@@ -205,10 +204,10 @@ article .banner h3 .title {
   gap: var(--spacing-12);
 }
 
-@media (min-width: 780px) {
+@media (min-width: 1136px) {
   article .link-popup {
     position: absolute;
-    max-width: 400px;
+    max-width: 480px;
     display: inline-block;
     z-index: 2;
     left: calc(50% - 200px);
@@ -219,7 +218,7 @@ article .banner h3 .title {
   }
 }
 
-@media only screen and (max-width: 780px) {
+@media only screen and (max-width: 1136px) {
   article {
     max-width: 100%;
     padding: 0;
@@ -241,5 +240,12 @@ article .banner h3 .title {
 
   article {
     margin: 0;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  /* Hide the image on mobile */
+  article .glossary-popup .contents + img {
+    display: none;
   }
 }
