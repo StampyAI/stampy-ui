@@ -1,6 +1,60 @@
 import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 
+
+const md = new MarkdownIt({
+  html: true,
+  typographer: true,
+  quotes: '""\'\'',
+  breaks: true,
+}).use(MarkdownItFootnote)
+
+// Force blockquotes to be preserved
+md.enable('blockquote') 
+
+// Add explicit rendering rules for blockquotes
+md.renderer.rules.blockquote_open = () => '<blockquote class="stampy-blockquote">'
+md.renderer.rules.blockquote_close = () => '</blockquote>\n'
+
+// When processing text inside blockquotes, preserve line breaks
+md.renderer.rules.text = (tokens, idx) => {
+  if (tokens[idx].content.includes('\n')) {
+    return tokens[idx].content.split('\n').join('<br/>\n')
+  }
+  return tokens[idx].content
+}
+
+// Update CSS to match
+// Add paragraph styling within blockquotes
+md.renderer.rules.paragraph_open = (tokens, idx) => {
+  const token = tokens[idx]
+  if (token.block && token.level > 0) { // Check if we're inside a blockquote
+    return '<p class="m-0">'
+  }
+  return '<p>'
+}
+
+md.renderer.rules.footnote_caption = (tokens, idx) => {
+  let n = Number(tokens[idx].meta.id + 1).toString()
+  if (tokens[idx].meta.subId > 0) n += `:${tokens[idx].meta.subId}`
+  return n
+}
+
+export const convertMarkdownToHtml = (markdown: string, pageid?: string): string => {
+  // First convert markdown to HTML
+  let html = md.render(markdown)
+
+  // Apply post-processing
+  html = cleanUpDoubleBold(html)
+  html = allLinksOnNewTab(html)
+  
+  if (pageid) {
+    html = uniqueFootnotes(html, pageid)
+  }
+
+  return html
+}
+
 /**
  * Replaces all whitelisted URLs in the text with iframes of the URLs
  * @param markdown text in which URLs should be replaced
