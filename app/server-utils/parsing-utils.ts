@@ -95,17 +95,6 @@ interface HostConfig {
   sandboxValue: string
 }
 
-const md = new MarkdownIt({html: true}).use(MarkdownItFootnote)
-md.renderer.rules.footnote_caption = (tokens, idx) => {
-  let n = Number(tokens[idx].meta.id + 1).toString()
-  if (tokens[idx].meta.subId > 0) n += `:${tokens[idx].meta.subId}`
-  return n
-}
-
-export const convertMarkdownToHtml = (markdown: string): string => {
-  return md.render(markdown)
-}
-
 export const uniqueFootnotes = (html: string, pageid: string): string => {
   // Make sure the footnotes point to unique ids. This is very ugly and would be better handled
   // with a proper parser, but should do the trick so is fine? Maybe?
