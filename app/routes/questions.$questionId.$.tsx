@@ -19,22 +19,19 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
-const raise500 = (error: Error) => new Response(error.toString(), {status: 500})
-
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const {questionId} = params
   if (!questionId) {
     throw new Response('Missing question title', {status: 400})
   }
 
-  try {
-    const dataPromise = loadQuestionDetail(request, questionId).catch(raise500)
-    return defer({question: dataPromise})
-  } catch (error: unknown) {
-    console.log(error)
+  const dataPromise = loadQuestionDetail(request, questionId).catch((error: Error) => {
+    console.error(error)
     const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
-    throw new Response(msg, {status: 404})
-  }
+    // inside deferred Promise on the client, not executed on server => don't create new Response
+    return {error: msg}
+  })
+  return defer({question: dataPromise})
 }
 
 const dummyQuestion = (title: string | undefined) =>
@@ -129,7 +126,6 @@ export default function RenderArticle() {
 
         <ArticlesNav
           tocLoaded={toc.length > 0}
-          current={pageid}
           article={section}
           path={getPath(pageid, section?.pageid)}
           className={!showNav ? 'desktop-only bordered' : ''}
@@ -150,8 +146,8 @@ export default function RenderArticle() {
         >
           <Await resolve={question}>
             {(resolvedQuestion) => {
-              if (resolvedQuestion instanceof Response || !('data' in resolvedQuestion)) {
-                return <Error error={resolvedQuestion} />
+              if ('error' in resolvedQuestion) {
+                return <div dangerouslySetInnerHTML={{__html: resolvedQuestion.error as string}} />
               } else if (!resolvedQuestion.data.pageid) {
                 return (
                   <Error error={{statusText: 'Could not fetch question', status: 'emptyArticle'}} />
