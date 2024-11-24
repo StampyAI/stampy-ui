@@ -8,9 +8,11 @@ import type {Question} from '~/server-utils/stampy'
 export const ArticlesNavManualList = ({
   listOfIds,
   current,
+  className,
 }: {
   listOfIds: string[]
   current: string
+  className: string
 }) => {
   const {items: onSiteQuestions} = useOnSiteQuestions()
   const onSiteQuestionsMap = useMemo(
@@ -22,7 +24,7 @@ export const ArticlesNavManualList = ({
     [onSiteQuestions]
   )
   return (
-    <div className="articles-group small desktop-only bordered mark-visited">
+    <div className={`articles-group small mark-visited ${className}`}>
       {listOfIds.map((pageid) => (
         <details className="article" key={pageid}>
           <summary className={`articles-title ${pageid === current ? 'selected' : ''}`}>

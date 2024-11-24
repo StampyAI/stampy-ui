@@ -128,7 +128,11 @@ export default function RenderArticle() {
         )}
 
         {manualListOfIds ? (
-          <ArticlesNavManualList listOfIds={manualListOfIds} current={pageid} />
+          <ArticlesNavManualList
+            listOfIds={manualListOfIds}
+            current={pageid}
+            className={!showNav ? 'desktop-only bordered' : ''}
+          />
         ) : (
           <ArticlesNav
             tocLoaded={toc.length > 0}
