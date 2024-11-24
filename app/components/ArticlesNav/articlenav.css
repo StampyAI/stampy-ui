@@ -29,6 +29,13 @@
   padding: var(--spacing-8);
   cursor: pointer;
 }
+.articles-title a {
+  flex: 1;
+}
+.mark-visited .articles-title:not(.selected) a:visited {
+  color: darkgray;
+}
+
 .article-selector .dropdown-icon,
 .articles-group .dropdown-icon {
   height: var(--spacing-12);
