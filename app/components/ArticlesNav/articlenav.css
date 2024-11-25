@@ -33,7 +33,7 @@
   flex: 1;
 }
 .mark-visited .articles-title:not(.selected) a:visited {
-  color: darkgray;
+  color: var(--colors-cool-grey-600);
 }
 
 .article-selector .dropdown-icon,

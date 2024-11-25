@@ -174,6 +174,7 @@ export default function RenderArticle() {
                     )}
                     glossary={glossary}
                     className={showNav ? 'desktop-only' : ''}
+                    showNext={!manualListOfIds}
                   />
                 )
               }
