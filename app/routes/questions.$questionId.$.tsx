@@ -1,5 +1,5 @@
 import {Suspense, useEffect, useState} from 'react'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useSearchParams} from 'react-router-dom'
 import {Await, useLoaderData, useParams} from '@remix-run/react'
 import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
 import Page from '~/components/Page'
@@ -16,6 +16,7 @@ import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
 import {useTags} from '~/hooks/useCachedObjects'
 import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
+import {ArticlesNavManualList} from '~/components/ArticlesNav/ArticleNavManualList'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
@@ -75,6 +76,7 @@ const updateFields = (
 
 export default function RenderArticle() {
   const location = useLocation()
+  const [searchParams] = useSearchParams()
   const [showNav, setShowNav] = useState(false) // Used on mobile
   const params = useParams()
   const {items: onSiteQuestions} = useOnSiteQuestions()
@@ -85,6 +87,7 @@ export default function RenderArticle() {
   const {toc, findSection, getArticle, getPath} = useToC()
   const section = findSection(location?.state?.section || pageid)
   const hideBannersIfSubsection = section?.children?.some((c) => c.pageid === pageid)
+  const manualListOfIds = searchParams.get('list')?.split(',')
 
   useEffect(() => {
     setShowNav(false)
@@ -124,12 +127,20 @@ export default function RenderArticle() {
           )
         )}
 
-        <ArticlesNav
-          tocLoaded={toc.length > 0}
-          article={section}
-          path={getPath(pageid, section?.pageid)}
-          className={!showNav ? 'desktop-only bordered' : ''}
-        />
+        {manualListOfIds ? (
+          <ArticlesNavManualList
+            listOfIds={manualListOfIds}
+            current={pageid}
+            className={!showNav ? 'desktop-only bordered' : ''}
+          />
+        ) : (
+          <ArticlesNav
+            tocLoaded={toc.length > 0}
+            article={section}
+            path={getPath(pageid, section?.pageid)}
+            className={!showNav ? 'desktop-only bordered' : ''}
+          />
+        )}
 
         <Suspense
           key={pageid}
@@ -163,6 +174,7 @@ export default function RenderArticle() {
                     )}
                     glossary={glossary}
                     className={showNav ? 'desktop-only' : ''}
+                    showNext={!manualListOfIds}
                   />
                 )
               }

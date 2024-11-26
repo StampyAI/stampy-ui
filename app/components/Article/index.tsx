@@ -146,8 +146,9 @@ type ArticleProps = {
   question: Question
   glossary?: Glossary
   className?: string
+  showNext?: boolean
 }
-export const Article = ({question, glossary, className}: ArticleProps) => {
+export const Article = ({question, glossary, className, showNext}: ArticleProps) => {
   const {title, text, pageid} = question
 
   return (
@@ -167,7 +168,7 @@ export const Article = ({question, glossary, className}: ArticleProps) => {
         <div className="padding-bottom-32" />
       )}
 
-      <KeepGoing {...question} />
+      {showNext && <KeepGoing {...question} />}
 
       <ArticleFooter {...question} />
       <hr />
