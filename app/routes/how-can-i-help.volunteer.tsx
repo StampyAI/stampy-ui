@@ -97,8 +97,7 @@ const Options = () => (
           links={[
             {
               title: 'Add the next AED call to your calendar',
-              action:
-                'https://calendar.google.com/calendar/u/0/share?slt=1AUWfa3j72XM5H9AQ6Wsx-PYfhAraCnI2kGks7D3h5TiLPtleaCfXXecE2a2NAhXU4S5dOqYYPpJHG2i4UtbUuzdMNJXFAA2FjsyL',
+              action: 'https://calendar.app.google/q9iEVz4W2jA3yjLD9',
             },
           ]}
           additionalInfo={
