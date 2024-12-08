@@ -67,6 +67,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
       status
     )
 
+  // Add children to parents
   data
     .filter(canBeShown)
     .filter(({parents}) => parents && parents.length > 0)
@@ -79,10 +80,16 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
         parent.children.push(item)
       })
     })
+
   return {
     data: data
       .filter(canBeShown)
-      .filter(({tags}) => tags?.includes(INTRODUCTORY) || tags?.includes(ADVANCED))
+      .filter(
+        ({tags, status}) =>
+          tags?.includes(INTRODUCTORY) ||
+          tags?.includes(ADVANCED) ||
+          status === QuestionStatus.SUBSECTION
+      )
       .map(formatQuestion(1))
       .sort((a, b) => (a.order || 0) - (b.order || 0)),
     timestamp,
