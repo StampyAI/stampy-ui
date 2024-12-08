@@ -1,7 +1,7 @@
 import {Suspense, useEffect, useState} from 'react'
 import {useLocation, useSearchParams} from 'react-router-dom'
 import {Await, useLoaderData, useParams} from '@remix-run/react'
-import {defer, type LoaderFunctionArgs} from '@remix-run/cloudflare'
+import {defer, redirect, type LoaderFunctionArgs} from '@remix-run/cloudflare'
 import Page from '~/components/Page'
 import Article from '~/components/Article'
 import Button from '~/components/Button'
@@ -9,7 +9,12 @@ import Error from '~/components/Error'
 import XIcon from '~/components/icons-generated/X'
 import ChevronRight from '~/components/icons-generated/ChevronRight'
 import {ArticlesNav} from '~/components/ArticlesNav/ArticleNav'
-import {QuestionStatus, loadQuestionDetail} from '~/server-utils/stampy'
+import {
+  QuestionStatus,
+  loadQuestionDetail,
+  loadRedirects,
+  cleanRedirectPath,
+} from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
 import useGlossary from '~/hooks/useGlossary'
 import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
@@ -21,6 +26,17 @@ import {ArticlesNavManualList} from '~/components/ArticlesNav/ArticleNavManualLi
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
+  const {data: redirects} = await loadRedirects(request)
+
+  // Check if we need to redirect to a new path
+  const path = new URL(request.url).pathname
+  const cleanedPath = cleanRedirectPath(path)
+  const to = redirects[cleanedPath]
+  if (to) {
+    return redirect(to)
+  }
+
+  // Otherwise, load the question
   const {questionId} = params
   if (!questionId) {
     throw new Response('Missing question title', {status: 400})
