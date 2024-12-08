@@ -72,6 +72,7 @@ const errors = {
   ),
   500: 'Sorry, something bad happened. Please retry',
   emptyArticle: 'Sorry, it looks like this article could not be fetched',
+  deletedArticle: 'Sorry, this question has been deleted',
 }
 
 type ErrorType = {
