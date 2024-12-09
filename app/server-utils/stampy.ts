@@ -503,7 +503,8 @@ export const incAnswerColumn = async (column: string, pageid: PageId, subtract: 
 export const makeColumnIncrementer = (column: string) => (pageid: PageId, subtract: boolean) =>
   incAnswerColumn(column, pageid, subtract)
 
-export const cleanRedirectPath = (path: string) => path.replace(/^\/+/, '').replace(/\/$/, '')
+export const cleanRedirectPath = (path: string) =>
+  extractText(path).replace(/^\/+/, '').replace(/\/$/, '')
 
 export const loadRedirects = withCache('redirects', async (): Promise<Redirects> => {
   const rows = (await getCodaRows(REDIRECTS_TABLE)) as RedirectsRow[]
