@@ -179,7 +179,11 @@ export default function RenderArticle() {
                 return (
                   <Error error={{statusText: 'Could not fetch question', status: 'emptyArticle'}} />
                 )
-              } else if (resolvedQuestion.data.status === QuestionStatus.TO_DELETE) {
+              } else if (
+                [QuestionStatus.TO_DELETE, QuestionStatus.DUPLICATE].includes(
+                  resolvedQuestion.data.status ?? QuestionStatus.UNKNOWN
+                )
+              ) {
                 return <Error error={{statusText: 'Deleted article', status: 'deletedArticle'}} />
               } else {
                 return (

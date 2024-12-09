@@ -31,6 +31,7 @@ export enum QuestionStatus {
   WITHDRAWN = 'Withdrawn',
   SKETCH = 'Bulletpoint sketch',
   TO_DELETE = 'Marked for deletion',
+  DUPLICATE = 'Duplicate',
   UNCATEGORIZED = 'Uncategorized',
   NOT_STARTED = 'Not started',
   IN_PROGRESS = 'In progress',
