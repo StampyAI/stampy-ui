@@ -113,6 +113,7 @@ article .link-popup .footnote {
 
 .contents .footnotes {
   margin-top: var(--spacing-16);
+  font-size: 16px;
 }
 
 .contents .footnotes-sep {
