@@ -96,24 +96,10 @@ const Options = () => (
           className="padding-bottom-64"
           links={[
             {
-              title: 'Add the next AED call to your calendar',
-              action:
-                'https://calendar.google.com/calendar/u/0/share?slt=1AUWfa3j72XM5H9AQ6Wsx-PYfhAraCnI2kGks7D3h5TiLPtleaCfXXecE2a2NAhXU4S5dOqYYPpJHG2i4UtbUuzdMNJXFAA2FjsyL',
+              title: 'Add the next call to your calendar',
+              action: 'https://alignment.dev/',
             },
           ]}
-          additionalInfo={
-            <>
-              Or, learn more about AED on{' '}
-              <a
-                href="https://alignment.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="small-bold teal-500"
-              >
-                their website
-              </a>
-            </>
-          }
         >
           <p>
             {' '}
