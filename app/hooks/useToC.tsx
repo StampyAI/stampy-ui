@@ -4,10 +4,11 @@ import {useToC as useCachedToC} from '~/hooks/useCachedObjects'
 const identity = (i: any) => i
 
 const useToC = () => {
-  const {items: toc} = useCachedToC()
-  const all = {pageid: '', children: toc || []} as TOCItem
+  const {items} = useCachedToC()
+  const {toc, visible} = items || {}
 
   const getArticle = (pageid: string): TOCItem | undefined => {
+    const all = {pageid: '', children: visible || []} as TOCItem
     const search = (item: TOCItem): TOCItem | undefined => {
       if (item.pageid === pageid) return item
       return item.children?.map(search).filter(identity)[0]

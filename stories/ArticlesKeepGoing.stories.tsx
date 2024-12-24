@@ -124,7 +124,7 @@ const withMockedToC = (StoryFn: any) => {
   return (
     <CachedObjectsContext.Provider
       value={{
-        toc: {items: toc},
+        toc: {items: {toc, visible: toc}},
         glossary: {items: undefined},
         tags: {items: undefined},
         onSiteQuestions: {items: undefined},

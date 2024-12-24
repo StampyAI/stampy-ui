@@ -5,7 +5,11 @@ import {fetchTOC, TOCItem} from '~/routes/questions.toc'
 import {fetchGlossary} from '~/routes/questions.glossary'
 import {fetchAllQuestionsOnSite} from '~/routes/questions.allQuestionsOnSite'
 
-type ServerObject = Tag[] | TOCItem[] | Glossary | Question[]
+type TOCData = {
+  toc: TOCItem[]
+  visible: TOCItem[]
+}
+type ServerObject = Tag[] | TOCData | Glossary | Question[]
 type APICall = () => Promise<ServerObject>
 type useObjectsType<T extends ServerObject> = {
   items?: T
@@ -29,7 +33,7 @@ type useCachedObjectsType = {
   onSiteQuestions: useObjectsType<Question[]>
   glossary: useObjectsType<Glossary>
   tags: useObjectsType<Tag[]>
-  toc: useObjectsType<TOCItem[]>
+  toc: useObjectsType<TOCData>
 }
 export const CachedObjectsContext = createContext<useCachedObjectsType | null>(null)
 
@@ -42,7 +46,7 @@ export const CachedObjectsProvider = ({children}: {children: ReactElement}) => {
   const onSiteQuestions = useItemsFuncs<Question[]>(getOnSiteQuestions)
   const glossary = useItemsFuncs<Glossary>(getGlossary)
   const tags = useItemsFuncs<Tag[]>(getTags)
-  const toc = useItemsFuncs<TOCItem[]>(getToC)
+  const toc = useItemsFuncs<TOCData>(getToC)
 
   return (
     <CachedObjectsContext.Provider value={{tags, glossary, toc, onSiteQuestions}}>

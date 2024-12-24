@@ -20,7 +20,10 @@ export type TOCItem = {
   ttr: number
 }
 type LoaderResp = {
-  data: TOCItem[]
+  data: {
+    toc: TOCItem[]
+    visible: TOCItem[]
+  }
   timestamp: string
 }
 
@@ -82,16 +85,14 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     })
 
   return {
-    data: data
-      .filter(canBeShown)
-      .filter(
-        ({tags, status}) =>
-          tags?.includes(INTRODUCTORY) ||
-          tags?.includes(ADVANCED) ||
-          status === QuestionStatus.SUBSECTION
-      )
-      .map(formatQuestion(1))
-      .sort((a, b) => (a.order || 0) - (b.order || 0)),
+    data: {
+      toc: data
+        .filter(canBeShown)
+        .filter(({tags}) => tags?.includes(INTRODUCTORY) || tags?.includes(ADVANCED))
+        .map(formatQuestion(1))
+        .sort((a, b) => (a.order || 0) - (b.order || 0)),
+      visible: data.filter(canBeShown).map(formatQuestion(1)),
+    },
     timestamp,
   }
 }
