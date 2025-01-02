@@ -640,7 +640,7 @@ a:not(:hover, :focus-visible) {
   text-decoration: none;
 }
 
-.contents a[target='_blank'][href^="http"]:not(.icon-link, .transparent-link):after {
+.contents a[target='_blank'][href^='http']:not(.icon-link, .transparent-link):after {
   content: ' ';
   display: inline-block;
   width: 10px;
