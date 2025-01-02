@@ -640,16 +640,13 @@ a:not(:hover, :focus-visible) {
   text-decoration: none;
 }
 
-/* Only show external icon for links that have both target="_blank" AND start with http/https */
-a[target='_blank'][href^="http"]:not(.icon-link, .transparent-link):after {
+.contents a[target='_blank'][href^="http"]:not(.icon-link, .transparent-link):after {
   content: ' ';
   display: inline-block;
-  vertical-align: top;
-  width: 12px;
-  height: 12px;
-  margin-left: 2px;
-  margin-top: 8px;
-  /* Support both webkit and standard mask syntax */
+  width: 10px;
+  height: 10px;
+  margin-left: 1px;
+  margin-bottom: 6px;
   -webkit-mask: url('/assets/Icon_External_Link.svg') no-repeat center center;
   mask: url('/assets/Icon_External_Link.svg') no-repeat center center;
   -webkit-mask-size: cover;
