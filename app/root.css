@@ -640,18 +640,27 @@ a:not(:hover, :focus-visible) {
   text-decoration: none;
 }
 
+.contents a[target='_blank'][href^='http']:not(.icon-link, .transparent-link) {
+  margin-right: 12px;
+}
+
 .contents a[target='_blank'][href^='http']:not(.icon-link, .transparent-link):after {
-  content: ' ';
-  display: inline-block;
+  content: '';
+  position: absolute;
   width: 10px;
   height: 10px;
   margin-left: 1px;
-  margin-bottom: 6px;
+  margin-top: 8px;
   -webkit-mask: url('/assets/Icon_External_Link.svg') no-repeat center center;
   mask: url('/assets/Icon_External_Link.svg') no-repeat center center;
   -webkit-mask-size: cover;
   mask-size: cover;
   background-color: currentColor;
+}
+
+sup {
+  /* external link icon above looks best when line-height does not change on lines with footnotes */
+  line-height: 1;
 }
 
 hr {
