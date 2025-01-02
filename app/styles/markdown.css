@@ -1,0 +1,35 @@
+/* markdown.css */
+
+.stampy-blockquote {
+    /* Force block display and ensure it takes width */
+    display: block !important;
+    width: 100% !important;
+    
+    /* Styling */
+    border-left: 4px solid var(--colors-teal-500) !important;
+    background: var(--colors-teal-50) !important;
+    padding: 1rem 2rem !important;
+    margin: 1.5rem 0 !important;
+    
+    /* Text */
+    color: var(--colors-cool-grey-800) !important;
+    
+    /* Shape */
+    border-radius: 0 0.25rem 0.25rem 0 !important;
+  }
+  
+  /* Handle nested content */
+  .stampy-blockquote p {
+    margin: 0 !important;
+  }
+  
+  .stampy-blockquote p + p {
+    margin-top: 1rem !important;
+  }
+  
+  /* Force styles in any context */
+  .contents .article-content blockquote,
+  .article-container .contents blockquote,
+  blockquote.stampy-blockquote {
+    composes: stampy-blockquote;
+  }

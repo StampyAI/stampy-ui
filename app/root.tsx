@@ -19,6 +19,7 @@ import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 import GlobalBanners from './components/GlobalBanners'
+import markdownStyles from '~/styles/markdown.css'
 
 /*
  * Transform the given text into a meta header format.
@@ -84,7 +85,7 @@ export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
 }
 
 export const links: LinksFunction = () =>
-  [newStyles, cssBundleHref]
+  [newStyles, cssBundleHref, markdownStyles]
     .filter((i) => i)
     .map((styles) => ({rel: 'stylesheet', href: styles as string}))
 
