@@ -7,3 +7,15 @@
 .link-card .image + div {
   max-width: calc(100% - 105px);
 }
+
+/* Show line break on desktop */
+.title-break {
+  display: inline;
+}
+
+/* Hide line break on mobile */
+@media (max-width: 1136px) {
+  .title-break {
+    display: none;
+  }
+}
