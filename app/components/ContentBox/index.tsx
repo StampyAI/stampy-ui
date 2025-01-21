@@ -77,7 +77,7 @@ export const ContentBoxSecond = () => {
             pageid: '5611',
             className: 'desktop-only',
           },
-          {title: 'Isn’t the real concern technological unemployment?', pageid: '6412'},
+          {title: 'What about technological unemployment from AI?', pageid: '6412'},
           {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
         ]}
       />
