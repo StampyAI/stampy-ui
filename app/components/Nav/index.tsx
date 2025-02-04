@@ -31,6 +31,12 @@ export const Nav = ({toc, categories}: NavProps) => {
           <ArticlesDropdown toc={toc} categories={categories || []} />
           <MenuItem
             primary={true}
+            link="/how-can-i-help"
+            icon={<OpenBookIcon />}
+            text="How Can I Help?"
+          />
+          <MenuItem
+            primary={true}
             link="/chat/"
             icon={<BotIcon />}
             text="AI Safety Chatbot"
