@@ -22,8 +22,8 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
 3. Setup in [Cloudflare Dashboard](https://dash.cloudflare.com/)
 
    - If you haven't already, set up your free custom Cloudflare Workers subdomain
-   - From the left menu `Workers` : `Overview`, note your Cloudflare `Account ID` on the right
-   - From the left menu `Workers` : `KV`, create a KV (key-value store) namespace `STAMPY_KV`
+   - From the left menu `Compute (Workers)` : `Overview`, note your Cloudflare `Account ID` on the right
+   - From the left menu `Storage & Databases` : `KV`, create a KV (key-value store) namespace `STAMPY_KV`
    - Note the new created `STAMPY_KV` Namespace ID
    - Copy `wrangler.toml.template` to `wrangler.toml`
    - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
