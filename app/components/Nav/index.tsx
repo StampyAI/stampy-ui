@@ -1,6 +1,7 @@
 import {Link} from '@remix-run/react'
 import {MenuItem} from '~/components/Menu'
 import OpenBookIcon from '~/components/icons-generated/OpenBook'
+import BuoyIcon from '~/components/icons-generated/Buoy'
 import AISafetyIcon from '~/components/icons-generated/Aisafety'
 import BotIcon from '~/components/icons-generated/Bot'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
@@ -32,7 +33,7 @@ export const Nav = ({toc, categories}: NavProps) => {
           <MenuItem
             primary={true}
             link="/how-can-i-help"
-            icon={<OpenBookIcon />}
+            icon={<BuoyIcon />}
             text="How Can I Help?"
           />
           <MenuItem
