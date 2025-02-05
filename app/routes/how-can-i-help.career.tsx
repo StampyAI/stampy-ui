@@ -3,7 +3,7 @@ import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
+import CategoryCarousel from '~/components/CategoryCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 

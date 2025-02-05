@@ -2,7 +2,7 @@ import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
-import CategoryCarousel from '~/components/HowCanIHelp/CategoryCarousel'
+import CategoryCarousel from '~/components/CategoryCarousel'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]

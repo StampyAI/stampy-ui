@@ -5,6 +5,8 @@ import {
   uniqueFootnotes,
   urlToIframe,
   convertMarkdownToHtml,
+  convertCarousels,
+  Carousel,
 } from '~/server-utils/parsing-utils'
 import {
   ALL_ANSWERS_TABLE,
@@ -85,6 +87,7 @@ export type Question = {
   children?: Question[]
   order?: number
   ttr: number
+  carousels?: Carousel[]
 }
 export type PageId = Question['pageid']
 export type NewQuestion = {
@@ -251,10 +254,30 @@ const getCodaRows = async (
 /*
  * Transform the Coda markdown into HTML
  */
-const renderText = (pageid: PageId, markdown: string | null): string | null => {
-  if (!markdown) return null
+const renderText = (pageid: PageId, markdown: string | null) => {
+  if (!markdown) return {}
+  markdown = markdown.replace(
+    '```',
+    `\`\`\`
+::: carousel
+- [title](https://media.4-paws.org/d/2/5/f/d25ff020556e4b5eae747c55576f3b50886c0b90/cut%20cat%20serhio%2002-1813x1811-720x719.jpg)
+
+- [title1](https://i.giphy.com/SKDiTL793TGiaiV9Kv.webp)
+
+- [title2](https://www.youtube.com/watch?v=cytJLvf-eVs)
+
+:::
+
+`
+  )
+  // console.log(markdown)
+  // console.log('________________%%%%%%%%%%%%%%%%%%________________')
 
   markdown = extractText(markdown)
+
+  const carouselResult = convertCarousels(markdown)
+  console.log(carouselResult?.carousels)
+  markdown = carouselResult?.markdown || null
   markdown = urlToIframe(markdown || '')
 
   let html = convertMarkdownToHtml(markdown)
@@ -262,7 +285,10 @@ const renderText = (pageid: PageId, markdown: string | null): string | null => {
   html = cleanUpDoubleBold(html)
   html = allLinksOnNewTab(html)
 
-  return html
+  return {
+    html,
+    carousels: carouselResult?.carousels,
+  }
 }
 
 export const ttr = (text: string, rate = 160) => {
@@ -295,10 +321,11 @@ const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
 
 const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => {
   const markdown = extractText(values['Rich Text'])
+  const {html, carousels} = renderText(extractText(values['UI ID']), values['Rich Text'])
   return {
     title: name,
     pageid: extractText(values['UI ID']),
-    text: renderText(extractText(values['UI ID']), values['Rich Text']),
+    text: html || null,
     markdown: markdown,
     ttr: markdown ? ttr(markdown) : 0,
     answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
@@ -318,6 +345,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
     parents: !values.Parents ? [] : values.Parents?.map(({name}) => name),
     updatedAt: updatedAt || values['Doc Last Edited'],
     order: values.Order || 0,
+    carousels,
   }
 }
 
@@ -364,7 +392,7 @@ export const loadGlossary = withCache('loadGlossary', async () => {
           pageid,
           term: extractText(values.phrase),
           image: values.image?.url,
-          contents: renderText(pageid, extractText(values.definition)),
+          contents: renderText(pageid, extractText(values.definition)).html,
         }
         return phrases
           .map((i) => extractText(i))
@@ -381,7 +409,7 @@ export const loadBanners = withCache('loadBanners', async (): Promise<Record<str
     rows
       .map(({values}) => ({
         title: extractText(values.Title),
-        text: renderText('', values.Text) || '',
+        text: renderText('', values.Text).html || '',
         icon: values.Icon[0],
         backgroundColour: extractText(values['Background colour']),
         textColour: extractText(values['Text colour']),
