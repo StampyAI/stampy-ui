@@ -256,27 +256,9 @@ const getCodaRows = async (
  */
 const renderText = (pageid: PageId, markdown: string | null) => {
   if (!markdown) return {}
-  markdown = markdown.replace(
-    '```',
-    `\`\`\`
-::: carousel
-- [title](https://media.4-paws.org/d/2/5/f/d25ff020556e4b5eae747c55576f3b50886c0b90/cut%20cat%20serhio%2002-1813x1811-720x719.jpg)
-
-- [title1](https://i.giphy.com/SKDiTL793TGiaiV9Kv.webp)
-
-- [title2](https://www.youtube.com/watch?v=cytJLvf-eVs)
-
-:::
-
-`
-  )
-  // console.log(markdown)
-  // console.log('________________%%%%%%%%%%%%%%%%%%________________')
-
   markdown = extractText(markdown)
 
   const carouselResult = convertCarousels(markdown)
-  console.log(carouselResult?.carousels)
   markdown = carouselResult?.markdown || null
   markdown = urlToIframe(markdown || '')
 
