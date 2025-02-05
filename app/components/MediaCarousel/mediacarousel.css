@@ -24,3 +24,8 @@
   justify-content: center;
   margin-top: var(--spacing-24);
 }
+
+.media-carousel-title {
+  text-align: center;
+  margin-top: var(--spacing-16);
+}

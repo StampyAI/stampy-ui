@@ -34,6 +34,9 @@ const MediaCarousel = ({items}: MediaCarouselProps) => {
   return (
     <div className="media-carousel-container padding-bottom-32">
       <div className="media-carousel-track">{renderMedia(items[currentIndex])}</div>
+      {items[currentIndex].title && (
+        <div className="media-carousel-title small grey">{items[currentIndex].title}</div>
+      )}
       {items.length > 1 && (
         <div className="media-carousel-navigation">
           <Navigation
