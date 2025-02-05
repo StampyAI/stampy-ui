@@ -95,7 +95,7 @@ const resolveYoutubeEmbedUrl = (url: string): string => {
 
   if (match && match[1]) return `https://www.youtube.com/embed/${match[1]}`
 
-  return url // Return original if no match (will be filtered out later)
+  return url
 }
 
 export type MediaItem = {
@@ -123,14 +123,13 @@ export const convertCarousels = (markdown: string | null) => {
       .map((item) => {
         const match = item.match(/\[(.*?)\]\((.*?)\)/)
         if (match) {
-          let [_, title, url] = match
-          url = resolveYoutubeEmbedUrl(url)
+          const url = resolveYoutubeEmbedUrl(match[2])
           let type = 'image'
           if (url.includes('youtube.com')) type = 'youtube'
           return {
             type,
             url,
-            title,
+            title: match[1],
           }
         }
 

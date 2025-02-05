@@ -178,7 +178,6 @@ const Contents = ({
     const el = elementRef.current
     if (!el) return
 
-    console.log('carousels', carousels)
     // Replace carousel placeholders with actual carousel components
     carousels?.forEach((carousel) => {
       const placeholder = el.querySelector(`#${carousel.id}`)
