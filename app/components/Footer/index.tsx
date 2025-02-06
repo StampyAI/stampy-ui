@@ -70,8 +70,8 @@ export const FooterBar: FunctionComponent = () => {
             title={`About us`}
           />
           <p>
-            Copyright Aisafety.info is an Ashgro Inc. Project. Ashgro Inc (EIN: 88-4232889) is a
-            501(c)(3) Public Charity incorporated in Delaware.
+            Aisafety.info is an <a href="https://www.ashgro.org/">Ashgro Inc</a> Project. Ashgro Inc
+            (EIN: 88-4232889) is a 501(c)(3) Public Charity incorporated in Delaware.
           </p>
         </div>
       </div>
