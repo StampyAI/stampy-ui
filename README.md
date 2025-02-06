@@ -2,7 +2,7 @@
 
 ![Stampy!](https://github.com/StampyAI/StampyAIAssets/blob/main/profile/stampy-profile-228.png?raw=true)
 
-Stampy UI is an interface for [aisafety.info](https://aisafety.info), a questions and answers site about AGI safety, built with [Remix](https://remix.run/docs) and [Cloudflare Workers](https://developers.cloudflare.com/workers). When reading about existential risks becomes "too serious", we also have a more playful version of the site: [stampy.ai](https://stampy.ai).
+Stampy UI is an interface for [aisafety.info](https://aisafety.info), a questions and answers site about AGI safety, built with [Remix](https://remix.run/docs) and [Cloudflare Workers](https://developers.cloudflare.com/workers).
 
 Contributions are welcome, the code is released under the MIT License. If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Dev-team_sulmV#_luYjG), drop by [our Discord](https://discord.com/invite/7wjJbFJnSN) and post in #stampy-dev!
 
