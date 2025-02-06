@@ -40,12 +40,14 @@ const MediaCarousel = ({items}: MediaCarouselProps) => {
       {items.length > 1 && (
         <div className="media-carousel-navigation">
           <Navigation
-            leftAction={() => setCurrentIndex((i) => i - 1)}
-            rightAction={() => setCurrentIndex((i) => i + 1)}
-            rightDisabled={currentIndex === items.length - 1}
-            leftDisabled={currentIndex === 0}
+            leftAction={() => setCurrentIndex((i) => (i <= 0 ? items.length - 1 : i - 1))}
+            rightAction={() => setCurrentIndex((i) => (i >= items.length - 1 ? 0 : i + 1))}
             large
-          />
+          >
+            <div className="media-carousel-index-indicator small grey">
+              {currentIndex + 1}/{items.length}
+            </div>
+          </Navigation>
         </div>
       )}
     </div>

@@ -16,21 +16,24 @@ type CategoryCarouselProps = {
 export const Navigation = ({
   leftAction,
   rightAction,
-  leftDisabled,
-  rightDisabled,
+  leftDisabled = false,
+  rightDisabled = false,
   large = false,
+  children,
 }: {
   leftAction: () => void
   rightAction: () => void
-  leftDisabled: boolean
-  rightDisabled: boolean
+  leftDisabled?: boolean
+  rightDisabled?: boolean
   large?: boolean
+  children?: React.ReactNode
 }) => {
   return (
     <div className="carousel-navigation">
       <Button action={leftAction} disabled={leftDisabled} className={large ? 'nav-large' : ''}>
         <ArrowRight style={{transform: 'rotate(180deg)'}} />
       </Button>
+      {children}
       <Button action={rightAction} disabled={rightDisabled} className={large ? 'nav-large' : ''}>
         <ArrowRight />
       </Button>

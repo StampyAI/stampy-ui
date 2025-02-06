@@ -29,3 +29,10 @@
   text-align: center;
   margin-top: var(--spacing-16);
 }
+
+.media-carousel-index-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+}
