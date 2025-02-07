@@ -124,11 +124,9 @@ export const convertCarousels = (markdown: string | null) => {
         const match = item.match(/\[(.*?)\]\((.*?)\)/)
         if (match) {
           const url = resolveYoutubeEmbedUrl(match[2])
-          let type = 'image'
-          if (url.includes('youtube.com')) type = 'youtube'
           return {
-            type,
             url,
+            type: url.includes('youtube.com') ? 'youtube' : 'image',
             title: match[1],
           }
         }
