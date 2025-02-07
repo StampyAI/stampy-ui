@@ -65,6 +65,14 @@ export const FooterBar: FunctionComponent = () => {
             to="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa"
             title={`© AISafety.info, 2022—${year}`}
           />
+          <Link
+            to="https://aisafety.info/questions/NLZQ/What-is-this-site-about"
+            title={`About us`}
+          />
+          <p>
+            Aisafety.info is an <a href="https://www.ashgro.org/">Ashgro Inc</a> Project. Ashgro Inc
+            (EIN: 88-4232889) is a 501(c)(3) Public Charity incorporated in Delaware.
+          </p>
         </div>
       </div>
     </div>
