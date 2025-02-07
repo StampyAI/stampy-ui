@@ -25,7 +25,7 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
    - From the left menu `Compute (Workers)` : `Overview`, note your Cloudflare `Account ID` on the right
    - From the left menu `Storage & Databases` : `KV`, create a KV (key-value store) namespace `STAMPY_KV`
    - Note the new created `STAMPY_KV` Namespace ID
-   - Copy `wrangler.toml.template` to `wrangler.toml`
+   - Make a copy of `wrangler.toml.template` in the stampy-ui folder and name it `wrangler.toml`
    - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
 4. Setup in [Coda.io](https://coda.io/account)
