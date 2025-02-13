@@ -43,7 +43,16 @@ export const FooterBar: FunctionComponent = () => {
               title="Write"
               className="padding-bottom-8"
             />
-            <Link to="https://discord.gg/88TbjZnNyA" title="Join us on Discord" />
+            <Link
+              to="https://discord.gg/88TbjZnNyA"
+              title="Join us on Discord"
+              className="padding-bottom-8"
+            />
+            <Link
+              to="https://aisafety.info/questions/NLZQ/What-is-this-site-about"
+              title="About us"
+              className="padding-bottom-8"
+            />
           </div>
           <div className="partners small col-4">
             <p className="small-bold padding-bottom-16">Partner projects</p>
@@ -64,10 +73,6 @@ export const FooterBar: FunctionComponent = () => {
           <Link
             to="https://coda.io/d/AI-Safety-Info-Dashboard_dfau7sl2hmG/Copyright_su79L#_luPMa"
             title={`© AISafety.info, 2022—${year}`}
-          />
-          <Link
-            to="https://aisafety.info/questions/NLZQ/What-is-this-site-about"
-            title={`About us`}
           />
           <p>
             Aisafety.info is an <a href="https://www.ashgro.org/">Ashgro Inc</a> Project. Ashgro Inc
