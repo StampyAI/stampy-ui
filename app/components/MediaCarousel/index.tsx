@@ -3,6 +3,27 @@ import './mediacarousel.css'
 import {MediaItem} from '~/server-utils/parsing-utils'
 import {Navigation} from '../CategoryCarousel'
 
+const Media = ({item}: {item: MediaItem}) => {
+  switch (item.type) {
+    case 'youtube':
+      return (
+        <iframe
+          src={item.url}
+          allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          width="100%"
+          height="315"
+        />
+      )
+    case 'image':
+      return <img src={item.url} alt={item.title || ''} />
+    case 'iframe':
+      return <iframe src={item.url} />
+    default:
+      return null
+  }
+}
+
 type MediaCarouselProps = {
   items: MediaItem[]
 }
@@ -10,30 +31,11 @@ type MediaCarouselProps = {
 const MediaCarousel = ({items}: MediaCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const renderMedia = (item: MediaItem) => {
-    switch (item.type) {
-      case 'youtube':
-        return (
-          <iframe
-            src={item.url}
-            allowFullScreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            width="100%"
-            height="315"
-          />
-        )
-      case 'image':
-        return <img src={item.url} alt={item.title || ''} />
-      case 'iframe':
-        return <iframe src={item.url} />
-      default:
-        return null
-    }
-  }
-
   return (
     <div className="media-carousel-container padding-bottom-32">
-      <div className="media-carousel-track">{renderMedia(items[currentIndex])}</div>
+      <div className="media-carousel-track">
+        <Media item={items[currentIndex]} />
+      </div>
       {items[currentIndex].title && (
         <div className="media-carousel-title small grey">{items[currentIndex].title}</div>
       )}
