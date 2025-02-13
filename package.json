@@ -75,7 +75,7 @@
     "prettier:fix": "prettier --write --ignore-path .gitignore \"**/*.{ts*,js,css,md,html}\"",
     "lint:fix": "tsc && npm run prettier:fix && npm run eslint:fix",
     "build": "rimraf public/build && npm run generate-icons && cross-env NODE_ENV=production remix build --sourcemap",
-    "start": "remix dev --manual -c 'wrangler dev ./build/index.js'",
+    "start": "cross-env remix dev --manual -c \"wrangler dev ./build/index.js\"",
     "dev": "npm run generate-icons && npm start",
     "tsc": "tsc",
     "wrangler": "wrangler",
