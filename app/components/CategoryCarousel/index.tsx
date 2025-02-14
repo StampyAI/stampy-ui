@@ -13,6 +13,34 @@ type CategoryCarouselProps = {
   category: PageId
 }
 
+export const Navigation = ({
+  leftAction,
+  rightAction,
+  leftDisabled = false,
+  rightDisabled = false,
+  large = false,
+  children,
+}: {
+  leftAction: () => void
+  rightAction: () => void
+  leftDisabled?: boolean
+  rightDisabled?: boolean
+  large?: boolean
+  children?: React.ReactNode
+}) => {
+  return (
+    <div className="carousel-navigation">
+      <Button action={leftAction} disabled={leftDisabled} className={large ? 'nav-large' : ''}>
+        <ArrowRight style={{transform: 'rotate(180deg)'}} />
+      </Button>
+      {children}
+      <Button action={rightAction} disabled={rightDisabled} className={large ? 'nav-large' : ''}>
+        <ArrowRight />
+      </Button>
+    </div>
+  )
+}
+
 const CategoryCarousel = ({title, category}: CategoryCarouselProps) => {
   const componentRef = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(0)
@@ -38,20 +66,12 @@ const CategoryCarousel = ({title, category}: CategoryCarouselProps) => {
     <div className="carousel rounded" ref={componentRef}>
       <div className="carousel-header">
         <h2>{title}</h2>
-        <div className="navigation">
-          <Button
-            action={() => setOffset((i) => Math.min(i - shown, section?.children?.length || 0))}
-            disabled={offset === 0}
-          >
-            <ArrowRight style={{transform: 'rotate(180deg)'}} />
-          </Button>
-          <Button
-            action={() => setOffset((i) => Math.max(i + shown, 0))}
-            disabled={!section?.children?.length || offset + shown >= section?.children?.length}
-          >
-            <ArrowRight />
-          </Button>
-        </div>
+        <Navigation
+          leftAction={() => setOffset((i) => Math.min(i - shown, section?.children?.length || 0))}
+          rightAction={() => setOffset((i) => Math.max(i + shown, 0))}
+          leftDisabled={offset === 0}
+          rightDisabled={!section?.children?.length || offset + shown >= section.children.length}
+        />
       </div>
       <div className="flex-container items">
         {section?.children?.slice(offset, offset + shown).map((child) => (

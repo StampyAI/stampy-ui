@@ -3,6 +3,9 @@ import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
 import {togglePopup} from '../popups'
+import {createRoot} from 'react-dom/client'
+import MediaCarousel from '../MediaCarousel'
+import {Carousel} from '~/server-utils/parsing-utils'
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
@@ -158,11 +161,13 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
 const Contents = ({
   pageid,
   html,
+  carousels,
   glossary,
   className = '',
 }: {
   pageid: PageId
   html: string
+  carousels?: Carousel[]
   glossary: Glossary
   className?: string
 }) => {
@@ -172,6 +177,15 @@ const Contents = ({
   useEffect(() => {
     const el = elementRef.current
     if (!el) return
+
+    // Replace carousel placeholders with actual carousel components
+    carousels?.forEach((carousel) => {
+      const placeholder = el.querySelector(`#${carousel.id}`)
+      if (placeholder) {
+        const root = createRoot(placeholder)
+        root.render(<MediaCarousel items={carousel.items} />)
+      }
+    })
 
     updateTextNodes(el, insertGlossary(pageid, glossary))
 
@@ -188,7 +202,7 @@ const Contents = ({
         )
       }
     })
-  }, [html, glossary, pageid, mobile])
+  }, [html, carousels, glossary, pageid, mobile])
 
   return (
     <div

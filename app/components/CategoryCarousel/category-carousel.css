@@ -11,12 +11,12 @@
   margin-bottom: var(--spacing-32);
 }
 
-.carousel .navigation {
+.carousel-navigation {
   display: flex;
   gap: var(--spacing-8);
 }
 
-.carousel .navigation button {
+.carousel-navigation button {
   width: 40px;
   height: 40px;
   padding: 0;
@@ -27,11 +27,11 @@
   border-radius: var(--border-radius);
 }
 
-.carousel .navigation button:not(:disabled):hover {
+.carousel-navigation button:not(:disabled):hover {
   border-color: var(--colors-teal-200);
 }
 
-.carousel .navigation button:disabled {
+.carousel-navigation button:disabled {
   opacity: 0.5;
 }
 
@@ -60,5 +60,12 @@
   .carousel-item {
     width: 100%;
     height: auto;
+  }
+}
+
+@media (min-width: 600px) {
+  .carousel-navigation button.nav-large {
+    width: 48px;
+    height: 48px;
   }
 }

@@ -149,7 +149,7 @@ type ArticleProps = {
   showNext?: boolean
 }
 export const Article = ({question, glossary, className, showNext}: ArticleProps) => {
-  const {title, text, pageid} = question
+  const {title, text, pageid, carousels} = question
 
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
@@ -162,6 +162,7 @@ export const Article = ({question, glossary, className, showNext}: ArticleProps)
           className="padding-bottom-80"
           pageid={pageid}
           html={text}
+          carousels={carousels}
           glossary={glossary || {}}
         />
       ) : (

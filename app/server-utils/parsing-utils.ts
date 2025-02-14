@@ -85,3 +85,66 @@ export const allLinksOnNewTab = (html: string): string => {
   // internal links look like <a href="/?state=1234">, so all absolute http links are treated as external
   return html.replace(/(<a href="[^#].*?")/g, `$1 target="_blank" rel="noreferrer"`)
 }
+
+// Helper function to convert YouTube URLs to embed URLs
+const resolveYoutubeEmbedUrl = (url: string): string => {
+  // Pattern to get youtube ID found from https://regex101.com/library/OY96XI
+  const pattern =
+    /(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/gim
+  const match = pattern.exec(url)
+
+  if (match && match[1]) return `https://www.youtube.com/embed/${match[1]}`
+
+  return url
+}
+
+export type MediaItem = {
+  type: 'image' | 'youtube' | 'iframe'
+  url: string
+  title?: string
+}
+
+export type Carousel = {
+  items: MediaItem[]
+  id: string
+}
+
+export const convertCarousels = (markdown: string | null) => {
+  if (!markdown) return null
+
+  const carousels: Carousel[] = []
+
+  const carouselRegex = /:::\s*carousel\n([\s\S]*?)\n:::/g
+  markdown = markdown.replace(carouselRegex, (_, content: string) => {
+    const items = content
+      .split('\n')
+      .filter((line) => line.trim().startsWith('-'))
+      .map((line) => line.trim().substring(1).trim())
+      .map((item) => {
+        const match = item.match(/\[(.*?)\]\((.*?)\)/)
+        if (match) {
+          const url = resolveYoutubeEmbedUrl(match[2])
+          return {
+            url,
+            type: url.includes('youtube.com') ? 'youtube' : 'image',
+            title: match[1],
+          }
+        }
+
+        return null
+      })
+      .filter(Boolean) as MediaItem[]
+    const carousel = {
+      items: items,
+      id: `CAROUSEL-${crypto.randomUUID()}`,
+    }
+    carousels.push(carousel)
+    // This is replacing all carousels with a unique id to be parsed after html translation
+    return `<div id="${carousel.id}"></div>`
+  })
+
+  return {
+    markdown,
+    carousels,
+  }
+}
