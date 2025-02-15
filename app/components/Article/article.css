@@ -92,6 +92,16 @@ article .contents li:last-child {
   padding-bottom: 0;
 }
 
+article .contents > p:has(> img) {
+  text-align: center;
+  padding-bottom: 0;
+}
+
+/* next paragraph after image is assumed a caption.. remove if gdocs parsing will support manual centering */
+article .contents > p:has(> img) + p {
+  text-align: center;
+}
+
 article .contents img {
   max-width: 100%;
 }
