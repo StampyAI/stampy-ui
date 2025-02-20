@@ -97,9 +97,13 @@ article .contents > p:has(> img) {
   padding-bottom: 0;
 }
 
-/* next paragraph after image is assumed a caption.. remove if gdocs parsing will support manual centering */
-article .contents > p:has(> img) + p {
-  text-align: center;
+article .contents > p.image-caption {
+  font-style: italic;
+  color: var(--colors-cool-grey-600);
+  font-size: 0.9em;
+  padding-top: 0;
+  margin-left: var(--spacing-40);
+  margin-right: var(--spacing-40);
 }
 
 article .contents img {
