@@ -92,6 +92,20 @@ article .contents li:last-child {
   padding-bottom: 0;
 }
 
+article .contents > p:has(> img) {
+  text-align: center;
+  padding-bottom: 0;
+}
+
+article .contents > p.image-caption {
+  font-style: italic;
+  color: var(--colors-cool-grey-600);
+  font-size: 0.9em;
+  padding-top: 0;
+  margin-left: var(--spacing-40);
+  margin-right: var(--spacing-40);
+}
+
 article .contents img {
   max-width: 100%;
 }

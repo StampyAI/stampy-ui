@@ -187,6 +187,16 @@ const Contents = ({
       }
     })
 
+    // Process captions
+    const paragraphs = el.getElementsByTagName('p')
+    for (const p of paragraphs) {
+      const text = p.textContent || ''
+      const html = p.innerHTML || ''
+      if (text.startsWith('Caption:')) {
+        p.classList.add('image-caption')
+        p.innerHTML = html.replace(/Caption:\s*/, '')
+      }
+    }
     updateTextNodes(el, insertGlossary(pageid, glossary))
 
     // In theory this could be extended to all links
