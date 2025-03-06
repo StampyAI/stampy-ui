@@ -34,7 +34,7 @@ const getCategory = (tags: string[]): Category => {
   return undefined
 }
 
-const byOrder = (a: TOCItem, b: TOCItem) => a.order - b.order
+const byOrder = (a: TOCItem, b: TOCItem) => (a.order || Infinity) - (b.order || Infinity)
 const formatQuestion =
   (level: number) =>
   ({title, pageid, subtitle, icon, children, text, tags, order, ttr}: Question): TOCItem => ({
