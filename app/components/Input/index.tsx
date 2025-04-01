@@ -1,5 +1,5 @@
 import './input.css'
-import { useRef, useEffect, RefObject } from 'react'
+import {useRef, useEffect, RefObject} from 'react'
 
 type InputProps = {
   className?: string
@@ -15,7 +15,7 @@ type InputProps = {
 const Input = ({className, multiline, textareaRef, ...props}: InputProps) => {
   const classes = ['input', className].filter((i) => i).join(' ')
   const internalRef = useRef<HTMLTextAreaElement>(null)
-  
+
   // Use provided ref or internal ref
   const textareaReference = textareaRef || internalRef
 
@@ -27,18 +27,18 @@ const Input = ({className, multiline, textareaRef, ...props}: InputProps) => {
 
       // Reset height to auto to get the correct scrollHeight
       textarea.style.height = 'auto'
-      
+
       // Get the content height using scrollHeight which accounts for wrapped lines
       const scrollHeight = textarea.scrollHeight
-      
+
       // Get min and max heights from CSS
       const minHeight = parseInt(getComputedStyle(textarea).minHeight)
       const maxHeight = parseInt(getComputedStyle(textarea).maxHeight)
-      
+
       // Choose height based on content, ensuring we stay within min/max bounds
       const newHeight = Math.max(minHeight, Math.min(scrollHeight, maxHeight))
       textarea.style.height = `${newHeight}px`
-      
+
       // Hide scrollbar if not needed
       if (scrollHeight <= maxHeight) {
         textarea.style.overflowY = 'hidden'

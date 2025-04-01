@@ -51,18 +51,18 @@ const QuestionInput = ({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sendButtonRef = useRef<SVGSVGElement>(null)
-  
+
   const updateSendButtonPosition = () => {
     const textarea = textareaRef.current
     const sendButton = sendButtonRef.current
-    
+
     if (textarea && sendButton) {
       // Keep button aligned with first line for expanded textareas
       const buttonTop = Math.min(textarea.clientHeight / 2, 30)
       sendButton.style.top = `${buttonTop}px`
     }
   }
-  
+
   // Initialize button position and update it whenever textarea changes
   useEffect(() => {
     updateSendButtonPosition()
@@ -70,7 +70,7 @@ const QuestionInput = ({
     const timerId = setTimeout(updateSendButtonPosition, 50)
     return () => clearTimeout(timerId)
   }, [question])
-  
+
   const handleChange = (val: string) => {
     search(val, 0.7)
     setQuestion(val)
@@ -104,15 +104,15 @@ const QuestionInput = ({
             if (e.key === 'Escape') {
               handleChange('')
             } else if (e.key === 'Enter' && !e.shiftKey && question.trim() && onAsk) {
-              e.preventDefault();
+              e.preventDefault()
               handleAsk(question)
             }
           }}
         />
-        <SendIcon 
+        <SendIcon
           ref={sendButtonRef}
-          className="send pointer" 
-          onClick={() => handleAsk(question)} 
+          className="send pointer"
+          onClick={() => handleAsk(question)}
         />
       </div>
       {fixed && <div className="white-space" />}
