@@ -39,7 +39,7 @@ export default function App() {
     <Page>
       <div className="page-body">
         <h1 className="padding-top-56">Smarter-than-human AI may come soon</h1>
-        <h2 className="padding-bottom-80">That could lead to human extinction</h2>
+        <h2 className="padding-bottom-80">And could lead to human extinction</h2>
 
         <ContentBoxMain />
         <ContentBoxSecond />
