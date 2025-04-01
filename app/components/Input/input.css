@@ -15,6 +15,8 @@
   line-height: 170%; /* 27.2px */
   letter-spacing: -0.16px;
   transition: border 0.2s;
+  resize: none;
+  overflow-wrap: break-word;
 }
 
 /* I then define all properties from Figma as titles (e.g. 'size' and 'state' for input) */
@@ -29,6 +31,42 @@
   letter-spacing: -0.18px;
   padding-right: var(--height-64);
   padding-left: var(--spacing-16);
+}
+
+textarea.input {
+  min-height: var(--height-48);
+  max-height: calc(var(--height-48) * 3); /* Exactly 3x the original height */
+  overflow-y: auto;
+  padding-top: 12px; /* Better vertical alignment for single line text */
+  padding-right: var(--height-64); /* Space for send button */
+  width: 100%; /* Full width */
+  box-sizing: border-box;
+  resize: none;
+  line-height: 24px; /* Helps with consistent height calculation */
+  transition: height 0.1s ease;
+}
+
+textarea.input.large {
+  min-height: var(--height-64);
+  max-height: calc(var(--height-64) * 3); /* Exactly 3x the original height */
+  padding-top: 18px; /* Adjust for large input */
+  padding-right: calc(var(--height-64) + var(--spacing-8)); /* Space for send button */
+}
+
+/* Custom scrollbar styling */
+textarea.input::-webkit-scrollbar {
+  width: 8px;
+  margin-right: 10px;
+}
+
+textarea.input::-webkit-scrollbar-thumb {
+  background-color: var(--colors-cool-grey-300, #b8c4d2);
+  border-radius: 4px;
+}
+
+textarea.input::-webkit-scrollbar-track {
+  background-color: transparent;
+  margin-right: 20px;
 }
 
 /* states */
