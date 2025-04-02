@@ -49,6 +49,9 @@ const QuestionInput = ({
     setQuestion('')
   }
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const sendButtonRef = useRef<SVGSVGElement>(null)
+
   const handleChange = (val: string) => {
     search(val, 0.7)
     setQuestion(val)
@@ -75,16 +78,23 @@ const QuestionInput = ({
           placeholder={placeholder}
           className="large full-width shadowed"
           value={question}
+          multiline={true}
+          textareaRef={textareaRef}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               handleChange('')
-            } else if (e.key === 'Enter' && question.trim() && onAsk) {
+            } else if (e.key === 'Enter' && !e.shiftKey && question.trim() && onAsk) {
+              e.preventDefault()
               handleAsk(question)
             }
           }}
         />
-        <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
+        <SendIcon
+          ref={sendButtonRef}
+          className="send pointer"
+          onClick={() => handleAsk(question)}
+        />
       </div>
       {fixed && <div className="white-space" />}
 
