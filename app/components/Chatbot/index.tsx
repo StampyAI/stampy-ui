@@ -52,7 +52,6 @@ const QuestionInput = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sendButtonRef = useRef<SVGSVGElement>(null)
 
-
   const handleChange = (val: string) => {
     search(val, 0.7)
     setQuestion(val)

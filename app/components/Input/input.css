@@ -40,7 +40,7 @@ textarea.input {
   padding: 8px 12px; /* Even padding all around */
   padding-right: var(--height-64); /* Space for send button */
   padding-bottom: 20px;
-  width: 100%; 
+  width: 100%;
   box-sizing: border-box;
   resize: none;
   line-height: 20px;
