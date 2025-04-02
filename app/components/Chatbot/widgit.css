@@ -70,10 +70,9 @@
 .widget-ask .send {
   position: absolute;
   right: var(--spacing-16);
-  top: 32px;
-  transform: translateY(-50%);
-  z-index: 5; /* Ensure the button stays above the scrollbar */
-  transition: top 0.1s ease; /* Match textarea's transition */
+  bottom: 24px; 
+  z-index: 5;
+  transition: none;
 }
 
 .white-space {

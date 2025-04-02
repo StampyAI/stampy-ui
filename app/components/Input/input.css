@@ -35,14 +35,15 @@
 
 textarea.input {
   min-height: var(--height-48);
-  max-height: calc(var(--height-48) * 3); /* Exactly 3x the original height */
+  max-height: calc(var(--height-48) * 3); /* Max 3x the original height */
   overflow-y: auto;
-  padding-top: 12px; /* Better vertical alignment for single line text */
+  padding: 8px 12px; /* Even padding all around */
   padding-right: var(--height-64); /* Space for send button */
-  width: 100%; /* Full width */
+  padding-bottom: 20px;
+  width: 100%; 
   box-sizing: border-box;
   resize: none;
-  line-height: 24px; /* Helps with consistent height calculation */
+  line-height: 20px;
   transition: height 0.1s ease;
 }
 

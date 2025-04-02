@@ -52,24 +52,6 @@ const QuestionInput = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sendButtonRef = useRef<SVGSVGElement>(null)
 
-  const updateSendButtonPosition = () => {
-    const textarea = textareaRef.current
-    const sendButton = sendButtonRef.current
-
-    if (textarea && sendButton) {
-      // Keep button aligned with first line for expanded textareas
-      const buttonTop = Math.min(textarea.clientHeight / 2, 30)
-      sendButton.style.top = `${buttonTop}px`
-    }
-  }
-
-  // Initialize button position and update it whenever textarea changes
-  useEffect(() => {
-    updateSendButtonPosition()
-    // Slight delay to ensure textarea has resized
-    const timerId = setTimeout(updateSendButtonPosition, 50)
-    return () => clearTimeout(timerId)
-  }, [question])
 
   const handleChange = (val: string) => {
     search(val, 0.7)
