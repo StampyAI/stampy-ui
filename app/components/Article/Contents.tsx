@@ -56,12 +56,20 @@ const addPopup = (
 
 /*
  * Recursively go through the child nodes of the provided node, and replace all text nodes
- * with the result of calling `textProcessor(textNode)`
+ * with the result of calling `textProcessor(textNode)`.
+ * Skip text nodes that are within link elements.
  */
 const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
   Array.from(el.childNodes).forEach((child) => updateTextNodes(child, textProcessor))
 
-  if (el.nodeType == Node.TEXT_NODE && el.textContent) {
+  // Skip processing if this text node is inside a link/anchor tag
+  const isInsideLink = (node: Node): boolean => {
+    // Node doesn't have closest(), but Element does
+    // Check if node has a parentElement we can use closest() on
+    return Boolean(node.parentElement?.closest('a'))
+  }
+
+  if (el.nodeType == Node.TEXT_NODE && el.textContent && !isInsideLink(el)) {
     const node = textProcessor(el)
     el?.parentNode?.replaceChild(node, el)
   }
