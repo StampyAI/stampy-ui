@@ -66,7 +66,7 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
   const isInsideLink = (node: Node): boolean => {
     // Node doesn't have closest(), but Element does
     // Check if node has a parentElement we can use closest() on
-    return Boolean(node.parentElement?.closest('a'));
+    return Boolean(node.parentElement?.closest('a'))
   }
 
   if (el.nodeType == Node.TEXT_NODE && el.textContent && !isInsideLink(el)) {
