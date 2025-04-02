@@ -64,14 +64,9 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
 
   // Skip processing if this text node is inside a link/anchor tag
   const isInsideLink = (node: Node): boolean => {
-    let parent = node.parentNode
-    while (parent) {
-      if (parent.nodeName === 'A') {
-        return true
-      }
-      parent = parent.parentNode
-    }
-    return false
+    // Node doesn't have closest(), but Element does
+    // Check if node has a parentElement we can use closest() on
+    return Boolean(node.parentElement?.closest('a'));
   }
 
   if (el.nodeType == Node.TEXT_NODE && el.textContent && !isInsideLink(el)) {
