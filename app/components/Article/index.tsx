@@ -119,7 +119,11 @@ const Banner = ({title, text, icon, backgroundColour, textColour}: BannerType) =
       }}
     >
       <h3>
-        <img src={icon?.url} alt={icon?.name} />
+        {icon?.url?.includes('drive.google.com/file/d/') ? (
+          <iframe src={icon.url.replace(/(\/view|\/preview)$/, '/preview')} allowFullScreen />
+        ) : (
+          <img src={icon?.url} alt={icon?.name} />
+        )}
         <span className="title">{title}</span>
       </h3>
       <div

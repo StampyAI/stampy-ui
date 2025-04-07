@@ -147,7 +147,12 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       const link =
         entry.pageid &&
         `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
-      const image = entry.image && `<img src="${entry.image}"/>`
+      const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
+      const image = entry.image
+        ? isGoogleDrive
+          ? `<iframe src="${entry.image.replace(/(\/view|\/preview)$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
+          : `<img src="${entry.image}"/>`
+        : ''
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}-${randomId}`,

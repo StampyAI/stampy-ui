@@ -200,8 +200,10 @@ article .banner h3 {
   display: flex;
   align-items: center;
 }
-article .banner h3 img {
+article .banner h3 img,
+article .banner h3 iframe {
   width: 2em;
+  border: none;
 }
 article .banner h3 .title {
   padding-left: 10px;
