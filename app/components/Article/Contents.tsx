@@ -82,9 +82,11 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
  *  - use each glossary item only once
  */
 const normalizeForComparison = (text: string): string => {
-  // Standardize single quotes and replace em-dashes with hyphens
-  // Use Unicode escape sequences for better editor compatibility
-  return text.replace(/\u2019/g, "'").replace(/\u2014/g, '-')
+  // Standardize fancy quotes and dashes with their simpler equivalents
+  return text
+    .replace(/[‘’]/g, "'") // Replace left and right single quotes (U+2018, U+2019)
+    .replace(/[“”]/g, '"') // Replace left and right double quotes (U+201C, U+201D)
+    .replace(/[–—]/g, '-') // Replace en-dash and em-dash with hyphen
 }
 
 const glossaryInjecter = (pageid: string, glossary: Glossary) => {
