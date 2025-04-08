@@ -71,7 +71,6 @@
   position: absolute;
   right: var(--spacing-16);
   bottom: 24px;
-  z-index: 5;
   transition: none;
 }
 
