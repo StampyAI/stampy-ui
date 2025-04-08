@@ -49,7 +49,6 @@ const QuestionInput = ({
     setQuestion('')
   }
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const sendButtonRef = useRef<SVGSVGElement>(null)
 
   const handleChange = (val: string) => {
@@ -79,7 +78,6 @@ const QuestionInput = ({
           className="large full-width shadowed"
           value={question}
           multiline={true}
-          textareaRef={textareaRef}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
