@@ -54,7 +54,14 @@ textarea.input.large {
   padding-right: calc(var(--height-64) + var(--spacing-8)); /* Space for send button */
 }
 
-/* Custom scrollbar styling */
+/* Custom scrollbar styling - cross-browser */
+textarea.input {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--colors-cool-grey-300, #b8c4d2) transparent;
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
 textarea.input::-webkit-scrollbar {
   width: 8px;
   margin-right: 10px;
