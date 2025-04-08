@@ -86,7 +86,7 @@ const normalizeForComparison = (text: string): string => {
   return text
     .replace(/[‘’]/g, "'") // Replace left and right single quotes (U+2018, U+2019)
     .replace(/[“”]/g, '"') // Replace left and right double quotes (U+201C, U+201D)
-    .replace(/[–—]/g, '-') // Replace en-dash and em-dash with hyphen
+    .replace(/[‒–—]/g, '-') // Replace figure-dash, en-dash and em-dash with hyphen
 }
 
 const glossaryInjecter = (pageid: string, glossary: Glossary) => {
