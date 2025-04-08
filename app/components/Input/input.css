@@ -33,48 +33,74 @@
   padding-left: var(--spacing-16);
 }
 
-textarea.input {
+/* AutoHeight textarea styling */
+textarea.react-auto-height {
+  width: 100%;
   min-height: var(--height-48);
-  max-height: calc(var(--height-48) * 3); /* Max 3x the original height */
+  max-height: calc(var(--height-48) * 3);
   overflow-y: auto;
   padding: 8px 12px; /* Even padding all around */
   padding-right: var(--height-64); /* Space for send button */
   padding-bottom: 20px;
-  width: 100%;
   box-sizing: border-box;
   resize: none;
   line-height: 20px;
-  transition: height 0.1s ease;
-}
+  border-radius: var(--border-radius);
+  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--colors-white, #fff);
+  color: var(--colors-cool-grey-900, #1b2b3e);
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: -0.16px;
+  transition:
+    border 0.2s,
+    height 0.2s;
 
-textarea.input.large {
-  min-height: var(--height-64);
-  max-height: calc(var(--height-64) * 3); /* Exactly 3x the original height */
-  padding-top: 18px; /* Adjust for large input */
-  padding-right: calc(var(--height-64) + var(--spacing-8)); /* Space for send button */
-}
-
-/* Custom scrollbar styling - cross-browser */
-textarea.input {
-  /* Firefox */
+  /* Firefox scrollbar */
   scrollbar-width: thin;
   scrollbar-color: var(--colors-cool-grey-300, #b8c4d2) transparent;
 }
 
-/* WebKit browsers (Chrome, Safari, Edge) */
-textarea.input::-webkit-scrollbar {
+/* WebKit scrollbar (Chrome, Safari, Edge) */
+textarea.react-auto-height::-webkit-scrollbar {
   width: 8px;
   margin-right: 10px;
 }
 
-textarea.input::-webkit-scrollbar-thumb {
+textarea.react-auto-height::-webkit-scrollbar-thumb {
   background-color: var(--colors-cool-grey-300, #b8c4d2);
   border-radius: 4px;
 }
 
-textarea.input::-webkit-scrollbar-track {
+textarea.react-auto-height::-webkit-scrollbar-track {
   background-color: transparent;
   margin-right: 20px;
+}
+
+textarea.react-auto-height.large {
+  min-height: var(--height-64);
+  max-height: calc(var(--height-64) * 3); /* Exactly 3x the original height */
+  padding-top: 18px; /* Adjust for large input */
+  padding-right: calc(var(--height-64) + var(--spacing-8)); /* Space for send button */
+  font-size: 18px;
+  letter-spacing: -0.18px;
+}
+
+/* States for react-auto-height textarea */
+textarea.react-auto-height:hover {
+  border: 1px solid var(--colors-teal-200, #a6d9d7);
+}
+
+textarea.react-auto-height:focus {
+  border: 1px solid var(--colors-teal-500, #1d9089) !important;
+  outline: none;
+  color: var(--colors-cool-grey-900, #1b2b3e);
+}
+
+textarea.react-auto-height:disabled,
+textarea.react-auto-height[disabled] {
+  opacity: 0.6;
+  cursor: inherit;
 }
 
 /* states */
