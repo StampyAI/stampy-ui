@@ -1,5 +1,5 @@
 import './input.css'
-import {useRef, useEffect, RefObject} from 'react'
+import {useRef, useEffect} from 'react'
 
 type InputProps = {
   className?: string
@@ -10,19 +10,15 @@ type InputProps = {
   onKeyDown?: (e: any) => void
   onBlur?: (e: any) => void
   multiline?: boolean
-  textareaRef?: RefObject<HTMLTextAreaElement>
 }
-const Input = ({className, multiline, textareaRef, ...props}: InputProps) => {
+const Input = ({className, multiline, ...props}: InputProps) => {
   const classes = ['input', className].filter((i) => i).join(' ')
-  const internalRef = useRef<HTMLTextAreaElement>(null)
-
-  // Use provided ref or internal ref
-  const textareaReference = textareaRef || internalRef
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Auto-resize textarea based on content
   useEffect(() => {
     const resizeTextarea = () => {
-      const textarea = textareaReference.current
+      const textarea = textareaRef.current
       if (!textarea) return
 
       // Reset height to auto to get the correct scrollHeight
@@ -52,10 +48,10 @@ const Input = ({className, multiline, textareaRef, ...props}: InputProps) => {
       // Run it again after a short delay to catch any layout shifts
       setTimeout(resizeTextarea, 10)
     }
-  }, [props.value, multiline, textareaReference])
+  }, [props.value, multiline])
 
   return multiline ? (
-    <textarea ref={textareaReference} className={classes} {...props} />
+    <textarea ref={textareaRef} className={classes} {...props} />
   ) : (
     <input className={classes} {...props} />
   )
