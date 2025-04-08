@@ -150,7 +150,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
       const image = entry.image
         ? isGoogleDrive
-          ? `<iframe src="${entry.image.replace(/(\/view|\/preview)$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
+          ? `<iframe src="${entry.image.replace(/\/view$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
           : `<img src="${entry.image}"/>`
         : ''
       addPopup(
