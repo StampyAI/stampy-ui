@@ -81,20 +81,39 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
  *  - an on hover popup with a short explaination of the glossary item
  *  - use each glossary item only once
  */
+const normalizeForComparison = (text: string): string => {
+  // Standardize fancy quotes and dashes with their simpler equivalents
+  return text
+    .replace(/[‘’]/g, "'") // Replace left and right single quotes (U+2018, U+2019)
+    .replace(/[“”]/g, '"') // Replace left and right double quotes (U+201C, U+201D)
+    .replace(/[‒–—]/g, '-') // Replace figure-dash, en-dash and em-dash with hyphen
+}
+
 const glossaryInjecter = (pageid: string, glossary: Glossary) => {
   const seen = new Set()
-  return (html: string) =>
-    Object.values(glossary)
+  return (html: string) => {
+    // Normalize for comparison to find terms regardless of formatting
+    const normalizedHtml = normalizeForComparison(html)
+
+    return Object.values(glossary)
       .filter((item) => item.pageid != pageid)
       .sort((a, b) => (b.alias?.length ?? 0) - (a.alias?.length ?? 0))
-      .reduce((html, {term, alias}) => {
-        const match = new RegExp(`(^|[^\\w-])(${alias})($|[^\\w-])`, 'i')
-        if (!seen.has(term) && html.search(match) >= 0) {
+      .reduce((currentHtml, {term, alias}) => {
+        // Create a normalized pattern for matching variations in formatting
+        const normalizedAlias = normalizeForComparison(alias || '')
+        const match = new RegExp(`(^|[^\\w-])(${normalizedAlias})($|[^\\w-])`, 'i')
+
+        // Check if the term exists in the normalized HTML
+        if (!seen.has(term) && normalizedHtml.search(match) >= 0) {
           seen.add(term)
-          return html.replace(match, '$1<span class="glossary-entry">$2</span>$3')
+
+          // Use the canonical glossary term for consistent formatting
+          // Apply the replacement directly to the current HTML
+          return currentHtml.replace(match, `$1<span class="glossary-entry">${alias}</span>$3`)
         }
-        return html
+        return currentHtml
       }, html)
+  }
 }
 
 const insertGlossary = (pageid: string, glossary: Glossary) => {
@@ -105,7 +124,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
   const injecter = glossaryInjecter(pageid, glossary)
 
   return (textNode: Node) => {
-    const html = (textNode.textContent || '').replace('’', "'").replace('—', '-')
+    const html = textNode.textContent || ''
     // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
     // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
     // of longer definitions don't override them.
