@@ -69,8 +69,8 @@
 
 .widget-ask .send {
   position: absolute;
-  right: var(--spacing-16);
-  bottom: 24px;
+  right: 8px;
+  top: 6px;
   transition: none;
 }
 

@@ -77,7 +77,7 @@ const QuestionInput = ({
           placeholder={placeholder}
           className="large full-width shadowed"
           value={question}
-          multiline={true}
+          multiline
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {

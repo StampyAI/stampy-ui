@@ -1,6 +1,5 @@
 import './input.css'
 import AutoHeight from 'react-auto-height'
-import {createElement} from 'react'
 
 type InputProps = {
   className?: string
@@ -13,12 +12,11 @@ type InputProps = {
   multiline?: boolean
 }
 
-const Input = ({className, multiline, ...props}: InputProps) => {
-  const classes = ['input', className].filter((i) => i).join(' ')
+const Input = ({className = '', multiline, ...props}: InputProps) => {
+  const classes = `input ${className}`
 
   if (multiline) {
-    // Use createElement to pass direct element prop to AutoHeight
-    return createElement(AutoHeight, {element: 'textarea', className: classes, ...props})
+    return <AutoHeight element="textarea" className={classes} rows={1} {...props} />
   }
 
   return <input className={classes} {...props} />
