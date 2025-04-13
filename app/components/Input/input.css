@@ -15,6 +15,8 @@
   line-height: 170%; /* 27.2px */
   letter-spacing: -0.16px;
   transition: border 0.2s;
+  resize: none;
+  overflow-wrap: break-word;
 }
 
 /* I then define all properties from Figma as titles (e.g. 'size' and 'state' for input) */
@@ -29,6 +31,17 @@
   letter-spacing: -0.18px;
   padding-right: var(--height-64);
   padding-left: var(--spacing-16);
+}
+
+/* AutoHeight textarea styling */
+textarea.react-auto-height {
+  line-height: 130%;
+  padding-top: 17px;
+  padding-bottom: 19px;
+  overflow: hidden;
+  transition:
+    border 0.2s,
+    height 0.2s;
 }
 
 /* states */
