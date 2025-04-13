@@ -57,17 +57,25 @@ const addPopup = (
 /*
  * Recursively go through the child nodes of the provided node, and replace all text nodes
  * with the result of calling `textProcessor(textNode)`.
- * Skip text nodes that are within link elements or heading tags (h1-h5).
+ * Skip text nodes that are within:
+ * - Link elements
+ * - Heading tags (h1-h5)
+ * - Existing glossary entries
+ * - Glossary popups
  */
 const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
   Array.from(el.childNodes).forEach((child) => updateTextNodes(child, textProcessor))
 
-  // Skip glossary processing if this text node is inside a link/anchor tag or a heading
+  // Central check for excluding text from glossary processing based on its HTML context
   const shouldSkipGlossary = (node: Node): boolean => {
     // Node doesn't have closest(), but Element does
     // Check if node has a parentElement we can use closest() on
     return Boolean(
-      node.parentElement?.closest('a') || node.parentElement?.closest('h1, h2, h3, h4, h5')
+      // Skip links, headings, and existing glossary entries
+      node.parentElement?.closest('a') ||
+        node.parentElement?.closest('h1, h2, h3, h4, h5') ||
+        node.parentElement?.closest('.glossary-entry') ||
+        node.parentElement?.closest('.glossary-popup')
     )
   }
 
@@ -148,9 +156,6 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
         // If the contents of this item aren't simply a glossary item word, then
         // something has gone wrong and the glossary-entry should be removed
         !entry ||
-        // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
-        // if this entry is a subset of a bigger entry, remove it.
-        e.parentElement?.classList.contains('glossary-entry') ||
         // Remove entries that point to the current question
         pageid == (entry as GlossaryEntry)?.pageid
       ) {
