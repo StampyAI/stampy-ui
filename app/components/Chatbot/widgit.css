@@ -70,7 +70,7 @@
 .widget-ask .send {
   position: absolute;
   right: 8px;
-  top: 6px;
+  bottom: 16px;
   transition: none;
 }
 
