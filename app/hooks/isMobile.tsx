@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 
 const isWindow = typeof window !== 'undefined'
 export default function useIsMobile() {
-  const mobileWidth = 780
+  const mobileWidth = 1136
   const getWidth = () => (isWindow ? window.innerWidth : 1280) // assume desktop until proven otherwise (for SSR)
   const [windowWidth, setWindowWidth] = useState<number>(getWidth)
 
