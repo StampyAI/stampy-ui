@@ -23,12 +23,7 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (
-  e: HTMLElement,
-  id: string,
-  contents: string,
-  mobile: boolean = window?.innerWidth <= 780
-): HTMLElement => {
+const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
@@ -39,13 +34,16 @@ const addPopup = (
 
   e.insertAdjacentElement('afterend', popup)
 
+  const toggle = () => popup.classList.toggle('shown')
+  const show = () => popup.classList.add('shown')
+  const hide = () => popup.classList.remove('shown')
+
   if (!mobile) {
-    e.addEventListener('mouseover', () => popup.classList.add('shown'))
-    e.addEventListener('mouseout', () => popup.classList.remove('shown'))
-    popup.addEventListener('mouseover', () => popup.classList.add('shown'))
-    popup.addEventListener('mouseout', () => popup.classList.remove('shown'))
+    e.addEventListener('mouseover', show)
+    e.addEventListener('mouseout', hide)
+    popup.addEventListener('mouseover', show)
+    popup.addEventListener('mouseout', hide)
   } else {
-    const toggle = () => popup.classList.toggle('shown')
     popup.addEventListener('click', togglePopup(toggle, e))
     e.addEventListener('click', togglePopup(toggle, e))
     popup.children[0].addEventListener('click', (e) => e.stopPropagation())
@@ -121,7 +119,7 @@ const glossaryInjecter = (pageid: string, glossary: Glossary) => {
   }
 }
 
-const insertGlossary = (pageid: string, glossary: Glossary) => {
+const insertGlossary = (pageid: string, glossary: Glossary, mobile: boolean) => {
   // Generate a random ID for these glossary items. This is needed when mulitple articles are displayed -
   // gloassary items should be only displayed once per article, but this is checked by popup id, so if
   // there are 2 articles that have the same glossary item, then only the first articles popups would work
@@ -152,7 +150,9 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
         // something has gone wrong and the glossary-entry should be removed
         !entry ||
         // Remove entries that point to the current question
-        pageid == (entry as GlossaryEntry)?.pageid
+        pageid == (entry as GlossaryEntry)?.pageid ||
+        // Check if this term already has a popup in this article
+        document.getElementById(`glossary-${entry.term}-${randomId}`)
       ) {
         return null
       }
@@ -184,7 +184,8 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
                    ${link || ''}
               </div>
               ${image || ''}
-          </div>`
+          </div>`,
+        mobile
       )
     })
 
@@ -231,7 +232,7 @@ const Contents = ({
         p.innerHTML = html.replace(/Caption:\s*/, '')
       }
     }
-    updateTextNodes(el, insertGlossary(pageid, glossary))
+    updateTextNodes(el, insertGlossary(pageid, glossary, mobile))
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
@@ -246,6 +247,14 @@ const Contents = ({
         )
       }
     })
+
+    // Return cleanup function
+    return () => {
+      // Remove all popups when component unmounts
+      el.querySelectorAll('.link-popup').forEach((popup) => {
+        popup.parentNode?.removeChild(popup)
+      })
+    }
   }, [html, carousels, glossary, pageid, mobile])
 
   return (
