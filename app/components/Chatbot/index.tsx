@@ -84,7 +84,7 @@ const QuestionInput = ({
             }
           }}
         />
-        <SendIcon className="send pointer" onClick={() => handleAsk(question)} />
+        <SendIcon className="send pointer" onClick={() => question.trim() && handleAsk(question)} />
       </div>
       {fixed && <div className="white-space" />}
 
