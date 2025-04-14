@@ -72,9 +72,7 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
     // Check if node has a parentElement we can use closest() on
     return Boolean(
       // Skip links, headings, and existing glossary entries
-      node.parentElement?.closest(
-        'a, h1, h2, h3, h4, h5, .glossary-entry, .glossary-popup'
-      )
+      node.parentElement?.closest('a, h1, h2, h3, h4, h5, .glossary-entry, .glossary-popup')
     )
   }
 
