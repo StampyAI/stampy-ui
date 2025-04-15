@@ -1,4 +1,4 @@
-@media only screen and (max-width: 1136px) {
+@media only screen and (max-width: 780px) {
   .flex-row {
     display: flex;
     flex-direction: row;

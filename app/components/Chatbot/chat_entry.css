@@ -172,7 +172,7 @@ article.stampy {
   padding-left: 56px;
 }
 
-@media (min-width: 1136px) {
+@media (min-width: 780px) {
   .reference-popup {
     display: inline-block;
     position: absolute;
@@ -190,7 +190,7 @@ article.stampy {
   min-height: inherit;
 }
 
-@media (max-width: 1136px) {
+@media (max-width: 780px) {
   .title-inner-container {
     flex-direction: column;
     align-items: start;
