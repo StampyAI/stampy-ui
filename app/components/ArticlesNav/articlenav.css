@@ -81,7 +81,7 @@
   left: -8px;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .articles-group {
     width: 100%;
   }

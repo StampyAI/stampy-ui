@@ -79,7 +79,7 @@
   background: #fff;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .feedback-form {
     position: fixed;
     left: 6.4vw;

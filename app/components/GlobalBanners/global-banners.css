@@ -14,7 +14,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .global-banner {
     flex-direction: column;
     padding-bottom: var(--spacing-32);

@@ -48,7 +48,7 @@
   padding: 0;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .main-container-box-table {
     flex-direction: column;
     margin-bottom: var(--spacing-80);

@@ -38,7 +38,7 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .card {
     flex-direction: column;
     height: auto;

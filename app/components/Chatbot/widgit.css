@@ -103,7 +103,7 @@
   width: 87.2vw;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .stampy-widget .button {
     width: 100%;
   }
