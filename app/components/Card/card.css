@@ -16,6 +16,7 @@
   flex-direction: column;
   padding: var(--spacing-32);
   gap: var(--spacing-4);
+  align-self: flex-start;
 }
 
 .card-content > .default-bold {
