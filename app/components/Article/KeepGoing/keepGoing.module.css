@@ -6,7 +6,7 @@
   gap: var(--spacing-24);
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1136px) {
   .flex_dynamic {
     display: flex;
     flex-direction: column;
