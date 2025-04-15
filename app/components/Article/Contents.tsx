@@ -207,7 +207,7 @@ const Contents = ({
   className?: string
 }) => {
   const elementRef = useRef<HTMLDivElement>(null)
-  const mobile = useIsMobile()
+  const mobile = useIsMobile(1136)
 
   useEffect(() => {
     const el = elementRef.current
