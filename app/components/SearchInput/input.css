@@ -15,7 +15,7 @@
 }
 
 .search-box.expandable {
-  width: var(--spacing-288);
+  width: 288px;
 }
 
 .search-content {
@@ -31,4 +31,10 @@
 .search-input:focus-visible {
   border: 0;
   outline: none;
+}
+
+@media (max-width: 1136px) {
+  .search-box.expandable {
+    width: 19vw;
+  }
 }
