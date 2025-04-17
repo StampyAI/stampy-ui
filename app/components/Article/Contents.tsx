@@ -150,9 +150,7 @@ const insertGlossary = (pageid: string, glossary: Glossary, mobile: boolean) => 
         // something has gone wrong and the glossary-entry should be removed
         !entry ||
         // Remove entries that point to the current question
-        pageid == (entry as GlossaryEntry)?.pageid ||
-        // Check if this term already has a popup in this article
-        document.getElementById(`glossary-${entry.term}-${randomId}`)
+        pageid == (entry as GlossaryEntry)?.pageid
       ) {
         return null
       }
