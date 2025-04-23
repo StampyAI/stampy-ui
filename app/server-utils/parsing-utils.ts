@@ -86,16 +86,35 @@ export const allLinksOnNewTab = (html: string): string => {
   return html.replace(/(<a href="[^#].*?")/g, `$1 target="_blank" rel="noreferrer"`)
 }
 
-// Helper function to convert YouTube URLs to embed URLs
-const resolveYoutubeEmbedUrl = (url: string): string => {
+// Helper function to convert YouTube URLs to embed URLs or Google Drive URLs to embed URLs
+const resolveEmbedUrl = (url: string): {url: string; type: 'youtube' | 'iframe' | 'image'} => {
   // Pattern to get youtube ID found from https://regex101.com/library/OY96XI
-  const pattern =
+  const youtubePattern =
     /(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/gim
-  const match = pattern.exec(url)
+  const youtubeMatch = youtubePattern.exec(url)
 
-  if (match && match[1]) return `https://www.youtube.com/embed/${match[1]}`
+  if (youtubeMatch && youtubeMatch[1]) {
+    return {
+      url: `https://www.youtube.com/embed/${youtubeMatch[1]}`,
+      type: 'youtube',
+    }
+  }
 
-  return url
+  // Check for Google Drive shared links
+  const googleDrivePattern = /https:\/\/drive\.google\.com\/file\/d\/([\w-]+)\/(?:view|preview)/i
+  const googleDriveMatch = googleDrivePattern.exec(url)
+
+  if (googleDriveMatch && googleDriveMatch[1]) {
+    return {
+      url: `https://drive.google.com/file/d/${googleDriveMatch[1]}/preview`,
+      type: 'iframe',
+    }
+  }
+
+  return {
+    url,
+    type: 'image',
+  }
 }
 
 export type MediaItem = {
@@ -123,10 +142,10 @@ export const convertCarousels = (markdown: string | null) => {
       .map((item) => {
         const match = item.match(/\[(.*?)\]\((.*?)\)/)
         if (match) {
-          const url = resolveYoutubeEmbedUrl(match[2])
+          const {url, type} = resolveEmbedUrl(match[2])
           return {
             url,
-            type: url.includes('youtube.com') ? 'youtube' : 'image',
+            type,
             title: match[1],
           }
         }

@@ -91,7 +91,7 @@ const QuestionInput = ({
         <SendIcon
           ref={sendButtonRef}
           className="send pointer"
-          onClick={() => handleAsk(question)}
+          onClick={() => question.trim() && handleAsk(question)}
         />
       </div>
       {fixed && <div className="white-space" />}

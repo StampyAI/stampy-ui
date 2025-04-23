@@ -56,12 +56,27 @@ const addPopup = (
 
 /*
  * Recursively go through the child nodes of the provided node, and replace all text nodes
- * with the result of calling `textProcessor(textNode)`
+ * with the result of calling `textProcessor(textNode)`.
+ * Skip text nodes that are within:
+ * - Link elements
+ * - Heading tags (h1-h5)
+ * - Existing glossary entries
+ * - Glossary popups
  */
 const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
   Array.from(el.childNodes).forEach((child) => updateTextNodes(child, textProcessor))
 
-  if (el.nodeType == Node.TEXT_NODE && el.textContent) {
+  // Central check for excluding text from glossary processing based on its HTML context
+  const shouldSkipGlossary = (node: Node): boolean => {
+    // Node doesn't have closest(), but Element does
+    // Check if node has a parentElement we can use closest() on
+    return Boolean(
+      // Skip links, headings, and existing glossary entries
+      node.parentElement?.closest('a, h1, h2, h3, h4, h5, .glossary-entry, .glossary-popup')
+    )
+  }
+
+  if (el.nodeType == Node.TEXT_NODE && el.textContent && !shouldSkipGlossary(el)) {
     const node = textProcessor(el)
     el?.parentNode?.replaceChild(node, el)
   }
@@ -73,20 +88,39 @@ const updateTextNodes = (el: Node, textProcessor: (node: Node) => Node) => {
  *  - an on hover popup with a short explaination of the glossary item
  *  - use each glossary item only once
  */
+const normalizeForComparison = (text: string): string => {
+  // Standardize fancy quotes and dashes with their simpler equivalents
+  return text
+    .replace(/[‘’]/g, "'") // Replace left and right single quotes (U+2018, U+2019)
+    .replace(/[“”]/g, '"') // Replace left and right double quotes (U+201C, U+201D)
+    .replace(/[‒–—]/g, '-') // Replace figure-dash, en-dash and em-dash with hyphen
+}
+
 const glossaryInjecter = (pageid: string, glossary: Glossary) => {
   const seen = new Set()
-  return (html: string) =>
-    Object.values(glossary)
+  return (html: string) => {
+    // Normalize for comparison to find terms regardless of formatting
+    const normalizedHtml = normalizeForComparison(html)
+
+    return Object.values(glossary)
       .filter((item) => item.pageid != pageid)
       .sort((a, b) => (b.alias?.length ?? 0) - (a.alias?.length ?? 0))
-      .reduce((html, {term, alias}) => {
-        const match = new RegExp(`(^|[^\\w-])(${alias})($|[^\\w-])`, 'i')
-        if (!seen.has(term) && html.search(match) >= 0) {
+      .reduce((currentHtml, {term, alias}) => {
+        // Create a normalized pattern for matching variations in formatting
+        const normalizedAlias = normalizeForComparison(alias || '')
+        const match = new RegExp(`(^|[^\\w-])(${normalizedAlias})($|[^\\w-])`, 'i')
+
+        // Check if the term exists in the normalized HTML
+        if (!seen.has(term) && normalizedHtml.search(match) >= 0) {
           seen.add(term)
-          return html.replace(match, '$1<span class="glossary-entry">$2</span>$3')
+
+          // Use the canonical glossary term for consistent formatting
+          // Apply the replacement directly to the current HTML
+          return currentHtml.replace(match, `$1<span class="glossary-entry">${alias}</span>$3`)
         }
-        return html
+        return currentHtml
       }, html)
+  }
 }
 
 const insertGlossary = (pageid: string, glossary: Glossary) => {
@@ -97,7 +131,7 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
   const injecter = glossaryInjecter(pageid, glossary)
 
   return (textNode: Node) => {
-    const html = (textNode.textContent || '').replace('’', "'").replace('—', '-')
+    const html = textNode.textContent || ''
     // The glossary items have to be injected somewhere, so this does it by manually wrapping any known
     // definitions with spans. This is done from the longest to the shortest to make sure that sub strings
     // of longer definitions don't override them.
@@ -119,9 +153,6 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
         // If the contents of this item aren't simply a glossary item word, then
         // something has gone wrong and the glossary-entry should be removed
         !entry ||
-        // It's possible for a glossary entry to contain another one (e.g. 'goodness' and 'good'), so
-        // if this entry is a subset of a bigger entry, remove it.
-        e.parentElement?.classList.contains('glossary-entry') ||
         // Remove entries that point to the current question
         pageid == (entry as GlossaryEntry)?.pageid
       ) {
@@ -139,7 +170,12 @@ const insertGlossary = (pageid: string, glossary: Glossary) => {
       const link =
         entry.pageid &&
         `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
-      const image = entry.image && `<img src="${entry.image}"/>`
+      const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
+      const image = entry.image
+        ? isGoogleDrive
+          ? `<iframe src="${entry.image.replace(/\/view$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
+          : `<img src="${entry.image}"/>`
+        : ''
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}-${randomId}`,

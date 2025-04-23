@@ -44,11 +44,11 @@ export const ContentBoxMain = () => (
     classNameTable={'content-box-table main'}
     title={
       <>
-        <div className="white">New to AI safety?</div>
-        <div className="teal-200">Jump into the basics.</div>
+        <div className="white">AI safety?</div>
+        <div className="teal-200">What it's all about.</div>
       </>
     }
-    action={questionUrl({pageid: '9OGZ'})}
+    action={questionUrl({pageid: 'NM3T'})}
     actionTitle={
       <>
         <span className="default-bold">Start here</span>
@@ -62,23 +62,21 @@ export const ContentBoxMain = () => (
 )
 
 export const ContentBoxSecond = () => {
-  const article = {pageid: '9TDI', title: 'Objections and responses'}
+  const articleTitle = 'Learn more!'
+  const article = {pageid: 'NM3Q', title: articleTitle}
   return (
     <ContentBox
-      title="Objections and responses"
+      title={articleTitle}
       action={questionUrl(article)}
-      actionTitle="Explore the debate"
+      actionTitle="Jump into the basics"
     >
       <ListTable
         sameTab
         elements={[
-          {
-            title: 'Why can’t we just turn the AI off if it starts to misbehave?',
-            pageid: '5611',
-            className: 'desktop-only',
-          },
-          {title: 'What about technological unemployment from AI?', pageid: '6412'},
-          {title: 'Will AI be able to think faster than humans?', pageid: '8E41'},
+          {title: 'AI is advancing fast', pageid: 'NM37'},
+          {title: 'AI may pursue goals', pageid: 'NM3J', className: 'desktop-only'},
+          {title: 'AI can win a conflict against us', pageid: 'NM3O', className: 'desktop-only'},
+          {title: 'Experts are highly concerned', pageid: 'NM3D'},
         ]}
       />
     </ContentBox>

@@ -18,7 +18,13 @@ const Media = ({item}: {item: MediaItem}) => {
     case 'image':
       return <img src={item.url} alt={item.title || ''} />
     case 'iframe':
-      return <iframe src={item.url} />
+      return (
+        <iframe
+          src={item.url}
+          allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        />
+      )
     default:
       return null
   }
