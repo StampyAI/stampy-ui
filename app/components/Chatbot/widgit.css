@@ -69,8 +69,16 @@
 
 .widget-ask .send {
   position: absolute;
-  right: var(--spacing-8);
-  bottom: var(--spacing-8);
+  right: 8px;
+  bottom: 16px;
+  transition: none;
+}
+
+/* Firefox-specific adjustment */
+@-moz-document url-prefix() {
+  .widget-ask .send {
+    bottom: 8px;
+  }
 }
 
 .white-space {

@@ -1,4 +1,5 @@
 import './input.css'
+import AutoHeight from 'react-auto-height'
 
 type InputProps = {
   className?: string
@@ -8,9 +9,15 @@ type InputProps = {
   onChange?: (e: any) => void
   onKeyDown?: (e: any) => void
   onBlur?: (e: any) => void
+  multiline?: boolean
 }
-const Input = ({className, ...props}: InputProps) => {
-  const classes = ['input', className].filter((i) => i).join(' ')
+
+const Input = ({className = '', multiline, ...props}: InputProps) => {
+  const classes = `input ${className}`
+
+  if (multiline) {
+    return <AutoHeight element="textarea" className={classes} rows={1} {...props} />
+  }
 
   return <input className={classes} {...props} />
 }
