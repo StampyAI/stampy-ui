@@ -114,9 +114,7 @@ const glossaryInjecter = (pageid: string, glossary: Glossary) => {
         if (!seen.has(term) && normalizedHtml.search(match) >= 0) {
           seen.add(term)
 
-          // Use the canonical glossary term for consistent formatting
-          // Apply the replacement directly to the current HTML
-          return currentHtml.replace(match, `$1<span class="glossary-entry">${alias}</span>$3`)
+          return currentHtml.replace(match, '$1<span class="glossary-entry">$2</span>$3')
         }
         return currentHtml
       }, html)
