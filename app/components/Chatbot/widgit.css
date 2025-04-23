@@ -74,6 +74,13 @@
   transition: none;
 }
 
+/* Firefox-specific adjustment */
+@-moz-document url-prefix() {
+  .widget-ask .send {
+    bottom: 8px;
+  }
+}
+
 .white-space {
   position: absolute;
   left: -1000px;
