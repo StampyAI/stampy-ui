@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coda Raw Markdown Viewer</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+          sans-serif;
+        line-height: 1.5;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      h1,
+      h2,
+      h3 {
+        margin-bottom: 1rem;
+      }
+      .box {
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ddd;
+        overflow: auto;
+        height: 600px;
+        margin-bottom: 20px;
+      }
+      pre {
+        margin: 0;
+        font-family: monospace;
+        white-space: pre-wrap;
+        line-height: 1.5;
+        font-size: 14px;
+      }
+      .error {
+        color: #d32f2f;
+        font-weight: bold;
+        background-color: #ffebee;
+        padding: 8px;
+        border-radius: 4px;
+      }
+      .success {
+        color: #2e7d32;
+        background-color: #e8f5e9;
+        padding: 8px;
+        border-radius: 4px;
+      }
+      .info {
+        color: #0277bd;
+        background-color: #e1f5fe;
+        padding: 8px;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #00695c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+      button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+      .highlight-newline {
+        color: #9e9e9e;
+      }
+      .highlight-space {
+        color: #9e9e9e;
+        background-color: #e0e0e0;
+      }
+      .status {
+        margin-bottom: 20px;
+      }
+      .input-group {
+        display: flex;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+      .input-group input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      .input-group label {
+        margin-right: 10px;
+        font-weight: bold;
+      }
+      .code-path {
+        font-family: monospace;
+        padding: 8px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        overflow-x: auto;
+      }
+      .data-field {
+        margin-bottom: 15px;
+      }
+      .data-field h4 {
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      .data-field pre {
+        background-color: #f8f8f8;
+        padding: 10px;
+        border-radius: 4px;
+        border-left: 3px solid #00695c;
+      }
+      .warning {
+        color: #ef6c00;
+        background-color: #fff3e0;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+      }
+      .setup-section {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+      }
+      .note {
+        font-size: 0.9em;
+        color: #555;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Coda Raw Markdown Viewer</h1>
+
+      <div class="info" style="margin-bottom: 20px; padding: 10px; border-radius: 4px">
+        This tool shows you the raw markdown from the Coda API, exactly as it's received before any
+        processing.
+      </div>
+
+      <div class="setup-section">
+        <h3 style="margin-top: 0">API Setup</h3>
+        <div class="input-group">
+          <label for="api-token">Coda API Token:</label>
+          <input type="password" id="api-token" placeholder="Enter your Coda API token here" />
+        </div>
+        <div class="note">
+          To find your token: Open your wrangler.toml file and look for the line that says
+          <code>CODA_TOKEN = "your-token-here"</code>
+        </div>
+        <div id="token-status"></div>
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <div class="input-group">
+        <label for="question-id">Question ID:</label>
+        <input type="text" id="question-id" value="NM3E" placeholder="Enter question ID" />
+        <button id="fetch-btn" disabled>Fetch Raw Markdown</button>
+      </div>
+
+      <div class="code-path">
+        <p>
+          <strong>Code Path:</strong> The markdown is stored in
+          <code>response.items[0].values['Rich Text']</code> from the Coda API response.
+        </p>
+        <p>
+          <strong>Processing:</strong> In stampy-ui, it's extracted with
+          <code>extractText(values['Rich Text'])</code> which handles arrays and removes code block
+          markers (```)
+        </p>
+      </div>
+
+      <h2>Raw Markdown with Whitespace Highlighted</h2>
+      <div class="box">
+        <pre id="raw-markdown-highlighted">
+Enter your API token and click "Fetch Raw Markdown" to see the content...</pre
+        >
+      </div>
+
+      <div class="data-field">
+        <h3>Raw Data Fields</h3>
+        <div class="input-group" style="margin-bottom: 10px">
+          <button id="show-rich-text" disabled>Show Rich Text</button>
+          <button id="show-raw-response" disabled>Show Full API Response</button>
+        </div>
+
+        <div id="field-display">
+          <!-- Data will be displayed here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Constants
+      const CODA_DOC_ID = 'fau7sl2hmG'
+      const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File' // Answers table
+
+      // Store the response data
+      let responseData = null
+
+      // Use API token
+      function useApiToken() {
+        const tokenInput = document.getElementById('api-token')
+        const token = tokenInput.value.trim()
+
+        if (!token) {
+          document.getElementById('token-status').innerHTML =
+            `<div class="error">Please enter a valid API token</div>`
+          return null
+        }
+
+        document.getElementById('token-status').innerHTML =
+          `<div class="success">API token is ready to use</div>`
+        document.getElementById('fetch-btn').disabled = false
+        return token
+      }
+
+      // Helper functions
+      function escapeHTML(str) {
+        if (!str) return ''
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;')
+      }
+
+      function highlightWhitespace(text) {
+        if (!text) return ''
+        return text
+          .replace(/\n/g, '<span class="highlight-newline">↵</span>\n')
+          .replace(/  /g, '<span class="highlight-space">··</span>')
+          .replace(/\t/g, '<span class="highlight-space">→   </span>')
+      }
+
+      // Function to quote values for the query
+      function quote(x) {
+        return encodeURIComponent(`"${x.replace(/"/g, '\\"')}"`)
+      }
+
+      // Function to encode URI components
+      function enc(x) {
+        return encodeURIComponent(x)
+      }
+
+      // Function to make a Coda request
+      function makeCodaRequest(table, queryColumn, queryValue) {
+        let params = `useColumnNames=true&sortBy=natural&valueFormat=rich`
+        if (queryColumn && queryValue) {
+          params += `&query=${quote(queryColumn)}:${quote(queryValue)}`
+        }
+        return `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows?${params}`
+      }
+
+      // Function to extract first element of array or return the item
+      function head(item) {
+        if (Array.isArray(item)) return item[0] || ''
+        return item || ''
+      }
+
+      // Function to extract text from markdown (mimicking server-side logic)
+      function extractText(markdown) {
+        if (!markdown) return ''
+        return head(markdown).replace(/^```|```$/g, '')
+      }
+
+      // Function to fetch from Coda API
+      async function fetchFromCoda(questionId) {
+        try {
+          const token = useApiToken()
+          if (!token) {
+            document.getElementById('status').innerHTML =
+              `<div class="error">Please enter a valid API token first</div>`
+            return
+          }
+
+          document.getElementById('status').innerHTML =
+            `<div class="info">Fetching raw markdown for ID: ${escapeHTML(questionId)}...</div>`
+
+          // Determine query column based on ID length (mimicking server logic)
+          const queryColumn = questionId.length <= 6 ? 'UI ID' : 'Name'
+
+          // Construct the API URL
+          const apiUrl = makeCodaRequest(QUESTION_DETAILS_TABLE, queryColumn, questionId)
+
+          // Set up fetch options with authorization header
+          const fetchOptions = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+
+          // Fetch the data
+          const response = await fetch(apiUrl, fetchOptions)
+
+          if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`)
+          }
+
+          const data = await response.json()
+          responseData = data // Store response data for later use
+
+          if (!data.items || data.items.length === 0) {
+            throw new Error('No items found in response')
+          }
+
+          // Extract the values
+          const item = data.items[0]
+          const richText = item.values['Rich Text']
+
+          if (!richText) {
+            throw new Error('No Rich Text found in response')
+          }
+
+          // Display the raw Rich Text field with whitespace highlighted
+          document.getElementById('raw-markdown-highlighted').innerHTML = highlightWhitespace(
+            escapeHTML(typeof richText === 'string' ? richText : JSON.stringify(richText, null, 2))
+          )
+
+          // Update status
+          document.getElementById('status').innerHTML = `<div class="success">
+            <strong>Success:</strong> Fetched raw markdown for "${item.name}" (ID: ${questionId})
+          </div>`
+
+          // Enable the toggle buttons
+          document.getElementById('show-rich-text').disabled = false
+          document.getElementById('show-raw-response').disabled = false
+
+          // Display Rich Text by default
+          showRichText()
+        } catch (error) {
+          console.error('Error:', error)
+          document.getElementById('status').innerHTML =
+            `<div class="error">Error: ${error.message}</div>`
+
+          document.getElementById('raw-markdown-highlighted').textContent = 'Error fetching data'
+          document.getElementById('field-display').innerHTML = ''
+
+          // Disable the toggle buttons
+          document.getElementById('show-rich-text').disabled = true
+          document.getElementById('show-raw-response').disabled = true
+        }
+      }
+
+      // Function to show Rich Text field
+      function showRichText() {
+        if (!responseData || !responseData.items || responseData.items.length === 0) {
+          document.getElementById('field-display').innerHTML =
+            '<div class="error">No data available</div>'
+          return
+        }
+
+        const richText = responseData.items[0].values['Rich Text']
+
+        document.getElementById('field-display').innerHTML = `
+        <div class="data-field">
+          <h4>values['Rich Text']</h4>
+          <pre>${escapeHTML(JSON.stringify(richText, null, 2))}</pre>
+        </div>
+        
+        <div class="data-field">
+          <h4>After extractText() processing:</h4>
+          <pre>${escapeHTML(extractText(richText))}</pre>
+        </div>
+      `
+      }
+
+      // Function to show full API response
+      function showRawResponse() {
+        if (!responseData) {
+          document.getElementById('field-display').innerHTML =
+            '<div class="error">No data available</div>'
+          return
+        }
+
+        document.getElementById('field-display').innerHTML = `
+        <div class="data-field">
+          <h4>Full API Response</h4>
+          <pre style="max-height: 400px; overflow: auto;">${escapeHTML(JSON.stringify(responseData, null, 2))}</pre>
+        </div>
+      `
+      }
+
+      // Event listeners
+      document.getElementById('fetch-btn').addEventListener('click', function () {
+        const questionId = document.getElementById('question-id').value.trim()
+
+        if (!questionId) {
+          document.getElementById('status').innerHTML =
+            `<div class="error">Please enter a question ID</div>`
+          return
+        }
+
+        fetchFromCoda(questionId)
+      })
+
+      document.getElementById('show-rich-text').addEventListener('click', showRichText)
+      document.getElementById('show-raw-response').addEventListener('click', showRawResponse)
+
+      // Enable fetch button when token is entered
+      document.getElementById('api-token').addEventListener('input', function () {
+        document.getElementById('fetch-btn').disabled = !this.value.trim()
+      })
+    </script>
+  </body>
+</html>

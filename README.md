@@ -71,6 +71,10 @@ Once that's done, you should be able to test and deploy your app!
 $ npm run dev
 ```
 
+## Debugging Tools
+
+Debug tools are available in the `debug-tools/` directory. See the [debug-tools README](./debug-tools/README.md) for details on available tools for troubleshooting content and formatting issues.
+
 ## Lint and Tests
 
 ```sh
