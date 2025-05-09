@@ -1,6 +1,6 @@
 import {ActionFunctionArgs, LoaderFunctionArgs, json} from '@remix-run/cloudflare'
 import {useLoaderData, useActionData, useNavigation, Form} from '@remix-run/react'
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {isAuthorized} from '~/routesMapper'
 import {loadCacheKeys, loadCacheValue, cleanCache} from '~/server-utils/kv-cache'
 
@@ -20,7 +20,29 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     return json([] as string[], {status: 401})
   }
 
-  return await loadCacheKeys()
+  const keys = await loadCacheKeys()
+
+  // Pre-fetch titles for article-like keys (short keys with only alphanumeric chars)
+  const articleKeys = keys.filter((key) => /^[A-Z0-9]{4}$/.test(key))
+
+  // Load cached values and extract titles
+  const titles: Record<string, string> = {}
+
+  for (const key of articleKeys) {
+    try {
+      const value = await loadCacheValue(key)
+      if (value) {
+        const parsed = JSON.parse(value)
+        if (parsed && parsed.data && parsed.data.title) {
+          titles[key] = parsed.data.title
+        }
+      }
+    } catch (e) {
+      // Ignore errors for individual keys
+    }
+  }
+
+  return json({keys, titles})
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -64,7 +86,12 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 export default function Cache() {
-  const keys = useLoaderData<typeof loader>()
+  const loaderData = useLoaderData<typeof loader>()
+  const keys = Array.isArray(loaderData) ? loaderData : loaderData.keys
+  const articleTitles: Record<string, string> = Array.isArray(loaderData)
+    ? {}
+    : loaderData.titles || {}
+
   const actionData = useActionData<typeof action>()
   const transition = useNavigation()
   // @ts-expect-error inferred type kinda looks OK, but TS is unhappy anyway
@@ -72,6 +99,7 @@ export default function Cache() {
   const [cacheValues, setCacheValues] = useState(() =>
     Object.fromEntries(keys.map((k) => [k, null]))
   )
+  // Article titles are pre-loaded by the server and never change during the session
   useEffect(() => {
     if (cacheKey) {
       setCacheValues((curr) => ({
@@ -94,28 +122,64 @@ export default function Cache() {
         </div>
       )}
       <h2>Keys:</h2>
-      <ul>
+      <ul style={{listStyleType: 'none', paddingLeft: 0}}>
         {keys.length === 0 && <i>(the cache is empty)</i>}
         {keys.map((key) => (
-          <li key={key} style={{margin: '8px 0'}}>
-            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
-              <strong style={{minWidth: '180px'}}>{key}</strong>
-              <button name={Actions.loadCache} value={key}>
-                {cacheValues[key] ? 'Reload' : 'Show'} value
-              </button>
-              <button
-                name={Actions.clearSingleKey}
-                value={key}
-                style={{backgroundColor: '#ffcccc', color: '#333'}}
-                title="Delete this specific cache entry"
-              >
-                Clear
-              </button>
-            </div>
+          <React.Fragment key={`fragment-${key}`}>
+            <li style={{margin: '8px 0', display: 'flex'}}>
+              <div style={{display: 'flex', marginRight: '10px'}}>
+                <button name={Actions.loadCache} value={key} style={{marginRight: '4px'}}>
+                  {cacheValues[key] ? 'Reload' : 'Show'} value
+                </button>
+                <button
+                  name={Actions.clearSingleKey}
+                  value={key}
+                  style={{backgroundColor: '#ffcccc', color: '#333'}}
+                  title="Delete this specific cache entry"
+                >
+                  Clear
+                </button>
+              </div>
+              <div>
+                <strong>
+                  {key}
+                  {articleTitles[key] && (
+                    <span style={{fontWeight: 'normal', fontStyle: 'italic', marginLeft: '8px'}}>
+                      ({articleTitles[key]})
+                    </span>
+                  )}
+                </strong>
+              </div>
+            </li>
             {cacheValues[key] && (
-              <pre style={{marginTop: '8px', marginLeft: '180px'}}>{cacheValues[key]}</pre>
+              <li key={`${key}-value`} style={{marginTop: '-5px', marginBottom: '15px'}}>
+                <div
+                  style={{
+                    marginLeft: '180px',
+                    padding: '16px',
+                    backgroundColor: '#e0e0e0',
+                    border: '1px solid #cccccc',
+                    borderRadius: '4px',
+                    overflow: 'auto',
+                  }}
+                >
+                  <pre
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      color: '#333',
+                      fontFamily: 'monospace',
+                      backgroundColor: 'transparent',
+                    }}
+                  >
+                    {typeof cacheValues[key] === 'string'
+                      ? JSON.stringify(JSON.parse(cacheValues[key]), null, 2)
+                      : JSON.stringify(cacheValues[key], null, 2)}
+                  </pre>
+                </div>
+              </li>
             )}
-          </li>
+          </React.Fragment>
         ))}
       </ul>
     </Form>
