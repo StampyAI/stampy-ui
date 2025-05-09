@@ -172,9 +172,27 @@ export default function Cache() {
                       backgroundColor: 'transparent',
                     }}
                   >
-                    {typeof cacheValues[key] === 'string'
-                      ? JSON.stringify(JSON.parse(cacheValues[key]), null, 2)
-                      : JSON.stringify(cacheValues[key], null, 2)}
+                    {(() => {
+                      // Handle different types of cache values with proper type checking
+                      try {
+                        const value = cacheValues[key]
+                        if (value === null) {
+                          return 'null'
+                        }
+
+                        if (typeof value === 'string') {
+                          // Parse JSON string and format it
+                          const parsedValue = JSON.parse(value)
+                          return JSON.stringify(parsedValue, null, 2)
+                        } else {
+                          // Just format the existing value
+                          return JSON.stringify(value, null, 2)
+                        }
+                      } catch (e) {
+                        // Handle parsing errors by displaying raw value
+                        return String(cacheValues[key] || '')
+                      }
+                    })()}
                   </pre>
                 </div>
               </li>
