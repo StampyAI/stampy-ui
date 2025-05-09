@@ -8,6 +8,7 @@ enum Actions {
   delete = 'delete',
   reload = 'reload',
   loadCache = 'loadCache',
+  clearSingleKey = 'clearSingleKey',
 }
 
 export const headers = () => ({
@@ -31,14 +32,34 @@ export const action = async ({request}: ActionFunctionArgs) => {
     )
   }
   const [actionKey, cacheKey] = data[0]
-  if (actionKey === Actions.delete) {
-    return cleanCache(cacheKey)
-  } else if (actionKey === Actions.loadCache) {
-    return json({cacheKey, cacheValue: await loadCacheValue(cacheKey)})
-  } else if (actionKey === Actions.reload) {
-    return null
-  } else {
-    return json({error: `Unknown action ${actionKey}`}, {status: 400})
+
+  try {
+    if (actionKey === Actions.delete) {
+      console.log('Cleaning all cache')
+      await cleanCache(cacheKey)
+      return json({message: 'Cache cleaned successfully'})
+    } else if (actionKey === Actions.loadCache) {
+      console.log(`Loading cache value for: ${cacheKey}`)
+      const value = await loadCacheValue(cacheKey)
+      return json({cacheKey, cacheValue: value})
+    } else if (actionKey === Actions.reload) {
+      console.log('Reloading cache keys')
+      return null
+    } else if (actionKey === Actions.clearSingleKey) {
+      if (!cacheKey) {
+        return json({error: 'No cache key provided for clearing'}, {status: 400})
+      }
+
+      console.log(`Clearing single cache key: ${cacheKey}`)
+      await STAMPY_KV.delete(cacheKey)
+      return json({message: `Successfully cleared cache for: ${cacheKey}`})
+    } else {
+      return json({error: `Unknown action ${actionKey}`}, {status: 400})
+    }
+  } catch (err) {
+    console.error(`Error processing ${actionKey} for ${cacheKey}:`, err)
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+    return json({error: `Error processing cache action: ${errorMessage}`}, {status: 500})
   }
 }
 
@@ -47,7 +68,7 @@ export default function Cache() {
   const actionData = useActionData<typeof action>()
   const transition = useNavigation()
   // @ts-expect-error inferred type kinda looks OK, but TS is unhappy anyway
-  const {error, cacheKey, cacheValue} = actionData ?? {}
+  const {error, message, cacheKey, cacheValue} = actionData ?? {}
   const [cacheValues, setCacheValues] = useState(() =>
     Object.fromEntries(keys.map((k) => [k, null]))
   )
@@ -67,16 +88,33 @@ export default function Cache() {
       <button name={Actions.reload}>Reload keys</button>
       {transition.state !== 'idle' && transition.state}
       {error && <div className="error">{error}</div>}
+      {message && (
+        <div className="success" style={{color: 'green', margin: '10px 0'}}>
+          {message}
+        </div>
+      )}
       <h2>Keys:</h2>
       <ul>
         {keys.length === 0 && <i>(the cache is empty)</i>}
         {keys.map((key) => (
-          <li key={key}>
-            {key}
-            <button name={Actions.loadCache} value={key}>
-              {cacheValues[key] ? 'Reload' : 'Show'} value
-            </button>
-            {cacheValues[key] && <pre>{cacheValues[key]}</pre>}
+          <li key={key} style={{margin: '8px 0'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+              <strong style={{minWidth: '180px'}}>{key}</strong>
+              <button name={Actions.loadCache} value={key}>
+                {cacheValues[key] ? 'Reload' : 'Show'} value
+              </button>
+              <button
+                name={Actions.clearSingleKey}
+                value={key}
+                style={{backgroundColor: '#ffcccc', color: '#333'}}
+                title="Delete this specific cache entry"
+              >
+                Clear
+              </button>
+            </div>
+            {cacheValues[key] && (
+              <pre style={{marginTop: '8px', marginLeft: '180px'}}>{cacheValues[key]}</pre>
+            )}
           </li>
         ))}
       </ul>
