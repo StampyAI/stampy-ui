@@ -57,29 +57,24 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
   try {
     if (actionKey === Actions.delete) {
-      console.log('Cleaning all cache')
       await cleanCache(cacheKey)
       return json({message: 'Cache cleaned successfully'})
     } else if (actionKey === Actions.loadCache) {
-      console.log(`Loading cache value for: ${cacheKey}`)
       const value = await loadCacheValue(cacheKey)
       return json({cacheKey, cacheValue: value})
     } else if (actionKey === Actions.reload) {
-      console.log('Reloading cache keys')
       return null
     } else if (actionKey === Actions.clearSingleKey) {
       if (!cacheKey) {
         return json({error: 'No cache key provided for clearing'}, {status: 400})
       }
 
-      console.log(`Clearing single cache key: ${cacheKey}`)
       await STAMPY_KV.delete(cacheKey)
       return json({message: `Successfully cleared cache for: ${cacheKey}`})
     } else {
       return json({error: `Unknown action ${actionKey}`}, {status: 400})
     }
   } catch (err) {
-    console.error(`Error processing ${actionKey} for ${cacheKey}:`, err)
     const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
     return json({error: `Error processing cache action: ${errorMessage}`}, {status: 500})
   }
