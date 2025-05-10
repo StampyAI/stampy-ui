@@ -8,6 +8,7 @@ enum Actions {
   delete = 'delete',
   reload = 'reload',
   loadCache = 'loadCache',
+  clearSingleKey = 'clearSingleKey',
 }
 
 export const headers = () => ({
@@ -19,7 +20,29 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     return json([] as string[], {status: 401})
   }
 
-  return await loadCacheKeys()
+  const keys = await loadCacheKeys()
+
+  // Pre-fetch titles for article-like keys (short keys with only alphanumeric chars)
+  const articleKeys = keys.filter((key) => /^[A-Z0-9]{4}$/.test(key))
+
+  // Load cached values and extract titles
+  const titles: Record<string, string> = {}
+
+  for (const key of articleKeys) {
+    try {
+      const value = await loadCacheValue(key)
+      if (value) {
+        const parsed = JSON.parse(value)
+        if (parsed && parsed.data && parsed.data.title) {
+          titles[key] = parsed.data.title
+        }
+      }
+    } catch (e) {
+      // Ignore errors for individual keys
+    }
+  }
+
+  return json({keys, titles})
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -31,26 +54,41 @@ export const action = async ({request}: ActionFunctionArgs) => {
     )
   }
   const [actionKey, cacheKey] = data[0]
+
   if (actionKey === Actions.delete) {
-    return cleanCache(cacheKey)
+    await cleanCache(cacheKey)
+    return json({message: 'Cache cleaned successfully'})
   } else if (actionKey === Actions.loadCache) {
     return json({cacheKey, cacheValue: await loadCacheValue(cacheKey)})
   } else if (actionKey === Actions.reload) {
     return null
+  } else if (actionKey === Actions.clearSingleKey) {
+    if (!cacheKey) {
+      return json({error: 'No cache key provided for clearing'}, {status: 400})
+    }
+
+    await STAMPY_KV.delete(cacheKey)
+    return json({message: `Successfully cleared cache for: ${cacheKey}`})
   } else {
     return json({error: `Unknown action ${actionKey}`}, {status: 400})
   }
 }
 
 export default function Cache() {
-  const keys = useLoaderData<typeof loader>()
+  const loaderData = useLoaderData<typeof loader>()
+  const keys = Array.isArray(loaderData) ? loaderData : loaderData.keys
+  const articleTitles: Record<string, string> = Array.isArray(loaderData)
+    ? {}
+    : loaderData.titles || {}
+
   const actionData = useActionData<typeof action>()
   const transition = useNavigation()
   // @ts-expect-error inferred type kinda looks OK, but TS is unhappy anyway
-  const {error, cacheKey, cacheValue} = actionData ?? {}
+  const {error, message, cacheKey, cacheValue} = actionData ?? {}
   const [cacheValues, setCacheValues] = useState(() =>
     Object.fromEntries(keys.map((k) => [k, null]))
   )
+  // Article titles are pre-loaded by the server and never change during the session
   useEffect(() => {
     if (cacheKey) {
       setCacheValues((curr) => ({
@@ -67,16 +105,87 @@ export default function Cache() {
       <button name={Actions.reload}>Reload keys</button>
       {transition.state !== 'idle' && transition.state}
       {error && <div className="error">{error}</div>}
+      {message && (
+        <div className="success" style={{color: 'green', margin: '10px 0'}}>
+          {message}
+        </div>
+      )}
       <h2>Keys:</h2>
-      <ul>
+      <ul style={{listStyleType: 'none', paddingLeft: 0}}>
         {keys.length === 0 && <i>(the cache is empty)</i>}
         {keys.map((key) => (
-          <li key={key}>
-            {key}
-            <button name={Actions.loadCache} value={key}>
-              {cacheValues[key] ? 'Reload' : 'Show'} value
-            </button>
-            {cacheValues[key] && <pre>{cacheValues[key]}</pre>}
+          <li key={key} style={{margin: '8px 0'}}>
+            <div style={{display: 'flex'}}>
+              <div style={{display: 'flex', marginRight: '10px'}}>
+                <button name={Actions.loadCache} value={key} style={{marginRight: '4px'}}>
+                  {cacheValues[key] ? 'Reload' : 'Show'} value
+                </button>
+                <button
+                  name={Actions.clearSingleKey}
+                  value={key}
+                  style={{backgroundColor: '#ffcccc', color: '#333'}}
+                  title="Delete this specific cache entry"
+                >
+                  Clear
+                </button>
+              </div>
+              <div>
+                <strong>
+                  {key}
+                  {articleTitles[key] && (
+                    <span style={{fontWeight: 'normal', fontStyle: 'italic', marginLeft: '8px'}}>
+                      ({articleTitles[key]})
+                    </span>
+                  )}
+                </strong>
+              </div>
+            </div>
+            {cacheValues[key] && (
+              <div
+                style={{
+                  marginLeft: '180px',
+                  marginTop: '5px',
+                  marginBottom: '15px',
+                  padding: '16px',
+                  backgroundColor: '#e0e0e0',
+                  border: '1px solid #cccccc',
+                  borderRadius: '4px',
+                  overflow: 'auto',
+                }}
+              >
+                <pre
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    color: '#333',
+                    fontFamily: 'monospace',
+                    backgroundColor: 'transparent',
+                  }}
+                >
+                  {(() => {
+                    // Handle different types of cache values with proper type checking
+                    try {
+                      const value = cacheValues[key]
+                      if (value === null) {
+                        return 'null'
+                      }
+
+                      if (typeof value === 'string') {
+                        // Parse JSON string and format it
+                        const parsedValue = JSON.parse(value)
+                        return JSON.stringify(parsedValue, null, 2)
+                      } else {
+                        // Just format the existing value
+                        return JSON.stringify(value, null, 2)
+                      }
+                    } catch (e) {
+                      // Handle parsing errors by displaying raw value
+                      return String(cacheValues[key] || '')
+                    }
+                  })()}
+                </pre>
+              </div>
+            )}
           </li>
         ))}
       </ul>
