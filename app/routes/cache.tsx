@@ -55,28 +55,22 @@ export const action = async ({request}: ActionFunctionArgs) => {
   }
   const [actionKey, cacheKey] = data[0]
 
-  try {
-    if (actionKey === Actions.delete) {
-      await cleanCache(cacheKey)
-      return json({message: 'Cache cleaned successfully'})
-    } else if (actionKey === Actions.loadCache) {
-      const value = await loadCacheValue(cacheKey)
-      return json({cacheKey, cacheValue: value})
-    } else if (actionKey === Actions.reload) {
-      return null
-    } else if (actionKey === Actions.clearSingleKey) {
-      if (!cacheKey) {
-        return json({error: 'No cache key provided for clearing'}, {status: 400})
-      }
-
-      await STAMPY_KV.delete(cacheKey)
-      return json({message: `Successfully cleared cache for: ${cacheKey}`})
-    } else {
-      return json({error: `Unknown action ${actionKey}`}, {status: 400})
+  if (actionKey === Actions.delete) {
+    await cleanCache(cacheKey)
+    return json({message: 'Cache cleaned successfully'})
+  } else if (actionKey === Actions.loadCache) {
+    return json({cacheKey, cacheValue: await loadCacheValue(cacheKey)})
+  } else if (actionKey === Actions.reload) {
+    return null
+  } else if (actionKey === Actions.clearSingleKey) {
+    if (!cacheKey) {
+      return json({error: 'No cache key provided for clearing'}, {status: 400})
     }
-  } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
-    return json({error: `Error processing cache action: ${errorMessage}`}, {status: 500})
+
+    await STAMPY_KV.delete(cacheKey)
+    return json({message: `Successfully cleared cache for: ${cacheKey}`})
+  } else {
+    return json({error: `Unknown action ${actionKey}`}, {status: 400})
   }
 }
 
