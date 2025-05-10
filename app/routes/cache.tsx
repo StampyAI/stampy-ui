@@ -1,6 +1,6 @@
 import {ActionFunctionArgs, LoaderFunctionArgs, json} from '@remix-run/cloudflare'
 import {useLoaderData, useActionData, useNavigation, Form} from '@remix-run/react'
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {isAuthorized} from '~/routesMapper'
 import {loadCacheKeys, loadCacheValue, cleanCache} from '~/server-utils/kv-cache'
 
@@ -120,8 +120,8 @@ export default function Cache() {
       <ul style={{listStyleType: 'none', paddingLeft: 0}}>
         {keys.length === 0 && <i>(the cache is empty)</i>}
         {keys.map((key) => (
-          <React.Fragment key={`fragment-${key}`}>
-            <li style={{margin: '8px 0', display: 'flex'}}>
+          <li key={key} style={{margin: '8px 0'}}>
+            <div style={{display: 'flex'}}>
               <div style={{display: 'flex', marginRight: '10px'}}>
                 <button name={Actions.loadCache} value={key} style={{marginRight: '4px'}}>
                   {cacheValues[key] ? 'Reload' : 'Show'} value
@@ -145,54 +145,54 @@ export default function Cache() {
                   )}
                 </strong>
               </div>
-            </li>
+            </div>
             {cacheValues[key] && (
-              <li key={`${key}-value`} style={{marginTop: '-5px', marginBottom: '15px'}}>
-                <div
+              <div
+                style={{
+                  marginLeft: '180px',
+                  marginTop: '5px',
+                  marginBottom: '15px',
+                  padding: '16px',
+                  backgroundColor: '#e0e0e0',
+                  border: '1px solid #cccccc',
+                  borderRadius: '4px',
+                  overflow: 'auto',
+                }}
+              >
+                <pre
                   style={{
-                    marginLeft: '180px',
-                    padding: '16px',
-                    backgroundColor: '#e0e0e0',
-                    border: '1px solid #cccccc',
-                    borderRadius: '4px',
-                    overflow: 'auto',
+                    margin: 0,
+                    padding: 0,
+                    color: '#333',
+                    fontFamily: 'monospace',
+                    backgroundColor: 'transparent',
                   }}
                 >
-                  <pre
-                    style={{
-                      margin: 0,
-                      padding: 0,
-                      color: '#333',
-                      fontFamily: 'monospace',
-                      backgroundColor: 'transparent',
-                    }}
-                  >
-                    {(() => {
-                      // Handle different types of cache values with proper type checking
-                      try {
-                        const value = cacheValues[key]
-                        if (value === null) {
-                          return 'null'
-                        }
-
-                        if (typeof value === 'string') {
-                          // Parse JSON string and format it
-                          const parsedValue = JSON.parse(value)
-                          return JSON.stringify(parsedValue, null, 2)
-                        } else {
-                          // Just format the existing value
-                          return JSON.stringify(value, null, 2)
-                        }
-                      } catch (e) {
-                        // Handle parsing errors by displaying raw value
-                        return String(cacheValues[key] || '')
+                  {(() => {
+                    // Handle different types of cache values with proper type checking
+                    try {
+                      const value = cacheValues[key]
+                      if (value === null) {
+                        return 'null'
                       }
-                    })()}
-                  </pre>
-                </div>
-              </li>
+
+                      if (typeof value === 'string') {
+                        // Parse JSON string and format it
+                        const parsedValue = JSON.parse(value)
+                        return JSON.stringify(parsedValue, null, 2)
+                      } else {
+                        // Just format the existing value
+                        return JSON.stringify(value, null, 2)
+                      }
+                    } catch (e) {
+                      // Handle parsing errors by displaying raw value
+                      return String(cacheValues[key] || '')
+                    }
+                  })()}
+                </pre>
+              </div>
             )}
-          </React.Fragment>
+          </li>
         ))}
       </ul>
     </Form>
