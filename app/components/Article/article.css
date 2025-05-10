@@ -220,7 +220,7 @@ article blockquote ~ blockquote {
   padding-top: 0;
 }
 
-article blockquote ~ p {
+article blockquote + p {
   padding-top: var(--spacing-32);
 }
 
