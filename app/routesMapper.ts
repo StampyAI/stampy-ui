@@ -1,4 +1,9 @@
 export const isAuthorized = (request: Request) => {
+  // In development environment, allow access without authentication
+  if (process.env.NODE_ENV === 'development') {
+    return true
+  }
+
   const header = request.headers.get('Authorization')
 
   if (!header) return false
