@@ -97,7 +97,6 @@ article .contents p + ol {
 /* Styling for list items */
 article .contents li {
   padding-bottom: var(--spacing-8);
-  line-height: 160%; /* Tighter line spacing within list items */
 }
 
 article .contents > p:has(> img) {
