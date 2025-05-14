@@ -84,6 +84,15 @@ article .contents p:last-child {
   padding-bottom: 0;
 }
 
+article .contents h1,
+article .contents h2,
+article .contents h3,
+article .contents h4,
+article .contents h5,
+article .contents h6 {
+  padding-bottom: var(--spacing-24);
+}
+
 article .contents li:last-child {
   padding-bottom: var(--spacing-24);
 }
