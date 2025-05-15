@@ -65,11 +65,7 @@ export const ContentBoxSecond = () => {
   const articleTitle = 'I need more arguments'
   const article = {pageid: 'NM3Q', title: articleTitle}
   return (
-    <ContentBox
-      title={articleTitle}
-      action={questionUrl(article)}
-      actionTitle="Click here"
-    >
+    <ContentBox title={articleTitle} action={questionUrl(article)} actionTitle="Click here">
       <ListTable
         sameTab
         elements={[
