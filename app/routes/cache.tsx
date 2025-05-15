@@ -20,29 +20,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     return json([] as string[], {status: 401})
   }
 
-  const keys = await loadCacheKeys()
-
-  // Pre-fetch titles for article-like keys (short keys with only alphanumeric chars)
-  const articleKeys = keys.filter((key) => /^[A-Z0-9]{4}$/.test(key))
-
-  // Load cached values and extract titles
-  const titles: Record<string, string> = {}
-
-  for (const key of articleKeys) {
-    try {
-      const value = await loadCacheValue(key)
-      if (value) {
-        const parsed = JSON.parse(value)
-        if (parsed && parsed.data && parsed.data.title) {
-          titles[key] = parsed.data.title
-        }
-      }
-    } catch (e) {
-      // Ignore errors for individual keys
-    }
-  }
-
-  return json({keys, titles})
+  return await loadCacheKeys()
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -75,11 +53,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 export default function Cache() {
-  const loaderData = useLoaderData<typeof loader>()
-  const keys = Array.isArray(loaderData) ? loaderData : loaderData.keys
-  const articleTitles: Record<string, string> = Array.isArray(loaderData)
-    ? {}
-    : loaderData.titles || {}
+  const keys = useLoaderData<typeof loader>()
 
   const actionData = useActionData<typeof action>()
   const transition = useNavigation()
@@ -88,7 +62,6 @@ export default function Cache() {
   const [cacheValues, setCacheValues] = useState(() =>
     Object.fromEntries(keys.map((k) => [k, null]))
   )
-  // Article titles are pre-loaded by the server and never change during the session
   useEffect(() => {
     if (cacheKey) {
       setCacheValues((curr) => ({
@@ -130,14 +103,7 @@ export default function Cache() {
                 </button>
               </div>
               <div>
-                <strong>
-                  {key}
-                  {articleTitles[key] && (
-                    <span style={{fontWeight: 'normal', fontStyle: 'italic', marginLeft: '8px'}}>
-                      ({articleTitles[key]})
-                    </span>
-                  )}
-                </strong>
+                <strong>{key}</strong>
               </div>
             </div>
             {cacheValues[key] && (
