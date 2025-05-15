@@ -224,6 +224,10 @@ article .banner h3 iframe {
 article .banner h3 .title {
   padding-left: 10px;
 }
+/* Make links in banners clearly visible */
+article .banner-contents a {
+  text-decoration: underline;
+}
 
 article blockquote {
   border-left: 4px solid var(--colors-teal-500);
