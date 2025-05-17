@@ -44,14 +44,14 @@ export const ContentBoxMain = () => (
     classNameTable={'content-box-table main'}
     title={
       <>
-        <div className="white">AI safety?</div>
-        <div className="teal-200">What it's all about.</div>
+        <div className="white">Wait,</div>
+        <div className="teal-200">AI will do what?</div>
       </>
     }
     action={questionUrl({pageid: 'NM3T'})}
     actionTitle={
       <>
-        <span className="default-bold">Start here</span>
+        <span className="default-bold">Click here</span>
         <ArrowRight />
       </>
     }
@@ -62,14 +62,10 @@ export const ContentBoxMain = () => (
 )
 
 export const ContentBoxSecond = () => {
-  const articleTitle = 'Learn more!'
+  const articleTitle = 'I need more arguments'
   const article = {pageid: 'NM3Q', title: articleTitle}
   return (
-    <ContentBox
-      title={articleTitle}
-      action={questionUrl(article)}
-      actionTitle="Jump into the basics"
-    >
+    <ContentBox title={articleTitle} action={questionUrl(article)} actionTitle="Click here">
       <ListTable
         sameTab
         elements={[
