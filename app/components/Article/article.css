@@ -123,7 +123,12 @@ article .contents > p.image-caption {
 }
 
 article .contents img {
-  max-width: 100%;
+  /* this will sometimes stretch the image, which is better than having small images */
+  /* see https://github.com/StampyAI/stampy-ui/issues/930 */
+  width: calc(100% - 40px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 article .glossary-entry {
@@ -288,6 +293,12 @@ article blockquote + p {
 
   article {
     margin: 0;
+  }
+
+  /* Reset caption margins on mobile */
+  article .contents > p.image-caption {
+    margin-left: var(--spacing-16);
+    margin-right: var(--spacing-16);
   }
 }
 

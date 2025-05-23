@@ -38,7 +38,7 @@ const MediaCarousel = ({items}: MediaCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   return (
-    <div className="media-carousel-container padding-bottom-32">
+    <div className="media-carousel-container padding-bottom-16">
       <div className="media-carousel-track">
         <Media item={items[currentIndex]} />
       </div>
