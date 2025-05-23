@@ -7,12 +7,15 @@
   height: fit-content;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   opacity: 1;
   transition:
     opacity 200ms,
     width 200ms;
+  position: sticky;
+  top: 32px;
+  align-self: flex-start;
 }
 
 .articles-group.loading {
@@ -84,6 +87,8 @@
 @media (max-width: 780px) {
   .articles-group {
     width: 100%;
+    position: static;
+    max-height: none;
   }
   .article-selector {
     margin-bottom: var(--spacing-40);
