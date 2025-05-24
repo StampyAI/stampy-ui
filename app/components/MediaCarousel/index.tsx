@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import './mediacarousel.css'
 import {MediaItem} from '~/server-utils/parsing-utils'
 import {Navigation} from '../CategoryCarousel'
@@ -37,10 +37,45 @@ type MediaCarouselProps = {
 const MediaCarousel = ({items}: MediaCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  // Preload adjacent images
+  useEffect(() => {
+    const preloadIndices = [
+      currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1,
+      currentIndex,
+      currentIndex + 1 >= items.length ? 0 : currentIndex + 1,
+    ]
+
+    preloadIndices.forEach((index) => {
+      const item = items[index]
+      if (item.type === 'image') {
+        const img = new Image()
+        img.src = item.url
+      }
+    })
+  }, [currentIndex, items])
+
   return (
     <div className="media-carousel-container padding-bottom-32">
       <div className="media-carousel-track">
-        <Media item={items[currentIndex]} />
+        {/* Render current and adjacent items but only show current */}
+        {items.map((item, index) => {
+          const isAdjacent =
+            index === currentIndex ||
+            index === (currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1) ||
+            index === (currentIndex + 1 >= items.length ? 0 : currentIndex + 1)
+
+          return (
+            <div
+              key={index}
+              style={{
+                display: index === currentIndex ? 'block' : 'none',
+                position: index === currentIndex ? 'relative' : 'absolute',
+              }}
+            >
+              {isAdjacent && <Media item={item} />}
+            </div>
+          )
+        })}
       </div>
       {items[currentIndex].title && (
         <div className="media-carousel-title small grey">{items[currentIndex].title}</div>
