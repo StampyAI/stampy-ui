@@ -280,6 +280,7 @@ article blockquote + p {
   }
   article .glossary-popup {
     margin-top: 50px;
+    max-width: 500px;
   }
 
   article .link-popup {
