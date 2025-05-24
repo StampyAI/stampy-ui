@@ -43,7 +43,10 @@ const MediaCarousel = ({items}: MediaCarouselProps) => {
         <Media item={items[currentIndex]} />
       </div>
       {items[currentIndex].title && (
-        <div className="media-carousel-title small grey">{items[currentIndex].title}</div>
+        <div
+          className="media-carousel-title small grey"
+          dangerouslySetInnerHTML={{__html: items[currentIndex].title || ''}}
+        />
       )}
       {items.length > 1 && (
         <div className="media-carousel-navigation">
