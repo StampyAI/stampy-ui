@@ -37,15 +37,18 @@ type MediaCarouselProps = {
 const MediaCarousel = ({items}: MediaCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  // Helper to get adjacent indices
+  const getAdjacentIndices = (index: number) => {
+    const prev = index - 1 < 0 ? items.length - 1 : index - 1
+    const next = index + 1 >= items.length ? 0 : index + 1
+    return [prev, index, next]
+  }
+
   // Preload adjacent images
   useEffect(() => {
-    const preloadIndices = [
-      currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1,
-      currentIndex,
-      currentIndex + 1 >= items.length ? 0 : currentIndex + 1,
-    ]
+    const adjacentIndices = getAdjacentIndices(currentIndex)
 
-    preloadIndices.forEach((index) => {
+    adjacentIndices.forEach((index) => {
       const item = items[index]
       if (item.type === 'image') {
         const img = new Image()
@@ -54,15 +57,14 @@ const MediaCarousel = ({items}: MediaCarouselProps) => {
     })
   }, [currentIndex, items])
 
+  const adjacentIndices = new Set(getAdjacentIndices(currentIndex))
+
   return (
     <div className="media-carousel-container padding-bottom-32">
       <div className="media-carousel-track">
         {/* Render current and adjacent items but only show current */}
         {items.map((item, index) => {
-          const isAdjacent =
-            index === currentIndex ||
-            index === (currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1) ||
-            index === (currentIndex + 1 >= items.length ? 0 : currentIndex + 1)
+          const isAdjacent = adjacentIndices.has(index)
 
           return (
             <div
