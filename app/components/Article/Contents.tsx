@@ -245,14 +245,6 @@ const Contents = ({
         )
       }
     })
-
-    // Return cleanup function
-    return () => {
-      // Remove all popups when component unmounts
-      el.querySelectorAll('.link-popup').forEach((popup) => {
-        popup.parentNode?.removeChild(popup)
-      })
-    }
   }, [html, carousels, glossary, pageid, mobile])
 
   return (
