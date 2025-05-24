@@ -12,6 +12,11 @@
   overflow: hidden;
 }
 
+.media-carousel-track > div {
+  width: 100%;
+  height: 100%;
+}
+
 .media-carousel-track img,
 .media-carousel-track iframe {
   width: 100%;
