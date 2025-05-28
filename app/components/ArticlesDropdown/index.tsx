@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import {Link as LinkElem} from '@remix-run/react'
 import type {Tag} from '~/server-utils/stampy'
-import {TOCItem, Category, ADVANCED, INTRODUCTORY} from '~/routes/questions.toc'
+import {TOCItem, Category, ADVANCED, BASIC} from '~/routes/questions.toc'
 import {sortFuncs} from '~/routes/categories.$'
 import {questionUrl, tagsUrl, tagUrl} from '~/routesMapper'
 import Button from '~/components/Button'
@@ -68,7 +68,7 @@ export const ArticlesDropdown = ({toc, categories, fullWidth}: ArticlesDropdownP
     >
       <div className={(fullWidth ? '' : 'col-5 ') + 'toc'}>
         <ArticlesSection
-          category={INTRODUCTORY}
+          category={BASIC}
           toc={toc}
           className={mobile ? 'padding-bottom-40' : 'padding-bottom-32'}
           hide={hide}

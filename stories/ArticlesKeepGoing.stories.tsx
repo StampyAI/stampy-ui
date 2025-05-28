@@ -70,7 +70,7 @@ const toc = [
     title: 'The get involved section',
     pageid: '8TJV',
     hasText: true,
-    category: 'Introductory',
+    category: 'Basic',
     children: [
       {
         title: 'Give me money',
