@@ -14,21 +14,24 @@
 
 .media-carousel-track img,
 .media-carousel-track iframe {
-  width: 100%;
+  width: calc(100% - 48px);
   height: 100%;
   object-fit: contain;
   border: none;
+  margin: 0 auto;
+  display: block;
 }
 
 .media-carousel-navigation {
   display: flex;
   justify-content: center;
-  margin-top: var(--spacing-24);
+  margin-top: var(--spacing-16);
 }
 
 .media-carousel-title {
-  text-align: center;
-  margin-top: var(--spacing-16);
+  margin-top: var(--spacing-12);
+  margin-left: var(--spacing-24);
+  margin-right: var(--spacing-24);
 }
 
 .media-carousel-index-indicator {
@@ -36,4 +39,11 @@
   justify-content: center;
   align-items: center;
   width: 36px;
+}
+
+@media (max-width: 1136px) {
+  .media-carousel-title {
+    margin-left: var(--spacing-16);
+    margin-right: var(--spacing-16);
+  }
 }

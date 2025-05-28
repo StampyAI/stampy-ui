@@ -118,12 +118,17 @@ article .contents > p.image-caption {
   color: var(--colors-cool-grey-600);
   font-size: 0.9em;
   padding-top: 0;
-  margin-left: var(--spacing-40);
-  margin-right: var(--spacing-40);
+  margin-left: var(--spacing-24);
+  margin-right: var(--spacing-24);
 }
 
 article .contents img {
-  max-width: 100%;
+  /* this will sometimes stretch the image, which is better than having small images */
+  /* see https://github.com/StampyAI/stampy-ui/issues/930 */
+  width: calc(100% - 48px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 article .glossary-entry {
@@ -293,6 +298,12 @@ article blockquote + p {
 
   article {
     margin: 0;
+  }
+
+  /* Reset caption margins on mobile */
+  article .contents > p.image-caption {
+    margin-left: var(--spacing-16);
+    margin-right: var(--spacing-16);
   }
 }
 
