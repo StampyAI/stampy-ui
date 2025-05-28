@@ -84,14 +84,14 @@ export const Primary: Story = {
         subtitle: 'Basic information about all of this',
         pageid: '9OGZ',
         hasText: true,
-        category: 'Introductory',
+        category: 'Basic',
         order: 0,
         ttr: 1,
         children: [
           {
             title: 'What would an AGI be able to do?',
             pageid: 'NH50',
-            category: 'Introductory',
+            category: 'Basic',
             hasText: false,
             ttr: 1,
             order: 0,
@@ -99,7 +99,7 @@ export const Primary: Story = {
           {
             title: 'Types of AI',
             pageid: 'NH50',
-            category: 'Introductory',
+            category: 'Basic',
             hasText: false,
             order: 0,
             ttr: 1,
@@ -146,7 +146,7 @@ export const Primary: Story = {
             title: 'Introduction to ML',
             pageid: 'NH50',
             hasText: false,
-            category: 'Introductory',
+            category: 'Basic',
             order: 13,
             ttr: 1,
             children: [
@@ -211,7 +211,7 @@ export const Primary: Story = {
         pageid: '9OGZ',
         hasText: true,
         ttr: 1,
-        category: 'Introductory',
+        category: 'Basic',
         order: 1,
       },
     ],

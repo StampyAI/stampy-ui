@@ -3,10 +3,10 @@ import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {loadAllQuestions, Question, PageId, QuestionStatus} from '~/server-utils/stampy'
 
 const MAX_LEVELS = 3
-export const INTRODUCTORY = 'Introductory'
+export const BASIC = 'Basic'
 export const ADVANCED = 'Advanced'
 
-export type Category = typeof INTRODUCTORY | typeof ADVANCED | undefined
+export type Category = typeof BASIC | typeof ADVANCED | undefined
 
 export type TOCItem = {
   title: string
@@ -29,7 +29,7 @@ type LoaderResp = {
 
 const getCategory = (tags: string[]): Category => {
   if (!tags) return undefined
-  if (tags.includes(INTRODUCTORY)) return INTRODUCTORY
+  if (tags.includes(BASIC)) return BASIC
   if (tags.includes(ADVANCED)) return ADVANCED
   return undefined
 }
@@ -88,7 +88,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     data: {
       toc: data
         .filter(canBeShown)
-        .filter(({tags}) => tags?.includes(INTRODUCTORY) || tags?.includes(ADVANCED))
+        .filter(({tags}) => tags?.includes(BASIC) || tags?.includes(ADVANCED))
         .map(formatQuestion(1))
         .sort((a, b) => (a.order || 0) - (b.order || 0)),
       visible: data.filter(canBeShown).map(formatQuestion(1)),
