@@ -14,7 +14,7 @@
 
 .media-carousel-track img,
 .media-carousel-track iframe {
-  width: calc(100% - 40px);
+  width: calc(100% - 48px);
   height: 100%;
   object-fit: contain;
   border: none;
@@ -30,8 +30,8 @@
 
 .media-carousel-title {
   margin-top: var(--spacing-12);
-  margin-left: var(--spacing-40);
-  margin-right: var(--spacing-40);
+  margin-left: var(--spacing-24);
+  margin-right: var(--spacing-24);
 }
 
 .media-carousel-index-indicator {
