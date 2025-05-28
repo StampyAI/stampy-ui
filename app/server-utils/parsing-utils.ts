@@ -140,13 +140,14 @@ export const convertCarousels = (markdown: string | null) => {
       .filter((line) => line.trim().startsWith('-'))
       .map((line) => line.trim().substring(1).trim())
       .map((item) => {
-        const match = item.match(/\[(.*?)\]\((.*?)\)/)
+        // Capture text before main link, the main media link, and all text after.
+        const match = item.match(/(.*?)\[(.*?)\]\((.*?)\)(.*)/)
         if (match) {
-          const {url, type} = resolveEmbedUrl(match[2])
+          const {url, type} = resolveEmbedUrl(match[3])
           return {
             url,
             type,
-            title: match[1],
+            title: convertMarkdownToHtml(match[1] + match[2] + match[4]),
           }
         }
 
