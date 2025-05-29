@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo} from 'react'
+import {useState, useMemo} from 'react'
 import './mediacarousel.css'
 import {MediaItem} from '~/server-utils/parsing-utils'
 import {Navigation} from '../CategoryCarousel'
@@ -43,17 +43,6 @@ const MediaCarousel = ({items}: MediaCarouselProps) => {
     const nextIndex = currentIndex + 1 >= items.length ? 0 : currentIndex + 1
     return new Set([prevIndex, currentIndex, nextIndex])
   }, [currentIndex, items.length])
-
-  // Preload adjacent images
-  useEffect(() => {
-    adjacentIndices.forEach((index) => {
-      const item = items[index]
-      if (item.type === 'image') {
-        const img = new Image()
-        img.src = item.url
-      }
-    })
-  }, [adjacentIndices, items])
 
   return (
     <div className="media-carousel-container padding-bottom-32">
