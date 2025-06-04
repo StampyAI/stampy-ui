@@ -44,8 +44,8 @@ export const ContentBoxMain = () => (
     classNameTable={'content-box-table main'}
     title={
       <>
-        <div className="white">Wait,</div>
-        <div className="teal-200">AI will do what?</div>
+        <div className="teal-200">Wait,</div>
+        <div className="white">AI will do what?</div>
       </>
     }
     action={questionUrl({pageid: 'NM3T'})}
