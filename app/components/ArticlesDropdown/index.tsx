@@ -15,19 +15,11 @@ type LinkProps = {
   pageid?: string
   className?: string
   onClick: () => void
+  showIcon?: boolean
 }
-const Link = ({to, text, pageid, className, onClick}: LinkProps) => (
+const Link = ({to, text, pageid, className, onClick, showIcon}: LinkProps) => (
   <div className={'articles-dropdown-entry ' + (className || '')}>
-    <LinkElem to={to} onClick={onClick} state={{section: pageid}}>
-      {text}
-    </LinkElem>
-  </div>
-)
-
-// Show the stamp icon for articles
-const ArticleLink = ({to, text, pageid, className, onClick}: LinkProps) => (
-  <div className={'articles-dropdown-entry ' + (className || '')}>
-    <Stamp className="stamp-icon" />
+    {showIcon && <Stamp className="stamp-icon" />}
     <LinkElem to={to} onClick={onClick} state={{section: pageid}}>
       {text}
     </LinkElem>
@@ -46,12 +38,13 @@ const ArticlesSection = ({category, toc, className, hide}: ArticlesSectionProps)
     {toc
       .filter((item) => item.category === category)
       .map((item: TOCItem) => (
-        <ArticleLink
+        <Link
           key={`${item.pageid}-${item.title}`}
           to={questionUrl(item)}
           text={item.title}
           pageid={item.pageid}
           onClick={hide}
+          showIcon={true}
         />
       ))}
   </div>
