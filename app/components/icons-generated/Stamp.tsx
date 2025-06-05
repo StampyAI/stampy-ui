@@ -1,13 +1,6 @@
 import type {SVGProps} from 'react'
 const SvgStamp = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={44}
-    height={44}
-    fill="none"
-    viewBox="-2 -2 45 44"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-2 -2 45 44" {...props}>
     <path
       fill="url(#stamp_svg__a)"
       fillRule="evenodd"
