@@ -22,6 +22,15 @@
 }
 .articles-dropdown-entry {
   margin: var(--spacing-12) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+.articles-dropdown-entry .stamp-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .articles-dropdown-container .toc {

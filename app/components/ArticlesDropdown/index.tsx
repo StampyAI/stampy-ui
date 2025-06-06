@@ -5,6 +5,7 @@ import {TOCItem, Category, ADVANCED, BASIC} from '~/routes/questions.toc'
 import {sortFuncs} from '~/routes/categories.$'
 import {questionUrl, tagsUrl, tagUrl} from '~/routesMapper'
 import Button from '~/components/Button'
+import {Stamp} from '~/components/icons-generated'
 import './dropdown.css'
 import useIsMobile from '~/hooks/isMobile'
 
@@ -14,9 +15,11 @@ type LinkProps = {
   pageid?: string
   className?: string
   onClick: () => void
+  showIcon?: boolean
 }
-const Link = ({to, text, pageid, className, onClick}: LinkProps) => (
+const Link = ({to, text, pageid, className, onClick, showIcon}: LinkProps) => (
   <div className={'articles-dropdown-entry ' + (className || '')}>
+    {showIcon && <Stamp className="stamp-icon" />}
     <LinkElem to={to} onClick={onClick} state={{section: pageid}}>
       {text}
     </LinkElem>
@@ -41,6 +44,7 @@ const ArticlesSection = ({category, toc, className, hide}: ArticlesSectionProps)
           text={item.title}
           pageid={item.pageid}
           onClick={hide}
+          showIcon={true}
         />
       ))}
   </div>
@@ -64,9 +68,9 @@ export const ArticlesDropdown = ({toc, categories, fullWidth}: ArticlesDropdownP
 
   return hidden ? null : (
     <div
-      className={`articles-dropdown-container bordered ${fullWidth ? 'full-width' : 'col-8'} z-index-4`}
+      className={`articles-dropdown-container bordered ${fullWidth ? 'full-width' : 'col-9'} z-index-4`}
     >
-      <div className={(fullWidth ? '' : 'col-5 ') + 'toc'}>
+      <div className={(fullWidth ? '' : 'col-6 ') + 'toc'}>
         <ArticlesSection
           category={BASIC}
           toc={toc}
