@@ -239,7 +239,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           // question.relatedQuestions = question.relatedQuestions.slice(0,2);
           const filteredFollowups = (question.relatedQuestions || [])
             .filter(({pageid}) => {
-              const q = questions?.find(q => q.pageid === pageid)
+              const q = questions?.find((q) => q.pageid === pageid)
               if (q?.status === undefined) return false
               switch (q.status) {
                 case QuestionStatus.LIVE_ON_SITE:
