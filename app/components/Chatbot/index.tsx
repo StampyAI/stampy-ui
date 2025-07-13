@@ -10,7 +10,7 @@ import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
 import ChatEntry from './ChatEntry'
 import './widgit.css'
 import {questionUrl} from '~/routesMapper'
-import {Question} from '~/server-utils/stampy'
+import {Question, QuestionStatus} from '~/server-utils/stampy'
 import {useSearch} from '~/hooks/useSearch'
 import Input from '~/components/Input'
 import useIsMobile from '~/hooks/isMobile'
@@ -237,10 +237,12 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         if (i === history.length - 1) {
           // check proper insertion of pool questions
           // question.relatedQuestions = question.relatedQuestions.slice(0,2);
-          setFollowups(
-            (question.relatedQuestions || [])
-              .slice(0, 3)
-              .map(({title, pageid}) => ({text: title, pageid}))
+          // Only show published related questions as followups
+          const filteredFollowups = (question.relatedQuestions || [])
+            .filter(({pageid}) => questions?.find(q => q.pageid === pageid)?.status === QuestionStatus.LIVE_ON_SITE)
+            .slice(0, 3)
+            .map(({title, pageid}) => ({text: title, pageid}))
+          setFollowups(filteredFollowups
           )
           return {...item, title: question.title, content: question.text || ''}
         }
@@ -252,7 +254,7 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         return item
       })
     )
-  }, [fetcher.data, fetcher.state])
+  }, [fetcher.data, fetcher.state, questions])
 
   const showArticleByID = async ({text, pageid}: Followup) => {
     if (pageid) fetcher.load(questionUrl({pageid}))
