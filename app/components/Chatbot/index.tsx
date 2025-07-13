@@ -239,11 +239,30 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
           // question.relatedQuestions = question.relatedQuestions.slice(0,2);
           // Only show published related questions as followups
           const filteredFollowups = (question.relatedQuestions || [])
-            .filter(({pageid}) => questions?.find(q => q.pageid === pageid)?.status === QuestionStatus.LIVE_ON_SITE)
+            .filter(({pageid}) => {
+              const q = questions?.find(q => q.pageid === pageid)
+              if (q?.status === undefined) return false
+              switch (q.status) {
+                case QuestionStatus.LIVE_ON_SITE:
+                  return true
+                case QuestionStatus.WITHDRAWN:
+                case QuestionStatus.SKETCH:
+                case QuestionStatus.TO_DELETE:
+                case QuestionStatus.DUPLICATE:
+                case QuestionStatus.UNCATEGORIZED:
+                case QuestionStatus.NOT_STARTED:
+                case QuestionStatus.IN_PROGRESS:
+                case QuestionStatus.IN_REVIEW:
+                case QuestionStatus.SUBSECTION:
+                case QuestionStatus.UNKNOWN:
+                  return false
+                default:
+                  return assertNever(q.status)
+              }
+            })
             .slice(0, 3)
             .map(({title, pageid}) => ({text: title, pageid}))
-          setFollowups(filteredFollowups
-          )
+          setFollowups(filteredFollowups)
           return {...item, title: question.title, content: question.text || ''}
         }
         // this is a previous human written article that didn't load properly - don't
@@ -369,3 +388,8 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
 }
 
 export default Chatbot
+
+// Helper for exhaustive enum checking
+function assertNever(x: never): never {
+  throw new Error('Unexpected QuestionStatus: ' + x)
+}
