@@ -237,7 +237,6 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
         if (i === history.length - 1) {
           // check proper insertion of pool questions
           // question.relatedQuestions = question.relatedQuestions.slice(0,2);
-          // Only show published related questions as followups
           const filteredFollowups = (question.relatedQuestions || [])
             .filter(({pageid}) => {
               const q = questions?.find(q => q.pageid === pageid)
@@ -256,8 +255,11 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
                 case QuestionStatus.SUBSECTION:
                 case QuestionStatus.UNKNOWN:
                   return false
-                default:
-                  return assertNever(q.status)
+                default: {
+                  // Exhaustive check: this should never be reached
+                  const _exhaustiveCheck: never = q.status
+                  return _exhaustiveCheck
+                }
               }
             })
             .slice(0, 3)
@@ -388,8 +390,3 @@ export const Chatbot = ({question, questions, settings}: ChatbotProps) => {
 }
 
 export default Chatbot
-
-// Helper for exhaustive enum checking
-function assertNever(x: never): never {
-  throw new Error('Unexpected QuestionStatus: ' + x)
-}
