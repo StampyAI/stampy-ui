@@ -27,7 +27,7 @@ const InPerson = () => (
         className="padding-bottom-40"
       >
         <p className="grey default">
-          There are about 60 in-person AI safety communities across the globe, mostly in major
+          There are about 150 in-person AI safety communities across the globe, mostly in major
           cities. These communities typically host weekly meetups in which members network,
           socialize, or review AI safety material in the form of talks or workshops.
         </p>
@@ -115,7 +115,7 @@ const Online = () => (
         {
           tag: 'Top recommendation',
           title: 'LessWrong',
-          action: 'https://www.lesswrong.com/tag/ai',
+          action: 'https://www.lesswrong.com/w/ai',
         },
       ]}
     >
