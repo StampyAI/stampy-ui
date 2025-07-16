@@ -3,7 +3,7 @@ import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/CategoryCarousel'
+import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 
@@ -214,9 +214,9 @@ const ResearchPath = () => (
     </div>
     */}
     <div className="padding-bottom-104">
-      <CategoryCarousel
+      <ArticleCarousel
         title="Our articles on pursuing a career in alignment research"
-        category="NM1D"
+        articles={['8U32']}
       />
     </div>
   </>
@@ -367,9 +367,9 @@ const GovernancePath = () => (
     </div>
   */}
 
-    <CategoryCarousel
+    <ArticleCarousel
       title="Our articles on pursuing a career in AI governance & policy"
-      category="NM2N"
+      articles={['9YG8']}
     />
   </div>
 )
@@ -617,9 +617,9 @@ const FieldBuildingPath = () => (
       />
     </div>
 
-    <CategoryCarousel
+    <ArticleCarousel
       title="Our articles on pursuing a career in AI safety field-building"
-      category="NM2M"
+      articles={['8U2P', '8U2W', '8U2R', '8U2Q']}
     />
   </>
 )

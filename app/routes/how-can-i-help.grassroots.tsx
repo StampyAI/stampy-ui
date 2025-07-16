@@ -1,6 +1,6 @@
 import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/CategoryCarousel'
+import ArticleCarousel from '~/components/ArticleCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
@@ -147,13 +147,13 @@ const WhatYouCanDo = () => (
       </HelpItem>
     </div>
 
-    <CategoryCarousel
+    <ArticleCarousel
       title={
         <span>
           Our articles on spreading the <br /> word & grassroots activism
         </span>
       }
-      category="NM1A"
+      articles={['8QH5']}
     />
   </>
 )

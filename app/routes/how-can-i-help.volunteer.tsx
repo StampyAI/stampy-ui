@@ -1,7 +1,7 @@
 import {MetaFunction} from '@remix-run/node'
 import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/CategoryCarousel'
+import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import BaginskiImg from '~/assets/Baginski.jpeg'
@@ -126,7 +126,10 @@ const Options = () => (
     </div>
 
     <div>
-      <CategoryCarousel title={<span>Our articles on volunteering</span>} category="NM18" />
+      <ArticleCarousel
+        title={<span>Our articles on volunteering</span>}
+        articles={['NM27', 'NF8E']}
+      />
     </div>
   </>
 )

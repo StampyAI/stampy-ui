@@ -1,7 +1,7 @@
 import {MetaFunction} from '@remix-run/node'
 import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/CategoryCarousel'
+import ArticleCarousel from '~/components/ArticleCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
@@ -335,7 +335,10 @@ const DiveDeeper = () => (
 const OurArticles = () => (
   <>
     <div>
-      <CategoryCarousel title="Our articles on building your knowledge" category="NM19" />
+      <ArticleCarousel
+        title="Our articles on building your knowledge"
+        articles={['NM3T', 'NM3Q']}
+      />
     </div>
   </>
 )

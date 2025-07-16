@@ -4,13 +4,13 @@ import {PageId} from '~/server-utils/stampy'
 import Button from '~/components/Button'
 import {ArrowRight} from '~/components/icons-generated'
 import {questionUrl} from '~/routesMapper'
-import './category-carousel.css'
+import './article-carousel.css'
 
 const PER_BOX = 320
 
-type CategoryCarouselProps = {
+type ArticleCarouselProps = {
   title: React.ReactNode
-  category: PageId
+  articles: PageId[]
 }
 
 export const Navigation = ({
@@ -41,7 +41,7 @@ export const Navigation = ({
   )
 }
 
-const CategoryCarousel = ({title, category}: CategoryCarouselProps) => {
+const ArticleCarousel = ({title, articles}: ArticleCarouselProps) => {
   const componentRef = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(0)
   const [offset, setOffset] = useState(0)
@@ -61,27 +61,30 @@ const CategoryCarousel = ({title, category}: CategoryCarouselProps) => {
     return () => window.removeEventListener('resize', updateWidth)
   }, [])
 
-  const section = getArticle(category)
+  const articleData = articles.map((id) => getArticle(id)).filter(Boolean)
+
   return (
     <div className="carousel rounded" ref={componentRef}>
       <div className="carousel-header">
         <h2>{title}</h2>
         <Navigation
-          leftAction={() => setOffset((i) => Math.min(i - shown, section?.children?.length || 0))}
-          rightAction={() => setOffset((i) => Math.max(i + shown, 0))}
+          leftAction={() => setOffset((i) => Math.max(i - shown, 0))}
+          rightAction={() => setOffset((i) => Math.min(i + shown, articleData.length))}
           leftDisabled={offset === 0}
-          rightDisabled={!section?.children?.length || offset + shown >= section.children.length}
+          rightDisabled={offset + shown >= articleData.length}
         />
       </div>
       <div className="flex-container items">
-        {section?.children?.slice(offset, offset + shown).map((child) => (
-          <Button key={child.pageid} className="carousel-item" action={questionUrl(child)}>
-            <p className="default-bold teal-500">{child.title}</p>
-            <p className="small grey">{child.ttr || 1} min read</p>
-          </Button>
-        ))}
+        {articleData.slice(offset, offset + shown).map((article) =>
+          article ? (
+            <Button key={article.pageid} className="carousel-item" action={questionUrl(article)}>
+              <p className="default-bold teal-500">{article.title}</p>
+              <p className="small grey">{article.ttr || 1} min read</p>
+            </Button>
+          ) : null
+        )}
       </div>
     </div>
   )
 }
-export default CategoryCarousel
+export default ArticleCarousel
