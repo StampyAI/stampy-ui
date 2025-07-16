@@ -25,7 +25,7 @@ const NewToAISafety = () => (
           {
             tag: 'Top recommendation',
             title: '\u201CIntro to AI safety\u201D micro-course',
-            action: 'https://aisafety.info/questions/9OGZ/',
+            action: 'https://aisafety.info/questions/NM3Q/',
           },
           {
             title: 'Intro to AI safety video playlist',
@@ -181,7 +181,8 @@ const Dropdowns = () => (
           },
         ]}
       >
-        We recommend following AGI Safety Core, a group of thinkers in AI that post about AI safety.
+        We recommend following AGI Safety Core, a collection of thinkers in AI that post about AI
+        safety.
       </HelpItem>
     </DropDown>
   </div>
@@ -199,13 +200,13 @@ const DiveDeeper = () => (
         links={[
           {
             tag: 'Highlighted course',
-            title: 'AISF Governance Course',
-            action: 'https://aisafetyfundamentals.com/governance/',
+            title: 'BlueDot Impact AI Governance Course',
+            action: 'https://bluedot.org/courses/governance',
           },
           {
             tag: 'Highlighted course',
-            title: 'AISF Alignment Course',
-            action: 'https://aisafetyfundamentals.com/alignment/',
+            title: 'BlueDot Impact AI Alignment Course',
+            action: 'https://bluedot.org/courses/alignment',
           },
         ]}
         additionalInfo={
@@ -227,18 +228,18 @@ const DiveDeeper = () => (
           of AI safety, such as AI alignment research or AI governance.
         </p>
         <p className="grey default padding-bottom-16">
-          The AI Safety Fundamentals (AISF) Governance Course, for example, is especially suited for
-          policymakers and similar stakeholders interested in AI governance mechanisms. It explores
-          policy levers for steering the future of AI development.
+          BlueDot Impact's AI Governance Course, for example, is especially suited for policymakers
+          and similar stakeholders interested in AI governance mechanisms. It explores policy levers
+          for steering the future of AI development.
         </p>
         <p className="grey default padding-bottom-24">
-          The AISF Alignment Course is especially suited for people with a technical background
-          interested in AI alignment research. It explores research agendas for aligning AI systems
-          with human interests.
+          BlueDot Impact's AI Alignment Course is especially suited for people with a technical
+          background interested in AI alignment research. It explores research agendas for aligning
+          AI systems with human interests.
         </p>
         <p className="grey small padding-bottom-24">
-          <span className="small-bold">Note:</span> If you take the AISF courses, consider exploring
-          additional views on AI safety to help avoid homogeneity in the field, such as{' '}
+          <span className="small-bold">Note:</span> If you take the BlueDot Impact courses, consider
+          exploring additional views on AI safety to help avoid homogeneity in the field, such as{' '}
           <a
             href="https://www.cold-takes.com/most-important-century/"
             target="_blank"
@@ -250,8 +251,9 @@ const DiveDeeper = () => (
           .
         </p>
         <p className="grey small">
-          <span className="small-bold">Note:</span> AISF courses do not accept all applicants. We
-          recommend taking the courses through self-study if your application is unsuccessful.
+          <span className="small-bold">Note:</span> BlueDot Impact courses do not accept all
+          applicants. We recommend taking the courses through self-study if your application is
+          unsuccessful.
         </p>
       </HelpItem>
 
@@ -262,7 +264,7 @@ const DiveDeeper = () => (
           {
             tag: 'Most widely-used',
             title: 'LessWrong',
-            action: 'https://www.lesswrong.com/tag/ai',
+            action: 'https://www.lesswrong.com/w/ai',
           },
           {
             title: 'Alignment Forum',

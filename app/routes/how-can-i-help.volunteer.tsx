@@ -92,24 +92,6 @@ const Options = () => (
         </HelpItem>
 
         <HelpItem
-          title="Join the monthly AED calls"
-          className="padding-bottom-64"
-          links={[
-            {
-              title: 'Add the next call to your calendar',
-              action: 'https://alignment.dev/',
-            },
-          ]}
-        >
-          <p>
-            {' '}
-            Alignment Ecosystem Development (AED) is a nonprofit organization and community of
-            volunteers supporting online AI safety field-building projects like AISafety.com and AI
-            Safety Quest. You can join an existing project or pitch your own to recruit help.
-          </p>
-        </HelpItem>
-
-        <HelpItem
           title="Join one of our projects seeking volunteer help"
           links={[
             {

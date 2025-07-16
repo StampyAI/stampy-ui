@@ -25,9 +25,9 @@ export default function Donate() {
           <div className="col-6-alt">
             <p className="default-bold padding-bottom-16">Why this is important</p>
             <p className="grey default">
-              The AI safety field is funding-limited as of late 2024, and there are important
-              avenues in AI alignment research and AI governance that cannot currently be explored
-              due to this lack of funding.
+              The AI safety field is currently funding-limited, and there are important avenues in
+              AI alignment research and AI governance that cannot currently be explored due to this
+              lack of funding.
             </p>
           </div>
         </div>
@@ -67,7 +67,7 @@ export default function Donate() {
           </p>
           <p>
             We recommend the Long-Term Future Fund, the go-to grantmaker for identifying and funding
-            high-value projects worldwide.
+            high-value small projects worldwide.
           </p>
         </HelpItem>
 
@@ -77,9 +77,9 @@ export default function Donate() {
           className="padding-bottom-56"
           links={[
             {
-              title: 'Shallow review of live agendas in alignment & safety',
+              title: 'Shallow review of technical AI safety, 2024',
               action:
-                'https://www.lesswrong.com/posts/zaaGsFBeDTpCsYHef/shallow-review-of-live-agendas-in-alignment-and-safety',
+                'https://www.lesswrong.com/posts/fAW6RXLKTLHC3WXkS/shallow-review-of-technical-ai-safety-2024',
             },
           ]}
         >
@@ -100,8 +100,8 @@ export default function Donate() {
           title="Donating directly to larger organizations"
           links={[
             {
-              title: 'AI Safety Landscape Map',
-              action: 'https://www.aisafety.com/landscape-map',
+              title: 'Map of AI Existential Safety',
+              action: 'https://www.aisafety.com/map',
             },
           ]}
         >

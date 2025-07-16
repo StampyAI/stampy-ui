@@ -47,7 +47,7 @@ const ResearchPath = () => (
           <p className="grey small">
             <span className="small-bold">*Note:</span> Beware of the risk of joining industry
             &ldquo;safety&rdquo; teams, as this work often leaks to non-safety parts of the
-            organization which improves the AI technology itself—and so ends up causing harm.
+            organization, which improves the AI technology itself—and so ends up causing harm.
           </p>
         </div>
         <div className="col-6-alt">

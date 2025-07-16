@@ -74,8 +74,8 @@ const WhatYouCanDo = () => (
         tag="8 min"
         links={[
           {
-            title: 'PauseAI’s email-a-politician email builder',
-            action: 'https://pauseai.info/email-builder',
+            title: 'ControlAI’s email template',
+            action: 'https://controlai.com/take-action/',
           },
         ]}
       >
