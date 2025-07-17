@@ -4,6 +4,7 @@ import ArticleCarousel from '~/components/ArticleCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -153,7 +154,7 @@ const WhatYouCanDo = () => (
           Our articles on spreading the <br /> word & grassroots activism
         </span>
       }
-      articles={['8QH5']}
+      articles={ARTICLE_COLLECTIONS.GRASSROOTS_ACTIVISM}
     />
   </>
 )

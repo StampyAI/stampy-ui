@@ -10,7 +10,7 @@ const PER_BOX = 320
 
 type ArticleCarouselProps = {
   title: React.ReactNode
-  articles: PageId[]
+  articles: readonly PageId[]
 }
 
 export const Navigation = ({

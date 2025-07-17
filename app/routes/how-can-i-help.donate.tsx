@@ -3,6 +3,7 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import ArticleCarousel from '~/components/ArticleCarousel'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -133,7 +134,7 @@ export default function Donate() {
       </div>
 
       <div>
-        <ArticleCarousel title="Our articles on donating" articles={['6481', '8U2Y', '8U2X']} />
+        <ArticleCarousel title="Our articles on donating" articles={ARTICLE_COLLECTIONS.DONATING} />
       </div>
     </Base>
   )

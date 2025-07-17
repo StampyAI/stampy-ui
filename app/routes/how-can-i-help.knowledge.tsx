@@ -5,6 +5,7 @@ import ArticleCarousel from '~/components/ArticleCarousel'
 import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -337,7 +338,7 @@ const OurArticles = () => (
     <div>
       <ArticleCarousel
         title="Our articles on building your knowledge"
-        articles={['NM3T', 'NM3Q']}
+        articles={ARTICLE_COLLECTIONS.BUILDING_KNOWLEDGE}
       />
     </div>
   </>

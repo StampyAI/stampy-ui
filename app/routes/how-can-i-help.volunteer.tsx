@@ -5,6 +5,7 @@ import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import BaginskiImg from '~/assets/Baginski.jpeg'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -128,7 +129,7 @@ const Options = () => (
     <div>
       <ArticleCarousel
         title={<span>Our articles on volunteering</span>}
-        articles={['NM27', 'NF8E']}
+        articles={ARTICLE_COLLECTIONS.VOLUNTEERING}
       />
     </div>
   </>

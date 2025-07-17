@@ -6,6 +6,7 @@ import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -216,7 +217,7 @@ const ResearchPath = () => (
     <div className="padding-bottom-104">
       <ArticleCarousel
         title="Our articles on pursuing a career in alignment research"
-        articles={['8U32']}
+        articles={ARTICLE_COLLECTIONS.ALIGNMENT_RESEARCH}
       />
     </div>
   </>
@@ -369,7 +370,7 @@ const GovernancePath = () => (
 
     <ArticleCarousel
       title="Our articles on pursuing a career in AI governance & policy"
-      articles={['9YG8']}
+      articles={ARTICLE_COLLECTIONS.GOVERNANCE_POLICY}
     />
   </div>
 )
@@ -619,7 +620,7 @@ const FieldBuildingPath = () => (
 
     <ArticleCarousel
       title="Our articles on pursuing a career in AI safety field-building"
-      articles={['8U2P', '8U2W', '8U2R', '8U2Q']}
+      articles={ARTICLE_COLLECTIONS.FIELD_BUILDING}
     />
   </>
 )
