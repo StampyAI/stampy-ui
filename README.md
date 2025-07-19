@@ -9,18 +9,15 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
 ## Stampy UI Development Setup
 
 1. Requirements
-
    - [Install Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
    - [Create Cloudflare account](https://dash.cloudflare.com/)
    - [Install Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
      and [authenticate the CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
 
 2. Clone the [Repo](https://github.com/StampyAI/stampy-ui)
-
    - Run `git clone https://github.com/StampyAI/stampy-ui.git`
 
 3. Setup in [Cloudflare Dashboard](https://dash.cloudflare.com/)
-
    - If you haven't already, set up your free custom Cloudflare Workers subdomain
    - From the left menu `Compute (Workers)` : `Overview`, note your Cloudflare `Account ID` on the right
    - From the left menu `Storage & Databases` : `KV`, create a KV (key-value store) namespace `STAMPY_KV`
@@ -29,7 +26,6 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
    - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
 4. Setup in [Coda.io](https://coda.io/account)
-
    - **4.1 (Required)** Setup read access to the API view in Coda
 
      > _Note_:
@@ -45,7 +41,6 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
    - **4.2 (Optional)** Setup write access to the API write view in Coda
 
      > Note: This step is only needed for incrementing counters (helpful, etc.). There isn't a test environment, so any changes there will also effect the live site, so think twice before using them.
-
      - When logged in to Coda, `Generate API token` in your Account settings
      - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG#_tutable-eEhx2YPsBE`
      - Replace the value for `{CODA_WRITES_TOKEN}` in `wrangler.toml`
@@ -53,13 +48,11 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
    - **4.3 (Optional)** Setup write access to the "Incoming questions" table in Coda
 
      > Note: This step is only needed if you want to add new questions to Coda, or you want to mark answers as helpful. Seeing as they will then go live, it would probably be better to only set this if you are working on those specific component, in order to not mess up the list of incoming questions.
-
      - When logged in to Coda, `Generate API token` in your Account settigns
      - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG`
      - Replace the value for `{CODA_WRITE_TOKEN}` in `wrangler.toml`
 
 5. Create stampy-ui Remix environment
-
    - Change directory to where you downloaded the stampy-ui github repository: `cd stampy-ui`
    - Run `npm install` to install all the dependencies required to run the current version of stampy-ui.
 
