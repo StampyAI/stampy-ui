@@ -13,14 +13,8 @@ export type SearchResult = {
 }
 
 export type WorkerMessage =
-  | {
-      status: 'ready'
-      numQs: number
-    }
-  | {
-      searchResults: SearchResult[]
-      userQuery?: string
-    }
+  | {status: 'ready'; numQs: number}
+  | {searchResults: SearchResult[]; userQuery?: string}
 
 const waitForCondition = async (conditionFn: () => boolean, interval = 100, timeout = 5000) => {
   const startTime = Date.now()
@@ -98,13 +92,7 @@ export const baselineSearch = async (
   return questions
     .map(({pageid, title, alternatePhrasings = ''}) => {
       const normalized = normalize(`${title}\n${alternatePhrasings}`)
-      return {
-        pageid,
-        title,
-        normalized,
-        model: 'plaintext',
-        score: scoringFn(normalized),
-      }
+      return {pageid, title, normalized, model: 'plaintext', score: scoringFn(normalized)}
     })
     .sort(byScore)
     .slice(0, numResults)
@@ -132,12 +120,12 @@ const normalize = (question: string) =>
  * Searches containing only one or two words will also use the baseline search
  */
 export const useSearch = (numResults = NUM_RESULTS) => {
-  const tfWorkerRef = useRef<Worker>()
-  const runningQueryRef = useRef<string>() // detect current query in search function from previous render => ref
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>() // cancel previous timeout => ref
+  const tfWorkerRef = useRef<Worker | null>(null)
+  const runningQueryRef = useRef<string | null>(null) // detect current query in search function from previous render => ref
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null) // cancel previous timeout => ref
   const isPendingSearch = useRef(false)
   const resultsRef = useRef<SearchResult[]>([])
-  const resultsForRef = useRef<string>()
+  const resultsForRef = useRef<string | null>(null)
   const [results, setResults] = useState([] as SearchResult[])
 
   const {items} = useOnSiteQuestions()
@@ -149,7 +137,7 @@ export const useSearch = (numResults = NUM_RESULTS) => {
         if (data.status == 'ready') {
           tfWorkerRef.current = worker
         } else if (data.userQuery == runningQueryRef.current) {
-          runningQueryRef.current = undefined
+          runningQueryRef.current = null
           if (data.searchResults) {
             resultsRef.current = data.searchResults
             resultsForRef.current = data.userQuery
@@ -165,7 +153,9 @@ export const useSearch = (numResults = NUM_RESULTS) => {
   const searchLater = (userQuery: string, minSimilarity?: number) => {
     if (typeof window === 'undefined') return
 
-    clearTimeout(timeoutRef.current)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
     timeoutRef.current = setTimeout(() => {
       search(userQuery, minSimilarity)
     }, 100)
@@ -188,7 +178,7 @@ export const useSearch = (numResults = NUM_RESULTS) => {
       }
       runningQueryRef.current = userQuery
       baselineSearch(userQuery, items, minSimilarity, numResults).then((searchResults) => {
-        runningQueryRef.current = undefined
+        runningQueryRef.current = null
         resultsRef.current = searchResults
         resultsForRef.current = userQuery
         isPendingSearch.current = false
@@ -207,9 +197,9 @@ export const useSearch = (numResults = NUM_RESULTS) => {
   }
 
   const clear = () => {
-    runningQueryRef.current = undefined
+    runningQueryRef.current = null
     isPendingSearch.current = false
-    resultsForRef.current = undefined
+    resultsForRef.current = null
     resultsRef.current = []
     setResults([])
   }

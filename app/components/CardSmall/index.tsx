@@ -1,11 +1,11 @@
-import {SVGProps} from 'react'
+import {SVGProps, ReactElement} from 'react'
 import './cardsmall.css'
 import Button from '../Button'
 
 interface CardSmallProps {
   title: string
   description: string
-  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+  icon: (props: SVGProps<SVGSVGElement>) => ReactElement
   action: string | ((e: React.MouseEvent<HTMLButtonElement>) => void)
   className?: string
   iconColor?: string
