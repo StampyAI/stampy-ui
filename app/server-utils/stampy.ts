@@ -33,12 +33,12 @@ export enum QuestionStatus {
   WITHDRAWN = 'Withdrawn',
   SKETCH = 'Bulletpoint sketch',
   TO_DELETE = 'Marked for deletion',
-  DUPLICATE = 'Duplicate',
   UNCATEGORIZED = 'Uncategorized',
   NOT_STARTED = 'Not started',
   IN_PROGRESS = 'In progress',
   IN_REVIEW = 'In review',
   LIVE_ON_SITE = 'Live on site',
+  UNLISTED = 'Unlisted',
   SUBSECTION = 'Subsection',
   UNKNOWN = 'Unknown',
 }
