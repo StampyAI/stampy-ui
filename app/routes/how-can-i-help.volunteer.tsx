@@ -1,10 +1,11 @@
 import {MetaFunction} from '@remix-run/node'
 import DropDown from '~/components/DropDown'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/CategoryCarousel'
+import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import BaginskiImg from '~/assets/Baginski.jpeg'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -126,7 +127,10 @@ const Options = () => (
     </div>
 
     <div>
-      <CategoryCarousel title={<span>Our articles on volunteering</span>} category="NM18" />
+      <ArticleCarousel
+        title={<span>Our articles on volunteering</span>}
+        articles={ARTICLE_COLLECTIONS.VOLUNTEERING}
+      />
     </div>
   </>
 )

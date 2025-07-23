@@ -1,7 +1,7 @@
 import {useState, useMemo} from 'react'
 import './mediacarousel.css'
 import {MediaItem} from '~/server-utils/parsing-utils'
-import {Navigation} from '../CategoryCarousel'
+import {Navigation} from '../ArticleCarousel'
 
 const Media = ({item}: {item: MediaItem}) => {
   switch (item.type) {

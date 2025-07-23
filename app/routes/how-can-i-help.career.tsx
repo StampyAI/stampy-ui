@@ -3,9 +3,10 @@ import CardSmall from '~/components/CardSmall'
 import DropDown from '~/components/DropDown'
 import {Microscope, GovermentBuilding, PuzzlePieces} from '~/components/icons-generated'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
-import CategoryCarousel from '~/components/CategoryCarousel'
+import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
+import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
 
 export const meta: MetaFunction = () => {
   return [{title: 'How Can I Help? - AISafety.info'}]
@@ -214,9 +215,9 @@ const ResearchPath = () => (
     </div>
     */}
     <div className="padding-bottom-104">
-      <CategoryCarousel
+      <ArticleCarousel
         title="Our articles on pursuing a career in alignment research"
-        category="NM1D"
+        articles={ARTICLE_COLLECTIONS.ALIGNMENT_RESEARCH}
       />
     </div>
   </>
@@ -367,9 +368,9 @@ const GovernancePath = () => (
     </div>
   */}
 
-    <CategoryCarousel
+    <ArticleCarousel
       title="Our articles on pursuing a career in AI governance & policy"
-      category="NM2N"
+      articles={ARTICLE_COLLECTIONS.GOVERNANCE_POLICY}
     />
   </div>
 )
@@ -617,9 +618,9 @@ const FieldBuildingPath = () => (
       />
     </div>
 
-    <CategoryCarousel
+    <ArticleCarousel
       title="Our articles on pursuing a career in AI safety field-building"
-      category="NM2M"
+      articles={ARTICLE_COLLECTIONS.FIELD_BUILDING}
     />
   </>
 )
