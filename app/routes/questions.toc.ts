@@ -65,10 +65,7 @@ export const loadToC = async (request: any): Promise<LoaderResp> => {
     [k: string]: Question
   }
   const canBeShown = ({status}: Question) =>
-    status &&
-    [QuestionStatus.LIVE_ON_SITE, QuestionStatus.NOT_STARTED, QuestionStatus.SUBSECTION].includes(
-      status
-    )
+    status && [QuestionStatus.LIVE_ON_SITE, QuestionStatus.SUBSECTION].includes(status)
 
   // Add children to parents
   data
