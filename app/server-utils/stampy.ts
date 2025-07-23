@@ -36,7 +36,6 @@ export enum QuestionStatus {
   UNCATEGORIZED = 'Uncategorized',
   NOT_STARTED = 'Not started',
   IN_PROGRESS = 'In progress',
-  IN_REVIEW = 'In review',
   LIVE_ON_SITE = 'Live on site',
   UNLISTED = 'Unlisted',
   SUBSECTION = 'Subsection',
