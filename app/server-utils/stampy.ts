@@ -33,12 +33,11 @@ export enum QuestionStatus {
   WITHDRAWN = 'Withdrawn',
   SKETCH = 'Bulletpoint sketch',
   TO_DELETE = 'Marked for deletion',
-  DUPLICATE = 'Duplicate',
   UNCATEGORIZED = 'Uncategorized',
   NOT_STARTED = 'Not started',
   IN_PROGRESS = 'In progress',
-  IN_REVIEW = 'In review',
   LIVE_ON_SITE = 'Live on site',
+  UNLISTED = 'Unlisted',
   SUBSECTION = 'Subsection',
   UNKNOWN = 'Unknown',
 }
@@ -443,7 +442,7 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
   const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
     questions.data
-      .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
+      .filter((q) => [QuestionStatus.LIVE_ON_SITE, QuestionStatus.UNLISTED].includes(q.status!))
       .map((q) => [q.title, q.pageid])
   )
   return toTag(rows[0], nameToId)
@@ -455,7 +454,7 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
   const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
     questions.data
-      .filter((q) => q.status == QuestionStatus.LIVE_ON_SITE)
+      .filter((q) => [QuestionStatus.LIVE_ON_SITE, QuestionStatus.UNLISTED].includes(q.status!))
       .map((q) => [q.title, q.pageid])
   )
   return rows.map((r) => toTag(r, nameToId))
