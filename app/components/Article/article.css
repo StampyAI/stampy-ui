@@ -130,6 +130,12 @@ article .contents img {
   display: block;
   margin: 0 auto;
 }
+article .contents .link-popup img {
+  width: unset;
+  height: unset;
+  display: unset;
+  margin: unset;
+}
 
 article .glossary-entry {
   border-bottom: 3px dotted var(--colors-cool-grey-500);
