@@ -51,7 +51,6 @@ const ArticleCarousel = ({title, articles}: ArticleCarouselProps) => {
     const updateWidth = () => {
       if (componentRef.current) {
         const {width} = componentRef.current.getBoundingClientRect()
-        console.log(width, Math.round(width / PER_BOX))
         setShown(Math.floor(width / PER_BOX))
       }
     }

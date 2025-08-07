@@ -20,6 +20,7 @@ export type ChatPhase =
   | 'context'
   | 'prompt'
   | 'llm'
+  | 'thinking'
   | 'streaming'
   | 'followups'
   | 'done'
@@ -38,6 +39,7 @@ export type AssistantEntry = {
   citationsMap?: Map<string, Citation>
   deleted?: boolean
   phase?: ChatPhase
+  thoughts?: string
 }
 
 export type ErrorMessage = {
@@ -64,12 +66,28 @@ export type SearchResult = {
 }
 
 type Model =
-  | 'gpt-3.5-turbo'
-  | 'gpt-4'
-  | 'gpt-4-turbo-preview'
-  | 'claude-3-opus-20240229'
-  | 'claude-3-sonnet-20240229'
-  | 'claude-3-haiku-20240307'
+  | 'openai/gpt-3.5-turbo'
+  | 'openai/gpt-3.5-turbo-16k'
+  | 'openai/o1'
+  | 'openai/o1-mini'
+  | 'openai/gpt-4'
+  | 'openai/gpt-4-turbo-preview'
+  | 'openai/gpt-4o'
+  | 'openai/gpt-4o-mini'
+  | 'openai/o4-mini'
+  | 'openai/o3'
+  | 'openai/gpt-4.1-nano'
+  | 'openai/gpt-4.1-mini'
+  | 'openai/gpt-4.1'
+  | 'anthropic/claude-3-opus-20240229'
+  | 'anthropic/claude-3-5-sonnet-20240620'
+  | 'anthropic/claude-3-5-sonnet-20241022'
+  | 'anthropic/claude-3-5-sonnet-latest'
+  | 'anthropic/claude-opus-4-20250514'
+  | 'anthropic/claude-sonnet-4-20250514'
+  | 'anthropic/claude-sonnet-4-20250514'
+  | 'anthropic/claude-opus-4-20250514'
+
 export type Mode = 'rookie' | 'concise' | 'default'
 export type ChatSettings = {
   mode?: Mode
@@ -132,13 +150,21 @@ export const findCitations: (text: string, citations: Citation[]) => Map<string,
     [k: string]: Citation
   }
   let index = 1
+  const articles = new Map<string, Citation>()
+
+  // find all citations in the text
   const refs = [...text.matchAll(/\[(\d+)\]/g)]
   refs.forEach(([_, num]) => {
     if (!num || cite_map.has(num)) return
     const citation = byRef[num as keyof typeof byRef]
     if (!citation) return
 
-    cite_map.set(num, {...citation, index: index++})
+    let article = articles.get(citation.id || '')
+    if (!article) {
+      article = {...citation, index: index++}
+      articles.set(citation.id || '', article)
+    }
+    cite_map.set(num, {...citation, index: article.index})
   })
 
   return cite_map
@@ -199,6 +225,7 @@ export const extractAnswer = async (
     return {
       content,
       question,
+      thoughts: result?.thoughts,
       role: 'assistant',
       citations: result?.citations || [],
       citationsMap: findCitations(content, result?.citations || []),
@@ -211,6 +238,13 @@ export const extractAnswer = async (
     switch (data.state) {
       case 'loading':
         setCurrent({phase: data.phase, ...result})
+        break
+      case 'thinking':
+        result = {
+          ...result,
+          thoughts: (result.thoughts || '') + data.content,
+        }
+        setCurrent({phase: 'thinking', ...result})
         break
 
       case 'citations':
@@ -241,12 +275,26 @@ export const extractAnswer = async (
   return {result, followups}
 }
 
+const formatHistoryItem = ({role, content}: HistoryEntry): HistoryEntry | null => {
+  if (role === 'stampy') {
+    role = 'assistant'
+  } else if (['error', 'deleted'].includes(role)) {
+    return null
+  }
+
+  return {content: formatCitations(content), role}
+}
+
 const makePayload = (
   sessionId: string | undefined,
   history: HistoryEntry[],
   settings?: ChatSettings
 ): string => {
-  const payload = JSON.stringify({sessionId, history, settings})
+  const payload = JSON.stringify({
+    sessionId,
+    history: history.map(formatHistoryItem).filter(Boolean),
+    settings,
+  })
   if (payload.length < 70000) return payload
   if (history.length === 1) throw 'You question is too long - please shorten it'
   return makePayload(sessionId, history.slice(1), settings)

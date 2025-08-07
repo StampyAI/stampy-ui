@@ -30,6 +30,34 @@ article.stampy {
   color: var(--colors-cool-grey-600);
 }
 
+/* Animated ellipsis */
+.animated-ellipsis::after {
+  content: '';
+  animation: ellipsis 1.2s infinite;
+}
+
+@keyframes ellipsis {
+  0% {
+    content: '';
+  }
+
+  25% {
+    content: '.';
+  }
+
+  50% {
+    content: '..';
+  }
+
+  75% {
+    content: '...';
+  }
+
+  100% {
+    content: '';
+  }
+}
+
 .chat-entry .info {
   position: relative;
   display: flex;
@@ -57,7 +85,8 @@ article.stampy {
   color: white;
   padding: var(--spacing-16);
   border-radius: var(--border-radius);
-  width: max-content; /* Make the width adapt to its content */
+  width: max-content;
+  /* Make the width adapt to its content */
   max-width: 100%;
 }
 
@@ -75,11 +104,13 @@ article.stampy {
   margin-left: 2px;
   border-radius: var(--border-radius);
 }
+
 .chat-entry .reference-link span {
   min-width: 10px;
   display: inline-block;
   text-align: center;
 }
+
 .ref-container {
   position: relative;
 }
@@ -138,6 +169,7 @@ article.stampy {
   display: flex;
   gap: var(--spacing-16);
 }
+
 .reference .reference-num {
   width: var(--spacing-32);
   height: var(--spacing-32);
@@ -163,6 +195,7 @@ article.stampy {
   padding: var(--spacing-40);
   position: relative;
 }
+
 .reference-contents .inner-html {
   height: 275px;
   overflow: hidden;
@@ -179,6 +212,7 @@ article.stampy {
     transform: translate(-50%, 35px);
     min-width: 30vw;
   }
+
   .reference-popup:hover,
   .reference-link:hover + .reference-popup {
     visibility: visible;
@@ -196,15 +230,18 @@ article.stampy {
     align-items: start;
     justify-content: flex-start;
   }
+
   .reference-contents {
     flex-shrink: 0;
     width: 87.2vw;
     margin-top: 46px;
   }
+
   .reference-popup {
     display: flex;
     flex-direction: column;
   }
+
   .chat-entry .hint-contents-container {
     transform: translateX(10%);
   }
