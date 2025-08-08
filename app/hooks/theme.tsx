@@ -32,7 +32,7 @@ export const useTheme = () => {
   // Apply theme to HTML element
   useEffect(() => {
     const classList = document.documentElement.classList
-    
+
     if (savedTheme === 'dark') {
       classList.remove('light')
       classList.add('dark')
@@ -53,7 +53,7 @@ export const useTheme = () => {
       }
       media.addEventListener('change', updateHtmlClass)
       updateHtmlClass()
-      
+
       return () => media.removeEventListener('change', updateHtmlClass)
     }
   }, [savedTheme])
