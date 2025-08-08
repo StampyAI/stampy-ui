@@ -14,9 +14,9 @@
     "markdown-it": "^14.1.0",
     "markdown-it-footnote": "^4.0.0",
     "node-html-parser": "^7.0.1",
-    "react": "^19.1.0",
+    "react": "^18.3.1",
     "react-auto-height": "^1.2.1",
-    "react-dom": "^19.1.0",
+    "react-dom": "^18.3.1",
     "remix": "^2.17.0"
   },
   "devDependencies": {
@@ -37,8 +37,8 @@
     "@types/lodash": "^4.17.20",
     "@types/markdown-it": "^14.1.2",
     "@types/markdown-it-footnote": "^3.0.4",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.7.0",
