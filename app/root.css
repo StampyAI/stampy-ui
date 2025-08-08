@@ -29,12 +29,13 @@
   --colors-green-500: #40c075;
 
   /* Dark mode semantic colors */
-  --background: var(--colors-white);
-  --text: var(--colors-cool-grey-900);
-  --text-secondary: var(--colors-cool-grey-600);
-  --border: var(--colors-cool-grey-200);
-  --card-background: var(--colors-white);
-  --hover-background: var(--colors-teal-50);
+  --background: #ffffff;
+  --text: #1b2b3e;
+  --text-secondary: #788492;
+  --border: #dfe3e9;
+  --card-background: #ffffff;
+  --hover-background: #edfaf9;
+  --selected-background: #d3f2f0;
 
   /* spacing - use everywhere for padding and margin */
   --border-radius: 6px;
@@ -68,11 +69,10 @@ html.dark {
   --border: #404040;
   --card-background: #2a2a2a;
   --hover-background: #1a3330;
+  --selected-background: #3a3a3a;
   
-  /* Override key color variables that components still use */
-  --colors-cool-grey-200: #404040;
-  --colors-light-grey: #2a2a2a;
-  --colors-white: #2a2a2a;
+  /* Keep utility colors consistent */
+  --colors-white: #ffffff;
 }
 
 /* CSS Reset */
@@ -206,11 +206,11 @@ h2 {
 /* color classes */
 
 .black {
-  color: var(--colors-black, #1b2b3e);
+  color: var(--text);
 }
 
 .grey {
-  color: var(--colors-cool-grey-600);
+  color: var(--text-secondary);
 }
 
 .white {
@@ -226,7 +226,7 @@ h2 {
 }
 
 .selected {
-  background: var(--hover-background);
+  background: var(--selected-background);
 }
 
 /* spacing classes */
@@ -789,7 +789,7 @@ button {
 }
 
 .icon-link path {
-  stroke: var(--colors-cool-grey-600);
+  stroke: var(--text-secondary);
 }
 
 .icon-link:hover path {
@@ -943,7 +943,7 @@ button {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #1b2b3e99;
+    background-color: rgba(27, 43, 62, 0.6);
     width: 100vw;
     height: 100vh;
     overflow: scroll;

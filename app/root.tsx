@@ -135,20 +135,21 @@ function Head() {
     <head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+      {/* Prevent flash of unstyled content by setting initial theme */}
       <script
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
-              const theme = window.localStorage.getItem('theme');
-              const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const actualTheme = theme || (prefersDark ? 'dark' : 'light');
-              
-              if (actualTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-              } else {
+              try {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.add('light');
+                }
+              } catch (e) {
+                // Fallback to light theme if localStorage is not available
                 document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
               }
             })();
           `,

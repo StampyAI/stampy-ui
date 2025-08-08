@@ -29,7 +29,7 @@
 }
 
 .red {
-  color: #d40000;
+  color: #ff4444;
 }
 
 .settings-container {
@@ -55,7 +55,7 @@
 }
 
 .widget-ask .suggestion {
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  border: 1px solid var(--border);
   justify-content: start;
   padding: var(--spacing-8) var(--spacing-12);
   position: absolute;
@@ -64,7 +64,7 @@
 }
 
 .widget-ask .suggestion:hover {
-  background: var(--colors-teal-50);
+  background: var(--hover-background);
 }
 
 .widget-ask .send {

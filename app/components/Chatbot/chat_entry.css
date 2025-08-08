@@ -22,12 +22,12 @@ article.stampy {
 
 .phase-message {
   margin-left: 57px;
-  color: var(--colors-cool-grey-600);
+  color: var(--text-secondary);
 }
 
 .followups {
   margin-top: var(--spacing-16);
-  color: var(--colors-cool-grey-600);
+  color: var(--text-secondary);
 }
 
 /* Animated ellipsis */
@@ -81,7 +81,7 @@ article.stampy {
 }
 
 .chat-entry .hint-contents {
-  background: var(--colors-cool-grey-900);
+  background: var(--text);
   color: white;
   padding: var(--spacing-16);
   border-radius: var(--border-radius);

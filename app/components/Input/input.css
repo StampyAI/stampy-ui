@@ -53,7 +53,7 @@ textarea.react-auto-height {
 .input:focus {
   border: 1px solid var(--colors-teal-500, #1d9089) !important;
   outline: none;
-  color: var(--colors-cool-grey-900, #1b2b3e);
+  color: var(--text);
 }
 
 .input:disabled,
