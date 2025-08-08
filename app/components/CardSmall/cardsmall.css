@@ -4,8 +4,8 @@
   justify-content: start;
   display: flex;
   flex-direction: column;
-  background-color: var(--colors-white);
-  border: 1px solid var(--colors-cool-grey-200);
+  background-color: var(--card-background);
+  border: 1px solid var(--border);
   border-radius: var(--border-radius);
 }
 

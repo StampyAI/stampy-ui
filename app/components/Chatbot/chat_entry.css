@@ -1,5 +1,5 @@
 article.stampy {
-  background: var(--colors-light-grey);
+  background: var(--hover-background);
   padding: var(--spacing-40);
   border-radius: var(--spacing-6);
   max-width: unset;
@@ -189,9 +189,9 @@ article.stampy {
   word-wrap: break-word;
   text-decoration: unset;
   width: 512px;
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  border: 1px solid var(--border);
   padding: var(--spacing-40);
-  background-color: var(--colors-white);
+  background-color: var(--card-background);
   padding: var(--spacing-40);
   position: relative;
 }

@@ -7,7 +7,7 @@
 .sample-messages {
   width: 100%;
   padding: var(--spacing-32);
-  background: var(--colors-cool-grey-100);
+  background: var(--card-background);
 }
 
 .widget-ask {
@@ -88,7 +88,7 @@
   height: 250px;
   top: 0;
   z-index: -1;
-  background: #ffffff;
+  background: var(--background);
 }
 
 .followups-container {

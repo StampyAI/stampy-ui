@@ -10,8 +10,8 @@
   box-sizing: border-box;
   position: relative;
 
-  background: var(--colors-white, #ffffff);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--card-background);
+  border: 1px solid var(--border);
 }
 
 .button-secondary {
@@ -46,9 +46,9 @@
 }
 
 .secondary {
-  color: var(--colors-cool-grey-600, #788492) !important;
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  background: var(--colors-white, #fff);
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border);
+  background: var(--card-background);
 }
 
 .secondary-selected {
@@ -128,11 +128,11 @@
 }
 
 .active {
-  background-color: var(--colors-teal-50);
+  background-color: var(--hover-background);
 }
 
 .inactive:hover {
-  background-color: var(--colors-light-grey);
+  background-color: var(--hover-background);
 }
 
 /* #### Composite button #### */
@@ -197,8 +197,8 @@
   top: -42px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #1b2b3e;
-  color: #f2f2f2;
+  background-color: var(--text);
+  color: var(--background);
   padding: var(--spacing-8) var(--spacing-16);
   border-radius: var(--border-radius);
   white-space: nowrap;

@@ -21,7 +21,7 @@
   }
 
   .top-header.background {
-    background-color: var(--colors-white);
+    background-color: var(--background);
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;

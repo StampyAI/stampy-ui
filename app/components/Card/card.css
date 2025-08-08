@@ -2,8 +2,9 @@
   height: 320px;
   padding: var(--spacing-16);
   display: flex;
-  background-color: var(--colors-white);
+  background-color: var(--card-background);
   border-radius: var(--border-radius);
+  border: 1px solid var(--border);
 }
 
 .card:hover {
@@ -28,7 +29,7 @@
 
 .card-icon {
   height: 100%;
-  background-color: var(--colors-teal-50);
+  background-color: var(--hover-background);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -177,6 +177,7 @@ article .contents a.button {
 }
 article .link-popup .glossary-popup > .contents {
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
+  color: var(--text);
 }
 article .definition {
   height: 140px;
@@ -203,6 +204,7 @@ article .link-popup.shown {
 }
 article .link-popup p {
   margin: 0;
+  color: var(--text);
 }
 
 .article-meta {

@@ -9,6 +9,7 @@ import OpenBookIcon from '~/components/icons-generated/OpenBook'
 import MagnifyingLarge from '~/components/icons-generated/MagnifyingLarge'
 import {NavProps} from '~/components/Nav'
 import Button from '~/components/Button'
+import {ThemeToggle} from '~/components/ThemeToggle'
 import '../nav.css'
 import './navMobile.css'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
@@ -60,6 +61,7 @@ const Menu = ({state, setState}: MenuProps) => {
           {isInitial && (
             <MagnifyingLarge className="search-icon pointer" onClick={() => setState('search')} />
           )}
+          {isInitial && <ThemeToggle />}
           <MenuIcon className="pointer" onClick={() => setState(isInitial ? 'menu' : 'initial')} />
         </div>
 
