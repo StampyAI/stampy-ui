@@ -55,8 +55,14 @@ const dummyQuestion = (title: string | undefined) =>
   ({
     text: 'Loading...',
     title: title ?? 'Loading...',
+    pageid: '',
+    markdown: null,
+    answerEditLink: null,
+    relatedQuestions: [],
     tags: [],
-  }) as any as Question
+    banners: [],
+    ttr: 0,
+  }) as Question
 
 const updateTags = (question: Question, tags?: Tag[]) => {
   const mappedTags = tags?.reduce((acc, t) => ({...acc, [t.name]: t}), {}) || {}
@@ -111,9 +117,9 @@ export default function RenderArticle() {
 
   useEffect(() => {
     question.then((val) => {
-      const {data: question, timestamp} = val as {data: Question; timestamp: string}
+      const {data, timestamp} = val as {data: Question; timestamp: string}
       reloadInBackgroundIfNeeded(location.pathname, timestamp)
-      if (question.title) document.title = question.title
+      if (data.title) document.title = data.title
     })
   }, [question, location])
 
