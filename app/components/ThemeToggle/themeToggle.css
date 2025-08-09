@@ -1,0 +1,27 @@
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  transition: color 0.3s ease;
+  border-radius: var(--border-radius);
+}
+
+.theme-toggle:hover {
+  background-color: var(--hover-background);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-icon svg {
+  width: 20px;
+  height: 20px;
+}

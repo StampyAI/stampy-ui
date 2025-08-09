@@ -29,25 +29,33 @@ export const useTheme = () => {
     }
   }, [])
 
-  // if no preference is saved, use the system preferences
+  // Apply theme to HTML element
   useEffect(() => {
-    if (savedTheme) return
+    const classList = document.documentElement.classList
 
-    const media = window.matchMedia('(prefers-color-scheme: dark)')
-    const updateHtmlClass = () => {
-      const classList = document.documentElement.classList
-      if (media.matches) {
-        classList.remove('light')
-        classList.add('dark')
-      } else {
-        classList.remove('dark')
-        classList.add('light')
+    if (savedTheme === 'dark') {
+      classList.remove('light')
+      classList.add('dark')
+    } else if (savedTheme === 'light') {
+      classList.remove('dark')
+      classList.add('light')
+    } else {
+      // No saved preference, use system preference
+      const media = window.matchMedia('(prefers-color-scheme: dark)')
+      const updateHtmlClass = () => {
+        if (media.matches) {
+          classList.remove('light')
+          classList.add('dark')
+        } else {
+          classList.remove('dark')
+          classList.add('light')
+        }
       }
-    }
-    media.addEventListener('change', updateHtmlClass)
-    updateHtmlClass()
+      media.addEventListener('change', updateHtmlClass)
+      updateHtmlClass()
 
-    return () => media.removeEventListener('change', updateHtmlClass)
+      return () => media.removeEventListener('change', updateHtmlClass)
+    }
   }, [savedTheme])
 
   return {savedTheme, setStorageTheme}

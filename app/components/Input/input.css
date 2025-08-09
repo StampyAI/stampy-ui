@@ -4,9 +4,9 @@
 
 .input {
   border-radius: var(--border-radius);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  background: var(--colors-white, #fff);
-  color: var(--colors-cool-grey-900, #1b2b3e);
+  border: 1px solid var(--border);
+  background: var(--card-background);
+  color: var(--text);
   padding: var(--spacing-8) var(--height-48) var(--spacing-8) var(--spacing-12);
   /* This can't be a variable because it shouldn't shrink when the screen gets small */
   height: var(--height-48);
@@ -53,7 +53,7 @@ textarea.react-auto-height {
 .input:focus {
   border: 1px solid var(--colors-teal-500, #1d9089) !important;
   outline: none;
-  color: var(--colors-cool-grey-900, #1b2b3e);
+  color: var(--text);
 }
 
 .input:disabled,

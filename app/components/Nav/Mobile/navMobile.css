@@ -14,14 +14,14 @@
   .top-header .menu-item {
     box-shadow: none;
     height: 80px;
-    border-bottom: solid 1px var(--colors-cool-grey-200);
+    border-bottom: solid 1px var(--border);
     border-radius: 0;
     padding: 0 24px;
     gap: var(--spacing-16);
   }
 
   .top-header.background {
-    background-color: var(--colors-white);
+    background-color: var(--background);
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;

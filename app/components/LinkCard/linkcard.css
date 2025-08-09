@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;
   gap: var(--spacing-8);
-  border: 1px solid var(--colors-cool-grey-200);
+  border: 1px solid var(--border);
   border-radius: var(--border-radius);
   position: relative;
   cursor: pointer;

@@ -135,6 +135,26 @@ function Head() {
     <head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+      {/* Prevent flash of unstyled content by setting initial theme */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.add('light');
+                }
+              } catch (e) {
+                // Fallback to light theme if localStorage is not available
+                document.documentElement.classList.add('light');
+              }
+            })();
+          `,
+        }}
+      />
       {/* don't use color-scheme because supporting transparent iframes https://fvsch.com/transparent-iframes
           is more important than dark reader https://github.com/darkreader/darkreader/issues/1285#issuecomment-761893024
           <meta name="color-scheme" content="light dark" />

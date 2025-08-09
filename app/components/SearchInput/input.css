@@ -27,6 +27,8 @@
 .search-input {
   width: 100%;
   border: 0;
+  background: transparent;
+  color: var(--text);
 }
 .search-input:focus-visible {
   border: 0;

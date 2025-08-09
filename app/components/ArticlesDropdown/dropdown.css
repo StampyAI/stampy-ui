@@ -34,7 +34,7 @@
 }
 
 .articles-dropdown-container .toc {
-  border-right: 1px solid var(--colors-cool-grey-200);
+  border-right: 1px solid var(--border);
 }
 
 @media (max-width: 780px) {
