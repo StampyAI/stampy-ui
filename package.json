@@ -8,8 +8,6 @@
     "@remix-run/css-bundle": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "client-zip": "^2.4.5",
-    "copy-to-clipboard": "^3.3.3",
-    "isbot": "^4",
     "lodash": "^4.17.21",
     "markdown-it": "^14.0.0",
     "markdown-it-footnote": "^4.0.0",
