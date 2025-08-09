@@ -195,8 +195,9 @@ const SplashScreen = ({
   <div className="stampy-widget padding-top-40">
     <IconStampyLarge />
     <div className="col-6 padding-bottom-40 padding-top-40">
-      <h2 className="teal-500">Hi there, I’m Stampy.</h2>
-      <h2>I can answer your questions about AI safety.</h2>
+      <h1 className="teal-500">Stampy Chatbot</h1>
+      <h3>Hi there, I'm Stampy.</h3>
+      <h3>I can answer your questions about AI safety.</h3>
     </div>
     <Followups
       title="Not sure where to start? Try these:"

@@ -1,34 +1,24 @@
-import {ReactNode, useState, MouseEvent} from 'react'
+import {useState} from 'react'
 import copy from 'copy-to-clipboard'
 
-type Props = {
-  to?: string
-  children: ReactNode
-  [k: string]: unknown
+interface Props {
+  to: string
+  children: React.ReactNode
+  [key: string]: any
 }
 
 export default function CopyLink({to, children, ...props}: Props) {
   const [copied, setCopied] = useState(false)
-  const shareLink = (e: MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    let url = to ?? location.href
-    if (to?.match(/^[?/]/)) {
-      url = `${location.origin}${to}`
-    }
-    copy(url)
+
+  const handleClick = () => {
+    copy(to)
     setCopied(true)
-    setTimeout(() => setCopied(false), 1000)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
-    <a
-      href={to}
-      className={`icon-link share ${copied ? 'copied' : ''}`}
-      onClick={shareLink}
-      {...props}
-    >
-      {children}
-    </a>
+    <button onClick={handleClick} {...props}>
+      {copied ? 'Copied!' : children}
+    </button>
   )
 }

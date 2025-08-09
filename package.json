@@ -3,8 +3,8 @@
   "description": "",
   "license": "MIT",
   "dependencies": {
-    "@remix-run/cloudflare-workers": "^2.13.1",
     "@remix-run/cloudflare": "^2.13.1",
+    "@remix-run/cloudflare-workers": "^2.13.1",
     "@remix-run/css-bundle": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "client-zip": "^2.4.5",
