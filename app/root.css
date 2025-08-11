@@ -811,7 +811,7 @@ button {
   height: 24px;
   width: fit-content;
   padding: 4px 8px;
-  background-color: var(--colors-teal-50);
+  background-color: var(--hover-background);
   border-radius: var(--border-radius);
   display: flex; /* Added for flexbox layout */
   align-items: center; /* Align children vertically in the center */
