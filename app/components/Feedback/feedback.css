@@ -27,8 +27,6 @@
   width: 384px;
   padding: var(--spacing-32);
   border-radius: var(--border-radius);
-  background: var(--card-background);
-  border: 1px solid var(--border);
 }
 
 .select-option {

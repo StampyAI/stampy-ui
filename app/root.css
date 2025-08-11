@@ -28,7 +28,6 @@
 
   --colors-green-500: #40c075;
 
-  /* Dark mode semantic colors */
   --background: #ffffff;
   --text: #1b2b3e;
   --text-secondary: #788492;
@@ -63,16 +62,13 @@
 
 /* Dark mode colors */
 html.dark {
-  --background: #2d2d2d;
+  --background: #1a1a1a;
   --text: #e8e8e8;
   --text-secondary: #a8a8a8;
   --border: #404040;
-  --card-background: #3a3a3a;
+  --card-background: #2a2a2a;
   --hover-background: #1a3330;
-  --selected-background: #4a4a4a;
-
-  /* Keep utility colors consistent */
-  --colors-white: #ffffff;
+  --selected-background: #3a3a3a;
 }
 
 /* CSS Reset */
@@ -945,7 +941,7 @@ button {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(27, 43, 62, 0.6);
+    background-color: rgba(var(--colors-black), 0.6);
     width: 100vw;
     height: 100vh;
     overflow: scroll;
