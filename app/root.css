@@ -26,6 +26,14 @@
 
   --colors-green-500: #40c075;
 
+  --background: #ffffff;
+  --text: #1b2b3e;
+  --text-secondary: #788492;
+  --border: #dfe3e9;
+  --card-background: #ffffff;
+  --hover-background: #edfaf9;
+  --selected-background: #d3f2f0;
+
   /* spacing - use everywhere for padding and margin */
   --border-radius: 6px;
   --spacing-4: 4px;
@@ -50,6 +58,17 @@
   --height-64: 64px;
 }
 
+/* Dark mode colors */
+html.dark {
+  --background: #1a1a1a;
+  --text: #e8e8e8;
+  --text-secondary: #a8a8a8;
+  --border: #404040;
+  --card-background: #2a2a2a;
+  --hover-background: #1a3330;
+  --selected-background: #3a3a3a;
+}
+
 /* CSS Reset */
 * {
   margin: 0;
@@ -72,8 +91,12 @@ input {
   font-weight: 300;
   line-height: 170%; /* 30.6px */
   letter-spacing: -0.18px;
-  color: var(--colors-cool-grey-900), #1b2b3e;
+  color: var(--text);
+  background-color: var(--background);
   margin: 0;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .page {
@@ -179,11 +202,11 @@ h2 {
 /* color classes */
 
 .black {
-  color: var(--colors-black, #1b2b3e);
+  color: var(--text);
 }
 
 .grey {
-  color: var(--colors-cool-grey-600);
+  color: var(--text-secondary);
 }
 
 .white {
@@ -199,7 +222,7 @@ h2 {
 }
 
 .selected {
-  background: var(--colors-teal-50);
+  background: var(--selected-background);
 }
 
 /* spacing classes */
@@ -633,7 +656,7 @@ sup {
 }
 
 hr {
-  border: 1px solid var(--colors-cool-grey-200);
+  border: 1px solid var(--border);
   border-bottom: 0;
   margin: 0;
 }
@@ -743,15 +766,16 @@ button {
 }
 
 .shadowed {
+  background-color: var(--card-background);
   box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
   box-sizing: border-box;
 }
 
 .bordered {
   border-radius: var(--border-radius);
-  background-color: #fff;
+  background-color: var(--card-background);
   box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
-  border: 1px solid var(--colors-cool-grey-200);
+  border: 1px solid var(--border);
   box-sizing: border-box;
 }
 
@@ -761,7 +785,7 @@ button {
 }
 
 .icon-link path {
-  stroke: var(--colors-cool-grey-600);
+  stroke: var(--text-secondary);
 }
 
 .icon-link:hover path {
@@ -785,7 +809,7 @@ button {
   height: 24px;
   width: fit-content;
   padding: 4px 8px;
-  background-color: var(--colors-teal-50);
+  background-color: var(--hover-background);
   border-radius: var(--border-radius);
   display: flex; /* Added for flexbox layout */
   align-items: center; /* Align children vertically in the center */
@@ -915,7 +939,7 @@ button {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #1b2b3e99;
+    background-color: rgba(var(--colors-black), 0.6);
     width: 100vw;
     height: 100vh;
     overflow: scroll;
@@ -923,7 +947,7 @@ button {
 
   .background > * {
     margin: 198px auto;
-    background-color: var(--colors-white);
+    background-color: var(--card-background);
     width: 85%;
   }
 

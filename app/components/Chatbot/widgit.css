@@ -7,7 +7,7 @@
 .sample-messages {
   width: 100%;
   padding: var(--spacing-32);
-  background: var(--colors-cool-grey-100);
+  background: var(--card-background);
 }
 
 .widget-ask {
@@ -55,7 +55,7 @@
 }
 
 .widget-ask .suggestion {
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  border: 1px solid var(--border);
   justify-content: start;
   padding: var(--spacing-8) var(--spacing-12);
   position: absolute;
@@ -64,7 +64,7 @@
 }
 
 .widget-ask .suggestion:hover {
-  background: var(--colors-teal-50);
+  background: var(--hover-background);
 }
 
 .widget-ask .send {
@@ -88,7 +88,7 @@
   height: 250px;
   top: 0;
   z-index: -1;
-  background: #ffffff;
+  background: var(--background);
 }
 
 .followups-container {

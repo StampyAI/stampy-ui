@@ -5,6 +5,7 @@ import BuoyIcon from '~/components/icons-generated/Buoy'
 import AISafetyIcon from '~/components/icons-generated/Aisafety'
 import BotIcon from '~/components/icons-generated/Bot'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
+import {ThemeToggle} from '~/components/ThemeToggle'
 import type {TOCItem} from '~/routes/questions.toc'
 import type {Tag} from '~/server-utils/stampy'
 import './nav.css'
@@ -49,6 +50,7 @@ export const Nav = ({toc, categories}: NavProps) => {
         </ul>
         <div style={{flexGrow: 12}}></div>
         <Search />
+        <ThemeToggle />
       </nav>
     </header>
   )

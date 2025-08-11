@@ -1,4 +1,4 @@
-import {ReactNode, SVGProps} from 'react'
+import {ReactNode, SVGProps, ReactElement} from 'react'
 import Button from '~/components/Button'
 import {ArrowRight} from '~/components/icons-generated'
 import './card.css'
@@ -7,7 +7,7 @@ interface CardProps {
   title: string
   description: ReactNode
   impact?: string
-  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+  icon: (props: SVGProps<SVGSVGElement>) => ReactElement
   action: string
   actionDesc?: string
   className?: string

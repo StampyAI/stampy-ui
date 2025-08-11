@@ -76,7 +76,7 @@
   right: 15px;
   line-height: 0;
   border: none;
-  background: #fff;
+  background: var(--card-background);
 }
 
 @media (max-width: 780px) {

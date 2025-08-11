@@ -34,10 +34,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   // fallback to sending along whatever was displayed by the search box
   let relatedQuestions = await getRelated(title)
   if (relatedQuestions && relatedQuestions.length > 0) {
-    relatedQuestions = relatedQuestions.map(({pageid, title}) => ({
-      title,
-      pageid,
-    }))
+    relatedQuestions = relatedQuestions.map(({pageid, title}) => ({title, pageid}))
   } else {
     relatedQuestions = formData
       .getAll('relatedQuestion')
@@ -55,11 +52,10 @@ export const action = async ({request}: ActionFunctionArgs) => {
   return redirect(redirectTo)
 }
 
-type Props = {
-  title: string
-  relatedQuestions: string[]
-  immediately?: boolean
-} & Omit<JSX.IntrinsicElements['form'], 'method' | 'ref' | 'encType'>
+type Props = {title: string; relatedQuestions: string[]; immediately?: boolean} & Omit<
+  React.JSX.IntrinsicElements['form'],
+  'method' | 'ref' | 'encType' | 'onSubmit' | 'action'
+>
 
 export const AddQuestion = ({title, relatedQuestions, immediately, ...props}: Props) => {
   const url = '/questions/add'

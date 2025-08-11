@@ -10,8 +10,8 @@
   box-sizing: border-box;
   position: relative;
 
-  background: var(--colors-white, #ffffff);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
+  background: var(--card-background);
+  border: 1px solid var(--border);
 }
 
 .button-secondary {
@@ -37,30 +37,30 @@
 .primary {
   background: var(--colors-teal-500, #1d9089);
   font-weight: 500;
-  color: var(--colors-white, #ffffff);
+  color: var(--card-background);
 }
 
 .primary-alt {
-  background: var(--colors-white, #ffffff);
+  background: var(--card-background);
   color: var(--colors-teal-500, #1d9089);
 }
 
 .secondary {
-  color: var(--colors-cool-grey-600, #788492) !important;
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  background: var(--colors-white, #fff);
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border);
+  background: var(--card-background);
 }
 
 .secondary-selected {
-  background: var(--colors-white, #ffffff);
+  background: var(--card-background);
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-teal-500, #1d9089);
 }
 
 .secondary-alt {
   color: var(--colors-teal-500, #1d9089);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  background: var(--colors-white, #fff);
+  border: 1px solid var(--border);
+  background: var(--card-background);
 }
 
 /* large */
@@ -68,30 +68,30 @@
 .primary-large {
   background: var(--colors-teal-500, #1d9089);
   font-weight: 500;
-  color: var(--colors-white, #ffffff);
+  color: var(--card-background);
 }
 
 .primary-alt-large {
-  background: var(--colors-white, #ffffff);
+  background: var(--card-background);
   color: var(--colors-teal-500, #1d9089);
 }
 
 .secondary-large {
-  color: var(--colors-cool-grey-600, #788492) !important;
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  background: var(--colors-white, #fff);
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border);
+  background: var(--card-background);
 }
 
 .secondary-selected-large {
-  background: var(--colors-white, #ffffff);
+  background: var(--card-background);
   color: var(--colors-teal-500, #1d9089);
   border: 1px solid var(--colors-teal-500, #1d9089);
 }
 
 .secondary-alt-large {
   color: var(--colors-teal-500, #1d9089);
-  border: 1px solid var(--colors-cool-grey-200, #dfe3e9);
-  background: var(--colors-white, #fff);
+  border: 1px solid var(--border);
+  background: var(--card-background);
 }
 
 /* state */
@@ -128,11 +128,11 @@
 }
 
 .active {
-  background-color: var(--colors-teal-50);
+  background-color: var(--hover-background);
 }
 
 .inactive:hover {
-  background-color: var(--colors-light-grey);
+  background-color: var(--hover-background);
 }
 
 /* #### Composite button #### */
@@ -180,7 +180,7 @@
 .composite-button-secondary {
   display: flex;
   border-style: solid;
-  border-color: var(--colors-cool-grey-200);
+  border-color: var(--border);
   border-width: 1px;
   border-radius: var(--border-radius);
   justify-content: center;
@@ -197,8 +197,8 @@
   top: -42px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #1b2b3e;
-  color: #f2f2f2;
+  background-color: var(--text);
+  color: var(--background);
   padding: var(--spacing-8) var(--spacing-16);
   border-radius: var(--border-radius);
   white-space: nowrap;
