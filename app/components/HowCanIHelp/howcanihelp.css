@@ -1,5 +1,5 @@
 .help-footer {
-  border-top: 1px solid var(--colors-cool-grey-200);
+  border-top: 1px solid var(--border);
   padding-top: var(--spacing-104);
   margin-top: var(--spacing-104);
 }

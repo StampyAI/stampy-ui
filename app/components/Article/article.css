@@ -115,7 +115,7 @@ article .contents > p:has(> img) {
 
 article .contents > p.image-caption {
   font-style: italic;
-  color: var(--colors-cool-grey-600);
+  color: var(--text-secondary);
   font-size: 0.9em;
   padding-top: 0;
   margin-left: var(--spacing-24);
@@ -158,7 +158,7 @@ article .link-popup .footnote {
 }
 
 .contents .footnotes-sep {
-  border: 1.5px solid var(--colors-cool-grey-600);
+  border: 1.5px solid var(--text-secondary);
   border-bottom: 0;
 }
 
