@@ -169,24 +169,71 @@ article .footnote-ref {
 article .glossary-popup {
   border-radius: var(--border-radius);
   overflow: hidden;
-  height: 304px;
+  height: auto;
+  max-height: 400px;
+}
+
+article .link-popup.positioned-right .glossary-popup {
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+article .link-popup.image-popup {
+  padding: 0;
+  background: transparent;
+  border: none;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s 600ms,
+    opacity cubic-bezier(1, 0, 1, 1) 600ms;
+}
+
+article .link-popup.image-popup.shown {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    visibility 0s,
+    opacity 100ms;
+}
+
+article .glossary-image-container {
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  text-align: center;
+}
+
+article .glossary-image-container img {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+  border-radius: var(--border-radius);
+}
+
+article .link-popup.positioned-right .definition {
+  height: auto;
+  max-height: none;
+  -webkit-line-clamp: unset;
 }
 
 article .contents a.button {
   font-weight: normal;
 }
 article .link-popup .glossary-popup > .contents {
-  padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
+  padding: var(--spacing-16) var(--spacing-32) var(--spacing-16);
 }
 article .definition {
-  height: 140px;
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5; /* Number of lines you want to display */
+  -webkit-line-clamp: 8; /* Increased to show more lines if needed */
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: var(--spacing-32);
+  margin-bottom: var(--spacing-16);
 }
 article .link-popup .glossary-popup > img {
   border-top-right-radius: var(--border-radius);
@@ -276,8 +323,15 @@ article blockquote + p {
     left: calc(50% - 200px);
     transform: translateY(var(--spacing-40));
     transition:
-      visibility 0s 300ms,
-      opacity cubic-bezier(1, 0, 1, 1) 300ms;
+      visibility 0s 600ms,
+      opacity cubic-bezier(1, 0, 1, 1) 600ms;
+  }
+
+  article .link-popup.positioned-right {
+    position: fixed !important;
+    max-width: none;
+    left: auto;
+    transform: none !important;
   }
 }
 
