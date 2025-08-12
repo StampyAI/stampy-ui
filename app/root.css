@@ -160,6 +160,7 @@ h2 {
   font-weight: 500;
   line-height: 170%; /* 27.2px */
   letter-spacing: -0.18px;
+  color: var(--text);
 }
 
 .small {
@@ -779,6 +780,15 @@ button {
   box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(175, 183, 194, 0.2);
   border: 1px solid var(--border);
   box-sizing: border-box;
+}
+
+/* Dark mode shadow overrides */
+html.dark .shadowed {
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(0, 0, 0, 0.8);
+}
+
+html.dark .bordered {
+  box-shadow: 0px var(--spacing-16) var(--spacing-40) rgba(0, 0, 0, 0.8);
 }
 
 .article-container {
