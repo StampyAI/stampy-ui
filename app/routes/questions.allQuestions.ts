@@ -1,6 +1,5 @@
 import {LoaderFunctionArgs, json} from '@remix-run/cloudflare'
 import {downloadZip} from 'client-zip'
-import '~/components/Chatbot/widgit.css'
 import {Question, QuestionStatus, loadAllQuestions} from '~/server-utils/stampy'
 import {isAuthorized} from '~/routesMapper'
 
