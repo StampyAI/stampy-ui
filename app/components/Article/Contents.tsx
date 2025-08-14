@@ -23,7 +23,14 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean): HTMLElement => {
+const addPopup = (
+  e: HTMLElement,
+  id: string,
+  contents: string,
+  mobile: boolean,
+  hasImage: boolean = false,
+  imageHtml: string = ''
+): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
@@ -34,15 +41,175 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean)
 
   e.insertAdjacentElement('afterend', popup)
 
+  // Create image popup if needed
+  let imagePopup: HTMLElement | null = null
+  if (hasImage && imageHtml) {
+    imagePopup = document.createElement('div')
+    imagePopup.className = 'link-popup image-popup'
+    imagePopup.innerHTML = `<div class="glossary-image-container">${imageHtml}</div>`
+    imagePopup.id = `${id}-image`
+    imagePopup.style.display = 'none'
+    e.insertAdjacentElement('afterend', imagePopup)
+  }
+
+  const positionPopup = () => {
+    if (!mobile) {
+      const article = e.closest('article')
+      if (article) {
+        const articleRect = article.getBoundingClientRect()
+        const viewportWidth = window.innerWidth
+        const availableRight = viewportWidth - articleRect.right
+
+        // Only position to the right if there's actually enough space in the viewport
+        // Reduced minimum to allow more cases to display on the right
+        if (availableRight >= 200) {
+          // Position to the right of the article
+          popup.classList.add('positioned-right')
+          const elementRect = e.getBoundingClientRect()
+          popup.style.position = 'fixed'
+
+          // Calculate left position ensuring popup stays within viewport
+          const popupWidth = Math.min(350, availableRight - 40)
+          let leftPosition = articleRect.right + 20
+
+          // Check if popup would go off the right edge
+          if (leftPosition + popupWidth > viewportWidth - 20) {
+            leftPosition = viewportWidth - popupWidth - 20
+          }
+
+          popup.style.left = `${leftPosition}px`
+          popup.style.width = `${popupWidth}px`
+          popup.style.transform = 'none'
+
+          // Calculate vertical position ensuring popup stays in viewport
+          const viewportHeight = window.innerHeight
+          let topPosition = elementRect.top
+
+          // Estimate popup height for initial positioning
+          const estimatedPopupHeight = 350
+
+          // Check if popup would go below viewport
+          if (topPosition + estimatedPopupHeight > viewportHeight - 20) {
+            topPosition = Math.max(10, viewportHeight - estimatedPopupHeight - 20)
+          }
+
+          popup.style.top = `${topPosition}px`
+
+          // Position image popup above if there's space
+          if (imagePopup) {
+            const estimatedImageHeight = 250 // Estimate for image container
+            const gap = 10 // Gap between image and text popup
+            const spaceAbove = topPosition // Use adjusted position
+
+            if (spaceAbove > estimatedImageHeight + gap + 10) {
+              imagePopup.style.position = 'fixed'
+              imagePopup.style.left = `${leftPosition}px`
+              imagePopup.style.width = `${popupWidth}px`
+              imagePopup.style.transform = 'none'
+              imagePopup.style.display = 'block'
+              imagePopup.classList.add('shown')
+
+              // Wait for image to load to get actual height and reposition
+              requestAnimationFrame(() => {
+                if (imagePopup) {
+                  const actualHeight = imagePopup.offsetHeight || estimatedImageHeight
+                  // Position above the text popup (which might have been adjusted)
+                  imagePopup.style.top = `${Math.max(10, topPosition - actualHeight - gap)}px`
+                }
+              })
+            } else {
+              imagePopup.classList.remove('shown')
+              imagePopup.style.display = 'none'
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Shared hover state for this popup group
+  let isHovered = false
+  let hideTimeout: number | null = null
+
+  const clearHideTimeout = () => {
+    if (hideTimeout) {
+      clearTimeout(hideTimeout)
+      hideTimeout = null
+    }
+  }
+
+  const actuallyShow = () => {
+    // Hide any other visible popups immediately (both text and image)
+    const visiblePopups = document.querySelectorAll('.link-popup.shown')
+    const otherPopups = Array.from(visiblePopups).filter((p) => p !== popup && p !== imagePopup)
+    otherPopups.forEach((p) => {
+      // Force instant hide by temporarily disabling transitions
+      const popupElement = p as HTMLElement
+      popupElement.style.transition = 'none'
+      p.classList.remove('shown')
+
+      // Reset transition after next frame
+      requestAnimationFrame(() => {
+        const popupElement = p as HTMLElement
+        popupElement.style.transition = ''
+      })
+
+      // Also hide associated image popups
+      const associatedImageId = p.id + '-image'
+      const associatedImage = document.getElementById(associatedImageId)
+      if (associatedImage) {
+        const imageElement = associatedImage as HTMLElement
+        imageElement.style.transition = 'none'
+        associatedImage.classList.remove('shown')
+        imageElement.style.display = 'none'
+        requestAnimationFrame(() => {
+          imageElement.style.transition = ''
+        })
+      }
+    })
+
+    // Only add shown and reposition if not already shown
+    if (!popup.classList.contains('shown')) {
+      popup.classList.add('shown')
+      positionPopup()
+    }
+  }
+
+  const actuallyHide = () => {
+    popup.classList.remove('shown')
+    if (imagePopup) {
+      imagePopup.classList.remove('shown')
+    }
+  }
+
   const toggle = () => popup.classList.toggle('shown')
-  const show = () => popup.classList.add('shown')
-  const hide = () => popup.classList.remove('shown')
+  const show = () => {
+    isHovered = true
+    clearHideTimeout()
+    // Always call actuallyShow to handle hiding other popups immediately
+    actuallyShow()
+  }
+
+  const hide = () => {
+    isHovered = false
+    clearHideTimeout()
+    // Use a small delay to allow moving between term and popup
+    hideTimeout = setTimeout(() => {
+      if (!isHovered) {
+        actuallyHide()
+      }
+    }, 100) as unknown as number
+  }
 
   if (!mobile) {
     e.addEventListener('mouseover', show)
     e.addEventListener('mouseout', hide)
     popup.addEventListener('mouseover', show)
     popup.addEventListener('mouseout', hide)
+    if (imagePopup) {
+      imagePopup.addEventListener('mouseover', show)
+      imagePopup.addEventListener('mouseout', hide)
+    }
   } else {
     popup.addEventListener('click', togglePopup(toggle, e))
     e.addEventListener('click', togglePopup(toggle, e))
@@ -167,7 +334,7 @@ const insertGlossary = (pageid: string, glossary: Glossary, mobile: boolean) => 
         entry.pageid &&
         `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
       const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
-      const image = entry.image
+      const imageHtml = entry.image
         ? isGoogleDrive
           ? `<iframe src="${entry.image.replace(/\/view$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
           : `<img src="${entry.image}"/>`
@@ -175,15 +342,16 @@ const insertGlossary = (pageid: string, glossary: Glossary, mobile: boolean) => 
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}-${randomId}`,
-        `<div class="glossary-popup flex-container black small">
-              <div class="contents ${image ? '' : 'full-width'}">
+        `<div class="glossary-popup black small">
+              <div class="contents full-width">
                    <div class="small-bold text-no-wrap">${entry.term}</div>
                    <div class="definition small">${entry.contents}</div>
                    ${link || ''}
               </div>
-              ${image || ''}
           </div>`,
-        mobile
+        mobile,
+        !!imageHtml,
+        imageHtml
       )
     })
 
@@ -241,7 +409,9 @@ const Contents = ({
           e as HTMLAnchorElement,
           `footnote-${footnoteId}`,
           `<div class="footnote">${footnote}</div>`,
-          mobile
+          mobile,
+          false,
+          ''
         )
       }
     })

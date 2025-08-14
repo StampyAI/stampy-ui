@@ -6,6 +6,7 @@
 /public/build
 /.mf
 /.idea
+.venv/
 
 .DS_store
 wrangler.toml
