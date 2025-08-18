@@ -1,0 +1,20 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hand/palm part -->
+  <path d="M21.4285 15.6429L16.6747 16.3471C16.1310 16.4277 15.6357 15.9880 15.3832 15.5199C14.4993 13.7920 11.5223 12.4286 8.9999 12.4286H2.6142C2.3178 12.4286 2.0714 12.6750 2.0714 12.9714V17.58C2.0714 17.8764 2.3178 18.1228 2.6142 18.1228H8.2195C8.3107 18.1228 8.4013 18.1339 8.4882 18.1551L14.1179 20.2823C14.3745 20.3627 14.6511 20.3664 14.9004 20.2977L23.3136 18.1678C23.7165 18.0693 24.0128 17.7057 23.9539 17.2951C23.7341 15.7628 22.7468 15.4545 21.4285 15.6429Z" fill="url(#paint0_linear)" style="mix-blend-mode:multiply"/>
+  
+  <!-- Rectangular base -->
+  <rect x="1.0074" y="10.8643" width="6.1286" height="9.1286" rx="0.75" fill="white" fill-opacity="0.8" stroke="#1D9089" stroke-width="0.5"/>
+  
+  <!-- Dollar sign - smaller, centered, and positioned to fit in viewBox -->
+  <g transform="translate(12, 3) scale(0.5)">
+    <line x1="12" y1="2" x2="12" y2="22" stroke="#1D9089" stroke-linecap="round"/>
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="#1D9089" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <defs>
+    <linearGradient id="paint0_linear" x1="24.0935" y1="20.3079" x2="9.5511" y2="5.0550" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17736E"/>
+      <stop offset="1" stop-color="#1D9089"/>
+    </linearGradient>
+  </defs>
+</svg>
