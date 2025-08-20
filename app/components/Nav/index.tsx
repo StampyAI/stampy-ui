@@ -48,7 +48,7 @@ export const Nav = ({toc, categories}: NavProps) => {
           <MenuItem
             primary={true}
             link="https://www.every.org/aisafetyinfo/f/keep-stampy-alive#/donate/card"
-            icon={<DonateHeart />} // Temporary - replace with donate icon later
+            icon={<DonateHeart />} 
             text="Donate"
           />
           <li className="top-menu-item">
