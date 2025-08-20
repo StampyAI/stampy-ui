@@ -4,6 +4,7 @@ import OpenBookIcon from '~/components/icons-generated/OpenBook'
 import BuoyIcon from '~/components/icons-generated/Buoy'
 import AISafetyIcon from '~/components/icons-generated/Aisafety'
 import BotIcon from '~/components/icons-generated/Bot'
+import DonateHeart from '~/components/icons-generated/DonateHeart'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
 import {ThemeToggle} from '~/components/ThemeToggle'
 import type {TOCItem} from '~/routes/questions.toc'
@@ -43,6 +44,12 @@ export const Nav = ({toc, categories}: NavProps) => {
             icon={<BotIcon />}
             text="AI Safety Chatbot"
             reload
+          />
+          <MenuItem
+            primary={true}
+            link="https://www.every.org/aisafetyinfo/f/keep-stampy-alive#/donate/card"
+            icon={<DonateHeart />}
+            text="Donate"
           />
           <li className="top-menu-item">
             <div className="top-menu-divider"></div>
