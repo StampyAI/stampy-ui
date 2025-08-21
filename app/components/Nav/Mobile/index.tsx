@@ -14,6 +14,7 @@ import '../nav.css'
 import './navMobile.css'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
 import Search from '~/components/search'
+import {DonateHeart} from '~/components/icons-generated'
 
 type State = 'initial' | 'search' | 'menu' | 'articles'
 
@@ -78,6 +79,16 @@ const Menu = ({state, setState}: MenuProps) => {
             label="AI Safety Chatbot"
             Icon={BotIcon}
             action={() => (window.location.href = '/chat/')}
+          />
+        )}
+        {isMenu && (
+          <MenuItem
+            label="Donate"
+            Icon={DonateHeart}
+            action={() =>
+              (window.location.href =
+                'https://www.every.org/aisafetyinfo/f/keep-stampy-alive#/donate/card')
+            }
           />
         )}
       </header>
