@@ -1,20 +1,10 @@
 import type {SVGProps} from 'react'
 const SvgDonateHeart = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={36}
-    height={27}
-    fill="none"
-    viewBox="0 2 24 24"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
     <g transform="scale(.3)">
       <path
         fill="url(#donate_heart_svg__a)"
         d="M71.428 52.143 55.582 54.49c-1.812.269-3.463-1.197-4.305-2.824C48.331 45.973 38.407 41.43 30 41.43H8.714a3 3 0 0 0-3 3V58.6a3 3 0 0 0 3 3h18.684a3 3 0 0 1 .896.137l18.766 5.87a3 3 0 0 0 1.608.052l29.044-7.1c1.343-.328 2.33-1.54 2.134-2.909-.732-5.107-4.023-6.135-8.418-5.507"
-        style={{
-          mixBlendMode: 'multiply',
-        }}
       />
       <path
         fill="#fff"
