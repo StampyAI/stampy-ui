@@ -5,7 +5,7 @@ const SvgDonateHeart = (props: SVGProps<SVGSVGElement>) => (
     width={36}
     height={27}
     fill="none"
-    viewBox="0 2 24 24"
+    viewBox="3 2 24 24"
     {...props}
   >
     <g transform="scale(.3)">
