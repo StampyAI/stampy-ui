@@ -1,13 +1,6 @@
 import type {SVGProps} from 'react'
 const SvgDonateHeart = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={36}
-    height={27}
-    fill="none"
-    viewBox="3 2 24 24"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
     <g transform="scale(.3)">
       <path
         fill="url(#donate_heart_svg__a)"
