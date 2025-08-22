@@ -12,6 +12,7 @@ import {
 } from '@remix-run/react'
 import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
 import {cssBundleHref} from '@remix-run/css-bundle'
+import {withSentry} from '@sentry/remix'
 import newStyles from '~/root.css'
 import Error from '~/components/Error'
 import Page from '~/components/Page'
@@ -116,6 +117,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     embed,
     showSearch,
     matomoDomain: MATOMO_DOMAIN,
+    sentryDsn: (global as any).SENTRY_DSN,
   }
 }
 
@@ -143,11 +145,21 @@ const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
   )
 }
 
-function Head() {
+function Head({sentryDsn}: {sentryDsn?: string}) {
   return (
     <head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+      {/* Initialize Sentry before anything else */}
+      {sentryDsn && (
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.SENTRY_DSN = "${sentryDsn}";
+            `,
+          }}
+        />
+      )}
       {/* Prevent flash of unstyled content by setting initial theme */}
       <script
         dangerouslySetInnerHTML={{
@@ -183,14 +195,16 @@ const BasePage = ({
   children,
   embed,
   savedTheme,
+  sentryDsn,
 }: {
   children: ReactNode
   embed?: boolean
   savedTheme?: string
+  sentryDsn?: string
 }) => (
   <CachedObjectsProvider>
     <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
-      <Head />
+      <Head sentryDsn={sentryDsn} />
       <body>
         <GlobalBanners />
         {children}
@@ -205,8 +219,15 @@ export function ErrorBoundary() {
   const params = useParams()
   const embed = !!params.embed
 
+  // Capture error with Sentry if available
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).Sentry) {
+      ;(window as any).Sentry.captureException(error)
+    }
+  }, [error])
+
   return (
-    <BasePage embed={embed}>
+    <BasePage embed={embed} sentryDsn={(global as any).SENTRY_DSN}>
       <Page>
         <Error error={error as any} />
       </Page>
@@ -218,10 +239,19 @@ export function ErrorBoundary() {
 type Loader = Awaited<ReturnType<typeof loader>>
 export type Context = Pick<Loader, 'embed' | 'showSearch'>
 
-export default function App() {
-  const {embed, showSearch, matomoDomain} = useLoaderData<Loader>()
+function App() {
+  const {embed, showSearch, matomoDomain, sentryDsn} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {embed, showSearch}
+
+  // Initialize Sentry on client side
+  useEffect(() => {
+    if (sentryDsn && typeof window !== 'undefined' && !(window as any).__sentryClientInitialized) {
+      import('~/sentry.client.config').then(() => {
+        ;(window as any).__sentryClientInitialized = true
+      })
+    }
+  }, [sentryDsn])
 
   useEffect(() => {
     if (embed) {
@@ -244,7 +274,7 @@ export default function App() {
   }, [embed])
 
   return (
-    <BasePage embed={embed} savedTheme={savedTheme}>
+    <BasePage embed={embed} savedTheme={savedTheme} sentryDsn={sentryDsn}>
       <AnaliticsTag matomoDomain={matomoDomain} />
       <Outlet context={context} />
       <ScrollRestoration />
@@ -253,3 +283,5 @@ export default function App() {
     </BasePage>
   )
 }
+
+export default withSentry(App)

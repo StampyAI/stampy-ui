@@ -25,6 +25,8 @@ rules:
   "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "^_"}]
   react/no-unescaped-entities: ["error", {"forbid": [">", "}"]}]
   unused-imports/no-unused-imports: "error"
+  semi: ["error", "never", {"beforeStatementContinuationChars": "always"}]
+  no-extra-semi: "off"
 settings:
   react:
     version: detect
