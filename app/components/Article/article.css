@@ -145,7 +145,101 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   z-index: 4;
-  width: 512px;
+  width: auto; /* Let it size based on content */
+}
+
+/* Right image layout - image on the right side */
+article .glossary-popup.right-image-layout {
+  display: flex;
+  flex-direction: row;
+  min-width: 530px; /* Minimum width to contain text + image (350 + 180) */
+  width: fit-content; /* Adjust to content */
+}
+
+/* Top image layout - image on top */
+article .glossary-popup.top-image-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right image layout - image container */
+article .glossary-popup.right-image-layout .image-container {
+  flex: 0 0 180px; /* Fixed width for consistency */
+  order: 2;
+  display: flex;
+  align-items: center; /* Center images vertically */
+  justify-content: center; /* Center images horizontally */
+  padding: var(--spacing-8);
+  overflow: hidden; /* Prevent images from overflowing */
+}
+
+/* Top image layout - image container */
+article .glossary-popup.top-image-layout .image-container {
+  flex: 0 0 100px; /* Fixed height for top images */
+  order: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8) var(--spacing-16);
+}
+
+/* Right image layout - text content */
+article .glossary-popup.right-image-layout .text-content {
+  flex: 0 0 350px; /* Reduced width for better balance */
+  order: 1;
+  padding: var(--spacing-24) var(--spacing-32) var(--spacing-16) var(--spacing-32);
+}
+
+/* Top image layout - text content */
+article .glossary-popup.top-image-layout .text-content {
+  flex: 1;
+  order: 2;
+  padding: var(--spacing-24) var(--spacing-32) var(--spacing-16) var(--spacing-32);
+}
+
+/* Image styling for all glossary popup images */
+article .glossary-popup .image-container img {
+  border-radius: var(--border-radius);
+}
+
+/* Right image layout - resize images to fit in fixed container */
+article .glossary-popup.right-image-layout .image-container img {
+  width: auto !important; /* Let width scale naturally */
+  height: auto !important; /* Height scales with aspect ratio */
+  max-width: 164px !important; /* Container width minus padding (180 - 16) */
+  max-height: 250px !important; /* Reasonable maximum height */
+}
+
+/* Top image layout - resize images to fit in full width container */
+article .glossary-popup.top-image-layout .image-container img {
+  max-height: 100px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: scale-down; /* Resize down if needed, don't crop */
+}
+
+/* Text content for popups without images */
+article .glossary-popup .text-content.full-width {
+  padding: var(--spacing-24) var(--spacing-32) var(--spacing-16) var(--spacing-32);
+}
+
+/* Definition styling for new layout */
+article .glossary-popup .text-content .definition {
+  min-height: 140px;
+  max-height: 300px; /* Allow expansion up to this limit */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: unset; /* Remove line clamp to allow full content */
+  overflow: auto; /* Show scrollbar if content is too long */
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+}
+
+/* Remove margins from buttons in glossary popups */
+article .glossary-popup .button {
+  margin: 0;
+  margin-top: var(--spacing-8);
 }
 
 article .link-popup .footnote {
@@ -168,8 +262,8 @@ article .footnote-ref {
 
 article .glossary-popup {
   border-radius: var(--border-radius);
-  overflow: hidden;
-  height: 304px;
+  overflow: hidden; /* Prevent content from overflowing */
+  display: flex; /* Ensure proper flex container */
 }
 
 article .contents a.button {
@@ -179,7 +273,8 @@ article .link-popup .glossary-popup > .contents {
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
 article .definition {
-  height: 140px;
+  min-height: 140px;
+  max-height: 300px; /* Allow expansion up to this limit */
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
@@ -187,6 +282,14 @@ article .definition {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: var(--spacing-32);
+}
+
+/* Allow glossary popup definitions to expand more */
+article .glossary-popup .definition {
+  min-height: 140px;
+  max-height: 300px; /* Allow expansion up to this limit */
+  overflow: auto; /* Show scrollbar if content is too long */
+  -webkit-line-clamp: unset; /* Remove line clamp for glossary popups */
 }
 article .link-popup .glossary-popup > img {
   border-top-right-radius: var(--border-radius);
@@ -270,14 +373,33 @@ article blockquote + p {
 @media (min-width: 1136px) {
   article .link-popup {
     position: absolute;
-    max-width: 480px;
+    max-width: 400px;
     display: inline-block;
     z-index: 2;
     left: calc(50% - 200px);
     transform: translateY(var(--spacing-40));
     transition:
-      visibility 0s 300ms,
-      opacity cubic-bezier(1, 0, 1, 1) 300ms;
+      visibility 0s 100ms,
+      opacity cubic-bezier(1, 0, 1, 1) 100ms;
+  }
+
+  /* Right-image layout popups - wider to accommodate image */
+  article .link-popup.right-image-layout {
+    max-width: 530px; /* 350px text + 180px image */
+    left: calc(50% - 265px);
+    transform: translateY(var(--spacing-40));
+  }
+
+  /* Top-image layout popups - standard width */
+  article .link-popup.top-image-layout {
+    max-width: 400px; /* Same as text-only popups */
+    left: calc(50% - 200px);
+    transform: translateY(var(--spacing-40));
+  }
+
+  /* Position above adjustments */
+  article .link-popup.position-above {
+    transform: translateY(-100%) translateY(-40px);
   }
 }
 

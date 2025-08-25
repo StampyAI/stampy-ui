@@ -7,6 +7,20 @@ import {createRoot} from 'react-dom/client'
 import MediaCarousel from '../MediaCarousel'
 import {Carousel} from '~/server-utils/parsing-utils'
 
+// Configuration for popup behavior
+const POPUP_CONFIG = {
+  // Timing delays (in milliseconds)
+  showDelay: 500,
+  hideDelay: 100,
+
+  // Positioning thresholds
+  viewportBottomMargin: 50, // pixels from bottom of viewport
+  maxPopupHeight: 400, // maximum popup height for adaptive sizing
+
+  // Image layout thresholds
+  wideImageAspectRatio: 2.0, // aspect ratio threshold for switching to top layout
+} as const
+
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
   const footnote = el.querySelector(id)
@@ -23,20 +37,76 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean): HTMLElement => {
+const addPopup = (
+  e: HTMLElement,
+  id: string,
+  contents: string,
+  mobile: boolean,
+  layout?: string
+): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
   const popup = document.createElement('div')
   popup.className = 'link-popup bordered small background'
+  if (layout) {
+    popup.classList.add(`${layout}-image-layout`)
+  }
   popup.innerHTML = contents
   popup.id = id
 
   e.insertAdjacentElement('afterend', popup)
 
+  // Timeout management for show/hide delays
+  let showTimeout: number | null = null
+  let hideTimeout: number | null = null
+
+  const clearTimeouts = () => {
+    if (showTimeout) {
+      clearTimeout(showTimeout)
+      showTimeout = null
+    }
+    if (hideTimeout) {
+      clearTimeout(hideTimeout)
+      hideTimeout = null
+    }
+  }
+
   const toggle = () => popup.classList.toggle('shown')
-  const show = () => popup.classList.add('shown')
-  const hide = () => popup.classList.remove('shown')
+
+  const show = () => {
+    clearTimeouts()
+    showTimeout = setTimeout(() => {
+      // Position popup above if it would not fit in viewport
+      const elementRect = e.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+
+      // Calculate actual popup height (capped at max height)
+      const actualPopupHeight = Math.min(popup.scrollHeight, POPUP_CONFIG.maxPopupHeight)
+
+      // Check if popup would fit below the element
+      const wouldFitBelow =
+        elementRect.bottom + actualPopupHeight <= viewportHeight - POPUP_CONFIG.viewportBottomMargin
+
+      // If it doesn't fit below, position it above
+      if (!wouldFitBelow) {
+        popup.classList.add('position-above')
+      } else {
+        popup.classList.remove('position-above')
+      }
+
+      popup.classList.add('shown')
+      showTimeout = null
+    }, POPUP_CONFIG.showDelay) as unknown as number
+  }
+
+  const hide = () => {
+    clearTimeouts()
+    hideTimeout = setTimeout(() => {
+      popup.classList.remove('shown')
+      hideTimeout = null
+    }, POPUP_CONFIG.hideDelay) as unknown as number
+  }
 
   if (!mobile) {
     e.addEventListener('mouseover', show)
@@ -50,6 +120,19 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean)
   }
 
   return popup
+}
+
+// Pre-calculate layout based on image aspect ratio
+const determineLayout = (imageUrl: string): Promise<'right' | 'top'> => {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const aspectRatio = img.naturalWidth / img.naturalHeight
+      resolve(aspectRatio > POPUP_CONFIG.wideImageAspectRatio ? 'top' : 'right')
+    }
+    img.onerror = () => resolve('right') // fallback
+    img.src = imageUrl
+  })
 }
 
 /*
@@ -160,30 +243,56 @@ const insertGlossary = (pageid: string, glossary: Glossary, mobile: boolean) => 
     /*
      * Add a popup to all real glossary words in this text node
      */
-    fragment.querySelectorAll('.glossary-entry').forEach((e) => {
+    fragment.querySelectorAll('.glossary-entry').forEach(async (e) => {
       const entry = glossaryEntry(e)
       if (!entry) return undefined
       const link =
         entry.pageid &&
         `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
       const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
-      const image = entry.image
+      const imageHtml = entry.image
         ? isGoogleDrive
           ? `<iframe src="${entry.image.replace(/\/view$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
           : `<img src="${entry.image}"/>`
         : ''
+
+      // Pre-calculate layout for images
+      let layout: 'right' | 'top' = 'right'
+      if (entry.image && !isGoogleDrive) {
+        try {
+          layout = await determineLayout(entry.image)
+        } catch (error) {
+          console.warn('Failed to determine layout for image:', entry.image, error)
+          layout = 'right' // fallback
+        }
+      }
+
+      // Create popup with pre-calculated layout
+      const popupContent = imageHtml
+        ? `<div class="glossary-popup ${layout}-image-layout black small">
+              <div class="image-container">
+                ${imageHtml}
+              </div>
+              <div class="text-content">
+                <div class="small-bold text-no-wrap">${entry.term}</div>
+                <div class="definition small">${entry.contents}</div>
+                ${link || ''}
+              </div>
+           </div>`
+        : `<div class="glossary-popup black small">
+              <div class="text-content full-width">
+                <div class="small-bold text-no-wrap">${entry.term}</div>
+                <div class="definition small">${entry.contents}</div>
+                ${link || ''}
+              </div>
+           </div>`
+
       addPopup(
         e as HTMLSpanElement,
         `glossary-${entry.term}-${randomId}`,
-        `<div class="glossary-popup flex-container black small">
-              <div class="contents ${image ? '' : 'full-width'}">
-                   <div class="small-bold text-no-wrap">${entry.term}</div>
-                   <div class="definition small">${entry.contents}</div>
-                   ${link || ''}
-              </div>
-              ${image || ''}
-          </div>`,
-        mobile
+        popupContent,
+        mobile,
+        imageHtml ? layout : undefined
       )
     })
 
