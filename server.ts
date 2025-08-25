@@ -1,6 +1,7 @@
 import {getAssetFromKV} from '@cloudflare/kv-asset-handler'
 import type {AppLoadContext} from '@remix-run/cloudflare'
 import {createRequestHandler, logDevReady} from '@remix-run/cloudflare'
+import * as Sentry from '@sentry/remix'
 import * as build from '@remix-run/dev/server-build'
 // @ts-expect-error TODO
 import __STATIC_CONTENT_MANIFEST from '__STATIC_CONTENT_MANIFEST'
@@ -17,9 +18,17 @@ export default {
     request: Request,
     env: {
       __STATIC_CONTENT: Fetcher
+      SENTRY_DSN?: string
     },
     ctx: ExecutionContext
   ): Promise<Response> {
+    // Initialize Sentry with DSN from environment
+    if (env.SENTRY_DSN && !(global as any).__sentryInitialized) {
+      ;(global as any).SENTRY_DSN = env.SENTRY_DSN
+      await import('~/sentry.server.config')
+      ;(global as any).__sentryInitialized = true
+    }
+
     try {
       const url = new URL(request.url)
       const ttl = url.pathname.startsWith('/build/')
@@ -57,6 +66,10 @@ export default {
       return await handleRemixRequest(request, loadContext)
     } catch (error) {
       console.log(error)
+      // Capture error with Sentry
+      if ((global as any).__sentryInitialized) {
+        Sentry.captureException(error)
+      }
       return new Response('An unexpected error occurred', {status: 500})
     }
   },

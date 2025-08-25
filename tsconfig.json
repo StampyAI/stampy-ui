@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "ES2021",
+    "module": "ESNext",
     "strict": true,
     "baseUrl": ".",
     "paths": {
