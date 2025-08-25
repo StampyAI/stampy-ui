@@ -180,7 +180,7 @@ article .glossary-popup.right-image-layout .image-container {
   align-items: center; /* Center images vertically */
   justify-content: center; /* Center images horizontally */
   padding: var(--spacing-8);
-  overflow: visible; /* Allow image to be properly sized */
+  overflow: hidden; /* Prevent images from overflowing */
 }
 
 /* Top image layout - image container */
@@ -272,7 +272,7 @@ article .footnote-ref {
 
 article .glossary-popup {
   border-radius: var(--border-radius);
-  overflow: visible; /* Allow images to be fully visible */
+  overflow: hidden; /* Prevent content from overflowing */
   display: flex; /* Ensure proper flex container */
 }
 
@@ -398,26 +398,23 @@ article blockquote + p {
       opacity cubic-bezier(1, 0, 1, 1) 100ms;
   }
 
-  /* Allow right-image layout popups to be wider */
-  article .link-popup:has(.right-image-layout) {
+  /* Right-image layout popups - wider to accommodate image */
+  article .link-popup.right-image-layout {
     max-width: 530px; /* 350px text + 180px image */
     left: calc(50% - 265px);
     transform: translateY(var(--spacing-40));
   }
 
-  /* Allow top-image layout popups to use standard width */
-  article .link-popup:has(.top-image-layout) {
+  /* Top-image layout popups - standard width */
+  article .link-popup.top-image-layout {
     max-width: 400px; /* Same as text-only popups */
     left: calc(50% - 200px);
     transform: translateY(var(--spacing-40));
   }
 
-  article .link-popup.position-above:has(.right-image-layout) {
-    transform: translateY(-100%) translateY(-var(--spacing-40));
-  }
-
-  article .link-popup.position-above:has(.top-image-layout) {
-    transform: translateY(-100%) translateY(-var(--spacing-40));
+  /* Position above adjustments */
+  article .link-popup.position-above {
+    transform: translateY(-100%) translateY(-40px);
   }
 }
 

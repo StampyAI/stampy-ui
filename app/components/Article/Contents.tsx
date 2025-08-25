@@ -39,12 +39,21 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean): HTMLElement => {
+const addPopup = (
+  e: HTMLElement,
+  id: string,
+  contents: string,
+  mobile: boolean,
+  layout?: string
+): HTMLElement => {
   const preexisting = document.getElementById(id)
   if (preexisting) return preexisting
 
   const popup = document.createElement('div')
   popup.className = 'link-popup bordered small background'
+  if (layout) {
+    popup.classList.add(`${layout}-image-layout`)
+  }
   popup.innerHTML = contents
   popup.id = id
 
@@ -70,17 +79,19 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean)
   const show = () => {
     clearTimeouts()
     showTimeout = setTimeout(() => {
-      // Position popup above if near bottom of page
+      // Position popup above if it would not fit in viewport
       const elementRect = e.getBoundingClientRect()
       const viewportHeight = window.innerHeight
 
       // Calculate actual popup height (capped at max height)
       const actualPopupHeight = Math.min(popup.scrollHeight, POPUP_CONFIG.maxPopupHeight)
 
-      if (
-        elementRect.bottom + actualPopupHeight >
-        viewportHeight - POPUP_CONFIG.viewportBottomMargin
-      ) {
+      // Check if popup would fit below the element
+      const wouldFitBelow =
+        elementRect.bottom + actualPopupHeight <= viewportHeight - POPUP_CONFIG.viewportBottomMargin
+
+      // If it doesn't fit below, position it above
+      if (!wouldFitBelow) {
         popup.classList.add('position-above')
       } else {
         popup.classList.remove('position-above')
@@ -287,7 +298,13 @@ const insertGlossary = (
               </div>
            </div>`
 
-      addPopup(e as HTMLSpanElement, `glossary-${entry.term}-${randomId}`, popupContent, mobile)
+      addPopup(
+        e as HTMLSpanElement,
+        `glossary-${entry.term}-${randomId}`,
+        popupContent,
+        mobile,
+        imageHtml ? layout : undefined
+      )
     })
 
     return fragment
