@@ -13,7 +13,8 @@ module.exports = {
   serverPlatform: 'neutral',
   serverDependenciesToBundle: [
     // bundle everything except the virtual module for the static content manifest provided by wrangler
-    /^(?!.*\b__STATIC_CONTENT_MANIFEST\b).*$/,
+    // and exclude Sentry from server bundle to avoid browser API conflicts
+    /^(?!.*\b__STATIC_CONTENT_MANIFEST\b)(?!.*@sentry).*$/,
   ],
   server: './server.ts',
   serverNodeBuiltinsPolyfill: {

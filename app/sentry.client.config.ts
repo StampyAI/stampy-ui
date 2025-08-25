@@ -1,4 +1,6 @@
 import * as Sentry from '@sentry/remix'
+import {useEffect} from 'react'
+import {useLocation, useMatches} from '@remix-run/react'
 
 const environment = (typeof process !== 'undefined' && process.env?.NODE_ENV) || 'development'
 
@@ -14,6 +16,11 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0,
 
   integrations: [
+    Sentry.browserTracingIntegration({
+      useEffect,
+      useLocation,
+      useMatches,
+    }),
     Sentry.replayIntegration({
       maskAllText: false,
       blockAllMedia: false,

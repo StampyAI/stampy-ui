@@ -48,6 +48,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "chromatic": "^10.9.6",
     "cross-env": "^7.0.3",
+    "crypto-browserify": "^3.12.1",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -60,11 +61,14 @@
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "storybook": "^7.6.20",
+    "stream-browserify": "^3.0.0",
     "toml": "^3.0.0",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
+    "util": "^0.12.5",
     "vite": "^5.4.19",
+    "vite-tsconfig-paths": "^5.1.4",
     "wrangler": "^3.114.11"
   },
   "engines": {

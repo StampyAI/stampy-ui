@@ -150,7 +150,7 @@ function Head({sentryDsn}: {sentryDsn?: string}) {
     <head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-      {/* Initialize Sentry before anything else */}
+      {/* Initialize Sentry DSN for client-side access */}
       {sentryDsn && (
         <script
           dangerouslySetInnerHTML={{
@@ -219,13 +219,6 @@ export function ErrorBoundary() {
   const params = useParams()
   const embed = !!params.embed
 
-  // Capture error with Sentry if available
-  useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).Sentry) {
-      ;(window as any).Sentry.captureException(error)
-    }
-  }, [error])
-
   return (
     <BasePage embed={embed} sentryDsn={(global as any).SENTRY_DSN}>
       <Page>
@@ -244,7 +237,7 @@ function App() {
   const {savedTheme} = useTheme()
   const context: Context = {embed, showSearch}
 
-  // Initialize Sentry on client side
+  // Initialize Sentry on client side only
   useEffect(() => {
     if (sentryDsn && typeof window !== 'undefined' && !(window as any).__sentryClientInitialized) {
       import('~/sentry.client.config').then(() => {
