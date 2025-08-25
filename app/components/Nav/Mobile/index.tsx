@@ -5,6 +5,7 @@ import ListLarge from '~/components/icons-generated/ListLarge'
 import XLarge from '~/components/icons-generated/XLarge'
 import CarrotLarge from '~/components/icons-generated/CarrotLarge'
 import BotIcon from '~/components/icons-generated/Bot'
+import Heart from '~/components/icons-generated/Heart'
 import OpenBookIcon from '~/components/icons-generated/OpenBook'
 import MagnifyingLarge from '~/components/icons-generated/MagnifyingLarge'
 import {NavProps} from '~/components/Nav'
@@ -14,7 +15,6 @@ import '../nav.css'
 import './navMobile.css'
 import ArticlesDropdown from '~/components/ArticlesDropdown'
 import Search from '~/components/search'
-import {DonateHeart} from '~/components/icons-generated'
 
 type State = 'initial' | 'search' | 'menu' | 'articles'
 
@@ -84,7 +84,7 @@ const Menu = ({state, setState}: MenuProps) => {
         {isMenu && (
           <MenuItem
             label="Donate"
-            Icon={DonateHeart}
+            Icon={Heart}
             action={() =>
               (window.location.href =
                 'https://www.every.org/aisafetyinfo/f/keep-stampy-alive#/donate/card')
