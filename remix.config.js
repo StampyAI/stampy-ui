@@ -21,6 +21,4 @@ module.exports = {
       url: true,
     },
   },
-  // Enable source maps for better Sentry error tracking
-  sourcemap: true,
 }
