@@ -72,7 +72,7 @@ const WhatYouCanDo = () => (
       <HelpItem
         className="padding-bottom-64"
         title="Send an email to a politician"
-        tag="8 min"
+        tag="4 min"
         links={[
           {
             title: 'ControlAI’s email template',
