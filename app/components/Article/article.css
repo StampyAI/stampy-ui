@@ -67,6 +67,16 @@ article .tag:hover {
   text-decoration: none;
 }
 
+html.dark article .tag {
+  background-color: var(--card-background);
+  border-color: var(--border);
+  color: var(--colors-teal-400);
+}
+
+html.dark article .tag:hover {
+  border-color: var(--colors-teal-400);
+}
+
 article .contents a {
   color: var(--colors-teal-500);
   font-weight: 500;
