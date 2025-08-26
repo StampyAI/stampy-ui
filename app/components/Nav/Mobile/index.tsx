@@ -7,6 +7,7 @@ import CarrotLarge from '~/components/icons-generated/CarrotLarge'
 import BotIcon from '~/components/icons-generated/Bot'
 import OpenBookIcon from '~/components/icons-generated/OpenBook'
 import MagnifyingLarge from '~/components/icons-generated/MagnifyingLarge'
+import BuoyIcon from '~/components/icons-generated/Buoy'
 import {NavProps} from '~/components/Nav'
 import Button from '~/components/Button'
 import {ThemeToggle} from '~/components/ThemeToggle'
@@ -72,6 +73,13 @@ const Menu = ({state, setState}: MenuProps) => {
             hasChildren
             Icon={OpenBookIcon}
             action={() => setState('articles')}
+          />
+        )}
+        {isMenu && (
+          <MenuItem
+            label="How Can I Help?"
+            Icon={BuoyIcon}
+            action={() => (window.location.href = '/how-can-i-help')}
           />
         )}
         {isMenu && (
