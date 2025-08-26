@@ -247,6 +247,11 @@ article blockquote {
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
+html.dark article blockquote {
+  background: var(--card-background);
+  border-left-color: var(--colors-teal-400);
+}
+
 article blockquote ~ blockquote {
   padding-top: 0;
 }
