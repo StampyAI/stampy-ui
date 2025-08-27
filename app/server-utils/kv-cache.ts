@@ -1,14 +1,14 @@
 import type {DataFunctionArgs} from '@remix-run/cloudflare'
 type RequestForReload = DataFunctionArgs['request'] | 'NEVER_RELOAD'
-export function withCache<Args extends string[]>(
+export function withCache<Args extends string[], ReturnType>(
   defaultKey: string,
-  fn: (request: RequestForReload, ...args: Args) => Promise<any>
+  fn: (request: RequestForReload, ...args: Args) => Promise<ReturnType>
 ): (
   // pass the real Request object when possible, 'NEVER_RELOAD' is an escape hatch for nested withCache(),
   // it's used for detection of `?reload` in url, to invalidate cache in a background request
   request: RequestForReload,
   ...args: Args
-) => Promise<{data: Awaited<ReturnType<typeof fn>>; timestamp: string}> {
+) => Promise<{data: ReturnType; timestamp: string}> {
   return async (request: RequestForReload, ...args: Args) => {
     const key = args[0] ?? defaultKey
 
