@@ -41,6 +41,12 @@ export enum QuestionStatus {
   SUBSECTION = 'Subsection',
   UNKNOWN = 'Unknown',
 }
+
+export const isQuestionViewable = (question: {status?: QuestionStatus} | undefined): boolean => {
+  return (
+    question?.status === QuestionStatus.LIVE_ON_SITE || question?.status === QuestionStatus.UNLISTED
+  )
+}
 export type Banner = {
   title: string
   text: string
@@ -441,9 +447,7 @@ export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> =>
 
   const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
-    questions.data
-      .filter((q) => [QuestionStatus.LIVE_ON_SITE, QuestionStatus.UNLISTED].includes(q.status!))
-      .map((q) => [q.title, q.pageid])
+    questions.data.filter(isQuestionViewable).map((q) => [q.title, q.pageid])
   )
   return toTag(rows[0], nameToId)
 })
@@ -453,9 +457,7 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
 
   const questions = await loadAllQuestions('NEVER_RELOAD')
   const nameToId = Object.fromEntries(
-    questions.data
-      .filter((q) => [QuestionStatus.LIVE_ON_SITE, QuestionStatus.UNLISTED].includes(q.status!))
-      .map((q) => [q.title, q.pageid])
+    questions.data.filter(isQuestionViewable).map((q) => [q.title, q.pageid])
   )
   return rows.map((r) => toTag(r, nameToId))
 })
