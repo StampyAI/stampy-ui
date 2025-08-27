@@ -1,15 +1,15 @@
 import type {DataFunctionArgs} from '@remix-run/cloudflare'
 type RequestForReload = DataFunctionArgs['request'] | 'NEVER_RELOAD'
-export function withCache<Fn extends (...args: string[]) => Promise<any>>(
+export function withCache<Args extends string[]>(
   defaultKey: string,
-  fn: Fn
+  fn: (request: RequestForReload, ...args: Args) => Promise<any>
 ): (
   // pass the real Request object when possible, 'NEVER_RELOAD' is an escape hatch for nested withCache(),
   // it's used for detection of `?reload` in url, to invalidate cache in a background request
   request: RequestForReload,
-  ...args: Parameters<Fn>
-) => Promise<{data: Awaited<ReturnType<Fn>>; timestamp: string}> {
-  return async (request: RequestForReload, ...args: Parameters<Fn>) => {
+  ...args: Args
+) => Promise<{data: Awaited<ReturnType<typeof fn>>; timestamp: string}> {
+  return async (request: RequestForReload, ...args: Args) => {
     const key = args[0] ?? defaultKey
 
     const shouldReload = request === 'NEVER_RELOAD' ? false : request.url.match(/[?&]reload/)
@@ -25,7 +25,7 @@ export function withCache<Fn extends (...args: string[]) => Promise<any>>(
     }
 
     console.debug(`Fetching data for: ${key}`)
-    const data = await fn(...args)
+    const data = await fn(request, ...args)
     const dataWithTimestamp = {timestamp: new Date(), data}
 
     if (data) await STAMPY_KV.put(key, JSON.stringify(dataWithTimestamp))
