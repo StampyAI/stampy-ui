@@ -2,7 +2,7 @@ import {useRef, useEffect} from 'react'
 import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import {isQuestionViewable} from '~/server-utils/stampy'
-import type {Glossary, PageId, GlossaryEntry} from '~/server-utils/stampy'
+import type {Glossary, PageId, GlossaryEntry, Question} from '~/server-utils/stampy'
 import {useOnSiteQuestions} from '~/hooks/useCachedObjects'
 import {togglePopup} from '../popups'
 import {createRoot} from 'react-dom/client'
@@ -125,10 +125,10 @@ const insertGlossary = (
   pageid: string,
   glossary: Glossary,
   mobile: boolean,
-  onSiteQuestions: any[]
+  onSiteQuestions: Question[]
 ) => {
-  // Generate a random ID for these glossary items. This is needed when mulitple articles are displayed -
-  // gloassary items should be only displayed once per article, but this is checked by popup id, so if
+  // Generate a random ID for these glossary items. This is needed when multiple articles are displayed -
+  // glossary items should be only displayed once per article, but this is checked by popup id, so if
   // there are 2 articles that have the same glossary item, then only the first articles popups would work
   const randomId = Math.floor(1000 + Math.random() * 9000).toString()
   const injecter = glossaryInjecter(pageid, glossary)
@@ -171,12 +171,11 @@ const insertGlossary = (
       const entry = glossaryEntry(e)
       if (!entry) return undefined
 
-      // Check if the linked article has a valid status (Live on site or Unlisted)
-      const linkedQuestion = onSiteQuestions?.find((q) => q.pageid === entry.pageid)
+      const linkedQuestionIsViewable =
+        entry.pageid && isQuestionViewable(onSiteQuestions?.find((q) => q.pageid === entry.pageid))
 
       const link =
-        entry.pageid &&
-        isQuestionViewable(linkedQuestion) &&
+        linkedQuestionIsViewable &&
         `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
       const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
       const image = entry.image
