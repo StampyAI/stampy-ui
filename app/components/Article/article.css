@@ -155,7 +155,8 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   z-index: 4;
-  width: auto; /* Let it size based on content */
+  width: auto;
+  min-width: 350px;
 }
 
 /* Right image layout - image on the right side */
@@ -163,7 +164,7 @@ article .glossary-popup.right-image-layout {
   display: flex;
   flex-direction: row;
   min-width: 530px; /* Minimum width to contain text + image (350 + 180) */
-  width: fit-content; /* Adjust to content */
+  width: fit-content;
 }
 
 /* Top image layout - image on top */
@@ -174,13 +175,13 @@ article .glossary-popup.top-image-layout {
 
 /* Right image layout - image container */
 article .glossary-popup.right-image-layout .image-container {
-  flex: 0 0 180px; /* Fixed width for consistency */
+  flex: 0 0 180px;
   order: 2;
   display: flex;
-  align-items: center; /* Center images vertically */
-  justify-content: center; /* Center images horizontally */
+  align-items: center;
+  justify-content: center;
   padding: var(--spacing-8);
-  overflow: hidden; /* Prevent images from overflowing */
+  overflow: hidden;
 }
 
 /* Top image layout - image container */
@@ -196,16 +197,16 @@ article .glossary-popup.top-image-layout .image-container {
 
 /* Right image layout - text content */
 article .glossary-popup.right-image-layout .text-content {
-  flex: 0 0 350px; /* Reduced width for better balance */
+  flex: 0 0 350px;
   order: 1;
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-24) var(--spacing-32);
+  padding: var(--spacing-24);
 }
 
 /* Top image layout - text content */
 article .glossary-popup.top-image-layout .text-content {
   flex: 1;
   order: 2;
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-24) var(--spacing-32);
+  padding: var(--spacing-24);
 }
 
 /* Image styling for all glossary popup images */
@@ -215,35 +216,23 @@ article .glossary-popup .image-container img {
 
 /* Right image layout - resize images to fit in fixed container */
 article .glossary-popup.right-image-layout .image-container img {
-  width: auto !important; /* Let width scale naturally */
-  height: auto !important; /* Height scales with aspect ratio */
-  max-width: 164px !important; /* Container width minus padding (180 - 16) */
-  max-height: 250px !important; /* Reasonable maximum height */
+  width: auto;
+  height: auto;
+  max-width: 164px;
+  max-height: 250px;
 }
 
 /* Top image layout - resize images to fit in full width container */
 article .glossary-popup.top-image-layout .image-container img {
-  max-height: 100px !important;
-  width: auto !important;
-  max-width: 100% !important;
-  object-fit: scale-down; /* Resize down if needed, don't crop */
+  max-height: 100px;
+  width: auto;
+  max-width: 100%;
+  object-fit: scale-down;
 }
 
 /* Text content for popups without images */
 article .glossary-popup .text-content.full-width {
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-24) var(--spacing-32);
-}
-
-/* Definition styling for new layout */
-article .glossary-popup .text-content .definition {
-  min-height: 50px;
-  max-height: 300px; /* Allow expansion up to this limit */
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: unset; /* Remove line clamp to allow full content */
-  overflow: auto; /* Show scrollbar if content is too long */
-  text-overflow: ellipsis;
-  margin-bottom: 0;
+  padding: var(--spacing-24);
 }
 
 /* Remove margins from buttons in glossary popups */
@@ -272,8 +261,8 @@ article .footnote-ref {
 
 article .glossary-popup {
   border-radius: var(--border-radius);
-  overflow: hidden; /* Prevent content from overflowing */
-  display: flex; /* Ensure proper flex container */
+  overflow: hidden;
+  display: flex;
 }
 
 article .contents a.button {
@@ -283,24 +272,15 @@ article .link-popup .glossary-popup > .contents {
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
 article .definition {
-  min-height: 140px;
-  max-height: 300px; /* Allow expansion up to this limit */
+  max-height: 300px;
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5; /* Number of lines you want to display */
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: var(--spacing-32);
 }
 
-/* Allow glossary popup definitions to expand more */
-article .glossary-popup .definition {
-  min-height: 140px;
-  max-height: 300px; /* Allow expansion up to this limit */
-  overflow: auto; /* Show scrollbar if content is too long */
-  -webkit-line-clamp: unset; /* Remove line clamp for glossary popups */
-}
 article .link-popup .glossary-popup > img {
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);

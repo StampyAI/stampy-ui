@@ -9,20 +9,6 @@ import {createRoot} from 'react-dom/client'
 import MediaCarousel from '../MediaCarousel'
 import {Carousel} from '~/server-utils/parsing-utils'
 
-// Configuration for popup behavior
-const POPUP_CONFIG = {
-  // Timing delays (in milliseconds)
-  showDelay: 500,
-  hideDelay: 100,
-
-  // Positioning thresholds
-  viewportBottomMargin: 50, // pixels from bottom of viewport
-  maxPopupHeight: 400, // maximum popup height for adaptive sizing
-
-  // Image layout thresholds
-  wideImageAspectRatio: 2.0, // aspect ratio threshold for switching to top layout
-} as const
-
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
   const footnote = el.querySelector(id)
@@ -83,12 +69,9 @@ const addPopup = (
       const elementRect = e.getBoundingClientRect()
       const viewportHeight = window.innerHeight
 
-      // Calculate actual popup height (capped at max height)
-      const actualPopupHeight = Math.min(popup.scrollHeight, POPUP_CONFIG.maxPopupHeight)
-
       // Check if popup would fit below the element
-      const wouldFitBelow =
-        elementRect.bottom + actualPopupHeight <= viewportHeight - POPUP_CONFIG.viewportBottomMargin
+      const estimatedPopupHeight = 250
+      const wouldFitBelow = elementRect.bottom + estimatedPopupHeight <= viewportHeight - 50
 
       // If it doesn't fit below, position it above
       if (!wouldFitBelow) {
@@ -99,7 +82,7 @@ const addPopup = (
 
       popup.classList.add('shown')
       showTimeout = null
-    }, POPUP_CONFIG.showDelay) as unknown as number
+    }, 500) as unknown as number
   }
 
   const hide = () => {
@@ -107,7 +90,7 @@ const addPopup = (
     hideTimeout = setTimeout(() => {
       popup.classList.remove('shown')
       hideTimeout = null
-    }, POPUP_CONFIG.hideDelay) as unknown as number
+    }, 100) as unknown as number
   }
 
   if (!mobile) {
@@ -130,7 +113,7 @@ const determineLayout = (imageUrl: string): Promise<'right' | 'top'> => {
     const img = new Image()
     img.onload = () => {
       const aspectRatio = img.naturalWidth / img.naturalHeight
-      resolve(aspectRatio > POPUP_CONFIG.wideImageAspectRatio ? 'top' : 'right')
+      resolve(aspectRatio > 2.0 ? 'top' : 'right')
     }
     img.onerror = () => resolve('right') // fallback
     img.src = imageUrl
