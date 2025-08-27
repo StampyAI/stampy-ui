@@ -355,14 +355,14 @@ const convertToQuestion = async ({name, values, updatedAt} = {} as AnswersRow, r
   }
 }
 
-export const loadQuestionDetail = withCache('questionDetail', async (question: string) => {
+export const loadQuestionDetail = withCache('questionDetail', async (request: RequestForReload, question: string) => {
   // Make sure all tags are loaded. This shouldn't be needed often, as it's double cached
   if (Object.keys(allTags).length === 0) {
-    const {data} = await loadTags('NEVER_RELOAD')
+    const {data} = await loadTags(request)
     allTags = Object.fromEntries(data.map((r) => [r.name, r])) as Record<string, Tag>
   }
   if (Object.keys(allBanners).length === 0) {
-    const {data} = await loadBanners('NEVER_RELOAD')
+    const {data} = await loadBanners(request)
     allBanners = data
   }
   const rows = (await getCodaRows(
@@ -372,11 +372,11 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
     question.length <= 6 ? 'UI ID' : 'Name',
     question
   )) as AnswersRow[]
-  const siteQuestion = await convertToQuestion(rows[0], question)
+  const siteQuestion = await convertToQuestion(rows[0], request)
   return siteQuestion
 })
 
-export const loadQuestionStatus = withCache('questionStatus', async (questionUiId: string) => {
+export const loadQuestionStatus = withCache('questionStatus', async (request: RequestForReload, questionUiId: string) => {
   const rows = (await getCodaRows(
     QUESTION_DETAILS_TABLE,
     'UI ID',
@@ -385,9 +385,9 @@ export const loadQuestionStatus = withCache('questionStatus', async (questionUiI
   return rows[0].values.Status
 })
 
-export const loadInitialQuestions = withCache('initialQuestions', async () => {
+export const loadInitialQuestions = withCache('initialQuestions', async (request: RequestForReload) => {
   const rows = (await getCodaRows(INITIAL_QUESTIONS_TABLE)) as AnswersRow[]
-  const data = await Promise.all(rows.map(row => convertToQuestion(row, 'NEVER_RELOAD')))
+  const data = await Promise.all(rows.map(row => convertToQuestion(row, request)))
   return data
 })
 
@@ -434,9 +434,9 @@ export const loadBanners = withCache('loadBanners', async (): Promise<Record<str
   )
 })
 
-export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
+export const loadOnSiteAnswers = withCache('onSiteAnswers', async (request: RequestForReload) => {
   const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
-  const cleaned = await Promise.all(rows.map(row => convertToQuestion(row, 'NEVER_RELOAD')))
+  const cleaned = await Promise.all(rows.map(row => convertToQuestion(row, request)))
   const questionIds = cleaned.map((q) => q.pageid)
   return cleaned.map((q) => ({
     ...q,
@@ -444,9 +444,9 @@ export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   }))
 })
 
-export const loadAllQuestions = withCache('allQuestions', async () => {
+export const loadAllQuestions = withCache('allQuestions', async (request: RequestForReload) => {
   const rows = (await getCodaRows(ALL_ANSWERS_TABLE)) as AnswersRow[]
-  return Promise.all(rows.map(row => convertToQuestion(row, 'NEVER_RELOAD')))
+  return Promise.all(rows.map(row => convertToQuestion(row, request)))
 })
 
 const extractMainQuestion = (question: string | Entity | null): string | null => {
@@ -471,20 +471,20 @@ const toTag = (r: TagsRow, nameToId: Record<string, string>): Tag => ({
   mainQuestion: extractMainQuestion(r.values['Main question']),
 })
 
-export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> => {
+export const loadTag = withCache('tag', async (request: RequestForReload, tagName: string): Promise<Tag> => {
   const rows = (await getCodaRows(TAGS_TABLE, 'Tag name', tagName)) as TagsRow[]
 
-  const questions = await loadAllQuestions('NEVER_RELOAD')
+  const questions = await loadAllQuestions(request)
   const nameToId = Object.fromEntries(
     questions.data.filter(isQuestionViewable).map((q) => [q.title, q.pageid])
   )
   return toTag(rows[0], nameToId)
 })
 
-export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
+export const loadTags = withCache('tags', async (request: RequestForReload): Promise<Tag[]> => {
   const rows = (await getCodaRows(TAGS_TABLE, 'Internal?', 'false')) as TagsRow[]
 
-  const questions = await loadAllQuestions('NEVER_RELOAD')
+  const questions = await loadAllQuestions(request)
   const nameToId = Object.fromEntries(
     questions.data.filter(isQuestionViewable).map((q) => [q.title, q.pageid])
   )
@@ -494,12 +494,13 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
 export const loadMoreAnswerDetails = withCache(
   'loadMoreAnswerDetails',
   async (
+    request: RequestForReload,
     nextPageLink: string | null
   ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
     const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
     const result = await fetchRows(url)
     const items = result.items as AnswersRow[]
-    return {nextPageLink: result.nextPageLink, questions: await Promise.all(items.map(row => convertToQuestion(row, 'NEVER_RELOAD')))}
+    return {nextPageLink: result.nextPageLink, questions: await Promise.all(items.map(row => convertToQuestion(row, request)))}
   }
 )
 
