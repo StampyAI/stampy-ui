@@ -1,4 +1,7 @@
 import {withCache} from '~/server-utils/kv-cache'
+import type {DataFunctionArgs} from '@remix-run/cloudflare'
+
+type RequestForReload = DataFunctionArgs['request'] | 'NEVER_RELOAD'
 import {
   cleanUpDoubleBold,
   allLinksOnNewTab,
@@ -306,9 +309,31 @@ const extractJoined = (values: Entity[], mapper: Record<string, any>) =>
     .map((name) => (mapper && mapper[name]) || {name})
     .filter((i) => i)
 
-const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Question => {
+const convertToQuestion = async ({name, values, updatedAt} = {} as AnswersRow, request?: RequestForReload): Promise<Question> => {
   const markdown = extractText(values['Rich Text'])
   const {html, carousels} = renderText(extractText(values['UI ID']), values['Rich Text'])
+  
+  // Filter related questions to only include live-on-site status
+  let relatedQuestions: RelatedQuestion[] = []
+  if (values['Related Answers'] && values['Related IDs']) {
+    const relatedPromises = values['Related Answers'].map(async ({name}, i) => {
+      const pageid = extractText(values['Related IDs'][i])
+      try {
+        const {data: status} = await loadQuestionStatus(request || 'NEVER_RELOAD', pageid)
+        if (status?.name === QuestionStatus.LIVE_ON_SITE) {
+          return { title: name, pageid }
+        }
+        return null
+      } catch (error) {
+        // If we can't load the status, exclude the question to be safe
+        return null
+      }
+    })
+    
+    const resolvedRelated = await Promise.all(relatedPromises)
+    relatedQuestions = resolvedRelated.filter((q): q is RelatedQuestion => q !== null)
+  }
+  
   return {
     title: name,
     pageid: extractText(values['UI ID']),
@@ -318,13 +343,7 @@ const convertToQuestion = ({name, values, updatedAt} = {} as AnswersRow): Questi
     answerEditLink: extractLink(values['Edit Answer']).replace(/\?.*$/, ''),
     tags: extractJoined(values['Tags'] || [], allTags).map((t) => t.name),
     banners: extractJoined(values['Banners'] || [], allBanners),
-    relatedQuestions:
-      values['Related Answers'] && values['Related IDs']
-        ? values['Related Answers'].map(({name}, i) => ({
-            title: name,
-            pageid: extractText(values['Related IDs'][i]),
-          }))
-        : [],
+    relatedQuestions,
     status: values['Status']?.name as QuestionStatus,
     alternatePhrasings: extractText(values['Alternate Phrasings']),
     subtitle: extractText(values.Subtitle),
@@ -353,12 +372,22 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
     question.length <= 6 ? 'UI ID' : 'Name',
     question
   )) as AnswersRow[]
-  return convertToQuestion(rows[0])
+  const siteQuestion = await convertToQuestion(rows[0], question)
+  return siteQuestion
+})
+
+export const loadQuestionStatus = withCache('questionStatus', async (questionUiId: string) => {
+  const rows = (await getCodaRows(
+    QUESTION_DETAILS_TABLE,
+    'UI ID',
+    questionUiId
+  )) as AnswersRow[]
+  return rows[0].values.Status
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
   const rows = (await getCodaRows(INITIAL_QUESTIONS_TABLE)) as AnswersRow[]
-  const data = rows.map(convertToQuestion)
+  const data = await Promise.all(rows.map(row => convertToQuestion(row, 'NEVER_RELOAD')))
   return data
 })
 
@@ -407,7 +436,7 @@ export const loadBanners = withCache('loadBanners', async (): Promise<Record<str
 
 export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
   const rows = (await getCodaRows(ON_SITE_TABLE)) as AnswersRow[]
-  const cleaned = rows.map(convertToQuestion)
+  const cleaned = await Promise.all(rows.map(row => convertToQuestion(row, 'NEVER_RELOAD')))
   const questionIds = cleaned.map((q) => q.pageid)
   return cleaned.map((q) => ({
     ...q,
@@ -417,7 +446,7 @@ export const loadOnSiteAnswers = withCache('onSiteAnswers', async () => {
 
 export const loadAllQuestions = withCache('allQuestions', async () => {
   const rows = (await getCodaRows(ALL_ANSWERS_TABLE)) as AnswersRow[]
-  return rows.map(convertToQuestion)
+  return Promise.all(rows.map(row => convertToQuestion(row, 'NEVER_RELOAD')))
 })
 
 const extractMainQuestion = (question: string | Entity | null): string | null => {
@@ -470,7 +499,7 @@ export const loadMoreAnswerDetails = withCache(
     const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
     const result = await fetchRows(url)
     const items = result.items as AnswersRow[]
-    return {nextPageLink: result.nextPageLink, questions: items.map(convertToQuestion)}
+    return {nextPageLink: result.nextPageLink, questions: await Promise.all(items.map(row => convertToQuestion(row, 'NEVER_RELOAD')))}
   }
 )
 
