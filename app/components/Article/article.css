@@ -198,14 +198,14 @@ article .glossary-popup.top-image-layout .image-container {
 article .glossary-popup.right-image-layout .text-content {
   flex: 0 0 350px; /* Reduced width for better balance */
   order: 1;
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-16) var(--spacing-32);
+  padding: var(--spacing-24) var(--spacing-32) var(--spacing-24) var(--spacing-32);
 }
 
 /* Top image layout - text content */
 article .glossary-popup.top-image-layout .text-content {
   flex: 1;
   order: 2;
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-16) var(--spacing-32);
+  padding: var(--spacing-24) var(--spacing-32) var(--spacing-24) var(--spacing-32);
 }
 
 /* Image styling for all glossary popup images */
@@ -231,12 +231,12 @@ article .glossary-popup.top-image-layout .image-container img {
 
 /* Text content for popups without images */
 article .glossary-popup .text-content.full-width {
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-16) var(--spacing-32);
+  padding: var(--spacing-24) var(--spacing-32) var(--spacing-24) var(--spacing-32);
 }
 
 /* Definition styling for new layout */
 article .glossary-popup .text-content .definition {
-  min-height: 140px;
+  min-height: 50px;
   max-height: 300px; /* Allow expansion up to this limit */
   display: -webkit-box;
   -webkit-box-orient: vertical;
