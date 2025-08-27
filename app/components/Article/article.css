@@ -67,6 +67,16 @@ article .tag:hover {
   text-decoration: none;
 }
 
+html.dark article .tag {
+  background-color: var(--card-background);
+  border-color: var(--border);
+  color: var(--colors-teal-400);
+}
+
+html.dark article .tag:hover {
+  border-color: var(--colors-teal-400);
+}
+
 article .contents a {
   color: var(--colors-teal-500);
   font-weight: 500;
@@ -245,6 +255,11 @@ article blockquote {
   background: var(--colors-teal-50);
   padding: var(--spacing-16) var(--spacing-32);
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+html.dark article blockquote {
+  background: var(--card-background);
+  border-left-color: var(--colors-teal-400);
 }
 
 article blockquote ~ blockquote {
