@@ -11,3 +11,6 @@
 wrangler.toml
 *.sqlite
 .wrangler
+
+# Sentry Config File
+.sentryclirc

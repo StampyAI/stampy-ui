@@ -1,3 +1,6 @@
+// Using @sentry/remix for client-side error boundary (safe for both server and client)
+// Server-side instrumentation is handled by @sentry/cloudflare in entry.server.tsx
+import {captureRemixErrorBoundaryError} from '@sentry/remix'
 import {useEffect, ReactNode} from 'react'
 import {
   Links,
@@ -116,6 +119,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
     embed,
     showSearch,
     matomoDomain: MATOMO_DOMAIN,
+    sentryDsn: SENTRY_DSN,
   }
 }
 
@@ -138,6 +142,17 @@ const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
                             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
                             g.async=true; g.src='https://cdn.matomo.cloud/${matomoDomain}.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
                         })();`,
+      }}
+    />
+  )
+}
+
+const SentryConfigScript = ({sentryDsn}: {sentryDsn?: string}) => {
+  if (!sentryDsn) return null
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `window.__SENTRY_DSN__ = ${JSON.stringify(sentryDsn)};`,
       }}
     />
   )
@@ -205,6 +220,10 @@ export function ErrorBoundary() {
   const params = useParams()
   const embed = !!params.embed
 
+  // Capture error using Remix-specific error boundary function
+  // This is safe to call on both server and client - it handles the runtime check internally
+  captureRemixErrorBoundaryError(error)
+
   return (
     <BasePage embed={embed}>
       <Page>
@@ -218,8 +237,8 @@ export function ErrorBoundary() {
 type Loader = Awaited<ReturnType<typeof loader>>
 export type Context = Pick<Loader, 'embed' | 'showSearch'>
 
-export default function App() {
-  const {embed, showSearch, matomoDomain} = useLoaderData<Loader>()
+function App() {
+  const {embed, showSearch, matomoDomain, sentryDsn} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {embed, showSearch}
 
@@ -245,6 +264,7 @@ export default function App() {
 
   return (
     <BasePage embed={embed} savedTheme={savedTheme}>
+      <SentryConfigScript sentryDsn={sentryDsn} />
       <AnaliticsTag matomoDomain={matomoDomain} />
       <Outlet context={context} />
       <ScrollRestoration />
@@ -253,3 +273,5 @@ export default function App() {
     </BasePage>
   )
 }
+
+export default App
