@@ -15,3 +15,4 @@ declare const DISCORD_LOGGING_CHANNEL_ID: string
 declare const DISCORD_LOGGING_TOKEN: string
 declare const EDITOR_USERNAME: string
 declare const EDITOR_PASSWORD: string
+declare const SENTRY_DSN: string

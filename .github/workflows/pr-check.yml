@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CODA_TOKEN: ${{ secrets.CODA_TOKEN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: lint
@@ -18,4 +19,5 @@ jobs:
       - name: test
         run: |
           cp wrangler.toml.template wrangler.toml
+          echo "SENTRY_AUTH_TOKEN is set: $(if [ -n "$SENTRY_AUTH_TOKEN" ]; then echo 'yes'; else echo 'no'; fi)"
           npm run test
