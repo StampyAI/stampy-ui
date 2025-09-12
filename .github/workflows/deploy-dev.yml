@@ -30,6 +30,7 @@ jobs:
             | sed s/{DISCORD_LOGGING_TOKEN}/${{ secrets.DISCORD_LOGGING_TOKEN }}/ \
             | sed s/{EDITOR_USERNAME}/${{ secrets.EDITOR_USERNAME }}/ \
             | sed s/{EDITOR_PASSWORD}/${{ secrets.EDITOR_PASSWORD }}/ \
+            | sed s,{SENTRY_DSN},${{ secrets.SENTRY_DSN }}, \
             > wrangler.toml
           npm ci
           npm run deploy
