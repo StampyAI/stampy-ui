@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react'
+import {useRef, useEffect, useState} from 'react'
 import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import {isQuestionViewable} from '~/server-utils/stampy'
@@ -8,21 +8,6 @@ import {togglePopup} from '../popups'
 import {createRoot} from 'react-dom/client'
 import MediaCarousel from '../MediaCarousel'
 import {Carousel} from '~/server-utils/parsing-utils'
-
-// Page-level cache for glossary terms that have been seen
-// This ensures each term is only marked once per page, regardless of how many Contents components exist
-const pageGlossaryState = {
-  seen: new Set<string>(),
-  currentPageId: null as string | null,
-}
-
-const getOrResetSeenSet = (pageid: string): Set<string> => {
-  if (pageGlossaryState.currentPageId !== pageid) {
-    pageGlossaryState.seen = new Set<string>()
-    pageGlossaryState.currentPageId = pageid
-  }
-  return pageGlossaryState.seen
-}
 
 const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null => {
   const id = e.getAttribute('href') || ''
@@ -157,14 +142,13 @@ const insertGlossary = (
   pageid: string,
   glossary: Glossary,
   mobile: boolean,
-  onSiteQuestions: Question[]
+  onSiteQuestions: Question[],
+  seen: Set<string>
 ) => {
   // Generate a random ID for these glossary items. This is needed when multiple articles are displayed -
   // glossary items should be only displayed once per article, but this is checked by popup id, so if
   // there are 2 articles that have the same glossary item, then only the first articles popups would work
   const randomId = Math.floor(1000 + Math.random() * 9000).toString()
-  // Use the page-level seen set that persists across all Contents components
-  const seen = getOrResetSeenSet(pageid)
   const injecter = glossaryInjecter(pageid, glossary, seen)
 
   return (textNode: Node) => {
@@ -242,13 +226,18 @@ const Contents = ({
   carousels,
   glossary,
   className = '',
+  seenGlossaryTerms,
 }: {
   pageid: PageId
   html: string
   carousels?: Carousel[]
   glossary: Glossary
   className?: string
+  seenGlossaryTerms?: Set<string>
 }) => {
+  // Create a local seen set if none provided (for standalone usage like Chatbot)
+  const [localSeenTerms] = useState(() => new Set<string>())
+  const seen = seenGlossaryTerms || localSeenTerms
   const elementRef = useRef<HTMLDivElement>(null)
   const mobile = useIsMobile(1136)
   const {items: onSiteQuestions} = useOnSiteQuestions()
@@ -276,7 +265,7 @@ const Contents = ({
         p.innerHTML = html.replace(/Caption:\s*/, '')
       }
     }
-    updateTextNodes(el, insertGlossary(pageid, glossary, mobile, onSiteQuestions || []))
+    updateTextNodes(el, insertGlossary(pageid, glossary, mobile, onSiteQuestions || [], seen))
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
@@ -291,7 +280,7 @@ const Contents = ({
         )
       }
     })
-  }, [html, carousels, glossary, pageid, mobile, onSiteQuestions])
+  }, [html, carousels, glossary, pageid, mobile, onSiteQuestions, seen])
 
   return (
     <div
