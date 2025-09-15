@@ -292,7 +292,7 @@ article blockquote + p {
     transform: translateY(var(--spacing-40));
     transition:
       visibility 0s 300ms,
-      opacity cubic-bezier(1, 0, 1, 1) 300ms;
+      opacity cubic-bezier(1, 0, 1 ,1) 300ms;
   }
 }
 
@@ -333,4 +333,39 @@ article blockquote + p {
   article .glossary-popup .contents + img {
     display: none;
   }
+}
+
+/* Table styles */
+article .contents .table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: var(--spacing-24);
+}
+
+article .contents table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+article .contents th,
+article .contents td {
+  border: 1px solid var(--border);
+  padding: var(--spacing-12);
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 120px;
+}
+
+article .contents th {
+  background-color: var(--hover-background);
+  font-weight: 500;
+}
+
+article .contents tbody tr:nth-child(odd) {
+  background-color: var(--card-background);
+}
+
+article .contents tbody tr:nth-child(even) {
+  background-color: var(--background);
 }
