@@ -292,7 +292,7 @@ article blockquote + p {
     transform: translateY(var(--spacing-40));
     transition:
       visibility 0s 300ms,
-      opacity cubic-bezier(1, 0, 1 ,1) 300ms;
+      opacity cubic-bezier(1, 0, 1, 1) 300ms;
   }
 }
 
