@@ -105,6 +105,7 @@ const glossaryInjecter = (pageid: string, glossary: Glossary, seen: Set<string>)
     // Track replacements with placeholders to avoid overlapping matches
     const replacements: Array<{placeholder: string; replacement: string; term: string}> = []
     let result = html
+    let placeholderCounter = 0
 
     // Replace ALL occurrences of each term with placeholders
     // This prevents shorter terms from matching within longer terms
@@ -113,7 +114,7 @@ const glossaryInjecter = (pageid: string, glossary: Glossary, seen: Set<string>)
       const pattern = new RegExp(`(^|[^\\w-])(${normalizedAlias})($|[^\\w-])`, 'gi')
 
       result = result.replace(pattern, (match, prefix, matchedTerm, suffix) => {
-        const placeholder = `__GLOSSARY_${Math.floor(Math.random() * 100000)}__`
+        const placeholder = `__GLOSSARY_${placeholderCounter++}__`
         replacements.push({
           placeholder,
           replacement: matchedTerm, // Store the original text
@@ -145,10 +146,6 @@ const insertGlossary = (
   onSiteQuestions: Question[],
   seen: Set<string>
 ) => {
-  // Generate a random ID for these glossary items. This is needed when multiple articles are displayed -
-  // glossary items should be only displayed once per article, but this is checked by popup id, so if
-  // there are 2 articles that have the same glossary item, then only the first articles popups would work
-  const randomId = Math.floor(1000 + Math.random() * 9000).toString()
   const injecter = glossaryInjecter(pageid, glossary, seen)
 
   return (textNode: Node) => {
@@ -203,7 +200,7 @@ const insertGlossary = (
         : ''
       addPopup(
         e as HTMLSpanElement,
-        `glossary-${entry.term}-${randomId}`,
+        `glossary-${entry.term}`,
         `<div class="glossary-popup flex-container black small">
               <div class="contents ${image ? '' : 'full-width'}">
                    <div class="small-bold text-no-wrap">${entry.term}</div>
