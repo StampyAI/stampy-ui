@@ -107,19 +107,6 @@ const addPopup = (
   return popup
 }
 
-// Pre-calculate layout based on image aspect ratio
-const determineLayout = (imageUrl: string): Promise<'right' | 'top'> => {
-  return new Promise((resolve) => {
-    const img = new Image()
-    img.onload = () => {
-      const aspectRatio = img.naturalWidth / img.naturalHeight
-      resolve(aspectRatio > 2.0 ? 'top' : 'right')
-    }
-    img.onerror = () => resolve('right') // fallback
-    img.src = imageUrl
-  })
-}
-
 /*
  * Recursively go through the child nodes of the provided node, and replace all text nodes
  * with the result of calling `textProcessor(textNode)`.
@@ -233,7 +220,7 @@ const insertGlossary = (
     /*
      * Add a popup to all real glossary words in this text node
      */
-    fragment.querySelectorAll('.glossary-entry').forEach(async (e) => {
+    fragment.querySelectorAll('.glossary-entry').forEach((e) => {
       const entry = glossaryEntry(e)
       if (!entry) return undefined
 
@@ -250,15 +237,11 @@ const insertGlossary = (
           : `<img src="${entry.image}"/>`
         : ''
 
-      // Pre-calculate layout for images
+      // Determine layout based on pre-computed dimensions
       let layout: 'right' | 'top' = 'right'
-      if (entry.image && !isGoogleDrive) {
-        try {
-          layout = await determineLayout(entry.image)
-        } catch (error) {
-          console.warn('Failed to determine layout for image:', entry.image, error)
-          layout = 'right' // fallback
-        }
+      if (entry.image && !isGoogleDrive && entry.imageDimensions) {
+        const aspectRatio = entry.imageDimensions.width / entry.imageDimensions.height
+        layout = aspectRatio > 2.0 ? 'top' : 'right'
       }
 
       // Create popup with pre-calculated layout
