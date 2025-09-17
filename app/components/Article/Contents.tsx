@@ -257,6 +257,15 @@ const Contents = ({
         )
       }
     })
+
+    // Wrap tables for horizontal scrolling on mobile
+    const tables = el.getElementsByTagName('table')
+    for (const table of tables) {
+      const wrapper = document.createElement('div')
+      wrapper.className = 'table-container'
+      table.parentNode?.insertBefore(wrapper, table)
+      wrapper.appendChild(table)
+    }
   }, [html, carousels, glossary, pageid, mobile, onSiteQuestions])
 
   return (
