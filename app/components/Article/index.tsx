@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useRef} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
@@ -155,7 +155,7 @@ type ArticleProps = {
 export const Article = ({question, glossary, className, showNext}: ArticleProps) => {
   const {title, text, pageid, carousels} = question
   // Create a seen set for glossary terms that will be shared across all Contents components
-  const [seenGlossaryTerms] = useState(() => new Set<string>())
+  const seenGlossaryTermsRef = useRef(new Set<string>())
 
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
@@ -170,7 +170,7 @@ export const Article = ({question, glossary, className, showNext}: ArticleProps)
           html={text}
           carousels={carousels}
           glossary={glossary || {}}
-          seenGlossaryTerms={seenGlossaryTerms}
+          seenGlossaryTermsRef={seenGlossaryTermsRef}
         />
       ) : (
         <div className="padding-bottom-32" />

@@ -1,4 +1,4 @@
-import {useRef, useEffect, useState} from 'react'
+import {useRef, useEffect, MutableRefObject} from 'react'
 import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import {isQuestionViewable} from '~/server-utils/stampy'
@@ -223,18 +223,15 @@ const Contents = ({
   carousels,
   glossary,
   className = '',
-  seenGlossaryTerms,
+  seenGlossaryTermsRef,
 }: {
   pageid: PageId
   html: string
   carousels?: Carousel[]
   glossary: Glossary
   className?: string
-  seenGlossaryTerms?: Set<string>
+  seenGlossaryTermsRef: MutableRefObject<Set<string>>
 }) => {
-  // Create a local seen set if none provided (for standalone usage like Chatbot)
-  const [localSeenTerms] = useState(() => new Set<string>())
-  const seen = seenGlossaryTerms || localSeenTerms
   const elementRef = useRef<HTMLDivElement>(null)
   const mobile = useIsMobile(1136)
   const {items: onSiteQuestions} = useOnSiteQuestions()
@@ -262,7 +259,10 @@ const Contents = ({
         p.innerHTML = html.replace(/Caption:\s*/, '')
       }
     }
-    updateTextNodes(el, insertGlossary(pageid, glossary, mobile, onSiteQuestions || [], seen))
+    updateTextNodes(
+      el,
+      insertGlossary(pageid, glossary, mobile, onSiteQuestions || [], seenGlossaryTermsRef.current)
+    )
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
@@ -277,7 +277,7 @@ const Contents = ({
         )
       }
     })
-  }, [html, carousels, glossary, pageid, mobile, onSiteQuestions, seen])
+  }, [html, carousels, glossary, pageid, mobile, onSiteQuestions, seenGlossaryTermsRef])
 
   return (
     <div
