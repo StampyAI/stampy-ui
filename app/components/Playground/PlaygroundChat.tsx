@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import {
   queryLLM,
   Entry,
@@ -16,6 +16,29 @@ const scroll30 = () => {
   if (document.documentElement.scrollHeight - window.scrollY < window.innerHeight * 1.1) {
     window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})
   }
+}
+
+const getSpinner = (thinkingCount: number = 0) => {
+  const spinnerFrames = [
+    ' ...',
+    ' -..',
+    ' .-.',
+    ' ..-',
+    ' ...',
+    ' ..-',
+    ' .-.',
+    ' -..',
+    ' ...',
+    ' -..',
+    ' --.',
+    ' .--',
+    ' ..-',
+    ' ...',
+    ' -..',
+    ' .-.',
+    ' ..-',
+  ]
+  return spinnerFrames[thinkingCount % spinnerFrames.length]
 }
 
 const makeHistory = (query: string, entries: Entry[]): HistoryEntry[] => {
@@ -53,6 +76,21 @@ export const PlaygroundChat = ({
   const [followups, setFollowups] = useState<Followup[]>([])
   const [controller, setController] = useState(() => new AbortController())
   const [isSearching, setIsSearching] = useState(false)
+  const [onRequestQuickAnswer, setOnRequestQuickAnswer] = useState<(() => void) | undefined>(
+    undefined
+  )
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (!isSearching) inputRef.current?.focus()
+  }, [isSearching])
+
+  useEffect(() => {
+    if (!inputRef.current) return
+    inputRef.current.focus()
+    const len = inputRef.current.value.length
+    inputRef.current.setSelectionRange(len, len)
+  }, [])
 
   const updateCurrent = (current: AssistantEntry) => {
     if (current?.phase === 'streaming') {
@@ -93,13 +131,33 @@ export const PlaygroundChat = ({
 
     const history = makeHistory(query, entries)
 
-    const result = await queryLLM(history, updateCurrent, sessionId, controller, settings)
+    let quickAnswerRequested = false
+
+    setOnRequestQuickAnswer(() => () => {
+      quickAnswerRequested = true
+      controller.abort()
+    })
+
+    let result = await queryLLM(history, updateCurrent, sessionId, controller, settings)
+
+    // If aborted and quick answer was requested, retry without thinking
+    if (result.result.content === 'aborted' && quickAnswerRequested) {
+      const newController = new AbortController()
+      setController(newController)
+      setOnRequestQuickAnswer(undefined)
+
+      result = await queryLLM(history, updateCurrent, sessionId, newController, {
+        ...settings,
+        thinking_budget: 0,
+      })
+    }
 
     if (result.result.content !== 'aborted') {
       addResult(query, result)
     }
     setCurrent(undefined)
     setIsSearching(false)
+    setOnRequestQuickAnswer(undefined)
   }
 
   const deleteEntry = (i: number) => {
@@ -164,8 +222,9 @@ export const PlaygroundChat = ({
         </div>
       )}
 
-      <div style={{position: 'relative', marginTop: '16px'}}>
+      <div style={{position: 'relative', marginTop: '16px', display: 'flex', gap: '8px'}}>
         <Input
+          ref={inputRef}
           placeholder="Ask a question..."
           className="large full-width"
           value={query}
@@ -175,27 +234,65 @@ export const PlaygroundChat = ({
             onQuery?.(e.target.value)
           }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey && query.trim()) {
+            if (e.key === 'Escape') {
+              e.currentTarget.blur()
+            } else if (e.key === 'Enter' && !e.shiftKey && query.trim() && !isSearching) {
               e.preventDefault()
               abortable(search)(query)
-            } else if (e.key === 'Escape') {
-              controller.abort()
-              setIsSearching(false)
             }
           }}
         />
-        <SendIcon
-          style={{position: 'absolute', right: '12px', top: '12px', cursor: 'pointer'}}
-          onClick={() => query.trim() && abortable(search)(query)}
-        />
+        <button
+          onClick={() => {
+            if (isSearching) {
+              controller.abort()
+              setIsSearching(false)
+            } else if (query.trim()) {
+              abortable(search)(query)
+            }
+          }}
+          style={{padding: '8px 16px', alignSelf: 'flex-start'}}
+        >
+          {isSearching ? 'Cancel' : 'Search'}
+        </button>
       </div>
 
       {current && (
         <div style={{marginTop: '16px'}}>
           {current.phase === 'started' && <p>Loading: Sending query...</p>}
+          {current.phase === 'enrich' && <p>Loading: Refined your query...</p>}
           {current.phase === 'semantic' && <p>Loading: Performing semantic search...</p>}
+          {current.phase === 'history' && <p>Loading: Processing history...</p>}
           {current.phase === 'context' && <p>Loading: Preparing context...</p>}
-          {current.phase === 'llm' && <p>Loading: Thinking...</p>}
+          {current.phase === 'prompt' && <p>Loading: Preparing context...</p>}
+          {current.phase === 'llm' && (
+            <div>
+              <p>
+                {current.thoughts && current.thoughts.length > 0 ? (
+                  <>
+                    Loading: Thinking (usually 10s-30s)
+                    {getSpinner(current.thoughts.length)}
+                  </>
+                ) : (
+                  <>Loading...</>
+                )}
+              </p>
+              {current.thoughts && current.thoughts.length > 0 && onRequestQuickAnswer && (
+                <p>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      onRequestQuickAnswer()
+                    }}
+                  >
+                    Get a quick answer
+                  </a>
+                </p>
+              )}
+            </div>
+          )}
+          {current.phase === 'thinking' && <p>Loading: Thinking...</p>}
           {current.phase === 'streaming' && <ChatEntry {...current} />}
           {current.phase === 'followups' && (
             <>

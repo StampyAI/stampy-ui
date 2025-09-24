@@ -1,10 +1,11 @@
-import {useState, useEffect} from 'react'
-import {ShouldRevalidateFunction, useSearchParams} from '@remix-run/react'
+import {useState} from 'react'
+import {ShouldRevalidateFunction} from '@remix-run/react'
 import Page from '~/components/Page'
-import {ChatSettings, Entry, Mode} from '~/hooks/useChat'
-import {PlaygroundSettings, MODELS, DEFAULT_FILTERS} from '~/components/Playground/Settings'
+import {Entry, Mode} from '~/hooks/useChat'
+import {PlaygroundSettings, DEFAULT_FILTERS} from '~/components/Playground/Settings'
 import {PlaygroundPrompts} from '~/components/Playground/Prompts'
 import {PlaygroundChat} from '~/components/Playground/PlaygroundChat'
+import {usePlaygroundSettings} from '~/hooks/usePlaygroundSettings'
 
 export const shouldRevalidate: ShouldRevalidateFunction = () => false
 
@@ -45,27 +46,20 @@ const DEFAULT_PROMPTS = {
   },
 }
 
-const updateIn = (obj: {[key: string]: any}, [head, ...rest]: string[], val: any) => {
-  if (!head) {
-    // noop
-  } else if (!rest || rest.length == 0) {
-    obj[head] = val
-  } else {
-    if (obj[head] === undefined || typeof obj[head] !== 'object' || obj[head] === null) {
-      obj[head] = {}
-    }
-    updateIn(obj[head], rest, val)
-  }
-  return obj
+const MODE_DESCRIPTIONS = {
+  rookie:
+    'For people who are new to the field of AI alignment. The answer might be longer, since technical terms will be explained in more detail and less background will be assumed.',
+  concise:
+    "Quick and to the point. Followup questions may need to be asked to get the full picture of what's going on.",
+  default: 'A balanced default mode.',
 }
 
 export default function Playground() {
   const [sessionId] = useState(crypto.randomUUID())
-  const [params, setParams] = useSearchParams()
   const [query, setQuery] = useState<string>('')
   const [history, setHistory] = useState<Entry[]>([])
 
-  const [settings, setSettings] = useState<ChatSettings>({
+  const {settings, changeSetting, changeSettings} = usePlaygroundSettings({
     mode: 'default',
     modelID: 'anthropic/claude-sonnet-4-20250514',
     encoder: 'cl100k_base',
@@ -82,23 +76,8 @@ export default function Playground() {
     prompts: DEFAULT_PROMPTS,
   })
 
-  useEffect(() => {
-    const mode = (params.get('mode') || 'default') as Mode
-    const modelID = params.get('modelID') || settings.modelID
-    setSettings((s) => ({...s, mode, modelID}))
-  }, [params])
-
-  const changeSetting = (path: string[], value: any) => {
-    setSettings((s) => ({...updateIn(s, path, value)}))
-  }
-
-  const changeSettings = (...items: [string[], any][]) => {
-    setSettings((s) => items.reduce((acc, [path, val]) => ({...acc, ...updateIn(s, path, val)}), s))
-  }
-
   const setMode = (mode: Mode) => {
-    setSettings({...settings, mode})
-    setParams({mode})
+    changeSetting(['mode'], mode)
   }
 
   return (
@@ -111,6 +90,7 @@ export default function Playground() {
             <button
               key={m}
               onClick={() => setMode(m)}
+              title={MODE_DESCRIPTIONS[m]}
               style={{
                 padding: '4px 8px',
                 backgroundColor: settings.mode === m ? '#d3f2f0' : 'white',
