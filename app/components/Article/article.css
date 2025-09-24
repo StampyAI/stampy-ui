@@ -180,6 +180,10 @@ article .glossary-popup {
   border-radius: var(--border-radius);
   overflow: hidden;
   height: 304px;
+  /* Reset any inherited formatting from the glossary term */
+  font-style: normal !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
 }
 
 article .contents a.button {
