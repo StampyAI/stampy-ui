@@ -89,9 +89,32 @@ type Model =
   | 'anthropic/claude-opus-4-20250514'
 
 export type Mode = 'rookie' | 'concise' | 'default'
+
+export type SearchFilters = {
+  miri_confidence?: number
+  miri_distance?: string[]
+  needs_tech?: boolean | null
+}
+
 export type ChatSettings = {
   mode?: Mode
   completions?: Model
+  prompts?: {
+    [key: string]: any
+  }
+  modelID?: string
+  encoder?: string
+  topKBlocks?: number
+  maxNumTokens?: number
+  tokensBuffer?: number
+  maxHistory?: number
+  maxHistorySummaryTokens?: number
+  historyFraction?: number
+  contextFraction?: number
+  enable_hyde?: boolean
+  thinking_budget?: number
+  filters?: SearchFilters
+  [key: string]: any
 }
 
 const DATA_HEADER = 'data: '
