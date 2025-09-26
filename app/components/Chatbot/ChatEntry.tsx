@@ -319,6 +319,7 @@ const ChatbotReply = ({
 
 const StampyArticle = ({pageid, content, title, no}: StampyEntry & {no: number}) => {
   const glossary = useGlossary()
+  const seenGlossaryTermsRef = useRef(new Set<string>())
   const hint = `This response is pulled from our article "${title}" which was written by members of AISafety.info`
 
   const uniqueReferences = (content: string, idFinder: string) =>
@@ -335,6 +336,7 @@ const StampyArticle = ({pageid, content, title, no}: StampyEntry & {no: number})
             pageid={pageid || ''}
             html={uniqueReferences(content || 'Loading...', 'fn\\d+-.*?')}
             glossary={glossary || {}}
+            seenGlossaryTermsRef={seenGlossaryTermsRef}
           />
         </article>
         <Feedback
