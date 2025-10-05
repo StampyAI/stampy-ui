@@ -1,4 +1,9 @@
-export const CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
+const PROD_CHATBOT_URL = 'https://chat.stampy.ai:8443/chat'
+const LOCAL_CHATBOT_URL = 'http://localhost:3001/chat'
+export const CHATBOT_URL =
+  typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? LOCAL_CHATBOT_URL
+    : PROD_CHATBOT_URL
 
 export type Citation = {
   title: string
@@ -12,18 +17,14 @@ export type Citation = {
   id?: string
 }
 
+export type ContentBlock =
+  | {type: 'text'; text: string}
+  | {type: 'thinking'; thinking: string}
+  | {type: 'tool_use'; id?: string; name: string; input: Record<string, any>}
+  | {type: 'tool_result'; tool: string; tool_use_id?: string; model_output: string; ui_output: any}
+
 export type Entry = (UserEntry | AssistantEntry | ErrorMessage | StampyEntry) & {no?: number}
-export type ChatPhase =
-  | 'started'
-  | 'semantic'
-  | 'history'
-  | 'context'
-  | 'prompt'
-  | 'llm'
-  | 'thinking'
-  | 'streaming'
-  | 'followups'
-  | 'done'
+export type ChatPhase = 'started' | 'thinking' | 'streaming' | 'turn' | 'followups' | 'done'
 
 export type UserEntry = {
   role: 'user'
@@ -34,12 +35,12 @@ export type UserEntry = {
 export type AssistantEntry = {
   role: 'assistant'
   question?: string
-  content: string
+  blocks: ContentBlock[]
+  content: string // derived: concatenation of text blocks
   citations?: Citation[]
   citationsMap?: Map<string, Citation>
   deleted?: boolean
   phase?: ChatPhase
-  thoughts?: string
 }
 
 export type ErrorMessage = {
@@ -66,27 +67,15 @@ export type SearchResult = {
 }
 
 type Model =
-  | 'openai/gpt-3.5-turbo'
-  | 'openai/gpt-3.5-turbo-16k'
-  | 'openai/o1'
-  | 'openai/o1-mini'
-  | 'openai/gpt-4'
-  | 'openai/gpt-4-turbo-preview'
-  | 'openai/gpt-4o'
-  | 'openai/gpt-4o-mini'
-  | 'openai/o4-mini'
-  | 'openai/o3'
-  | 'openai/gpt-4.1-nano'
-  | 'openai/gpt-4.1-mini'
-  | 'openai/gpt-4.1'
-  | 'anthropic/claude-3-opus-20240229'
-  | 'anthropic/claude-3-5-sonnet-20240620'
-  | 'anthropic/claude-3-5-sonnet-20241022'
+  | 'anthropic/claude-sonnet-4-6'
+  | 'anthropic/claude-opus-4-6'
+  | 'anthropic/claude-haiku-4-5'
+  | 'anthropic/claude-sonnet-4-5-20250929'
+  | 'anthropic/claude-opus-4-5-20251101'
+  | 'anthropic/claude-sonnet-4-20250514'
+  | 'anthropic/claude-opus-4-20250514'
+  | 'anthropic/claude-3-7-sonnet-latest'
   | 'anthropic/claude-3-5-sonnet-latest'
-  | 'anthropic/claude-opus-4-20250514'
-  | 'anthropic/claude-sonnet-4-20250514'
-  | 'anthropic/claude-sonnet-4-20250514'
-  | 'anthropic/claude-opus-4-20250514'
 
 export type Mode = 'rookie' | 'concise' | 'default'
 export type ChatSettings = {
@@ -100,42 +89,24 @@ const EVENT_END_HEADER = 'event: close'
 export type EntryRole = 'error' | 'stampy' | 'assistant' | 'user' | 'deleted'
 export type HistoryEntry = {
   role: EntryRole
-  content: string
+  content: string | ContentBlock[]
   question?: string
 }
 
 export const formatCitations: (text: string) => string = (text) => {
-  // ---------------------- normalize citation form ----------------------
-  // the general plan here is just to add parsing cases until we can respond
-  // well to almost everything the LLM emits. We won't ever reach five nines,
-  // but the domain is one where occasionally failing isn't catastrophic.
-
-  // transform all things that look like [1, 2, 3] into [1][2][3]
-  let response = text.replace(
-    /\[((?:\d+,\s*)*\d+)\]/g, // identify groups of this form
-
-    (block: string) =>
-      block
-        .split(',')
-        .map((x) => x.trim())
-        .join('][')
+  let response = text.replace(/\[((?:\d+,\s*)*\d+)\]/g, (block: string) =>
+    block
+      .split(',')
+      .map((x) => x.trim())
+      .join('][')
   )
-
-  // transform all things that look like [(1), (2), (3)] into [(1)][(2)][(3)]
-  response = response.replace(
-    /\[((?:\(\d+\),\s*)*\(\d+\))\]/g, // identify groups of this form
-
-    (block: string) =>
-      block
-        .split(',')
-        .map((x) => x.trim())
-        .join('][')
+  response = response.replace(/\[((?:\(\d+\),\s*)*\(\d+\))\]/g, (block: string) =>
+    block
+      .split(',')
+      .map((x) => x.trim())
+      .join('][')
   )
-
-  // transform all things that look like [(3)] into [3]
   response = response.replace(/\[\((\d+)\)\]/g, (_match: string, x: string) => `[${x}]`)
-
-  // transform all things that look like [ 12 ] into [12]
   response = response.replace(/\[\s*(\d+)\s*\]/g, (_match: string, x: string) => `[${x}]`)
   return response
 }
@@ -144,7 +115,6 @@ export const findCitations: (text: string, citations: Citation[]) => Map<string,
   text,
   citations
 ) => {
-  // figure out what citations are in the response, and map them appropriately
   const cite_map = new Map<string, Citation>()
   const byRef = citations.reduce((acc, c) => ({...acc, [c.reference]: c}), {}) as {
     [k: string]: Citation
@@ -152,7 +122,6 @@ export const findCitations: (text: string, citations: Citation[]) => Map<string,
   let index = 1
   const articles = new Map<string, Citation>()
 
-  // find all citations in the text
   const refs = [...text.matchAll(/\[(\d+)\]/g)]
   refs.forEach(([_, num]) => {
     if (!num || cite_map.has(num)) return
@@ -188,14 +157,10 @@ export async function* iterateData(res: Response) {
 
     const chunk = new TextDecoder('utf-8').decode(value)
     for (const line of chunk.split('\n')) {
-      // Most times, it seems that a single read() call will be one SSE "message",
-      // but I'll do the proper aggregation spec thing in case that's not always true.
-
       if (line.startsWith(EVENT_END_HEADER)) {
         return
       } else if (line.startsWith(DATA_HEADER)) {
         message += line.slice(DATA_HEADER.length)
-        // Fixes #43
       } else if (line !== '') {
         message += line
       } else if (message !== '') {
@@ -206,10 +171,26 @@ export async function* iterateData(res: Response) {
   }
 }
 
+/** Extract citations from tool result ui_output (search results). */
+const extractCitationsFromBlocks = (blocks: ContentBlock[]): Citation[] => {
+  const citations: Citation[] = []
+  for (const block of blocks) {
+    if (block.type !== 'tool_result') continue
+    if (!Array.isArray(block.ui_output)) continue
+    for (const item of block.ui_output) {
+      if (item.title && item.url) {
+        citations.push(item as Citation)
+      }
+    }
+  }
+  return citations
+}
+
 const makeEntry = (question?: string) =>
   ({
     role: 'assistant',
     question,
+    blocks: [],
     content: '',
     citations: [],
     citationsMap: new Map(),
@@ -218,76 +199,122 @@ const makeEntry = (question?: string) =>
 export const extractAnswer = async (
   question: string | undefined,
   res: Response,
-  setCurrent: (e: AssistantEntry) => void
+  setCurrent: (e: AssistantEntry) => void,
+  priorCitations?: Citation[]
 ): Promise<SearchResult> => {
-  const formatResponse = (result: AssistantEntry, data: Entry) => {
-    const content = formatCitations((result?.content || '') + data.content)
-    return {
-      content,
-      question,
-      thoughts: result?.thoughts,
-      role: 'assistant',
-      citations: result?.citations || [],
-      citationsMap: findCitations(content, result?.citations || []),
-    } as AssistantEntry
-  }
-
   let result: AssistantEntry = makeEntry(question)
   let followups: Followup[] = []
+  const prior = priorCitations || []
+
+  /** Append to or create the last block of a given type in result.blocks. */
+  const appendToBlock = (type: 'thinking' | 'text', key: 'thinking' | 'text', delta: string) => {
+    const last = result.blocks[result.blocks.length - 1]
+    if (last && last.type === type) {
+      const mutable = last as Record<string, any>
+      mutable[key] += delta
+    } else {
+      result.blocks = [...result.blocks, {type, [key]: delta} as ContentBlock]
+    }
+  }
+
   for await (const data of iterateData(res)) {
     switch (data.state) {
-      case 'loading':
-        setCurrent({phase: data.phase, ...result})
-        break
       case 'thinking':
-        result = {
-          ...result,
-          thoughts: (result.thoughts || '') + data.content,
-        }
+        appendToBlock('thinking', 'thinking', data.content || '')
+        result = {...result, blocks: [...result.blocks]}
         setCurrent({phase: 'thinking', ...result})
         break
 
-      case 'citations':
+      case 'streaming': {
+        appendToBlock('text', 'text', data.content || '')
+        const content = formatCitations(result.content + (data.content || ''))
+        const citations = [...prior, ...extractCitationsFromBlocks(result.blocks)]
         result = {
           ...result,
-          citations: data?.citations || result?.citations || [],
+          blocks: [...result.blocks],
+          content,
+          citations,
+          citationsMap: findCitations(content, citations),
         }
-        setCurrent({phase: data.phase, ...result})
-        break
-
-      case 'streaming':
-        // incrementally build up the response
-        result = formatResponse(result, data)
         setCurrent({phase: 'streaming', ...result})
+        break
+      }
+
+      case 'turn':
+        if (data.role === 'assistant') {
+          if (Array.isArray(data.content)) {
+            for (const block of data.content) {
+              if (block.type === 'tool_use') {
+                result.blocks.push(block)
+              }
+            }
+          }
+        } else if (data.role === 'tool') {
+          result.blocks.push({
+            type: 'tool_result',
+            tool: data.tool,
+            tool_use_id: data.tool_use_id,
+            model_output: data.model_output || '',
+            ui_output: data.ui_output,
+          })
+          const citations = [...prior, ...extractCitationsFromBlocks(result.blocks)]
+          result = {...result, citations}
+        }
+        setCurrent({phase: 'turn', ...result})
         break
 
       case 'followups':
-        // add any potential followup questions
         followups = data.followups.map((value: any) => value as Followup)
         break
+
       case 'done':
         result = {...result, phase: 'done'}
         break
+
       case 'error':
         throw data.error
+
+      case 'loading':
+        setCurrent({phase: data.phase as ChatPhase, ...result})
+        break
     }
   }
   return {result, followups}
 }
 
-const formatHistoryItem = ({role, content}: HistoryEntry): HistoryEntry | null => {
-  if (role === 'stampy') {
-    role = 'assistant'
-  } else if (['error', 'deleted'].includes(role)) {
-    return null
+const formatHistoryItem = (entry: Entry): HistoryEntry | null => {
+  let role = entry.role as EntryRole
+  if (role === 'stampy') role = 'assistant'
+  else if (['error', 'deleted'].includes(role)) return null
+
+  // For assistant entries with blocks, send structured content (strip thinking, drop ui_output)
+  if (role === 'assistant' && 'blocks' in entry) {
+    const {blocks} = entry as AssistantEntry
+    if (blocks?.length) {
+      const cleaned: ContentBlock[] = blocks
+        .filter((b) => b.type !== 'thinking')
+        .map((b) =>
+          b.type === 'tool_result'
+            ? {
+                type: 'tool_result',
+                tool: b.tool,
+                tool_use_id: b.tool_use_id,
+                model_output: b.model_output,
+                ui_output: b.ui_output,
+              }
+            : b
+        ) as ContentBlock[]
+      return {content: cleaned, role}
+    }
   }
 
+  const content = 'content' in entry && typeof entry.content === 'string' ? entry.content : ''
   return {content: formatCitations(content), role}
 }
 
 const makePayload = (
   sessionId: string | undefined,
-  history: HistoryEntry[],
+  history: Entry[],
   settings?: ChatSettings
 ): string => {
   const payload = JSON.stringify({
@@ -295,14 +322,14 @@ const makePayload = (
     history: history.map(formatHistoryItem).filter(Boolean),
     settings,
   })
-  if (payload.length < 70000) return payload
-  if (history.length === 1) throw 'You question is too long - please shorten it'
+  if (payload.length < 200000) return payload
+  if (history.length === 1) throw 'Your question is too long - please shorten it'
   return makePayload(sessionId, history.slice(1), settings)
 }
 
 const fetchLLM = async (
   sessionId: string | undefined,
-  history: HistoryEntry[],
+  history: Entry[],
   controller: AbortController,
   settings?: ChatSettings
 ): Promise<Response | void> =>
@@ -319,15 +346,15 @@ const fetchLLM = async (
   }).catch(ignoreAbort)
 
 export const queryLLM = async (
-  history: HistoryEntry[],
+  history: Entry[],
   setCurrent: (e: AssistantEntry) => void,
   sessionId: string | undefined,
   controller: AbortController,
   settings?: ChatSettings
 ): Promise<SearchResult> => {
-  const question = history[history.length - 1]?.content
+  const lastContent = history[history.length - 1]?.content
+  const question = typeof lastContent === 'string' ? lastContent : undefined
   setCurrent({...makeEntry(question), phase: 'started'})
-  // do SSE on a POST request.
   const res = await fetchLLM(sessionId, history, controller, settings)
 
   if (!res) {
@@ -336,8 +363,13 @@ export const queryLLM = async (
     return {result: {role: 'error', content: 'POST Error: ' + res.status}}
   }
 
+  // Collect citations from prior assistant entries so cross-turn references resolve
+  const priorCitations: Citation[] = history
+    .filter((e): e is AssistantEntry => e.role === 'assistant' && 'citations' in e)
+    .flatMap((e) => e.citations || [])
+
   try {
-    return await extractAnswer(question, res, setCurrent)
+    return await extractAnswer(question, res, setCurrent, priorCitations)
   } catch (e) {
     if ((e as Error)?.name === 'AbortError') {
       return {result: {role: 'error', content: 'aborted'}}

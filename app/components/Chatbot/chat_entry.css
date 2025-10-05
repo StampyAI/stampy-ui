@@ -230,6 +230,8 @@ article.stampy {
 
 .chat-entry article {
   min-height: inherit;
+  padding-left: 0;
+  max-width: unset;
 }
 
 @media (max-width: 780px) {

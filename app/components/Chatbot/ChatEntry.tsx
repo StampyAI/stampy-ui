@@ -1,12 +1,22 @@
-import {ComponentType, ReactNode, useRef, memo} from 'react'
+import {ComponentType, ReactNode, useRef, useMemo, memo, Fragment} from 'react'
 import {Link} from '@remix-run/react'
-import MarkdownIt from 'markdown-it'
-import DOMPurify from 'dompurify'
+import Markdown from 'react-markdown'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 import Contents from '~/components/Article/Contents'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import useGlossaryInjection from '~/hooks/useGlossaryInjection'
 import './chat_entry.css'
-import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
+import {formatCitations} from '~/hooks/useChat'
+import type {
+  Entry,
+  AssistantEntry,
+  ContentBlock,
+  StampyEntry,
+  Citation,
+  ErrorMessage,
+} from '~/hooks/useChat'
 
 // icons
 import IconBotSmall from '~/components/icons-generated/BotSmall'
@@ -118,7 +128,22 @@ const ReferenceSummary = ({
   )
 }
 
-const md = new MarkdownIt({html: true, breaks: true})
+const ReferenceLink = memo(({id, index}: Citation) => (
+  <span className="ref-container">
+    <a
+      id={`${id}-ref`}
+      href={`#${id}`}
+      className={`reference-link ref-${index}`}
+      onClick={(e) => {
+        e.preventDefault()
+        document.getElementById(id!)?.scrollIntoView({block: 'start'})
+      }}
+    >
+      <span>{index}</span>
+    </a>
+  </span>
+))
+ReferenceLink.displayName = 'ReferenceLink'
 
 const Reference = (citation: Citation) => {
   return (
@@ -174,47 +199,198 @@ const PhaseState = memo(
 )
 PhaseState.displayName = 'PhaseState'
 
-const Thinking = ({
-  phase,
-  thoughts,
+const Thinking = ({thinking, isActive}: {thinking: string; isActive?: boolean}) => (
+  <details className="phase-message">
+    <summary className="grey large-reading">
+      {isActive ? (
+        <>
+          Thinking<span className="animated-ellipsis"></span>
+        </>
+      ) : (
+        'Thoughts'
+      )}
+    </summary>
+    <div className="xs padding-top-8" style={{whiteSpace: 'pre-wrap'}}>
+      {thinking}
+    </div>
+  </details>
+)
+
+const TOOL_DISPLAY_NAMES: Record<string, string> = {
+  lw_af_arxivsafety_search: 'Searched articles',
+  lw_af_arxivsafety_recent: 'Searched recent articles',
+  lw_af_arxivsafety_get_doc: 'Viewed full article',
+  lw_af_posts_sorted: 'Listed article names',
+  lw_af_authors: 'Listed authors',
+  lw_af_tags: 'Listed tags',
+}
+
+const toolDisplayName = (name: string) => TOOL_DISPLAY_NAMES[name] || name
+
+/** Combined tool_use + tool_result view. Shows request and response in one collapsible. */
+const ToolAction = ({
+  name,
+  input,
+  model_output,
 }: {
-  phase?: AssistantEntry['phase']
-  thoughts?: AssistantEntry['thoughts']
-}) => {
-  // Render thoughts with markdown support
-  const renderThoughts = () => {
-    if (!thoughts) return null
+  name: string
+  input: Record<string, any>
+  model_output?: string
+}) => (
+  <details className="phase-message">
+    <summary className="grey large-reading">{toolDisplayName(name)}</summary>
+    <div className="xs padding-top-8" style={{maxHeight: '300px', overflow: 'auto'}}>
+      <div style={{fontWeight: 'bold', marginBottom: '4px'}}>Request</div>
+      <pre style={{whiteSpace: 'pre-wrap'}}>{JSON.stringify(input, null, 2)}</pre>
+      {model_output && (
+        <>
+          <div style={{fontWeight: 'bold', marginTop: '8px', marginBottom: '4px'}}>Response</div>
+          <pre style={{whiteSpace: 'pre-wrap'}}>{model_output}</pre>
+        </>
+      )}
+    </div>
+  </details>
+)
 
-    // Render markdown (breaks: true will convert single newlines to <br>)
-    const renderedHtml = md.render(thoughts)
+// Helper to process text nodes and replace citations with ReferenceLink components
+const processCitationsInText = (
+  text: string,
+  citationsMap: Map<string, Citation> | undefined,
+  no: number
+): ReactNode[] => {
+  const parts = text.split(/(\[\d+\])/)
+  return parts.map((part, i) => {
+    const match = part.match(/^\[(\d+)\]$/)
+    if (match) {
+      const refId = match[1]
+      const ref = citationsMap?.get(refId)
+      return ref ? (
+        <ReferenceLink key={i} {...ref} id={`${ref.id}-${no}`} />
+      ) : (
+        <Fragment key={i}>{part}</Fragment>
+      )
+    }
+    return <Fragment key={i}>{part}</Fragment>
+  })
+}
 
-    // Sanitize HTML to prevent XSS attacks
-    const sanitizedHtml = DOMPurify.sanitize(renderedHtml)
+/** Render markdown text with citation references resolved to ReferenceLink components. */
+const CitationMarkdown = memo(
+  ({
+    text,
+    citationsMap,
+    no,
+  }: {
+    text: string
+    citationsMap: Map<string, Citation> | undefined
+    no: number
+  }) => {
+    const processChildren = (Component: string) =>
+      function CitationWrapper({node: _node, children, ...props}: any) {
+        const childArray = Array.isArray(children) ? children : children != null ? [children] : []
+        const processedChildren = childArray.flatMap((child: any, idx: number) => {
+          if (typeof child === 'string') {
+            return processCitationsInText(child, citationsMap, no)
+          }
+          return <Fragment key={idx}>{child}</Fragment>
+        })
+        return <Component {...props}>{processedChildren}</Component>
+      }
 
-    return <div className="xs padding-top-8" dangerouslySetInnerHTML={{__html: sanitizedHtml}} />
+    /* eslint-disable react-hooks/exhaustive-deps -- processChildren closes over citationsMap+no, which are the real deps */
+    const components = useMemo(
+      () => ({
+        p: processChildren('p'),
+        li: processChildren('li'),
+        h1: processChildren('h1'),
+        h2: processChildren('h2'),
+        h3: processChildren('h3'),
+        h4: processChildren('h4'),
+        h5: processChildren('h5'),
+        h6: processChildren('h6'),
+        td: processChildren('td'),
+        th: processChildren('th'),
+        blockquote: processChildren('blockquote'),
+      }),
+      [citationsMap, no]
+    )
+    /* eslint-enable react-hooks/exhaustive-deps */
+
+    return (
+      <div className="padding-left-56-rigid large-reading">
+        <Markdown
+          remarkPlugins={[remarkMath]}
+          rehypePlugins={[rehypeKatex]}
+          components={components}
+        >
+          {formatCitations(text)}
+        </Markdown>
+      </div>
+    )
+  }
+)
+CitationMarkdown.displayName = 'CitationMarkdown'
+
+/** Merge tool_use + following tool_result into paired ToolAction renders.
+ * Returns a flat array of ReactNodes. tool_result blocks that follow a tool_use
+ * are consumed into the preceding ToolAction; standalone blocks render normally.
+ */
+const renderBlocks = (
+  blocks: ContentBlock[],
+  citationsMap: Map<string, Citation> | undefined,
+  no: number,
+  isActive: boolean
+) => {
+  // Build tool_use_id -> tool_result map for correct pairing (handles parallel tool calls)
+  const resultsByUseId = new Map<string, ContentBlock>()
+  const pairedResultIndices = new Set<number>()
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i]
+    if (block.type === 'tool_result' && block.tool_use_id) {
+      resultsByUseId.set(block.tool_use_id, block)
+      pairedResultIndices.add(i)
+    }
   }
 
-  return (
-    <details className="phase-message">
-      <summary className="grey large-reading">
-        {phase === 'thinking' ? (
-          <>
-            Thinking<span className="animated-ellipsis"></span>
-          </>
-        ) : (
-          'Thoughts'
-        )}
-      </summary>
-      {renderThoughts()}
-    </details>
-  )
+  const elements: ReactNode[] = []
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i]
+    if (block.type === 'thinking') {
+      elements.push(
+        <Thinking
+          key={i}
+          thinking={block.thinking}
+          isActive={isActive && i === blocks.length - 1}
+        />
+      )
+    } else if (block.type === 'tool_use') {
+      const result = block.id ? resultsByUseId.get(block.id) : undefined
+      const model_output = result?.type === 'tool_result' ? result.model_output : undefined
+      elements.push(
+        <ToolAction key={i} name={block.name} input={block.input} model_output={model_output} />
+      )
+    } else if (block.type === 'tool_result') {
+      if (!pairedResultIndices.has(i)) {
+        // Standalone tool_result with no matching tool_use
+        elements.push(
+          <ToolAction key={i} name={block.tool} input={{}} model_output={block.model_output} />
+        )
+      }
+      // Paired results are already shown via their tool_use -- skip
+    } else if (block.type === 'text') {
+      elements.push(
+        <CitationMarkdown key={i} text={block.text} citationsMap={citationsMap} no={no} />
+      )
+    }
+  }
+  return elements
 }
 
 const ChatbotReply = ({
   question,
   phase,
+  blocks,
   content,
-  thoughts,
   citationsMap,
   no,
 }: AssistantEntry & {no: number}) => {
@@ -232,36 +408,6 @@ const ChatbotReply = ({
     enabled: isStreamingComplete,
   })
 
-  // Render content with markdown and inject citations
-  const renderContentWithCitations = () => {
-    if (!content) return null
-
-    // Replace [N] citations with citation HTML (markdown-it will preserve this with html: true)
-    const processedContent = content.replace(/\[(\d+)\]/g, (match, refId) => {
-      const ref = citationsMap?.get(refId)
-      if (!ref) return match
-      const targetId = `${ref.id}-${no}`
-      return `<span class="ref-container"><a id="${targetId}-ref" href="#${targetId}" class="reference-link ref-${ref.index}" onclick="event.preventDefault(); document.getElementById('${targetId}')?.scrollIntoView({block: 'start'});"><span>${ref.index}</span></a></span>`
-    })
-
-    // Render markdown (breaks: true will convert single newlines to <br>)
-    const renderedHtml = md.render(processedContent)
-
-    // Sanitize HTML to prevent XSS attacks from LLM-generated content
-    // Allow onclick for citation navigation (safe since we control the content)
-    const sanitizedHtml = DOMPurify.sanitize(renderedHtml, {
-      ADD_ATTR: ['onclick'],
-    })
-
-    return (
-      <article
-        ref={contentRef}
-        className="contents"
-        dangerouslySetInnerHTML={{__html: sanitizedHtml}}
-      />
-    )
-  }
-
   return (
     <div>
       <Title
@@ -271,10 +417,9 @@ const ChatbotReply = ({
         hint="Generated by an AI model"
       />
       <PhaseState phase={phase} />
-      {thoughts && <Thinking thoughts={thoughts} phase={phase} />}
-      <div className="padding-bottom-56 padding-left-56-rigid large-reading">
-        {renderContentWithCitations()}
-      </div>
+      <article ref={contentRef} className="contents">
+        {renderBlocks(blocks || [], citationsMap, no, phase !== 'done')}
+      </article>
       <Citations citations={citations} />
       {['followups', 'done'].includes(phase || '') ? (
         <Feedback
