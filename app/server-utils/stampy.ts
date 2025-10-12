@@ -353,7 +353,18 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
     question.length <= 6 ? 'UI ID' : 'Name',
     question
   )) as AnswersRow[]
-  return convertToQuestion(rows[0])
+  const questionData = convertToQuestion(rows[0])
+
+  // Load on-site answers and filter related questions to only include LIVE_ON_SITE questions
+  const {data: onSiteAnswers} = await loadOnSiteAnswers('NEVER_RELOAD')
+  const onSitePageIds = new Set(onSiteAnswers.map((q) => q.pageid))
+
+  return {
+    ...questionData,
+    relatedQuestions: questionData.relatedQuestions.filter(({pageid}) =>
+      onSitePageIds.has(pageid)
+    ),
+  }
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
