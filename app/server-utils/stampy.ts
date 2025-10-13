@@ -355,12 +355,14 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
   )) as AnswersRow[]
   const questionData = convertToQuestion(rows[0])
 
-  const {data: onSiteAnswers} = await loadOnSiteAnswers('NEVER_RELOAD')
-  const onSitePageIds = new Set(onSiteAnswers.map((q) => q.pageid))
+  const {data: allQuestions} = await loadAllQuestions('NEVER_RELOAD')
+  const viewablePageIds = new Set(allQuestions.filter(isQuestionViewable).map((q) => q.pageid))
 
   return {
     ...questionData,
-    relatedQuestions: questionData.relatedQuestions.filter(({pageid}) => onSitePageIds.has(pageid)),
+    relatedQuestions: questionData.relatedQuestions.filter(({pageid}) =>
+      viewablePageIds.has(pageid)
+    ),
   }
 })
 
