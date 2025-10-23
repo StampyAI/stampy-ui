@@ -1,8 +1,14 @@
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
 import CopyIcon from '~/components/icons-generated/Copy'
+import ShareIcon from '~/components/icons-generated/Share'
 import EditIcon from '~/components/icons-generated/Pencil'
+import SocialX from '~/components/icons-generated/SocialX'
+import SocialFacebook from '~/components/icons-generated/SocialFacebook'
+import SocialLinkedin from '~/components/icons-generated/SocialLinkedin'
+import SocialReddit from '~/components/icons-generated/SocialReddit'
+import SocialEmail from '~/components/icons-generated/SocialEmail'
 import Button, {CompositeButton} from '~/components/Button'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import {tagUrl} from '~/routesMapper'
@@ -63,20 +69,161 @@ const ArticleFooter = (question: Question) => {
   )
 }
 
-const ArticleActions = ({answerEditLink}: Question) => {
-  const [tooltip, setTooltip] = useState('Copy link to clipboard')
+type ShareOption = {
+  platform: string
+  label: string
+  icon: React.ReactNode
+}
+
+const shareOptions: ShareOption[] = [
+  {platform: 'x', label: 'X', icon: <SocialX />},
+  {platform: 'facebook', label: 'Facebook', icon: <SocialFacebook />},
+  {platform: 'linkedin', label: 'LinkedIn', icon: <SocialLinkedin />},
+  {platform: 'reddit', label: 'Reddit', icon: <SocialReddit />},
+  {platform: 'email', label: 'Email', icon: <SocialEmail />},
+]
+
+const ShareMenuItem = ({
+  href,
+  icon,
+  label,
+}: {
+  href: string
+  icon: React.ReactNode
+  label: string
+}) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      padding: '12px 16px',
+      color: '#333',
+      textDecoration: 'none',
+      fontSize: '14px',
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
+    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
+  >
+    {icon}
+    {label}
+  </a>
+)
+
+const ArticleActions = ({answerEditLink, title}: Question) => {
+  const [copyTooltip, setCopyTooltip] = useState('Copy link to clipboard')
+  const [shareTooltip, setShareTooltip] = useState('Share this article')
+  const [showShareMenu, setShowShareMenu] = useState(false)
+  const shareMenuRef = useRef<HTMLDivElement>(null)
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.toString())
-    setTooltip('Copied link to clipboard')
-    setTimeout(() => setTooltip('Copy link to clipboard'), 1000)
+    setCopyTooltip('Copied link to clipboard')
+    setTimeout(() => setCopyTooltip('Copy link to clipboard'), 1000)
+  }
+
+  const shareArticle = async () => {
+    const url = window.location.toString()
+    const shareData = {
+      title: title || 'AI Safety Info',
+      url: url,
+    }
+
+    // Check if Web Share API is supported and can be used
+    // This is generally available on mobile, but not on desktop.
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData)
+      } catch (err) {
+        // User cancelled, do nothing
+        if ((err as Error).name !== 'AbortError') {
+          // If share fails, show dropdown menu
+          setShowShareMenu(!showShareMenu)
+        }
+      }
+    } else {
+      // Show dropdown menu for desktop browsers
+      setShowShareMenu(!showShareMenu)
+    }
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (shareMenuRef.current && !shareMenuRef.current.contains(event.target as Node)) {
+        setShowShareMenu(false)
+      }
+    }
+
+    if (showShareMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showShareMenu])
+
+  const getShareUrl = (platform: string) => {
+    const url = encodeURIComponent(window.location.toString())
+    const text = encodeURIComponent(title || 'AI Safety Info')
+
+    switch (platform) {
+      case 'x':
+        return `https://x.com/intent/tweet?url=${url}&text=${text}`
+      case 'facebook':
+        return `https://www.facebook.com/sharer/sharer.php?u=${url}`
+      case 'linkedin':
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${url}`
+      case 'reddit':
+        return `https://reddit.com/submit?url=${url}&title=${text}`
+      case 'email':
+        return `mailto:?subject=${text}&body=${url}`
+      default:
+        return ''
+    }
   }
 
   return (
     <CompositeButton>
-      <Button className="secondary" action={copyLink} tooltip={tooltip}>
+      <Button className="secondary" action={copyLink} tooltip={copyTooltip}>
         <CopyIcon />
       </Button>
+      <div style={{position: 'relative'}} ref={shareMenuRef}>
+        <Button className="secondary" action={shareArticle} tooltip={shareTooltip}>
+          <ShareIcon />
+        </Button>
+        {showShareMenu && (
+          <div
+            className="share-dropdown"
+            style={{
+              position: 'absolute',
+              top: '100%',
+              right: 0,
+              marginTop: '8px',
+              backgroundColor: 'white',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              zIndex: 1000,
+              minWidth: '160px',
+              overflow: 'hidden',
+            }}
+          >
+            {shareOptions.map((option) => (
+              <ShareMenuItem
+                key={option.platform}
+                href={getShareUrl(option.platform)}
+                icon={option.icon}
+                label={option.label}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <Button
         className="secondary"
         action={answerEditLink || ''}
