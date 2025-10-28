@@ -107,29 +107,8 @@ const ShareMenuItem = ({
     : {href, target: '_blank' as const, rel: 'noopener noreferrer'}
 
   return (
-    <Element
-      {...props}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '12px 16px',
-        color: '#333',
-        textDecoration: 'none',
-        fontSize: '14px',
-        border: 'none',
-        background: 'none',
-        width: '100%',
-        textAlign: 'left',
-        cursor: 'pointer',
-        fontFamily: 'inherit',
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
-      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
-    >
-      <span style={{display: 'flex', alignItems: 'center', width: '16px', height: '16px'}}>
-        {icon}
-      </span>
+    <Element {...props} className="share-menu-item">
+      <span className="share-menu-item-icon">{icon}</span>
       {label}
     </Element>
   )
@@ -218,22 +197,7 @@ const ArticleActions = ({answerEditLink, title}: Question) => {
           <ShareIcon />
         </Button>
         {showShareMenu && (
-          <div
-            className="share-dropdown"
-            style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              marginTop: '8px',
-              backgroundColor: 'white',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              minWidth: '160px',
-              overflow: 'hidden',
-            }}
-          >
+          <div className="share-dropdown">
             <ShareMenuItem onClick={copyLink} icon={<SocialCopy />} label={copyLabel} />
             {shareOptions.map((option) => (
               <ShareMenuItem
