@@ -418,4 +418,5 @@ html.dark .share-dropdown {
   align-items: center;
   width: 16px;
   height: 16px;
+  color: var(--text-secondary);
 }
