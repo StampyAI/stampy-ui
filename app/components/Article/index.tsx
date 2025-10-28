@@ -1,9 +1,9 @@
 import {useState, useRef, useEffect} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
-import CopyIcon from '~/components/icons-generated/Copy'
 import ShareIcon from '~/components/icons-generated/Share'
 import EditIcon from '~/components/icons-generated/Pencil'
+import SocialCopy from '~/components/icons-generated/SocialCopy'
 import SocialX from '~/components/icons-generated/SocialX'
 import SocialFacebook from '~/components/icons-generated/SocialFacebook'
 import SocialLinkedin from '~/components/icons-generated/SocialLinkedin'
@@ -85,44 +85,68 @@ const shareOptions: ShareOption[] = [
 
 const ShareMenuItem = ({
   href,
+  onClick,
   icon,
   label,
 }: {
-  href: string
+  href?: string
+  onClick?: () => void
   icon: React.ReactNode
   label: string
-}) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '12px',
-      padding: '12px 16px',
-      color: '#333',
-      textDecoration: 'none',
-      fontSize: '14px',
-    }}
-    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
-    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
-  >
-    {icon}
-    {label}
-  </a>
-)
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault()
+      onClick()
+    }
+  }
+
+  const Element = onClick ? 'button' : 'a'
+  const props = onClick
+    ? {type: 'button' as const, onClick: handleClick}
+    : {href, target: '_blank' as const, rel: 'noopener noreferrer'}
+
+  return (
+    <Element
+      {...props}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '12px 16px',
+        color: '#333',
+        textDecoration: 'none',
+        fontSize: '14px',
+        border: 'none',
+        background: 'none',
+        width: '100%',
+        textAlign: 'left',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
+    >
+      <span style={{display: 'flex', alignItems: 'center', width: '16px', height: '16px'}}>
+        {icon}
+      </span>
+      {label}
+    </Element>
+  )
+}
 
 const ArticleActions = ({answerEditLink, title}: Question) => {
-  const [copyTooltip, setCopyTooltip] = useState('Copy link to clipboard')
-  const [shareTooltip, setShareTooltip] = useState('Share this article')
   const [showShareMenu, setShowShareMenu] = useState(false)
+  const [copyLabel, setCopyLabel] = useState('Copy link')
   const shareMenuRef = useRef<HTMLDivElement>(null)
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.toString())
-    setCopyTooltip('Copied link to clipboard')
-    setTimeout(() => setCopyTooltip('Copy link to clipboard'), 1000)
+    setCopyLabel('Copied!')
+    setTimeout(() => {
+      setCopyLabel('Copy link')
+      setShowShareMenu(false)
+    }, 1000)
   }
 
   const shareArticle = async () => {
@@ -189,11 +213,8 @@ const ArticleActions = ({answerEditLink, title}: Question) => {
 
   return (
     <CompositeButton>
-      <Button className="secondary" action={copyLink} tooltip={copyTooltip}>
-        <CopyIcon />
-      </Button>
       <div style={{position: 'relative'}} ref={shareMenuRef}>
-        <Button className="secondary" action={shareArticle} tooltip={shareTooltip}>
+        <Button className="secondary" action={shareArticle} tooltip="Share this article">
           <ShareIcon />
         </Button>
         {showShareMenu && (
@@ -213,6 +234,7 @@ const ArticleActions = ({answerEditLink, title}: Question) => {
               overflow: 'hidden',
             }}
           >
+            <ShareMenuItem onClick={copyLink} icon={<SocialCopy />} label={copyLabel} />
             {shareOptions.map((option) => (
               <ShareMenuItem
                 key={option.platform}
