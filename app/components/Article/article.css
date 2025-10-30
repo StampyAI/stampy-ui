@@ -373,3 +373,50 @@ article .contents tbody tr:nth-child(odd) {
 article .contents tbody tr:nth-child(even) {
   background-color: var(--background);
 }
+
+/* Share dropdown menu */
+.share-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+html.dark .share-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.share-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.share-menu-item:hover {
+  background-color: var(--hover-background);
+}
+
+.share-menu-item-icon {
+  display: flex;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+}

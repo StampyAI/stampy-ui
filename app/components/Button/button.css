@@ -197,12 +197,21 @@
   top: -42px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--text);
-  color: var(--background);
+  background-color: rgba(80, 80, 80, 0.95);
+  color: white;
   padding: var(--spacing-8) var(--spacing-16);
   border-radius: var(--border-radius);
   white-space: nowrap;
   pointer-events: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .tool-tip {
+  background-color: rgba(60, 60, 60, 0.95);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .button.full-width {
