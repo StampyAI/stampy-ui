@@ -70,17 +70,41 @@ const ArticleFooter = (question: Question) => {
 }
 
 type ShareOption = {
-  platform: string
   label: string
   icon: React.ReactNode
+  getShareUrl: (url: string, text: string) => string
 }
 
 const shareOptions: ShareOption[] = [
-  {platform: 'x', label: 'X', icon: <SocialX />},
-  {platform: 'facebook', label: 'Facebook', icon: <SocialFacebook />},
-  {platform: 'linkedin', label: 'LinkedIn', icon: <SocialLinkedin />},
-  {platform: 'reddit', label: 'Reddit', icon: <SocialReddit />},
-  {platform: 'email', label: 'Email', icon: <SocialEmail />},
+  {
+    label: 'X',
+    icon: <SocialX />,
+    getShareUrl: (url: string, text: string) =>
+      `https://x.com/intent/tweet?url=${url}&text=${text}`,
+  },
+  {
+    label: 'Facebook',
+    icon: <SocialFacebook />,
+    getShareUrl: (url: string, _text: string) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+  },
+  {
+    label: 'LinkedIn',
+    icon: <SocialLinkedin />,
+    getShareUrl: (url: string, _text: string) =>
+      `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+  },
+  {
+    label: 'Reddit',
+    icon: <SocialReddit />,
+    getShareUrl: (url: string, text: string) =>
+      `https://reddit.com/submit?url=${url}&title=${text}`,
+  },
+  {
+    label: 'Email',
+    icon: <SocialEmail />,
+    getShareUrl: (url: string, text: string) => `mailto:?subject=${text}&body=${url}`,
+  },
 ]
 
 const ShareMenuItem = ({
@@ -170,25 +194,8 @@ const ArticleActions = ({answerEditLink, title}: Question) => {
     }
   }, [showShareMenu])
 
-  const getShareUrl = (platform: string) => {
-    const url = encodeURIComponent(window.location.toString())
-    const text = encodeURIComponent(title || 'AI Safety Info')
-
-    switch (platform) {
-      case 'x':
-        return `https://x.com/intent/tweet?url=${url}&text=${text}`
-      case 'facebook':
-        return `https://www.facebook.com/sharer/sharer.php?u=${url}`
-      case 'linkedin':
-        return `https://www.linkedin.com/sharing/share-offsite/?url=${url}`
-      case 'reddit':
-        return `https://reddit.com/submit?url=${url}&title=${text}`
-      case 'email':
-        return `mailto:?subject=${text}&body=${url}`
-      default:
-        return ''
-    }
-  }
+  const url = encodeURIComponent(window.location.toString())
+  const text = encodeURIComponent(title || 'AI Safety Info')
 
   return (
     <CompositeButton>
@@ -201,8 +208,8 @@ const ArticleActions = ({answerEditLink, title}: Question) => {
             <ShareMenuItem onClick={copyLink} icon={<SocialCopy />} label={copyLabel} />
             {shareOptions.map((option) => (
               <ShareMenuItem
-                key={option.platform}
-                href={getShareUrl(option.platform)}
+                key={option.label}
+                href={option.getShareUrl(url, text)}
                 icon={option.icon}
                 label={option.label}
               />

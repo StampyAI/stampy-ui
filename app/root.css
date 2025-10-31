@@ -33,6 +33,9 @@
   --card-background: #ffffff;
   --hover-background: #edfaf9;
   --selected-background: #d3f2f0;
+  --tooltip-background: var(--colors-cool-grey-800);
+  --tooltip-text: var(--colors-white);
+  --tooltip-border: var(--colors-cool-grey-900);
 
   /* spacing - use everywhere for padding and margin */
   --border-radius: 6px;
@@ -67,6 +70,9 @@ html.dark {
   --card-background: #2a2a2a;
   --hover-background: #1a3330;
   --selected-background: #3a3a3a;
+  --tooltip-background: var(--colors-cool-grey-800);
+  --tooltip-text: var(--colors-cool-grey-100);
+  --tooltip-border: var(--colors-cool-grey-700);
 }
 
 /* CSS Reset */
