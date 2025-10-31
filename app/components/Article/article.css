@@ -379,10 +379,10 @@ article .contents tbody tr:nth-child(even) {
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: 8px;
+  margin-top: var(--spacing-8);
   background-color: var(--card-background);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--spacing-8);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   min-width: 160px;
@@ -396,8 +396,8 @@ html.dark .share-dropdown {
 .share-menu-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: var(--spacing-12);
+  padding: var(--spacing-12) var(--spacing-16);
   color: var(--text);
   text-decoration: none;
   font-size: 14px;
@@ -416,7 +416,7 @@ html.dark .share-dropdown {
 .share-menu-item-icon {
   display: flex;
   align-items: center;
-  width: 16px;
-  height: 16px;
+  width: var(--spacing-16);
+  height: var(--spacing-16);
   color: var(--text-secondary);
 }
