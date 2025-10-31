@@ -197,20 +197,17 @@
   top: -42px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(80, 80, 80, 0.95);
-  color: white;
+  background-color: color-mix(in srgb, var(--tooltip-background) 95%, transparent);
+  color: var(--tooltip-text);
   padding: var(--spacing-8) var(--spacing-16);
   border-radius: var(--border-radius);
   white-space: nowrap;
   pointer-events: none;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid color-mix(in srgb, var(--tooltip-border) 20%, transparent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 html.dark .tool-tip {
-  background-color: rgba(60, 60, 60, 0.95);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 

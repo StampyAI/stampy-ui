@@ -79,22 +79,26 @@ const shareOptions: ShareOption[] = [
   {
     label: 'X',
     icon: <SocialX />,
-    getShareUrl: (url: string, text: string) => `https://x.com/intent/tweet?url=${url}&text=${text}`,
+    getShareUrl: (url: string, text: string) =>
+      `https://x.com/intent/tweet?url=${url}&text=${text}`,
   },
   {
     label: 'Facebook',
     icon: <SocialFacebook />,
-    getShareUrl: (url: string, text: string) => `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+    getShareUrl: (url: string, _text: string) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
   },
   {
     label: 'LinkedIn',
     icon: <SocialLinkedin />,
-    getShareUrl: (url: string, text: string) => `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    getShareUrl: (url: string, _text: string) =>
+      `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
   },
   {
     label: 'Reddit',
     icon: <SocialReddit />,
-    getShareUrl: (url: string, text: string) => `https://reddit.com/submit?url=${url}&title=${text}`,
+    getShareUrl: (url: string, text: string) =>
+      `https://reddit.com/submit?url=${url}&title=${text}`,
   },
   {
     label: 'Email',
