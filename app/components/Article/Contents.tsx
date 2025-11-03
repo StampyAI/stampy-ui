@@ -25,15 +25,17 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
+// TODO: Potential memory leak - event listeners are not cleaned up.
+// Consider refactoring to React components with proper cleanup in useEffect.
 const addPopup = (
   e: HTMLElement,
   id: string,
   contents: string,
   mobile: boolean,
   layout?: string
-): HTMLElement => {
+): void => {
   const preexisting = document.getElementById(id)
-  if (preexisting) return preexisting
+  if (preexisting) return
 
   const popup = document.createElement('div')
   popup.className = 'link-popup bordered small background'
@@ -64,7 +66,7 @@ const addPopup = (
 
   const show = () => {
     clearTimeouts()
-    showTimeout = setTimeout(() => {
+    showTimeout = window.setTimeout(() => {
       // Position popup above if it would not fit in viewport
       const elementRect = e.getBoundingClientRect()
       const viewportHeight = window.innerHeight
@@ -82,15 +84,15 @@ const addPopup = (
 
       popup.classList.add('shown')
       showTimeout = null
-    }, 500) as unknown as number
+    }, 500)
   }
 
   const hide = () => {
     clearTimeouts()
-    hideTimeout = setTimeout(() => {
+    hideTimeout = window.setTimeout(() => {
       popup.classList.remove('shown')
       hideTimeout = null
-    }, 100) as unknown as number
+    }, 100)
   }
 
   if (!mobile) {
@@ -103,8 +105,6 @@ const addPopup = (
     e.addEventListener('click', togglePopup(toggle, e))
     popup.children[0].addEventListener('click', (e) => e.stopPropagation())
   }
-
-  return popup
 }
 
 /*
