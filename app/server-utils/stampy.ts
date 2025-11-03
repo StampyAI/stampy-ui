@@ -386,7 +386,17 @@ export const loadGlossary = withCache('loadGlossary', async () => {
             .map((v) => v.trim())
             .filter(Boolean),
         ]
-        const img = values.image && JSON.parse(values.image)
+        let img = null
+        if (values.image) {
+          try {
+            // Strip markdown code blocks that Coda adds when using valueFormat=rich
+            const cleanImage = extractText(values.image)
+            img = JSON.parse(cleanImage)
+          } catch (e) {
+            // Skip entries with malformed image data
+            console.warn(`Failed to parse image JSON for: ${values.phrase}`, e)
+          }
+        }
         const item = {
           pageid,
           term: extractText(values.phrase),
