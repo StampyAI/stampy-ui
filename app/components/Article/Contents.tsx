@@ -261,16 +261,27 @@ const insertGlossary = (
 
       // Create popup with pre-calculated layout
       const popupContent = imageHtml
-        ? `<div class="glossary-popup ${layout}-image-layout black small">
-              <div class="image-container">
-                ${imageHtml}
-              </div>
-              <div class="text-content">
-                <div class="small-bold text-no-wrap">${entry.term}</div>
-                <div class="definition small">${entry.contents}</div>
-                ${link || ''}
-              </div>
-           </div>`
+        ? layout === 'top'
+          ? `<div class="glossary-popup top-image-layout black small">
+                <div class="image-container">
+                  ${imageHtml}
+                </div>
+                <div class="text-content">
+                  <div class="small-bold text-no-wrap">${entry.term}</div>
+                  <div class="definition small">${entry.contents}</div>
+                  ${link || ''}
+                </div>
+             </div>`
+          : `<div class="glossary-popup right-image-layout black small">
+                <div class="text-content">
+                  <div class="small-bold text-no-wrap">${entry.term}</div>
+                  <div class="definition small">${entry.contents}</div>
+                  ${link || ''}
+                </div>
+                <div class="image-container">
+                  ${imageHtml}
+                </div>
+             </div>`
         : `<div class="glossary-popup black small">
               <div class="text-content full-width">
                 <div class="small-bold text-no-wrap">${entry.term}</div>

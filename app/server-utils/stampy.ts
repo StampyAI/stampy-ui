@@ -164,7 +164,7 @@ type GlossaryRow = CodaRowCommon & {
     phrase: string
     aliases: string
     'UI ID': string
-    image: Entity
+    image: string
   }
 }
 type BannersRow = CodaRowCommon & {
@@ -376,7 +376,7 @@ export const loadGlossary = withCache('loadGlossary', async () => {
             .map((v) => v.trim())
             .filter(Boolean),
         ]
-        const img = values.image && JSON.parse(values.image as unknown as string)
+        const img = values.image && JSON.parse(values.image)
         const item = {
           pageid,
           term: extractText(values.phrase),

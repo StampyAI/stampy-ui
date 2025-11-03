@@ -176,7 +176,6 @@ article .glossary-popup.top-image-layout {
 /* Right image layout - image container */
 article .glossary-popup.right-image-layout .image-container {
   flex: 0 0 180px;
-  order: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,7 +186,6 @@ article .glossary-popup.right-image-layout .image-container {
 /* Top image layout - image container */
 article .glossary-popup.top-image-layout .image-container {
   flex: 0 0 100px; /* Fixed height for top images */
-  order: 1;
   width: 100%;
   display: flex;
   align-items: center;
@@ -198,14 +196,12 @@ article .glossary-popup.top-image-layout .image-container {
 /* Right image layout - text content */
 article .glossary-popup.right-image-layout .text-content {
   flex: 0 0 350px;
-  order: 1;
   padding: var(--spacing-24);
 }
 
 /* Top image layout - text content */
 article .glossary-popup.top-image-layout .text-content {
   flex: 1;
-  order: 2;
   padding: var(--spacing-24);
 }
 
