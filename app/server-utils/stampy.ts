@@ -60,6 +60,7 @@ export type GlossaryEntry = {
   pageid: PageId
   contents: string
   image: string
+  imageDimensions?: {width: number; height: number}
 }
 export type Glossary = {
   [key: string]: GlossaryEntry
@@ -163,7 +164,7 @@ type GlossaryRow = CodaRowCommon & {
     phrase: string
     aliases: string
     'UI ID': string
-    image: Entity
+    image: string
   }
 }
 type BannersRow = CodaRowCommon & {
@@ -385,10 +386,13 @@ export const loadGlossary = withCache('loadGlossary', async () => {
             .map((v) => v.trim())
             .filter(Boolean),
         ]
+        const img = values.image && JSON.parse(values.image)
         const item = {
           pageid,
           term: extractText(values.phrase),
-          image: values.image?.url,
+          image: img?.url,
+          ...(img?.width &&
+            img?.height && {imageDimensions: {width: img.width, height: img.height}}),
           contents: renderText(pageid, extractText(values.definition)).html,
         }
         return phrases

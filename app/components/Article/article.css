@@ -155,7 +155,86 @@ article .glossary-entry {
 article .link-popup {
   visibility: hidden;
   z-index: 4;
-  width: 512px;
+  width: auto;
+  min-width: 350px;
+}
+
+/* Right image layout - image on the right side */
+article .glossary-popup.right-image-layout {
+  display: flex;
+  flex-direction: row;
+  min-width: 530px; /* Minimum width to contain text + image (350 + 180) */
+  width: fit-content;
+}
+
+/* Top image layout - image on top */
+article .glossary-popup.top-image-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right image layout - image container */
+article .glossary-popup.right-image-layout .image-container {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  overflow: hidden;
+}
+
+/* Top image layout - image container */
+article .glossary-popup.top-image-layout .image-container {
+  flex: 0 0 100px; /* Fixed height for top images */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8) var(--spacing-16);
+}
+
+/* Right image layout - text content */
+article .glossary-popup.right-image-layout .text-content {
+  flex: 0 0 350px;
+  padding: var(--spacing-24);
+}
+
+/* Top image layout - text content */
+article .glossary-popup.top-image-layout .text-content {
+  flex: 1;
+  padding: var(--spacing-24);
+}
+
+/* Image styling for all glossary popup images */
+article .glossary-popup .image-container img {
+  border-radius: var(--border-radius);
+}
+
+/* Right image layout - resize images to fit in fixed container */
+article .glossary-popup.right-image-layout .image-container img {
+  width: auto;
+  height: auto;
+  max-width: 164px;
+  max-height: 250px;
+}
+
+/* Top image layout - resize images to fit in full width container */
+article .glossary-popup.top-image-layout .image-container img {
+  max-height: 100px;
+  width: auto;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+
+/* Text content for popups without images */
+article .glossary-popup .text-content.full-width {
+  padding: var(--spacing-24);
+}
+
+/* Remove margins from buttons in glossary popups */
+article .glossary-popup .button {
+  margin: 0;
+  margin-top: var(--spacing-8);
 }
 
 article .link-popup .footnote {
@@ -179,6 +258,7 @@ article .footnote-ref {
 article .glossary-popup {
   border-radius: var(--border-radius);
   overflow: hidden;
+
   height: 304px;
   /* Reset any inherited formatting from the glossary term */
   font-style: normal !important;
@@ -193,15 +273,15 @@ article .link-popup .glossary-popup > .contents {
   padding: var(--spacing-24) var(--spacing-40) var(--spacing-24);
 }
 article .definition {
-  height: 140px;
+  max-height: 300px;
   display: -webkit-box;
   /* These are webkit specific things, so might not work in all browsers (firefox handles them fine) */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5; /* Number of lines you want to display */
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: var(--spacing-32);
 }
+
 article .link-popup .glossary-popup > img {
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
@@ -289,14 +369,33 @@ article blockquote + p {
 @media (min-width: 1136px) {
   article .link-popup {
     position: absolute;
-    max-width: 480px;
+    max-width: 400px;
     display: inline-block;
     z-index: 2;
     left: calc(50% - 200px);
     transform: translateY(var(--spacing-40));
     transition:
-      visibility 0s 300ms,
-      opacity cubic-bezier(1, 0, 1, 1) 300ms;
+      visibility 0s 100ms,
+      opacity cubic-bezier(1, 0, 1, 1) 100ms;
+  }
+
+  /* Right-image layout popups - wider to accommodate image */
+  article .link-popup.right-image-layout {
+    max-width: 530px; /* 350px text + 180px image */
+    left: calc(50% - 265px);
+    transform: translateY(var(--spacing-40));
+  }
+
+  /* Top-image layout popups - standard width */
+  article .link-popup.top-image-layout {
+    max-width: 400px; /* Same as text-only popups */
+    left: calc(50% - 200px);
+    transform: translateY(var(--spacing-40));
+  }
+
+  /* Position above adjustments */
+  article .link-popup.position-above {
+    transform: translateY(-100%) translateY(-40px);
   }
 }
 
@@ -372,51 +471,4 @@ article .contents tbody tr:nth-child(odd) {
 
 article .contents tbody tr:nth-child(even) {
   background-color: var(--background);
-}
-
-/* Share dropdown menu */
-.share-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: var(--spacing-8);
-  background-color: var(--card-background);
-  border: 1px solid var(--border);
-  border-radius: var(--spacing-8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  min-width: 160px;
-  overflow: hidden;
-}
-
-html.dark .share-dropdown {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-.share-menu-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-12);
-  padding: var(--spacing-12) var(--spacing-16);
-  color: var(--text);
-  text-decoration: none;
-  font-size: 14px;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.share-menu-item:hover {
-  background-color: var(--hover-background);
-}
-
-.share-menu-item-icon {
-  display: flex;
-  align-items: center;
-  width: var(--spacing-16);
-  height: var(--spacing-16);
-  color: var(--text-secondary);
 }
