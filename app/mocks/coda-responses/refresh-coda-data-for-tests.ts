@@ -9,6 +9,7 @@ import * as toml from 'toml'
 import {
   ALL_ANSWERS_TABLE,
   BANNERS_TABLE,
+  ON_SITE_TABLE,
   QUESTION_DETAILS_TABLE,
   TAGS_TABLE,
   makeCodaRequest,
@@ -23,6 +24,9 @@ async function main(): Promise<void> {
     },
     {
       table: ALL_ANSWERS_TABLE,
+    },
+    {
+      table: ON_SITE_TABLE,
     },
     {
       table: TAGS_TABLE,

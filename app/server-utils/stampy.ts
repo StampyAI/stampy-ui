@@ -353,7 +353,17 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
     question.length <= 6 ? 'UI ID' : 'Name',
     question
   )) as AnswersRow[]
-  return convertToQuestion(rows[0])
+  const questionData = convertToQuestion(rows[0])
+
+  const {data: allQuestions} = await loadAllQuestions('NEVER_RELOAD')
+  const viewablePageIds = new Set(allQuestions.filter(isQuestionViewable).map((q) => q.pageid))
+
+  return {
+    ...questionData,
+    relatedQuestions: questionData.relatedQuestions.filter(({pageid}) =>
+      viewablePageIds.has(pageid)
+    ),
+  }
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
