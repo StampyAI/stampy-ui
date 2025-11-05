@@ -157,6 +157,9 @@ article .link-popup {
   z-index: 4;
   width: auto;
   min-width: 350px;
+  box-shadow:
+    0 30px 90px -20px rgba(0, 0, 0, 0.3),
+    0 0 0 1px var(--border);
 }
 
 /* Right image layout - image on the right side */
@@ -259,7 +262,6 @@ article .glossary-popup {
   border-radius: var(--border-radius);
   overflow: hidden;
 
-  height: 304px;
   /* Reset any inherited formatting from the glossary term */
   font-style: normal !important;
   font-weight: normal !important;
@@ -366,6 +368,7 @@ article blockquote + p {
   gap: var(--spacing-12);
 }
 
+/* Wide screens */
 @media (min-width: 1136px) {
   article .link-popup {
     position: absolute;
@@ -399,6 +402,7 @@ article blockquote + p {
   }
 }
 
+/* Medium screens/tablets */
 @media only screen and (max-width: 1136px) {
   article {
     max-width: 100%;
@@ -416,8 +420,14 @@ article blockquote + p {
     max-width: 500px;
   }
 
+  /* Constrain popup widths to match desktop dimensions */
   article .link-popup {
     width: 100%;
+    max-width: 400px; /* Default width for no-image and top-image popups */
+  }
+
+  article .link-popup.right-image-layout {
+    max-width: 530px; /* Wider for side-by-side image layout */
   }
 
   article {
@@ -431,10 +441,16 @@ article blockquote + p {
   }
 }
 
+/* Mobile screens */
 @media only screen and (max-width: 600px) {
-  /* Hide the image on mobile */
-  article .glossary-popup .contents + img {
+  /* Hide all images on mobile */
+  article .glossary-popup .image-container {
     display: none;
+  }
+
+  /* Shrink right-layout popups to text width when image is hidden */
+  article .glossary-popup.right-image-layout {
+    min-width: 350px;
   }
 }
 
