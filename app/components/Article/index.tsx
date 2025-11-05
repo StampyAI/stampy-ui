@@ -194,7 +194,7 @@ const ArticleActions = ({answerEditLink, title}: Question) => {
     }
   }, [showShareMenu])
 
-  const url = encodeURIComponent(window.location.toString())
+  const url = encodeURIComponent(typeof window !== 'undefined' ? window.location.toString() : '')
   const text = encodeURIComponent(title || 'AI Safety Info')
 
   return (
