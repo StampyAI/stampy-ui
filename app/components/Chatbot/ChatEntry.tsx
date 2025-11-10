@@ -119,7 +119,7 @@ const ReferenceSummary = ({
   )
 }
 
-const md = new MarkdownIt({html: true})
+const md = new MarkdownIt({html: true, breaks: true})
 const ReferencePopup = (
   citation: Citation & {className?: string; onClose?: (event: MouseEvent) => void}
 ) => {
@@ -265,6 +265,23 @@ const ChatbotReply = ({
   })
   citations.sort((a, b) => a.index - b.index)
 
+  // Render content with markdown and inject citations
+  const renderContentWithCitations = () => {
+    if (!content) return null
+
+    // Replace [N] citations with citation HTML (markdown-it will preserve this with html: true)
+    const processedContent = content.replace(/\[(\d+)\]/g, (match, refId) => {
+      const ref = citationsMap?.get(refId)
+      if (!ref) return match
+      return `<span class="ref-container"><a id="${ref.id}-${no}-ref" href="#${ref.id}-${no}" class="reference-link ref-${ref.index}"><span>${ref.index}</span></a></span>`
+    })
+
+    // Render markdown (breaks: true will convert single newlines to <br>)
+    const renderedHtml = md.render(processedContent)
+
+    return <div dangerouslySetInnerHTML={{__html: renderedHtml}} />
+  }
+
   return (
     <div>
       <Title
@@ -276,17 +293,7 @@ const ChatbotReply = ({
       <PhaseState phase={phase} />
       {thoughts && <Thinking thoughts={thoughts} phase={phase} />}
       <div className="padding-bottom-56 padding-left-56-rigid large-reading">
-        {content?.split(/(\[\d+\])|(\n)/).map((chunk, i) => {
-          if (chunk?.match(/(\[\d+\])/)) {
-            const refId = chunk.slice(1, chunk.length - 1)
-            const ref = citationsMap?.get(refId)
-            return ref && <ReferenceLink key={i} mobile={mobile} {...ref} id={`${ref.id}-${no}`} />
-          } else if (chunk === '\n') {
-            return <br key={i} />
-          } else {
-            return <span key={i}>{chunk}</span>
-          }
-        })}
+        {renderContentWithCitations()}
       </div>
       <Citations citations={citations} />
       {['followups', 'done'].includes(phase || '') ? (

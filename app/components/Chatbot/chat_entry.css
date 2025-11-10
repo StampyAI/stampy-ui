@@ -205,6 +205,14 @@ article.stampy {
   padding-left: 56px;
 }
 
+.padding-left-56-rigid p {
+  margin-bottom: 1em;
+}
+
+.padding-left-56-rigid p:last-child {
+  margin-bottom: 0;
+}
+
 @media (min-width: 780px) {
   .reference-popup {
     display: inline-block;
