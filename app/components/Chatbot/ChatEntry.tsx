@@ -1,4 +1,4 @@
-import {ComponentType, ReactNode, MouseEvent, useState, useRef, memo} from 'react'
+import {ComponentType, ReactNode, useRef, memo} from 'react'
 import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
 import Contents from '~/components/Article/Contents'
@@ -15,8 +15,6 @@ import StampyIcon from '~/components/icons-generated/Stampy'
 import PersonInCircleIcon from '~/components/icons-generated/PersonInCircle'
 import IconStampySmall from '~/components/icons-generated/StampySmall'
 import QuestionMarkIcon from '~/components/icons-generated/QuestionMark'
-import useIsMobile from '~/hooks/isMobile'
-import {togglePopup} from '../popups'
 
 const MAX_REFERENCES = 10
 
@@ -120,56 +118,6 @@ const ReferenceSummary = ({
 }
 
 const md = new MarkdownIt({html: true, breaks: true})
-const ReferencePopup = (
-  citation: Citation & {className?: string; onClose?: (event: MouseEvent) => void}
-) => {
-  const parsed = citation.text?.match(/^###.*?###\s+"""(.*?)"""$/ms)
-  if (!parsed) return undefined
-
-  return (
-    <div
-      className={`reference-popup background z-index-2 ${citation.className || ''}`}
-      onClick={citation.onClose}
-    >
-      <div onClick={(e) => e.stopPropagation()} className="reference-contents bordered">
-        <ReferenceSummary {...citation} titleClass="large-bold" />
-        <div className="grey padding-bottom-16 padding-top-32 xs">Referenced excerpt</div>
-        <div
-          className="default inner-html"
-          dangerouslySetInnerHTML={{
-            __html: md.render(parsed[1]),
-          }}
-        />
-      </div>
-    </div>
-  )
-}
-
-const ReferenceLink = (citation: Citation & {mobile?: boolean}) => {
-  const ref = useRef<HTMLAnchorElement>(null)
-  const [shown, setShown] = useState(false)
-  const clickHandler = !citation.mobile
-    ? undefined
-    : togglePopup(() => setShown((current) => !current), ref.current || undefined)
-
-  const {id, index} = citation
-  if (!index || index > MAX_REFERENCES) return ''
-
-  return (
-    <span className="ref-container">
-      <Link
-        ref={ref}
-        id={`${id}-ref`}
-        to={`#${id}`}
-        className={`reference-link ref-${index}`}
-        onClick={clickHandler}
-      >
-        <span>{index}</span>
-      </Link>
-      <ReferencePopup {...citation} className={shown ? 'shown' : 'hidden'} onClose={clickHandler} />
-    </span>
-  )
-}
 
 const Reference = (citation: Citation) => {
   return (
@@ -258,7 +206,6 @@ const ChatbotReply = ({
   citationsMap,
   no,
 }: AssistantEntry & {no: number}) => {
-  const mobile = useIsMobile()
   const citations = [] as Citation[]
   citationsMap?.forEach((v) => {
     citations.push({...v, id: `${v.id}-${no}`})
