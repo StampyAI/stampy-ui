@@ -220,7 +220,8 @@ const ChatbotReply = ({
     const processedContent = content.replace(/\[(\d+)\]/g, (match, refId) => {
       const ref = citationsMap?.get(refId)
       if (!ref) return match
-      return `<span class="ref-container"><a id="${ref.id}-${no}-ref" href="#${ref.id}-${no}" class="reference-link ref-${ref.index}"><span>${ref.index}</span></a></span>`
+      const targetId = `${ref.id}-${no}`
+      return `<span class="ref-container"><a id="${targetId}-ref" href="#${targetId}" class="reference-link ref-${ref.index}" onclick="event.preventDefault(); document.getElementById('${targetId}')?.scrollIntoView({behavior: 'smooth', block: 'start'});"><span>${ref.index}</span></a></span>`
     })
 
     // Render markdown (breaks: true will convert single newlines to <br>)
