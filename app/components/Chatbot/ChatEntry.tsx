@@ -1,6 +1,7 @@
 import {ComponentType, ReactNode, useRef, memo} from 'react'
 import {Link} from '@remix-run/react'
 import MarkdownIt from 'markdown-it'
+import DOMPurify from 'dompurify'
 import Contents from '~/components/Article/Contents'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import useGlossary from '~/hooks/useGlossary'
@@ -227,7 +228,13 @@ const ChatbotReply = ({
     // Render markdown (breaks: true will convert single newlines to <br>)
     const renderedHtml = md.render(processedContent)
 
-    return <div dangerouslySetInnerHTML={{__html: renderedHtml}} />
+    // Sanitize HTML to prevent XSS attacks from LLM-generated content
+    // Allow onclick for citation navigation (safe since we control the content)
+    const sanitizedHtml = DOMPurify.sanitize(renderedHtml, {
+      ADD_ATTR: ['onclick'],
+    })
+
+    return <div dangerouslySetInnerHTML={{__html: sanitizedHtml}} />
   }
 
   return (
