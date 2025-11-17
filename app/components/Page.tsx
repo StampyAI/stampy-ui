@@ -17,7 +17,7 @@ const Page = ({children, modal, noFooter}: PageProps) => {
   const {toc} = useToC()
   const {items: tags} = useTags()
   const {embed} = useOutletContext<Context>() || {}
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile(1024)
   return (
     <div className="page">
       {!modal &&
