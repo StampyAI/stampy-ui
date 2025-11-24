@@ -372,7 +372,7 @@ const Contents = ({
         anchor.onclick = (e) => {
           e.preventDefault()
           const target = document.getElementById(targetId)
-          target?.scrollIntoView({behavior: 'smooth', block: 'start'})
+          target?.scrollIntoView({block: 'start'})
         }
       }
     })
