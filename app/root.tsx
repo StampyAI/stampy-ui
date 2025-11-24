@@ -65,7 +65,8 @@ const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
-  const logo = '/favicon-512.png'
+  const url = data.url ? new URL(data.url) : null
+  const logo = url ? `${url.origin}/aisafety-logo.png` : '/aisafety-logo.png'
   return [
     {title},
     {name: 'description', content: description},
@@ -75,14 +76,14 @@ export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
     {property: 'og:description', content: description},
     {property: 'og:image', content: logo},
     {property: 'og:image:type', content: 'image/png'},
-    {property: 'og:image:width', content: '512'},
-    {property: 'og:image:height', content: '512'},
-    {property: 'twitter:card', content: 'summary'},
-    {property: 'twitter:title', content: title},
-    {property: 'twitter:description', content: description},
-    {property: 'twitter:image', content: logo},
-    {property: 'twitter:creator', content: twitterCreator},
-    {property: 'twitter:url', content: data.url},
+    {property: 'og:image:width', content: '1200'},
+    {property: 'og:image:height', content: '630'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: logo},
+    {name: 'twitter:creator', content: twitterCreator},
+    {name: 'twitter:url', content: data.url},
   ]
 }
 
