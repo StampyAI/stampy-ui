@@ -352,15 +352,27 @@ const Contents = ({
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
-      const footnote = footnoteHTML(el, e as HTMLAnchorElement)
-      const footnoteId = (e.getAttribute('href') || '').replace('#', '')
+      const anchor = e as HTMLAnchorElement
+      const footnote = footnoteHTML(el, anchor)
+      const footnoteId = (anchor.getAttribute('href') || '').replace('#', '')
+
+      // Add popup for hover
       if (footnote) {
         addPopup(
-          e as HTMLAnchorElement,
+          anchor,
           `footnote-${footnoteId}`,
           `<div class="footnote">${footnote}</div>`,
           mobile
         )
+      }
+
+      // Fix forward navigation to work on first click (Remix router intercepts hash links)
+      if (footnoteId) {
+        anchor.onclick = (e) => {
+          e.preventDefault()
+          const target = document.getElementById(footnoteId)
+          target?.scrollIntoView({block: 'start'})
+        }
       }
     })
 
