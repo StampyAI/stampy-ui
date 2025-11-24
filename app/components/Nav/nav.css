@@ -31,3 +31,7 @@
   object-fit: contain;
   object-position: center;
 }
+
+#showArticles .top-menu-link {
+  cursor: default;
+}
