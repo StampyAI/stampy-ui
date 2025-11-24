@@ -364,6 +364,19 @@ const Contents = ({
       }
     })
 
+    // Fix footnote back links to work on first click (Remix router intercepts hash links)
+    el.querySelectorAll('.footnote-backref').forEach((backLink) => {
+      const anchor = backLink as HTMLAnchorElement
+      const targetId = anchor.getAttribute('href')?.replace('#', '')
+      if (targetId) {
+        anchor.onclick = (e) => {
+          e.preventDefault()
+          const target = document.getElementById(targetId)
+          target?.scrollIntoView({behavior: 'smooth', block: 'start'})
+        }
+      }
+    })
+
     // Wrap tables for horizontal scrolling on mobile
     const tables = el.getElementsByTagName('table')
     for (const table of tables) {
