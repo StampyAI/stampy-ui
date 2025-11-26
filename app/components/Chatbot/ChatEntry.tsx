@@ -222,7 +222,7 @@ const ChatbotReply = ({
       const ref = citationsMap?.get(refId)
       if (!ref) return match
       const targetId = `${ref.id}-${no}`
-      return `<span class="ref-container"><a id="${targetId}-ref" href="#${targetId}" class="reference-link ref-${ref.index}" onclick="event.preventDefault(); document.getElementById('${targetId}')?.scrollIntoView({behavior: 'smooth', block: 'start'});"><span>${ref.index}</span></a></span>`
+      return `<span class="ref-container"><a id="${targetId}-ref" href="#${targetId}" class="reference-link ref-${ref.index}" onclick="event.preventDefault(); document.getElementById('${targetId}')?.scrollIntoView({block: 'start'});"><span>${ref.index}</span></a></span>`
     })
 
     // Render markdown (breaks: true will convert single newlines to <br>)
