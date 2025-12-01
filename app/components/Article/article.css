@@ -242,6 +242,8 @@ article .glossary-popup .button {
 
 article .link-popup .footnote {
   padding: var(--spacing-32) var(--spacing-32) var(--spacing-32) var(--spacing-32);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .contents .footnotes {
