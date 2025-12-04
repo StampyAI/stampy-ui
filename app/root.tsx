@@ -130,8 +130,9 @@ const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
       async
       dangerouslySetInnerHTML={{
         __html: `
-                        var _paq = window._paq = window._paq || [];
+                        var _paq = window._paq = window._paq || [5];
                         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                        _paq.push(['enableHeartBeatTimer']);
                         _paq.push(["disableCookies"]);
                         _paq.push(['trackPageView']);
                         _paq.push(['enableLinkTracking']);
