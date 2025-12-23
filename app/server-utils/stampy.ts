@@ -60,6 +60,7 @@ export type GlossaryEntry = {
   pageid: PageId
   contents: string
   image: string
+  imageDimensions?: {width: number; height: number}
 }
 export type Glossary = {
   [key: string]: GlossaryEntry
@@ -163,7 +164,7 @@ type GlossaryRow = CodaRowCommon & {
     phrase: string
     aliases: string
     'UI ID': string
-    image: Entity
+    image: string
   }
 }
 type BannersRow = CodaRowCommon & {
@@ -353,7 +354,17 @@ export const loadQuestionDetail = withCache('questionDetail', async (question: s
     question.length <= 6 ? 'UI ID' : 'Name',
     question
   )) as AnswersRow[]
-  return convertToQuestion(rows[0])
+  const questionData = convertToQuestion(rows[0])
+
+  const {data: allQuestions} = await loadAllQuestions('NEVER_RELOAD')
+  const viewablePageIds = new Set(allQuestions.filter(isQuestionViewable).map((q) => q.pageid))
+
+  return {
+    ...questionData,
+    relatedQuestions: questionData.relatedQuestions.filter(({pageid}) =>
+      viewablePageIds.has(pageid)
+    ),
+  }
 })
 
 export const loadInitialQuestions = withCache('initialQuestions', async () => {
@@ -375,10 +386,23 @@ export const loadGlossary = withCache('loadGlossary', async () => {
             .map((v) => v.trim())
             .filter(Boolean),
         ]
+        let img = null
+        if (values.image) {
+          try {
+            // Strip markdown code blocks that Coda adds when using valueFormat=rich
+            const cleanImage = extractText(values.image)
+            img = JSON.parse(cleanImage)
+          } catch (e) {
+            // Skip entries with malformed image data
+            console.warn(`Failed to parse image JSON for: ${values.phrase}`, e)
+          }
+        }
         const item = {
           pageid,
           term: extractText(values.phrase),
-          image: values.image?.url,
+          image: img?.url,
+          ...(img?.width &&
+            img?.height && {imageDimensions: {width: img.width, height: img.height}}),
           contents: renderText(pageid, extractText(values.definition)).html,
         }
         return phrases
