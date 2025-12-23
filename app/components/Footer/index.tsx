@@ -21,8 +21,13 @@ export const FooterBar: FunctionComponent = () => {
               <a href="/">AISafety.info</a>
             </p>
             <div>
-              We’re a global team of specialists and volunteers from various backgrounds who want to
-              ensure that the effects of future AI are beneficial rather than catastrophic.
+              AISafety.info is a project founded by{' '}
+              <a href="https://www.youtube.com/c/robertmilesai" className="teal-500">
+                Rob Miles
+              </a>
+              . The website is maintained by a global team of specialists and volunteers from
+              various backgrounds who want to ensure that the effects of future AI are beneficial
+              rather than catastrophic.
             </div>
           </div>
 

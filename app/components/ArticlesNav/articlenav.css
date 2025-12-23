@@ -43,6 +43,8 @@
 .articles-group .dropdown-icon {
   height: var(--spacing-12);
   margin-left: var(--spacing-8);
+  fill: var(--text);
+  background: transparent;
 }
 .article-selector .dropdown-icon.active,
 .articles-group .article[open] .dropdown-icon {

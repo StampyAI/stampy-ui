@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react'
+import {useRef, useEffect, MutableRefObject} from 'react'
 import useIsMobile from '~/hooks/isMobile'
 import {questionUrl} from '~/routesMapper'
 import {isQuestionViewable} from '~/server-utils/stampy'
@@ -25,20 +25,75 @@ const footnoteHTML = (el: HTMLDivElement, e: HTMLAnchorElement): string | null =
   return elem.firstElementChild?.innerHTML || null
 }
 
-const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean): HTMLElement => {
+// TODO: Potential memory leak - event listeners are not cleaned up.
+// Consider refactoring to React components with proper cleanup in useEffect.
+const addPopup = (
+  e: HTMLElement,
+  id: string,
+  contents: string,
+  mobile: boolean,
+  layout?: string
+): void => {
   const preexisting = document.getElementById(id)
-  if (preexisting) return preexisting
+  if (preexisting) return
 
   const popup = document.createElement('div')
   popup.className = 'link-popup bordered small background'
+  if (layout) {
+    popup.classList.add(`${layout}-image-layout`)
+  }
   popup.innerHTML = contents
   popup.id = id
 
   e.insertAdjacentElement('afterend', popup)
 
+  // Timeout management for show/hide delays
+  let showTimeout: number | null = null
+  let hideTimeout: number | null = null
+
+  const clearTimeouts = () => {
+    if (showTimeout) {
+      clearTimeout(showTimeout)
+      showTimeout = null
+    }
+    if (hideTimeout) {
+      clearTimeout(hideTimeout)
+      hideTimeout = null
+    }
+  }
+
   const toggle = () => popup.classList.toggle('shown')
-  const show = () => popup.classList.add('shown')
-  const hide = () => popup.classList.remove('shown')
+
+  const show = () => {
+    clearTimeouts()
+    showTimeout = window.setTimeout(() => {
+      // Position popup above if it would not fit in viewport
+      const elementRect = e.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+
+      // Check if popup would fit below the element
+      const estimatedPopupHeight = 250
+      const wouldFitBelow = elementRect.bottom + estimatedPopupHeight <= viewportHeight - 50
+
+      // If it doesn't fit below, position it above
+      if (!wouldFitBelow) {
+        popup.classList.add('position-above')
+      } else {
+        popup.classList.remove('position-above')
+      }
+
+      popup.classList.add('shown')
+      showTimeout = null
+    }, 500)
+  }
+
+  const hide = () => {
+    clearTimeouts()
+    hideTimeout = window.setTimeout(() => {
+      popup.classList.remove('shown')
+      hideTimeout = null
+    }, 100)
+  }
 
   if (!mobile) {
     e.addEventListener('mouseover', show)
@@ -50,8 +105,6 @@ const addPopup = (e: HTMLElement, id: string, contents: string, mobile: boolean)
     e.addEventListener('click', togglePopup(toggle, e))
     popup.children[0].addEventListener('click', (e) => e.stopPropagation())
   }
-
-  return popup
 }
 
 /*
@@ -96,28 +149,46 @@ const normalizeForComparison = (text: string): string => {
     .replace(/[‒–—]/g, '-') // Replace figure-dash, en-dash and em-dash with hyphen
 }
 
-const glossaryInjecter = (pageid: string, glossary: Glossary) => {
-  const seen = new Set()
+const glossaryInjecter = (pageid: string, glossary: Glossary, seen: Set<string>) => {
   return (html: string) => {
-    // Normalize for comparison to find terms regardless of formatting
-    const normalizedHtml = normalizeForComparison(html)
-
-    return Object.values(glossary)
+    const sortedGlossary = Object.values(glossary)
       .filter((item) => item.pageid != pageid)
       .sort((a, b) => (b.alias?.length ?? 0) - (a.alias?.length ?? 0))
-      .reduce((currentHtml, {term, alias}) => {
-        // Create a normalized pattern for matching variations in formatting
-        const normalizedAlias = normalizeForComparison(alias || '')
-        const match = new RegExp(`(^|[^\\w-])(${normalizedAlias})($|[^\\w-])`, 'i')
 
-        // Check if the term exists in the normalized HTML
-        if (!seen.has(term) && normalizedHtml.search(match) >= 0) {
-          seen.add(term)
+    // Track replacements with placeholders to avoid overlapping matches
+    const replacements: Array<{placeholder: string; replacement: string; term: string}> = []
+    let result = html
+    let placeholderCounter = 0
 
-          return currentHtml.replace(match, '$1<span class="glossary-entry">$2</span>$3')
-        }
-        return currentHtml
-      }, html)
+    // Replace ALL occurrences of each term with placeholders
+    // This prevents shorter terms from matching within longer terms
+    for (const {term, alias} of sortedGlossary) {
+      const normalizedAlias = normalizeForComparison(alias || '')
+      const pattern = new RegExp(`(^|[^\\w-])(${normalizedAlias})($|[^\\w-])`, 'gi')
+
+      result = result.replace(pattern, (match, prefix, matchedTerm, suffix) => {
+        const placeholder = `__GLOSSARY_${placeholderCounter++}__`
+        replacements.push({
+          placeholder,
+          replacement: matchedTerm, // Store the original text
+          term,
+        })
+        return `${prefix}${placeholder}${suffix}`
+      })
+    }
+
+    // Now decide which placeholders should become glossary entries
+    // Only mark as glossary entry if this term hasn't been seen before
+    replacements.forEach(({placeholder, replacement, term}) => {
+      if (!seen.has(term)) {
+        seen.add(term)
+        result = result.replace(placeholder, `<span class="glossary-entry">${replacement}</span>`)
+      } else {
+        result = result.replace(placeholder, replacement)
+      }
+    })
+
+    return result
   }
 }
 
@@ -125,13 +196,10 @@ const insertGlossary = (
   pageid: string,
   glossary: Glossary,
   mobile: boolean,
-  onSiteQuestions: Question[]
+  onSiteQuestions: Question[],
+  seen: Set<string>
 ) => {
-  // Generate a random ID for these glossary items. This is needed when multiple articles are displayed -
-  // glossary items should be only displayed once per article, but this is checked by popup id, so if
-  // there are 2 articles that have the same glossary item, then only the first articles popups would work
-  const randomId = Math.floor(1000 + Math.random() * 9000).toString()
-  const injecter = glossaryInjecter(pageid, glossary)
+  const injecter = glossaryInjecter(pageid, glossary, seen)
 
   return (textNode: Node) => {
     const html = textNode.textContent || ''
@@ -178,23 +246,56 @@ const insertGlossary = (
         linkedQuestionIsViewable &&
         `<a href="${questionUrl(entry)}" target="_blank" rel="noopener noreferrer" class="button secondary">View full definition</a>`
       const isGoogleDrive = entry.image && entry.image.includes('drive.google.com/file/d/')
-      const image = entry.image
+      const imageHtml = entry.image
         ? isGoogleDrive
           ? `<iframe src="${entry.image.replace(/\/view$/, '/preview')}" style="width:100%; border:none;" allowFullScreen></iframe>`
           : `<img src="${entry.image}"/>`
         : ''
+
+      // Determine layout based on pre-computed dimensions
+      let layout: 'right' | 'top' = 'right'
+      if (entry.image && !isGoogleDrive && entry.imageDimensions) {
+        const aspectRatio = entry.imageDimensions.width / entry.imageDimensions.height
+        layout = aspectRatio > 2.0 ? 'top' : 'right'
+      }
+
+      // Create popup with pre-calculated layout
+      const popupContent = imageHtml
+        ? layout === 'top'
+          ? `<div class="glossary-popup top-image-layout black small">
+                <div class="image-container">
+                  ${imageHtml}
+                </div>
+                <div class="text-content">
+                  <div class="small-bold text-no-wrap">${entry.term}</div>
+                  <div class="definition small">${entry.contents}</div>
+                  ${link || ''}
+                </div>
+             </div>`
+          : `<div class="glossary-popup right-image-layout black small">
+                <div class="text-content">
+                  <div class="small-bold text-no-wrap">${entry.term}</div>
+                  <div class="definition small">${entry.contents}</div>
+                  ${link || ''}
+                </div>
+                <div class="image-container">
+                  ${imageHtml}
+                </div>
+             </div>`
+        : `<div class="glossary-popup black small">
+              <div class="text-content full-width">
+                <div class="small-bold text-no-wrap">${entry.term}</div>
+                <div class="definition small">${entry.contents}</div>
+                ${link || ''}
+              </div>
+           </div>`
+
       addPopup(
         e as HTMLSpanElement,
-        `glossary-${entry.term}-${randomId}`,
-        `<div class="glossary-popup flex-container black small">
-              <div class="contents ${image ? '' : 'full-width'}">
-                   <div class="small-bold text-no-wrap">${entry.term}</div>
-                   <div class="definition small">${entry.contents}</div>
-                   ${link || ''}
-              </div>
-              ${image || ''}
-          </div>`,
-        mobile
+        `glossary-${entry.term}`,
+        popupContent,
+        mobile,
+        imageHtml ? layout : undefined
       )
     })
 
@@ -208,12 +309,14 @@ const Contents = ({
   carousels,
   glossary,
   className = '',
+  seenGlossaryTermsRef,
 }: {
   pageid: PageId
   html: string
   carousels?: Carousel[]
   glossary: Glossary
   className?: string
+  seenGlossaryTermsRef: MutableRefObject<Set<string>>
 }) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const mobile = useIsMobile(1136)
@@ -242,22 +345,59 @@ const Contents = ({
         p.innerHTML = html.replace(/Caption:\s*/, '')
       }
     }
-    updateTextNodes(el, insertGlossary(pageid, glossary, mobile, onSiteQuestions || []))
+    updateTextNodes(
+      el,
+      insertGlossary(pageid, glossary, mobile, onSiteQuestions || [], seenGlossaryTermsRef.current)
+    )
 
     // In theory this could be extended to all links
     el.querySelectorAll('.footnote-ref > a').forEach((e) => {
-      const footnote = footnoteHTML(el, e as HTMLAnchorElement)
-      const footnoteId = (e.getAttribute('href') || '').replace('#', '')
+      const anchor = e as HTMLAnchorElement
+      const footnote = footnoteHTML(el, anchor)
+      const footnoteId = (anchor.getAttribute('href') || '').replace('#', '')
+
+      // Add popup for hover
       if (footnote) {
         addPopup(
-          e as HTMLAnchorElement,
+          anchor,
           `footnote-${footnoteId}`,
           `<div class="footnote">${footnote}</div>`,
           mobile
         )
       }
+
+      // Fix forward navigation to work on first click (Remix router intercepts hash links)
+      if (footnoteId) {
+        anchor.onclick = (e) => {
+          e.preventDefault()
+          const target = document.getElementById(footnoteId)
+          target?.scrollIntoView({block: 'start'})
+        }
+      }
     })
-  }, [html, carousels, glossary, pageid, mobile, onSiteQuestions])
+
+    // Fix footnote back links to work on first click (Remix router intercepts hash links)
+    el.querySelectorAll('.footnote-backref').forEach((backLink) => {
+      const anchor = backLink as HTMLAnchorElement
+      const targetId = anchor.getAttribute('href')?.replace('#', '')
+      if (targetId) {
+        anchor.onclick = (e) => {
+          e.preventDefault()
+          const target = document.getElementById(targetId)
+          target?.scrollIntoView({block: 'start'})
+        }
+      }
+    })
+
+    // Wrap tables for horizontal scrolling on mobile
+    const tables = el.getElementsByTagName('table')
+    for (const table of tables) {
+      const wrapper = document.createElement('div')
+      wrapper.className = 'table-container'
+      table.parentNode?.insertBefore(wrapper, table)
+      wrapper.appendChild(table)
+    }
+  }, [html, carousels, glossary, pageid, mobile, onSiteQuestions, seenGlossaryTermsRef])
 
   return (
     <div

@@ -1,8 +1,14 @@
-import {useState} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import {Link} from '@remix-run/react'
 import KeepGoing from '~/components/Article/KeepGoing'
-import CopyIcon from '~/components/icons-generated/Copy'
+import ShareIcon from '~/components/icons-generated/Share'
 import EditIcon from '~/components/icons-generated/Pencil'
+import SocialCopy from '~/components/icons-generated/SocialCopy'
+import SocialX from '~/components/icons-generated/SocialX'
+import SocialFacebook from '~/components/icons-generated/SocialFacebook'
+import SocialLinkedin from '~/components/icons-generated/SocialLinkedin'
+import SocialReddit from '~/components/icons-generated/SocialReddit'
+import SocialEmail from '~/components/icons-generated/SocialEmail'
 import Button, {CompositeButton} from '~/components/Button'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import {tagUrl} from '~/routesMapper'
@@ -63,20 +69,154 @@ const ArticleFooter = (question: Question) => {
   )
 }
 
-const ArticleActions = ({answerEditLink}: Question) => {
-  const [tooltip, setTooltip] = useState('Copy link to clipboard')
+type ShareOption = {
+  label: string
+  icon: React.ReactNode
+  getShareUrl: (url: string, text: string) => string
+}
+
+const shareOptions: ShareOption[] = [
+  {
+    label: 'X',
+    icon: <SocialX />,
+    getShareUrl: (url: string, text: string) =>
+      `https://x.com/intent/tweet?url=${url}&text=${text}`,
+  },
+  {
+    label: 'Facebook',
+    icon: <SocialFacebook />,
+    getShareUrl: (url: string, _text: string) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+  },
+  {
+    label: 'LinkedIn',
+    icon: <SocialLinkedin />,
+    getShareUrl: (url: string, _text: string) =>
+      `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+  },
+  {
+    label: 'Reddit',
+    icon: <SocialReddit />,
+    getShareUrl: (url: string, text: string) =>
+      `https://reddit.com/submit?url=${url}&title=${text}`,
+  },
+  {
+    label: 'Email',
+    icon: <SocialEmail />,
+    getShareUrl: (url: string, text: string) => `mailto:?subject=${text}&body=${url}`,
+  },
+]
+
+const ShareMenuItem = ({
+  href,
+  onClick,
+  icon,
+  label,
+}: {
+  href?: string
+  onClick?: () => void
+  icon: React.ReactNode
+  label: string
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault()
+      onClick()
+    }
+  }
+
+  const Element = onClick ? 'button' : 'a'
+  const props = onClick
+    ? {type: 'button' as const, onClick: handleClick}
+    : {href, target: '_blank' as const, rel: 'noopener noreferrer'}
+
+  return (
+    <Element {...props} className="share-menu-item">
+      <span className="share-menu-item-icon">{icon}</span>
+      {label}
+    </Element>
+  )
+}
+
+const ArticleActions = ({answerEditLink, title}: Question) => {
+  const [showShareMenu, setShowShareMenu] = useState(false)
+  const [copyLabel, setCopyLabel] = useState('Copy link')
+  const shareMenuRef = useRef<HTMLDivElement>(null)
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.toString())
-    setTooltip('Copied link to clipboard')
-    setTimeout(() => setTooltip('Copy link to clipboard'), 1000)
+    setCopyLabel('Copied!')
+    setTimeout(() => {
+      setCopyLabel('Copy link')
+      setShowShareMenu(false)
+    }, 1000)
   }
+
+  const shareArticle = async () => {
+    const url = window.location.toString()
+    const shareData = {
+      title: title || 'AI Safety Info',
+      url: url,
+    }
+
+    // Check if Web Share API is supported and can be used
+    // This is generally available on mobile, but not on desktop.
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData)
+      } catch (err) {
+        // User cancelled, do nothing
+        if ((err as Error).name !== 'AbortError') {
+          // If share fails, show dropdown menu
+          setShowShareMenu(!showShareMenu)
+        }
+      }
+    } else {
+      // Show dropdown menu for desktop browsers
+      setShowShareMenu(!showShareMenu)
+    }
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (shareMenuRef.current && !shareMenuRef.current.contains(event.target as Node)) {
+        setShowShareMenu(false)
+      }
+    }
+
+    if (showShareMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showShareMenu])
+
+  const url = encodeURIComponent(typeof window !== 'undefined' ? window.location.toString() : '')
+  const text = encodeURIComponent(title || 'AI Safety Info')
 
   return (
     <CompositeButton>
-      <Button className="secondary" action={copyLink} tooltip={tooltip}>
-        <CopyIcon />
-      </Button>
+      <div style={{position: 'relative'}} ref={shareMenuRef}>
+        <Button className="secondary" action={shareArticle} tooltip="Share this article">
+          <ShareIcon />
+        </Button>
+        {showShareMenu && (
+          <div className="share-dropdown">
+            <ShareMenuItem onClick={copyLink} icon={<SocialCopy />} label={copyLabel} />
+            {shareOptions.map((option) => (
+              <ShareMenuItem
+                key={option.label}
+                href={option.getShareUrl(url, text)}
+                icon={option.icon}
+                label={option.label}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <Button
         className="secondary"
         action={answerEditLink || ''}
@@ -154,6 +294,8 @@ type ArticleProps = {
 }
 export const Article = ({question, glossary, className, showNext}: ArticleProps) => {
   const {title, text, pageid, carousels} = question
+  // Create a seen set for glossary terms that will be shared across all Contents components
+  const seenGlossaryTermsRef = useRef(new Set<string>())
 
   return (
     <article className={`${className} ${isLoading(question) ? 'loading' : ''}`}>
@@ -168,6 +310,7 @@ export const Article = ({question, glossary, className, showNext}: ArticleProps)
           html={text}
           carousels={carousels}
           glossary={glossary || {}}
+          seenGlossaryTermsRef={seenGlossaryTermsRef}
         />
       ) : (
         <div className="padding-bottom-32" />

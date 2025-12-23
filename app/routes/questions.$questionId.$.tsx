@@ -17,7 +17,6 @@ import {
 } from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
 import useGlossary from '~/hooks/useGlossary'
-import useOnSiteQuestions from '~/hooks/useOnSiteQuestions'
 import {useTags} from '~/hooks/useCachedObjects'
 import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
@@ -75,33 +74,17 @@ const updateTags = (question: Question, tags?: Tag[]) => {
   }
 }
 
-const updateRelated = (question: Question, allQuestions?: Question[]) => {
-  const live =
-    allQuestions
-      ?.filter(({status}) => status === QuestionStatus.LIVE_ON_SITE)
-      .map(({pageid}) => pageid) || []
-  return {
-    ...question,
-    relatedQuestions: question.relatedQuestions.filter(({pageid}) => live.includes(pageid)),
-  }
-}
-
 const updateBanners = (question: Question, hideBanners?: boolean) =>
   hideBanners ? {...question, banners: []} : question
 
-const updateFields = (
-  question: Question,
-  hideBanners?: boolean,
-  tags?: Tag[],
-  allQuestions?: Question[]
-) => updateTags(updateRelated(updateBanners(question, hideBanners), allQuestions), tags)
+const updateFields = (question: Question, hideBanners?: boolean, tags?: Tag[]) =>
+  updateTags(updateBanners(question, hideBanners), tags)
 
 export default function RenderArticle() {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const [showNav, setShowNav] = useState(false) // Used on mobile
   const params = useParams()
-  const {items: onSiteQuestions} = useOnSiteQuestions()
   const {items: tags} = useTags()
   const glossary = useGlossary()
   const pageid = params.questionId ?? '😱'
@@ -193,8 +176,7 @@ export default function RenderArticle() {
                     question={updateFields(
                       resolvedQuestion.data as Question,
                       hideBannersIfSubsection,
-                      tags,
-                      onSiteQuestions
+                      tags
                     )}
                     glossary={glossary}
                     className={showNav ? 'desktop-only' : ''}
