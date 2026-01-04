@@ -35,7 +35,10 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
     const info = [
       ['Type', type],
-      ['Pageid', pageid && `[${pageid}](https://aisafety.info${questionUrl({pageid, title: question})})`],
+      [
+        'Pageid',
+        pageid && `[${pageid}](https://aisafety.info${questionUrl({pageid, title: question})})`,
+      ],
       ['Selected option', option],
       ['Feedback', message],
     ]
