@@ -1,5 +1,6 @@
 import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import type {Citation} from '~/hooks/useChat'
+import {questionUrl} from '~/routesMapper'
 
 const formatCitation = (citation: Citation) => {
   const items = (['title', 'date', 'url', 'source', 'text'] as (keyof Citation)[])
@@ -34,7 +35,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
     const info = [
       ['Type', type],
-      ['Pageid', pageid && `[${pageid}](https://aisafety.info/questions/${pageid}/${question})`],
+      ['Pageid', pageid && `[${pageid}](https://aisafety.info${questionUrl({pageid, title: question})})`],
       ['Selected option', option],
       ['Feedback', message],
     ]

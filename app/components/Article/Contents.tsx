@@ -1,6 +1,6 @@
 import {useRef, useEffect, MutableRefObject} from 'react'
 import useIsMobile from '~/hooks/isMobile'
-import {questionUrl} from '~/routesMapper'
+import {questionUrl, canonicalizeQuestionSlug} from '~/routesMapper'
 import {isQuestionViewable} from '~/server-utils/stampy'
 import type {Glossary, PageId, GlossaryEntry, Question} from '~/server-utils/stampy'
 import {useOnSiteQuestions} from '~/hooks/useCachedObjects'
@@ -332,6 +332,30 @@ const Contents = ({
       if (placeholder) {
         const root = createRoot(placeholder)
         root.render(<MediaCarousel items={carousel.items} />)
+      }
+    })
+
+    // Canonicalize internal question URLs (replace spaces with hyphens)
+    el.querySelectorAll('a[href^="/questions/"]').forEach((link) => {
+      const anchor = link as HTMLAnchorElement
+      const href = anchor.getAttribute('href')
+      if (href) {
+        // Decode URL-encoded spaces (%20) and replace all spaces with hyphens
+        const decodedHref = decodeURIComponent(href)
+        const canonicalHref = decodedHref
+          .split('/')
+          .map((segment, index) => {
+            // Only canonicalize the slug part (after /questions/{id}/)
+            if (index >= 3) {
+              return canonicalizeQuestionSlug(segment)
+            }
+            return segment
+          })
+          .join('/')
+
+        if (href !== canonicalHref) {
+          anchor.setAttribute('href', canonicalHref)
+        }
       }
     })
 
