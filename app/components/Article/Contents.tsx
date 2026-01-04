@@ -340,14 +340,12 @@ const Contents = ({
       const anchor = link as HTMLAnchorElement
       const href = anchor.getAttribute('href')
       if (href) {
-        // Decode URL-encoded spaces (%20) and replace all spaces with hyphens
         const decodedHref = decodeURIComponent(href)
         const pathSegments = decodedHref.split('/')
         // URL structure: ['', 'questions', '{id}', '{slug}', ...]
         const SLUG_START_INDEX = 3
         const canonicalHref = pathSegments
           .map((segment, index) => {
-            // Only canonicalize the slug part (after /questions/{id}/)
             if (index >= SLUG_START_INDEX) {
               return canonicalizeQuestionSlug(segment)
             }
