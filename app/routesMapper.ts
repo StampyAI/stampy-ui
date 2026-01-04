@@ -15,8 +15,10 @@ export const isAuthorized = (request: Request) => {
   return username === EDITOR_USERNAME && password === EDITOR_PASSWORD
 }
 
+export const canonicalizeQuestionSlug = (slug: string) => slug.replaceAll(' ', '-')
+
 export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) =>
-  `/questions/${pageid}/${title?.replaceAll(' ', '-') || ''}`
+  `/questions/${pageid}/${title ? canonicalizeQuestionSlug(title) : ''}`
 
 export const tagUrl = ({tagId, name}: {tagId?: number | string; name: string}) =>
   tagId ? `/categories/${tagId}/${name}` : `/categories/${name}`

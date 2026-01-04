@@ -15,6 +15,7 @@ import {
   loadRedirects,
   cleanRedirectPath,
 } from '~/server-utils/stampy'
+import {canonicalizeQuestionSlug} from '~/routesMapper'
 import useToC from '~/hooks/useToC'
 import useGlossary from '~/hooks/useGlossary'
 import {useTags} from '~/hooks/useCachedObjects'
@@ -36,9 +37,22 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
   }
 
   // Otherwise, load the question
-  const {questionId} = params
+  const {questionId, '*': slug} = params
   if (!questionId) {
     throw new Response('Missing question title', {status: 400})
+  }
+
+  // Check if the URL slug needs canonicalization.
+  // This is implemented based on results from SEO optimization scan (from Semrush).
+  // It found that URLs with 
+  if (slug) {
+    const canonicalSlug = canonicalizeQuestionSlug(slug)
+    if (slug !== canonicalSlug) {
+      const url = new URL(request.url)
+      const canonicalPath = `/questions/${questionId}/${canonicalSlug}`
+      // Preserve query parameters and hash
+      return redirect(canonicalPath + url.search + url.hash, 301)
+    }
   }
 
   const dataPromise = loadQuestionDetail(request, questionId).catch((error: Error) => {
