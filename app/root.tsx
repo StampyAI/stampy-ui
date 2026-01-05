@@ -1,7 +1,7 @@
 // Using @sentry/remix for client-side error boundary (safe for both server and client)
 // Server-side instrumentation is handled by @sentry/cloudflare in entry.server.tsx
-import { captureRemixErrorBoundaryError } from '@sentry/remix'
-import { useEffect, ReactNode } from 'react'
+import {captureRemixErrorBoundaryError} from '@sentry/remix'
+import {useEffect, ReactNode} from 'react'
 import {
   Links,
   LiveReload,
@@ -13,14 +13,14 @@ import {
   useRouteError,
   useLoaderData,
 } from '@remix-run/react'
-import type { MetaFunction, LinksFunction, LoaderFunction } from '@remix-run/cloudflare'
-import { cssBundleHref } from '@remix-run/css-bundle'
+import type {MetaFunction, LinksFunction, LoaderFunction} from '@remix-run/cloudflare'
+import {cssBundleHref} from '@remix-run/css-bundle'
 import newStyles from '~/root.css'
 import Error from '~/components/Error'
 import Page from '~/components/Page'
-import { CachedObjectsProvider } from '~/hooks/useCachedObjects'
-import { useTheme } from '~/hooks/theme'
-import { loadQuestionDetail } from '~/server-utils/stampy'
+import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
+import {useTheme} from '~/hooks/theme'
+import {loadQuestionDetail} from '~/server-utils/stampy'
 import GlobalBanners from './components/GlobalBanners'
 
 /*
@@ -53,7 +53,7 @@ const fetchQuestion = async (request: Request) => {
 
   const [path, pageid] = url.pathname.slice(1).split('/') || []
   if (path === 'questions') {
-    const { data } = await loadQuestionDetail(request, pageid)
+    const {data} = await loadQuestionDetail(request, pageid)
     return data
   }
   return null
@@ -62,35 +62,35 @@ const fetchQuestion = async (request: Request) => {
 const TITLE = 'AISafety.info'
 const DESCRIPTION = 'AI safety FAQ'
 const twitterCreator = '@stampyai'
-export const meta: MetaFunction<typeof loader> = ({ data = {} as any }) => {
+export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
   const url = data.url ? new URL(data.url) : null
   const logo = url ? `${url.origin}/aisafety-logo.png` : '/aisafety-logo.png'
   return [
-    { title },
-    { name: 'description', content: description },
-    { property: 'og:url', content: data.url },
-    { property: 'og:type', content: 'article' },
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:image', content: logo },
-    { property: 'og:image:type', content: 'image/png' },
-    { property: 'og:image:width', content: '1200' },
-    { property: 'og:image:height', content: '630' },
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: title },
-    { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: logo },
-    { name: 'twitter:creator', content: twitterCreator },
-    { name: 'twitter:url', content: data.url },
+    {title},
+    {name: 'description', content: description},
+    {property: 'og:url', content: data.url},
+    {property: 'og:type', content: 'article'},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:image', content: logo},
+    {property: 'og:image:type', content: 'image/png'},
+    {property: 'og:image:width', content: '1200'},
+    {property: 'og:image:height', content: '630'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: logo},
+    {name: 'twitter:creator', content: twitterCreator},
+    {name: 'twitter:url', content: data.url},
   ]
 }
 
 export const links: LinksFunction = () => {
   const preconnect = [
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+    {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
+    {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous'},
   ]
   const fonts = {
     rel: 'stylesheet',
@@ -101,11 +101,11 @@ export const links: LinksFunction = () => {
     fonts,
     ...[newStyles, cssBundleHref]
       .filter((i) => i)
-      .map((styles) => ({ rel: 'stylesheet', href: styles as string })),
+      .map((styles) => ({rel: 'stylesheet', href: styles as string})),
   ]
 }
 
-export const loader = async ({ request }: Parameters<LoaderFunction>[0]) => {
+export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const embed = !!request.url.match(/embed/)
   const showSearch = !request.url.match(/onlyInitial/)
 
@@ -124,7 +124,7 @@ export const loader = async ({ request }: Parameters<LoaderFunction>[0]) => {
   }
 }
 
-const AnaliticsTag = ({ matomoDomain }: { matomoDomain?: string }) => {
+const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
   if (!matomoDomain) return null
 
   // Use mock Matomo for local development testing
@@ -173,7 +173,7 @@ const AnaliticsTag = ({ matomoDomain }: { matomoDomain?: string }) => {
   )
 }
 
-const SentryConfigScript = ({ sentryDsn }: { sentryDsn?: string }) => {
+const SentryConfigScript = ({sentryDsn}: {sentryDsn?: string}) => {
   if (!sentryDsn) return null
   return (
     <script
@@ -264,9 +264,9 @@ type Loader = Awaited<ReturnType<typeof loader>>
 export type Context = Pick<Loader, 'embed' | 'showSearch'>
 
 function App() {
-  const { embed, showSearch, matomoDomain, sentryDsn } = useLoaderData<Loader>()
-  const { savedTheme } = useTheme()
-  const context: Context = { embed, showSearch }
+  const {embed, showSearch, matomoDomain, sentryDsn} = useLoaderData<Loader>()
+  const {savedTheme} = useTheme()
+  const context: Context = {embed, showSearch}
 
   useEffect(() => {
     if (embed) {
@@ -279,10 +279,10 @@ function App() {
         // avoid slowly increasing height due to rounding errors and 100% height
         if (Math.abs(lastHeight - height) < 3) return
 
-        window.parent.postMessage({ type: 'aisafety.info__height', height }, '*')
+        window.parent.postMessage({type: 'aisafety.info__height', height}, '*')
         lastHeight = height
       })
-      observer.observe(document.body, { attributes: true, subtree: true })
+      observer.observe(document.body, {attributes: true, subtree: true})
 
       return () => observer.disconnect()
     }
