@@ -78,12 +78,12 @@ export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
     {property: 'og:image:type', content: 'image/png'},
     {property: 'og:image:width', content: '1200'},
     {property: 'og:image:height', content: '630'},
-    {name: 'twitter:card', content: 'summary_large_image'},
-    {name: 'twitter:title', content: title},
-    {name: 'twitter:description', content: description},
-    {name: 'twitter:image', content: logo},
-    {name: 'twitter:creator', content: twitterCreator},
-    {name: 'twitter:url', content: data.url},
+    {property: 'twitter:card', content: 'summary'},
+    {property: 'twitter:title', content: title},
+    {property: 'twitter:description', content: description},
+    {property: 'twitter:image', content: logo},
+    {property: 'twitter:creator', content: twitterCreator},
+    {property: 'twitter:url', content: data.url},
   ]
 }
 
@@ -126,14 +126,39 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
 
 const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
   if (!matomoDomain) return null
+
+  // Use mock Matomo for local development testing
+  const useMock = matomoDomain === 'mock' || matomoDomain === 'dev'
+
+  if (useMock) {
+    return (
+      <>
+        <script src="/mock-matomo.js" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                        var _paq = window._paq = window._paq || [];
+                        _paq.push(['enableHeartBeatTimer', 5]);
+                        _paq.push(["disableCookies"]);
+                        _paq.push(['trackPageView']);
+                        _paq.push(['enableLinkTracking']);
+                        _paq.push(['setTrackerUrl', 'http://localhost/matomo.php']);
+                        _paq.push(['setSiteId', '3']);
+                        console.log('%c[Matomo Dev Mode]', 'background: #673AB7; color: white; padding: 2px 6px;', 'Using mock Matomo - check console for tracking events');`,
+          }}
+        />
+      </>
+    )
+  }
+
   return (
     <script
       async
       dangerouslySetInnerHTML={{
         __html: `
-                        var _paq = window._paq = window._paq || [5];
+                        var _paq = window._paq = window._paq || [];
                         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-                        _paq.push(['enableHeartBeatTimer']);
+                        _paq.push(['enableHeartBeatTimer', 5]);
                         _paq.push(["disableCookies"]);
                         _paq.push(['trackPageView']);
                         _paq.push(['enableLinkTracking']);
