@@ -15,8 +15,19 @@ export const isAuthorized = (request: Request) => {
   return username === EDITOR_USERNAME && password === EDITOR_PASSWORD
 }
 
+export const canonicalizeQuestionSlug = (slug: string) => {
+  // Replace spaces with hyphens
+  let canonical = slug.replaceAll(' ', '-')
+
+  // Remove special characters that shouldn't be in URLs
+  // Keep alphanumeric, hyphens, and allow some safe characters
+  canonical = canonical.replace(/[?!,;:()[\]{}'"]/g, '')
+
+  return canonical
+}
+
 export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) =>
-  `/questions/${pageid}/${title?.replaceAll(' ', '-') || ''}`
+  `/questions/${pageid}/${title ? canonicalizeQuestionSlug(title) : ''}`
 
 export const tagUrl = ({tagId, name}: {tagId?: number | string; name: string}) =>
   tagId ? `/categories/${tagId}/${name}` : `/categories/${name}`
