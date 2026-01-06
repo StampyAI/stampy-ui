@@ -78,12 +78,12 @@ export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
     {property: 'og:image:type', content: 'image/png'},
     {property: 'og:image:width', content: '1200'},
     {property: 'og:image:height', content: '630'},
-    {property: 'twitter:card', content: 'summary'},
-    {property: 'twitter:title', content: title},
-    {property: 'twitter:description', content: description},
-    {property: 'twitter:image', content: logo},
-    {property: 'twitter:creator', content: twitterCreator},
-    {property: 'twitter:url', content: data.url},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: logo},
+    {name: 'twitter:creator', content: twitterCreator},
+    {name: 'twitter:url', content: data.url},
   ]
 }
 
@@ -137,14 +137,13 @@ const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-                        var _paq = window._paq = window._paq || [];
-                        _paq.push(['enableHeartBeatTimer', 5]);
-                        _paq.push(["disableCookies"]);
-                        _paq.push(['trackPageView']);
-                        _paq.push(['enableLinkTracking']);
-                        _paq.push(['setTrackerUrl', 'http://localhost/matomo.php']);
-                        _paq.push(['setSiteId', '3']);
-                        console.log('%c[Matomo Dev Mode]', 'background: #673AB7; color: white; padding: 2px 6px;', 'Using mock Matomo - check console for tracking events');`,
+              var _paq = window._paq = window._paq || [];
+              _paq.push(['enableHeartBeatTimer', 5]);
+              _paq.push(['disableCookies']);
+              _paq.push(['trackPageView']);
+              _paq.push(['enableLinkTracking']);
+              _paq.push(['setTrackerUrl', 'http://localhost/matomo.php']);
+              _paq.push(['setSiteId', '3']);`,
           }}
         />
       </>
