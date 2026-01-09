@@ -12,7 +12,7 @@ import SocialEmail from '~/components/icons-generated/SocialEmail'
 import Button, {CompositeButton} from '~/components/Button'
 import Feedback, {logFeedback} from '~/components/Feedback'
 import {tagUrl} from '~/routesMapper'
-import type {Glossary, Question, Banner as BannerType} from '~/server-utils/stampy'
+import type {Question, Banner as BannerType} from '~/server-utils/stampy'
 import Contents from './Contents'
 import './article.css'
 import useIsMobile from '~/hooks/isMobile'
@@ -288,11 +288,10 @@ const Tags = ({tags}: Question) => (
 
 type ArticleProps = {
   question: Question
-  glossary?: Glossary
   className?: string
   showNext?: boolean
 }
-export const Article = ({question, glossary, className, showNext}: ArticleProps) => {
+export const Article = ({question, className, showNext}: ArticleProps) => {
   const {title, text, pageid, carousels} = question
   // Create a seen set for glossary terms that will be shared across all Contents components
   const seenGlossaryTermsRef = useRef(new Set<string>())
@@ -309,7 +308,6 @@ export const Article = ({question, glossary, className, showNext}: ArticleProps)
           pageid={pageid}
           html={text}
           carousels={carousels}
-          glossary={glossary || {}}
           seenGlossaryTermsRef={seenGlossaryTermsRef}
         />
       ) : (

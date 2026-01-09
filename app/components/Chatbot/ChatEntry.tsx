@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it'
 import DOMPurify from 'dompurify'
 import Contents from '~/components/Article/Contents'
 import Feedback, {logFeedback} from '~/components/Feedback'
-import useGlossary from '~/hooks/useGlossary'
+import useGlossaryInjection from '~/hooks/useGlossaryInjection'
 import './chat_entry.css'
 import type {Entry, AssistantEntry, StampyEntry, Citation, ErrorMessage} from '~/hooks/useChat'
 
@@ -207,11 +207,19 @@ const ChatbotReply = ({
   citationsMap,
   no,
 }: AssistantEntry & {no: number}) => {
+  const contentRef = useRef<HTMLDivElement>(null)
   const citations = [] as Citation[]
   citationsMap?.forEach((v) => {
     citations.push({...v, id: `${v.id}-${no}`})
   })
   citations.sort((a, b) => a.index - b.index)
+
+  // Only inject glossary links when streaming is complete
+  const isStreamingComplete = phase === 'followups' || phase === 'done'
+  useGlossaryInjection({
+    elementRef: contentRef,
+    enabled: isStreamingComplete,
+  })
 
   // Render content with markdown and inject citations
   const renderContentWithCitations = () => {
@@ -234,7 +242,13 @@ const ChatbotReply = ({
       ADD_ATTR: ['onclick'],
     })
 
-    return <div dangerouslySetInnerHTML={{__html: sanitizedHtml}} />
+    return (
+      <article
+        ref={contentRef}
+        className="contents"
+        dangerouslySetInnerHTML={{__html: sanitizedHtml}}
+      />
+    )
   }
 
   return (
@@ -280,7 +294,6 @@ const ChatbotReply = ({
 }
 
 const StampyArticle = ({pageid, content, title, no}: StampyEntry & {no: number}) => {
-  const glossary = useGlossary()
   const seenGlossaryTermsRef = useRef(new Set<string>())
   const hint = `This response is pulled from our article "${title}" which was written by members of AISafety.info`
 
@@ -297,7 +310,6 @@ const StampyArticle = ({pageid, content, title, no}: StampyEntry & {no: number})
           <Contents
             pageid={pageid || ''}
             html={uniqueReferences(content || 'Loading...', 'fn\\d+-.*?')}
-            glossary={glossary || {}}
             seenGlossaryTermsRef={seenGlossaryTermsRef}
           />
         </article>

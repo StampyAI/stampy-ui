@@ -16,7 +16,6 @@ import {
   cleanRedirectPath,
 } from '~/server-utils/stampy'
 import useToC from '~/hooks/useToC'
-import useGlossary from '~/hooks/useGlossary'
 import {useTags} from '~/hooks/useCachedObjects'
 import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
@@ -86,7 +85,6 @@ export default function RenderArticle() {
   const [showNav, setShowNav] = useState(false) // Used on mobile
   const params = useParams()
   const {items: tags} = useTags()
-  const glossary = useGlossary()
   const pageid = params.questionId ?? '😱'
   const {question} = useLoaderData<typeof loader>()
   const {toc, findSection, getArticle, getPath} = useToC()
@@ -178,7 +176,6 @@ export default function RenderArticle() {
                       hideBannersIfSubsection,
                       tags
                     )}
-                    glossary={glossary}
                     className={showNav ? 'desktop-only' : ''}
                     showNext={!manualListOfIds}
                   />
