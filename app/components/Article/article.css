@@ -460,8 +460,9 @@ article blockquote + p {
 
 /* Mobile screens */
 @media only screen and (max-width: 600px) {
-  /* Hide all images on mobile */
-  article .glossary-popup .image-container {
+  /* Hide all images on mobile - need higher specificity to override layout-specific rules */
+  article .glossary-popup.right-image-layout .image-container,
+  article .glossary-popup.top-image-layout .image-container {
     display: none;
   }
 }
