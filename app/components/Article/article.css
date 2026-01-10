@@ -417,19 +417,34 @@ article blockquote + p {
   article .link-popup .footnote {
     margin-top: 42px;
   }
-  article .glossary-popup {
-    margin-top: 50px;
-    max-width: 500px;
-  }
-
-  /* Constrain popup widths to match desktop dimensions */
+  /* Position and constrain popup widths for tablets */
   article .link-popup {
-    width: 100%;
-    max-width: 400px; /* Default width for no-image and top-image popups */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 32px);
+    max-width: 530px;
+    /* Remove background/border from outer container - inner glossary-popup handles styling */
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
 
-  article .link-popup.right-image-layout {
-    max-width: 530px; /* Wider for side-by-side image layout */
+  /* Reset min-width on inner glossary popup to fit container */
+  article .glossary-popup {
+    min-width: unset;
+    width: 100%;
+    /* Add the styling that was on the outer container */
+    background-color: var(--card-background);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 30px 90px -20px rgba(0, 0, 0, 0.3),
+      0 0 0 1px var(--border);
+  }
+
+  article .glossary-popup.right-image-layout {
+    min-width: unset;
   }
 
   article {
@@ -448,11 +463,6 @@ article blockquote + p {
   /* Hide all images on mobile */
   article .glossary-popup .image-container {
     display: none;
-  }
-
-  /* Shrink right-layout popups to text width when image is hidden */
-  article .glossary-popup.right-image-layout {
-    min-width: 350px;
   }
 }
 
