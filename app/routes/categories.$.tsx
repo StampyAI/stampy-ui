@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import {useLoaderData} from '@remix-run/react'
+import {MetaFunction} from '@remix-run/cloudflare'
 import Page from '~/components/Page'
 import ListTable from '~/components/Table'
 import {loader} from '~/routes/categories.all'
@@ -7,7 +8,18 @@ import {CategoriesNav} from '~/components/CategoriesNav/CategoriesNav'
 import type {Tag as TagType} from '~/server-utils/stampy'
 import useIsMobile from '~/hooks/isMobile'
 import {CategoriesPage} from '~/components/CategoriesNav/Page'
+import {createMetaTags} from '~/utils/meta'
 export {loader}
+
+export const meta: MetaFunction<typeof loader> = ({data}) => {
+  const categoryName = data?.data?.currentTag?.name
+  const title = categoryName ? `${categoryName} - AISafety.info` : 'Categories - AISafety.info'
+  const description = categoryName
+    ? `Browse AI safety questions related to ${categoryName}`
+    : 'Browse AI safety questions by category'
+
+  return createMetaTags({title, description})
+}
 
 export const sortFuncs = {
   alphabetically: (a: TagType, b: TagType) =>
