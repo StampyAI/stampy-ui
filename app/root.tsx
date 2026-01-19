@@ -22,6 +22,7 @@ import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {useTheme} from '~/hooks/theme'
 import {loadQuestionDetail} from '~/server-utils/stampy'
 import GlobalBanners from './components/GlobalBanners'
+import {createMetaTags} from '~/utils/meta'
 
 /*
  * Transform the given text into a meta header format.
@@ -61,30 +62,18 @@ const fetchQuestion = async (request: Request) => {
 
 const TITLE = 'AISafety.info'
 const DESCRIPTION = 'AI safety FAQ'
-const twitterCreator = '@stampyai'
 export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
   const url = data.url ? new URL(data.url) : null
   const logo = url ? `${url.origin}/aisafety-logo.png` : '/aisafety-logo.png'
-  return [
-    {title},
-    {name: 'description', content: description},
-    {property: 'og:url', content: data.url},
-    {property: 'og:type', content: 'article'},
-    {property: 'og:title', content: title},
-    {property: 'og:description', content: description},
-    {property: 'og:image', content: logo},
-    {property: 'og:image:type', content: 'image/png'},
-    {property: 'og:image:width', content: '1200'},
-    {property: 'og:image:height', content: '630'},
-    {name: 'twitter:card', content: 'summary_large_image'},
-    {name: 'twitter:title', content: title},
-    {name: 'twitter:description', content: description},
-    {name: 'twitter:image', content: logo},
-    {name: 'twitter:creator', content: twitterCreator},
-    {name: 'twitter:url', content: data.url},
-  ]
+
+  return createMetaTags({
+    title,
+    description,
+    url: data.url,
+    image: logo,
+  })
 }
 
 export const links: LinksFunction = () => {
