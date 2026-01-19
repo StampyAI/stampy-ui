@@ -153,11 +153,7 @@ Set in `wrangler.toml` (copy from `wrangler.toml.template`):
 
 ## Local Development Setup
 
-1. Copy `wrangler.toml.template` → `wrangler.toml`
-2. Fill in your Cloudflare and Coda credentials
-3. `npm install`
-4. `npm run dev`
-5. Open http://localhost:8787
+See `README.md` for full setup instructions. Quick start: `npm install && npm run dev`
 
 ## Git Workflow
 
@@ -207,29 +203,27 @@ The `npm run build` script uses bash syntax that doesn't work on Windows PowerSh
 ```
 **Workaround:** Use `npm run dev` locally. CI builds on Linux.
 
-### 2. Prettier Formatting in PRs
-CI enforces Prettier. If your PR fails with formatting errors:
+### 2. Always Run Prettier Before Committing
+CI enforces Prettier formatting. **Run before every commit:**
 ```bash
-npx prettier --write app/root.tsx
-git add . && git commit -m "Fix formatting" && git push
+npm run prettier:fix
 ```
+If you forgot and already pushed, use `git commit --amend --no-edit` after fixing, then `git push --force-with-lease`.
 
 ### 3. Icons are Auto-Generated
 Don't manually edit files in `app/components/icons-generated/`. Instead:
 1. Add/modify SVGs in `app/assets/icons/`
 2. Run `npm run generate-icons`
 
-### 4. wrangler.toml is Gitignored
-Your local `wrangler.toml` contains secrets and won't be committed. That's intentional.
+### 4. Twitter Meta Tags Use `name`, Open Graph Uses `property`
 
-### 5. Twitter Meta Tags Use `name`, Open Graph Uses `property`
 ```tsx
 // Correct:
 {property: 'og:title', content: title}     // Open Graph
 {name: 'twitter:title', content: title}    // Twitter
 ```
 
-### 6. Content Comes from Coda, Not Local
+### 5. Content Comes from Coda, Not Local
 If you're debugging content issues, the data is in Coda, not this repo. The cached test data can be refreshed with `npm run refresh-test-data`.
 
 ## Architecture Notes
