@@ -2,9 +2,13 @@ import Page from '~/components/Page'
 import HelpGrid from '~/components/HelpGrid'
 import '~/components/HowCanIHelp/howcanihelp.css'
 import {MetaFunction} from '@remix-run/node'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'How Can I Help? - AISafety.info',
+    description: 'The AI safety movement is still relatively new, and your actions could have significant impact. Explore ways to contribute to AI safety.',
+  })
 }
 
 export default function HowCanIHelp() {

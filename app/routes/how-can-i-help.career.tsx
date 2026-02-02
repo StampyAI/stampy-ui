@@ -7,9 +7,13 @@ import ArticleCarousel from '~/components/ArticleCarousel'
 import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'Start a Career in AI Safety - How Can I Help? - AISafety.info',
+    description: 'Explore career paths in AI alignment research, AI governance & policy, and AI safety field-building. Find your place in making AI safer.',
+  })
 }
 
 const ResearchPath = () => (

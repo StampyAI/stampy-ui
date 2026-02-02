@@ -4,9 +4,13 @@ import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import ArticleCarousel from '~/components/ArticleCarousel'
 import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'Donate - How Can I Help? - AISafety.info',
+    description: 'Help advance AI safety through donations. Learn about grantmakers, direct giving, and where your contributions can make the most impact.',
+  })
 }
 
 export default function Donate() {

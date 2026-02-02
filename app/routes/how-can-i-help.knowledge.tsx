@@ -6,9 +6,13 @@ import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
 import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'Build Your Knowledge - How Can I Help? - AISafety.info',
+    description: 'Learn about AI safety through courses, videos, podcasts, books, and communities. Start your AI safety education journey.',
+  })
 }
 
 const NewToAISafety = () => (

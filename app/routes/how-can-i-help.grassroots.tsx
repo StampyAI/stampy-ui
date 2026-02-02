@@ -5,9 +5,13 @@ import Base from '~/components/HowCanIHelp/Base'
 import VideoImg from '~/assets/video_thumbnail.png'
 import VideoThumbnail from '~/components/VideoThumbnail/videothumbnail'
 import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'Spread the Word & Grassroots Activism - How Can I Help? - AISafety.info',
+    description: 'Raise awareness about AI safety risks through social media, protests, petitions, and conversations. Take action today.',
+  })
 }
 
 const TopText = () => (
