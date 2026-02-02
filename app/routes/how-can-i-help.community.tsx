@@ -1,9 +1,14 @@
 import {MetaFunction} from '@remix-run/node'
 import HelpItem from '~/components/HowCanIHelp/HelpItem'
 import Base from '~/components/HowCanIHelp/Base'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'Join a Community - How Can I Help? - AISafety.info',
+    description:
+      'Connect with others interested in AI safety through in-person meetups and online communities worldwide.',
+  })
 }
 
 const InPerson = () => (

@@ -6,9 +6,14 @@ import Testimonial from '~/components/Testimonial'
 import Base from '~/components/HowCanIHelp/Base'
 import BaginskiImg from '~/assets/Baginski.jpeg'
 import {ARTICLE_COLLECTIONS} from '~/utils/article-collections'
+import {createMetaTags} from '~/utils/meta'
 
 export const meta: MetaFunction = () => {
-  return [{title: 'How Can I Help? - AISafety.info'}]
+  return createMetaTags({
+    title: 'Volunteer - How Can I Help? - AISafety.info',
+    description:
+      'Contribute your skills to AI safety projects. Find volunteer opportunities in field-building, communications, and more.',
+  })
 }
 
 const TopText = () => (
