@@ -6,7 +6,8 @@ import {createMetaTags} from '~/utils/meta'
 export const meta: MetaFunction = () => {
   return createMetaTags({
     title: 'Join a Community - How Can I Help? - AISafety.info',
-    description: 'Connect with others interested in AI safety through in-person meetups and online communities worldwide.',
+    description:
+      'Connect with others interested in AI safety through in-person meetups and online communities worldwide.',
   })
 }
 

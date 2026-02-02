@@ -12,7 +12,8 @@ import {createMetaTags} from '~/utils/meta'
 export const meta: MetaFunction = () => {
   return createMetaTags({
     title: 'Start a Career in AI Safety - How Can I Help? - AISafety.info',
-    description: 'Explore career paths in AI alignment research, AI governance & policy, and AI safety field-building. Find your place in making AI safer.',
+    description:
+      'Explore career paths in AI alignment research, AI governance & policy, and AI safety field-building. Find your place in making AI safer.',
   })
 }
 

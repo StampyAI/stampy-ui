@@ -11,7 +11,8 @@ import {createMetaTags} from '~/utils/meta'
 export const meta: MetaFunction = () => {
   return createMetaTags({
     title: 'Build Your Knowledge - How Can I Help? - AISafety.info',
-    description: 'Learn about AI safety through courses, videos, podcasts, books, and communities. Start your AI safety education journey.',
+    description:
+      'Learn about AI safety through courses, videos, podcasts, books, and communities. Start your AI safety education journey.',
   })
 }
 

@@ -10,7 +10,8 @@ import {createMetaTags} from '~/utils/meta'
 export const meta: MetaFunction = () => {
   return createMetaTags({
     title: 'Spread the Word & Grassroots Activism - How Can I Help? - AISafety.info',
-    description: 'Raise awareness about AI safety risks through social media, protests, petitions, and conversations. Take action today.',
+    description:
+      'Raise awareness about AI safety risks through social media, protests, petitions, and conversations. Take action today.',
   })
 }
 

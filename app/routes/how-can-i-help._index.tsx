@@ -7,7 +7,8 @@ import {createMetaTags} from '~/utils/meta'
 export const meta: MetaFunction = () => {
   return createMetaTags({
     title: 'How Can I Help? - AISafety.info',
-    description: 'The AI safety movement is still relatively new, and your actions could have significant impact. Explore ways to contribute to AI safety.',
+    description:
+      'The AI safety movement is still relatively new, and your actions could have significant impact. Explore ways to contribute to AI safety.',
   })
 }
 
