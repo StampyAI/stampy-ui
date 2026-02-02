@@ -6,18 +6,64 @@ Stampy UI is an interface for [aisafety.info](https://aisafety.info), a question
 
 Contributions are welcome, the code is released under the MIT License. If you'd like to join the [dev team](https://coda.io/d/AI-Safety-Info_dfau7sl2hmG/Dev-team_sulmV#_luYjG), drop by [our Discord](https://discord.com/invite/7wjJbFJnSN) and post in #stampy-dev!
 
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | [Remix](https://remix.run/) v2.17 |
+| Runtime | [Cloudflare Workers](https://workers.cloudflare.com/) |
+| Language | TypeScript |
+| Styling | Vanilla CSS (no Tailwind) |
+| Data Source | [Coda.io](https://coda.io/) API |
+| Caching | Cloudflare KV |
+| Error Tracking | Sentry |
+| Analytics | Matomo |
+| UI Dev | Storybook |
+| Testing | Jest with miniflare |
+
+## Project Structure
+
+```
+stampy-ui/
+├── app/                      # Main application code
+├── app/components/           # React components
+├── app/components/icons-generated/  # Auto-generated from SVGs (don't edit manually)
+├── app/routes/               # Remix file-based routing
+├── app/hooks/                # Custom React hooks
+├── app/server-utils/         # Server-side utilities
+├── app/root.tsx              # App shell, meta tags, analytics
+├── app/root.css              # Global styles
+├── public/                   # Static assets served directly
+├── stories/                  # Storybook stories
+├── .github/workflows/        # CI/CD pipelines
+├── wrangler.toml.template    # Cloudflare config template (copy to wrangler.toml)
+└── package.json
+```
+
+## Key Files to Know
+
+| File | Purpose |
+|------|---------|
+| `app/root.tsx` | App shell, HTML head, meta tags, analytics, theme |
+| `app/routes/_index.tsx` | Homepage |
+| `app/routes/questions.$questionId.$.tsx` | Question detail page |
+| `app/server-utils/stampy.ts` | All Coda API calls, data types |
+| `app/server-utils/kv-cache.ts` | Cloudflare KV caching wrapper |
+| `wrangler.toml` | Local config with secrets (gitignored) |
+| `remix.config.js` | Remix + Cloudflare Workers config |
+
 ## Stampy UI Development Setup
 
-1. Requirements
+1. **Requirements**
    - [Install Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
    - [Create Cloudflare account](https://dash.cloudflare.com/)
    - [Install Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
      and [authenticate the CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/#install-wrangler-locally)
 
-2. Clone the [Repo](https://github.com/StampyAI/stampy-ui)
+2. **Clone the [Repo](https://github.com/StampyAI/stampy-ui)**
    - Run `git clone https://github.com/StampyAI/stampy-ui.git`
 
-3. Setup in [Cloudflare Dashboard](https://dash.cloudflare.com/)
+3. **Setup in [Cloudflare Dashboard](https://dash.cloudflare.com/)**
    - If you haven't already, set up your free custom Cloudflare Workers subdomain
    - From the left menu `Compute (Workers)` : `Overview`, note your Cloudflare `Account ID` on the right
    - From the left menu `Storage & Databases` : `KV`, create a KV (key-value store) namespace `STAMPY_KV`
@@ -25,7 +71,19 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
    - Make a copy of `wrangler.toml.template` in the stampy-ui folder and name it `wrangler.toml`
    - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
-4. Setup in [Coda.io](https://coda.io/account)
+   **Environment Variables Reference:**
+   
+   | Variable | Purpose |
+   |----------|---------|
+   | `CLOUDFLARE_ACCT_ID` | Your Cloudflare account ID |
+   | `STAMPY_KV_ID` | KV namespace ID for caching |
+   | `CODA_TOKEN` | Read-only Coda API token |
+   | `CODA_WRITES_TOKEN` | Write access for counters |
+   | `CODA_INCOMING_TOKEN` | Write access for new questions |
+   | `MATOMO_DOMAIN` | Analytics domain (use `"mock"` for local dev) |
+   | `SENTRY_DSN` | Sentry error tracking |
+
+4. **Setup in [Coda.io](https://coda.io/account)**
    - **4.1 (Required)** Setup read access to the API view in Coda
 
      > _Note_:
@@ -52,7 +110,7 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
      - Add restrictions: `Doc or table`, `Read and Write`, for the table with url `https://coda.io/d/_dfau7sl2hmG`
      - Replace the value for `{CODA_WRITE_TOKEN}` in `wrangler.toml`
 
-5. Create stampy-ui Remix environment
+5. **Create stampy-ui Remix environment**
    - Change directory to where you downloaded the stampy-ui github repository: `cd stampy-ui`
    - Run `npm install` to install all the dependencies required to run the current version of stampy-ui.
 
@@ -61,8 +119,19 @@ Once that's done, you should be able to test and deploy your app!
 ## Local Development
 
 ```sh
+# Start local dev hub
 $ npm run dev
+
+# Storybook component development
+$ npm run storybook
 ```
+
+## Code Quality & Style
+
+- **Prettier**: Enforced in CI. Run `npm run prettier:fix` before committing.
+  - Rules: No semicolons, single quotes, max width 100.
+- **ESLint**: React hooks rules, no unused imports.
+- **TypeScript**: Strict mode enabled. Path alias `~/` maps to `./app/`.
 
 ## Lint and Tests
 
@@ -77,6 +146,12 @@ This data can be refreshed by running:
 ```sh
 $ npm run refresh-test-data
 ```
+
+### Social Media Previews
+To test Open Graph/Twitter cards locally:
+1. `npm run dev`
+2. `npx ngrok http 8787`
+3. Use the ngrok URL with [Facebook Debugger](https://developers.facebook.com/tools/debug/) or [LinkedIn Inspector](https://www.linkedin.com/post-inspector/).
 
 ## Deployment to your CF Worker
 
@@ -99,3 +174,21 @@ If the same CF worker should be reachable from another domain:
   - in Routes section > `Add route` with the new domain (e.g. `example.com/*` and select the zone to the just-added site)
 - [update your domain registrar](https://developers.cloudflare.com/fundamentals/get-started/setup/add-site/#update-your-registrar) to enable CF
 - check the site after a few minutes (CF claims "up to 24 hours", it's usually faster ... but don't share the link too widely on the first day)
+
+## Architecture & Data Flow
+
+```
+Coda.io (source) → stampy.ts (fetch/parse) → Cloudflare KV (cache) → Remix Loaders → React Components
+```
+
+- **Remix + Workers**: Server-side code runs on Edge. No Node.js fs APIs.
+- **Routing**: File-based in `app/routes/`.
+- **Caching**: `withCache` wrapper caches Coda API responses in KV.
+
+## Common Gotchas
+
+1. **Windows Build Script**: `npm run build` may fail on Windows PowerShell due to bash syntax. Workaround: Use `npm run dev` locally.
+2. **Icons**: Don't edit `app/components/icons-generated/`. Add SVGs to `app/assets/icons/` and run `npm run generate-icons`.
+
+---
+*Last updated: January 2026*
