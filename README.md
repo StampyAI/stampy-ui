@@ -183,16 +183,12 @@ Coda.io (source) → stampy.ts (fetch/parse) → Cloudflare KV (cache) → Remix
 
 - **Remix + Workers**: Server-side code runs on Edge. No Node.js fs APIs.
 - **Routing**: File-based in `app/routes/`.
-- **Styling**: Global `root.css` + component-level CSS files. No Tailwind.
 - **Caching**: `withCache` wrapper caches Coda API responses in KV.
 
 ## Common Gotchas
 
 1. **Windows Build Script**: `npm run build` may fail on Windows PowerShell due to bash syntax. Workaround: Use `npm run dev` locally.
-2. **Prettier in PRs**: CI fails if code isn't formatted. Always run `npm run prettier:fix` before pushing.
-3. **Icons**: Don't edit `app/components/icons-generated/`. Add SVGs to `app/assets/icons/` and run `npm run generate-icons`.
-4. **Secrets**: `wrangler.toml` is gitignored. Do not commit secrets.
-5. **Content**: All content lives in Coda/Google Docs, not in the repo.
+2. **Icons**: Don't edit `app/components/icons-generated/`. Add SVGs to `app/assets/icons/` and run `npm run generate-icons`.
 
 ---
 *Last updated: January 2026*
