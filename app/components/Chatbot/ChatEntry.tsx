@@ -181,6 +181,19 @@ const Thinking = ({
   phase?: AssistantEntry['phase']
   thoughts?: AssistantEntry['thoughts']
 }) => {
+  // Render thoughts with markdown support
+  const renderThoughts = () => {
+    if (!thoughts) return null
+
+    // Render markdown (breaks: true will convert single newlines to <br>)
+    const renderedHtml = md.render(thoughts)
+
+    // Sanitize HTML to prevent XSS attacks
+    const sanitizedHtml = DOMPurify.sanitize(renderedHtml)
+
+    return <div className="xs padding-top-8" dangerouslySetInnerHTML={{__html: sanitizedHtml}} />
+  }
+
   return (
     <details className="phase-message">
       <summary className="grey large-reading">
@@ -192,9 +205,7 @@ const Thinking = ({
           'Thoughts'
         )}
       </summary>
-      <div className="xs padding-top-8" style={{whiteSpace: 'pre-wrap'}}>
-        {thoughts}
-      </div>
+      {renderThoughts()}
     </details>
   )
 }
