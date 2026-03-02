@@ -8,18 +8,18 @@ Contributions are welcome, the code is released under the MIT License. If you'd 
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Framework | [Remix](https://remix.run/) v2.17 |
-| Runtime | [Cloudflare Workers](https://workers.cloudflare.com/) |
-| Language | TypeScript |
-| Styling | Vanilla CSS (no Tailwind) |
-| Data Source | [Coda.io](https://coda.io/) API |
-| Caching | Cloudflare KV |
-| Error Tracking | Sentry |
-| Analytics | Matomo |
-| UI Dev | Storybook |
-| Testing | Jest with miniflare |
+| Layer          | Technology                                            |
+| -------------- | ----------------------------------------------------- |
+| Framework      | [Remix](https://remix.run/) v2.17                     |
+| Runtime        | [Cloudflare Workers](https://workers.cloudflare.com/) |
+| Language       | TypeScript                                            |
+| Styling        | Vanilla CSS (no Tailwind)                             |
+| Data Source    | [Coda.io](https://coda.io/) API                       |
+| Caching        | Cloudflare KV                                         |
+| Error Tracking | Sentry                                                |
+| Analytics      | Matomo                                                |
+| UI Dev         | Storybook                                             |
+| Testing        | Jest with miniflare                                   |
 
 ## Project Structure
 
@@ -42,15 +42,15 @@ stampy-ui/
 
 ## Key Files to Know
 
-| File | Purpose |
-|------|---------|
-| `app/root.tsx` | App shell, HTML head, meta tags, analytics, theme |
-| `app/routes/_index.tsx` | Homepage |
-| `app/routes/questions.$questionId.$.tsx` | Question detail page |
-| `app/server-utils/stampy.ts` | All Coda API calls, data types |
-| `app/server-utils/kv-cache.ts` | Cloudflare KV caching wrapper |
-| `wrangler.toml` | Local config with secrets (gitignored) |
-| `remix.config.js` | Remix + Cloudflare Workers config |
+| File                                     | Purpose                                           |
+| ---------------------------------------- | ------------------------------------------------- |
+| `app/root.tsx`                           | App shell, HTML head, meta tags, analytics, theme |
+| `app/routes/_index.tsx`                  | Homepage                                          |
+| `app/routes/questions.$questionId.$.tsx` | Question detail page                              |
+| `app/server-utils/stampy.ts`             | All Coda API calls, data types                    |
+| `app/server-utils/kv-cache.ts`           | Cloudflare KV caching wrapper                     |
+| `wrangler.toml`                          | Local config with secrets (gitignored)            |
+| `remix.config.js`                        | Remix + Cloudflare Workers config                 |
 
 ## Stampy UI Development Setup
 
@@ -72,16 +72,16 @@ stampy-ui/
    - Replace the values for your `{CLOUDFLARE_ACCT_ID}` and `{STAMPY_KV_ID}` in `wrangler.toml`
 
    **Environment Variables Reference:**
-   
-   | Variable | Purpose |
-   |----------|---------|
-   | `CLOUDFLARE_ACCT_ID` | Your Cloudflare account ID |
-   | `STAMPY_KV_ID` | KV namespace ID for caching |
-   | `CODA_TOKEN` | Read-only Coda API token |
-   | `CODA_WRITES_TOKEN` | Write access for counters |
-   | `CODA_INCOMING_TOKEN` | Write access for new questions |
-   | `MATOMO_DOMAIN` | Analytics domain (use `"mock"` for local dev) |
-   | `SENTRY_DSN` | Sentry error tracking |
+
+   | Variable              | Purpose                                       |
+   | --------------------- | --------------------------------------------- |
+   | `CLOUDFLARE_ACCT_ID`  | Your Cloudflare account ID                    |
+   | `STAMPY_KV_ID`        | KV namespace ID for caching                   |
+   | `CODA_TOKEN`          | Read-only Coda API token                      |
+   | `CODA_WRITES_TOKEN`   | Write access for counters                     |
+   | `CODA_INCOMING_TOKEN` | Write access for new questions                |
+   | `MATOMO_DOMAIN`       | Analytics domain (use `"mock"` for local dev) |
+   | `SENTRY_DSN`          | Sentry error tracking                         |
 
 4. **Setup in [Coda.io](https://coda.io/account)**
    - **4.1 (Required)** Setup read access to the API view in Coda
@@ -148,7 +148,9 @@ $ npm run refresh-test-data
 ```
 
 ### Social Media Previews
+
 To test Open Graph/Twitter cards locally:
+
 1. `npm run dev`
 2. `npx ngrok http 8787`
 3. Use the ngrok URL with [Facebook Debugger](https://developers.facebook.com/tools/debug/) or [LinkedIn Inspector](https://www.linkedin.com/post-inspector/).
@@ -191,4 +193,5 @@ Coda.io (source) → stampy.ts (fetch/parse) → Cloudflare KV (cache) → Remix
 2. **Icons**: Don't edit `app/components/icons-generated/`. Add SVGs to `app/assets/icons/` and run `npm run generate-icons`.
 
 ---
-*Last updated: January 2026*
+
+_Last updated: January 2026_
