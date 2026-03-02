@@ -3,8 +3,6 @@ import {redirect} from '@remix-run/cloudflare'
 import {cleanRedirectPath, loadRedirects} from '~/server-utils/stampy'
 
 const defined_redirects: Record<string, string> = {
-  articles: '/categories/',
-  donate: '/how-can-i-help/donate',
   about: '/questions/NLZQ/What-is-this-site-about',
   tags: '/categories/',
 }
