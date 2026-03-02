@@ -45,6 +45,10 @@
   color: var(--colors-teal-500, #1d9089);
 }
 
+html.dark .primary-alt {
+  border-color: var(--colors-teal-500, #1d9089);
+}
+
 .secondary {
   color: var(--text-secondary) !important;
   border: 1px solid var(--border);
