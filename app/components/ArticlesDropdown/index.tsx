@@ -105,7 +105,7 @@ export const ArticlesDropdown = ({toc, categories, fullWidth}: ArticlesDropdownP
 
         <Button
           action={tagsUrl()}
-          className={['secondary', mobile ? 'margin-top-40' : ''].join(' ')}
+          className={['secondary-alt', mobile ? 'margin-top-40' : ''].join(' ')}
         >
           <span onClick={hide}> Browse all categories</span>
         </Button>
