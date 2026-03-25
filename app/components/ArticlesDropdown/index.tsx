@@ -3,7 +3,7 @@ import {Link as LinkElem} from '@remix-run/react'
 import type {Tag} from '~/server-utils/stampy'
 import {TOCItem, Category, ADVANCED, BASIC} from '~/routes/questions.toc'
 import {sortFuncs} from '~/routes/categories.$'
-import {questionUrl, tagsUrl, tagUrl} from '~/routesMapper'
+import {questionUrl, tagsUrl, tagUrl, articlesUrl} from '~/routesMapper'
 import Button from '~/components/Button'
 import {Stamp} from '~/components/icons-generated'
 import './dropdown.css'
@@ -83,6 +83,12 @@ export const ArticlesDropdown = ({toc, categories, fullWidth}: ArticlesDropdownP
           className={mobile ? 'padding-bottom-40' : ''}
           hide={hide}
         />
+        <Button
+          action={articlesUrl()}
+          className={['secondary-alt', mobile ? 'margin-top-40' : 'margin-top-32'].join(' ')}
+        >
+          <span onClick={hide}>Browse all articles</span>
+        </Button>
       </div>
       <div className={fullWidth ? '' : 'col-4'}>
         {/*sorted right side*/}

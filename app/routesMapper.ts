@@ -31,6 +31,7 @@ export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) =
 
 export const tagUrl = ({tagId, name}: {tagId?: number | string; name: string}) =>
   tagId ? `/categories/${tagId}/${name}` : `/categories/${name}`
+export const articlesUrl = () => `/articles`
 export const tagsUrl = () => `/categories/`
 export const allTagsUrl = () => `/categories/all`
 
