@@ -13,9 +13,11 @@ export {loader}
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   const categoryName = data?.data?.currentTag?.name
-  const title = categoryName ? `${categoryName} - AISafety.info` : 'Categories - AISafety.info'
+  const title = categoryName
+    ? `Browse ${categoryName} AI Safety Questions | AISafety.info`
+    : 'Categories - AISafety.info'
   const description = categoryName
-    ? `Browse AI safety questions related to ${categoryName}`
+    ? `Explore our collection of AI safety questions and answers related to ${categoryName}. Find clear explanations and resources on ${categoryName} and related topics.`
     : 'Browse AI safety questions by category'
 
   return createMetaTags({title, description})
