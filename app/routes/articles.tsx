@@ -108,8 +108,12 @@ export default function AllArticles() {
   const {toc, visible} = data
 
   const tocPageIds = collectPageIds(toc)
-  const otherArticles = visible
-    .filter((item) => !tocPageIds.has(item.pageid))
+  const others = visible.filter((item) => !tocPageIds.has(item.pageid))
+  const otherChildIds = collectPageIds(
+    others.filter((item) => item.children && item.children.length > 0)
+  )
+  const otherArticles = others
+    .filter((item) => item.children?.length || !otherChildIds.has(item.pageid))
     .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
 
   return (
