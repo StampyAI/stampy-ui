@@ -1,6 +1,5 @@
 import {FunctionComponent} from 'react'
 import './footer.css'
-const year = new Date().getFullYear()
 
 const Link = ({to, title, className}: {to: string; title: string; className?: string}) => (
   <div className={className}>
@@ -11,6 +10,7 @@ const Link = ({to, title, className}: {to: string; title: string; className?: st
 )
 
 export const FooterBar: FunctionComponent = () => {
+  const year = new Date().getFullYear()
   return (
     <div className="padding-top-104">
       <hr />
