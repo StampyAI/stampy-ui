@@ -40,14 +40,17 @@ const GlobalBanner = ({bannerId, title, action, actionLabel}: GlobalBannerProps)
   )
 }
 
+// Site-wide banners shown at the top of every page. Add an entry here to show one;
+// each needs a unique bannerId so a visitor's dismissal is remembered.
+// (The 2024 "Take AISafety.info's 3 minute survey" banner was removed in September 2026
+// after Google took the form down.)
+const banners: GlobalBannerProps[] = []
+
 const GlobalBanners = () => (
   <>
-    <GlobalBanner
-      bannerId="take-survey-1"
-      title="Take AISafety.info’s 3 minute survey to help inform our strategy and priorities"
-      action="https://docs.google.com/forms/d/e/1FAIpQLSebvqMAyb1vUoP7gIEAJHOZE4HtNp6oixJm3taVos0AfwrBKg/viewform"
-      actionLabel="Take the survey"
-    />
+    {banners.map((banner) => (
+      <GlobalBanner key={banner.bannerId} {...banner} />
+    ))}
   </>
 )
 export default GlobalBanners
