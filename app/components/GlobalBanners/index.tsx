@@ -1,13 +1,13 @@
-import {useEffect, useState} from 'react'
-import XLarge from '~/components/icons-generated/XLarge'
+import {ReactNode, useEffect, useState} from 'react'
+import {ArrowRight, XLarge} from '~/components/icons-generated'
 import Button from '~/components/Button'
 import './global-banners.css'
 
 type GlobalBannerProps = {
   bannerId: string
   title: string
-  action?: string
-  actionLabel?: string
+  action: string
+  actionLabel: ReactNode
 }
 const GlobalBanner = ({bannerId, title, action, actionLabel}: GlobalBannerProps) => {
   const [showBanner, setShowBanner] = useState(false)
@@ -24,27 +24,32 @@ const GlobalBanner = ({bannerId, title, action, actionLabel}: GlobalBannerProps)
     showBanner && (
       <div className="global-banner white">
         <p className="small">{title}</p>
-        {action && (
-          <Button
-            action={action}
-            className="secondary-alt small-bold"
-            size="small"
-            props={{target: '_blank', rel: 'noopener noreferrer'}}
-          >
-            {actionLabel}
-          </Button>
-        )}
-        <XLarge fill="white" className="close" onClick={hideBanner} />
+        <Button action={action} className="primary-alt" size="small">
+          {actionLabel}
+        </Button>
+        <button type="button" className="close" aria-label="Dismiss" onClick={hideBanner}>
+          <XLarge fill="white" />
+        </button>
       </div>
     )
   )
 }
 
-// Site-wide banners shown at the top of every page. Add an entry here to show one;
-// each needs a unique bannerId so a visitor's dismissal is remembered.
-// (The 2024 "Take AISafety.info's 3 minute survey" banner was removed in September 2026
-// after Google took the form down.)
-const banners: GlobalBannerProps[] = []
+// Add an entry to show a site-wide banner. Its bannerId must be new, or returning
+// visitors who dismissed an earlier banner never see it.
+const banners: GlobalBannerProps[] = [
+  {
+    bannerId: 'call-congress-1',
+    title: 'Live in the US? Call your representatives and ask for action on AI risks.',
+    action: 'https://callcongress.ai/?utm_source=aisafetyinfo',
+    actionLabel: (
+      <>
+        <span className="small-bold">callcongress.ai</span>
+        <ArrowRight />
+      </>
+    ),
+  },
+]
 
 const GlobalBanners = () => (
   <>
