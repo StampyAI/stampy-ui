@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone stampy-ui repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Deploy to Cloudflare
         run: |
           cat wrangler.toml.template \
