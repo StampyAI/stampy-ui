@@ -1,5 +1,6 @@
 import './input.css'
 import AutoHeight from 'react-auto-height'
+import {forwardRef} from 'react'
 
 type InputProps = {
   className?: string
@@ -12,14 +13,26 @@ type InputProps = {
   multiline?: boolean
 }
 
-const Input = ({className = '', multiline, ...props}: InputProps) => {
-  const classes = `input ${className}`
+const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
+  ({className = '', multiline, ...props}, ref) => {
+    const classes = `input ${className}`
 
-  if (multiline) {
-    return <AutoHeight element="textarea" className={classes} rows={1} {...props} />
+    if (multiline) {
+      return (
+        <AutoHeight
+          element="textarea"
+          className={classes}
+          rows={1}
+          {...props}
+          innerRef={ref as any}
+        />
+      )
+    }
+
+    return <input className={classes} {...props} ref={ref as any} />
   }
+)
 
-  return <input className={classes} {...props} />
-}
+Input.displayName = 'Input'
 
 export default Input

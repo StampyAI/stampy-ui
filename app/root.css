@@ -979,3 +979,7 @@ html.dark .bordered {
 }
 
 /* end mobile */
+
+.group:hover .delete-item {
+  display: block !important;
+}
