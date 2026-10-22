@@ -12,7 +12,6 @@ import {
   ALL_ANSWERS_TABLE,
   CODA_DOC_ID,
   GLOSSARY_TABLE,
-  INCOMING_QUESTIONS_TABLE,
   INITIAL_QUESTIONS_TABLE,
   ON_SITE_TABLE,
   QUESTION_DETAILS_TABLE,
@@ -96,11 +95,6 @@ export type Question = {
   carousels?: Carousel[]
 }
 export type PageId = Question['pageid']
-export type NewQuestion = {
-  title: string
-  relatedQuestions: RelatedQuestion[]
-  source?: string
-}
 type Entity = {
   '@context': string
   '@type': string
@@ -466,16 +460,6 @@ const toTag = (r: TagsRow, nameToId: Record<string, string>): Tag => ({
   mainQuestion: extractMainQuestion(r.values['Main question']),
 })
 
-export const loadTag = withCache('tag', async (tagName: string): Promise<Tag> => {
-  const rows = (await getCodaRows(TAGS_TABLE, 'Tag name', tagName)) as TagsRow[]
-
-  const questions = await loadAllQuestions('NEVER_RELOAD')
-  const nameToId = Object.fromEntries(
-    questions.data.filter(isQuestionViewable).map((q) => [q.title, q.pageid])
-  )
-  return toTag(rows[0], nameToId)
-})
-
 export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
   const rows = (await getCodaRows(TAGS_TABLE, 'Internal?', 'false')) as TagsRow[]
 
@@ -485,36 +469,6 @@ export const loadTags = withCache('tags', async (): Promise<Tag[]> => {
   )
   return rows.map((r) => toTag(r, nameToId))
 })
-
-export const loadMoreAnswerDetails = withCache(
-  'loadMoreAnswerDetails',
-  async (
-    nextPageLink: string | null
-  ): Promise<{questions: Question[]; nextPageLink: string | null}> => {
-    const url = nextPageLink || makeCodaRequest({table: ON_SITE_TABLE, limit: 10})
-    const result = await fetchRows(url)
-    const items = result.items as AnswersRow[]
-    return {nextPageLink: result.nextPageLink, questions: items.map(convertToQuestion)}
-  }
-)
-
-export const insertRows = async (table: string, rows: NewQuestion[]) => {
-  const url = `https://coda.io/apis/v1/docs/${CODA_DOC_ID}/tables/${enc(table)}/rows`
-  const payload = {
-    rows: rows.map((row) => ({
-      cells: [
-        {column: 'Question', value: row.title},
-        {column: 'Possible Duplicates', value: row.relatedQuestions.map(({title}) => title)},
-        {column: 'Source', value: row.source || 'UI'},
-      ],
-    })),
-  }
-  return await sendToCoda(url, payload, 'POST', `${CODA_INCOMING_TOKEN}`)
-}
-
-export const addQuestion = async (title: string, relatedQuestions: RelatedQuestion[]) => {
-  return await insertRows(INCOMING_QUESTIONS_TABLE, [{title, relatedQuestions}])
-}
 
 export const incAnswerColumn = async (column: string, pageid: PageId, subtract: boolean) => {
   const table = WRITES_TABLE

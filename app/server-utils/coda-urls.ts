@@ -8,7 +8,6 @@ export const QUESTION_DETAILS_TABLE = 'grid-sync-1059-File' // Answers
 export const INITIAL_QUESTIONS_TABLE = 'table-yWog6qRzV4' // Initial questions
 export const ON_SITE_TABLE = 'table-aOTSHIz_mN' // On-site answers
 export const ALL_ANSWERS_TABLE = 'table-YvPEyAXl8a' // All answers
-export const INCOMING_QUESTIONS_TABLE = 'grid-S_6SYj6Tjm' // Incoming questions
 export const TAGS_TABLE = 'grid-4uOTjz1Rkz'
 export const WRITES_TABLE = 'table-eEhx2YPsBE'
 export const GLOSSARY_TABLE = 'grid-_pSzs23jmw'
