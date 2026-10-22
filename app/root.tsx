@@ -1,7 +1,7 @@
 // Using @sentry/remix for client-side error boundary (safe for both server and client)
 // Server-side instrumentation is handled by @sentry/cloudflare in entry.server.tsx
 import {captureRemixErrorBoundaryError} from '@sentry/remix'
-import {useEffect, ReactNode} from 'react'
+import {useEffect, useRef, ReactNode} from 'react'
 import {
   Links,
   LiveReload,
@@ -9,6 +9,7 @@ import {
   Outlet,
   ScrollRestoration,
   Scripts,
+  useLocation,
   useParams,
   useRouteError,
   useLoaderData,
@@ -256,6 +257,45 @@ function App() {
   const {embed, showSearch, matomoDomain, sentryDsn} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {embed, showSearch}
+  const location = useLocation()
+  const url = location.pathname + location.search
+  const previousUrl = useRef<string | null>(null)
+
+  useEffect(() => {
+    const href = window.location.origin + url
+    const referrer = previousUrl.current
+    previousUrl.current = href
+    // the initial page view is tracked by the Matomo snippet, only track client-side navigations
+    if (!matomoDomain || !referrer || referrer === href) return
+
+    // some pages (e.g. questions) only set document.title after their data loads, so wait for it
+    let title = document.title
+    let tracked = false
+    const track = () => {
+      if (tracked) return
+      tracked = true
+      observer.disconnect()
+      clearTimeout(timeout)
+      const _paq = ((window as any)._paq = (window as any)._paq || [])
+      _paq.push(['setReferrerUrl', referrer])
+      _paq.push(['setCustomUrl', href])
+      _paq.push(['setDocumentTitle', title])
+      _paq.push(['trackPageView'])
+    }
+    const observer = new MutationObserver(() => {
+      // ignore title changes made by the next page if the user already navigated away
+      const {origin, pathname, search} = window.location
+      if (origin + pathname + search !== href) return track()
+      if (document.title !== title) {
+        title = document.title
+        track()
+      }
+    })
+    observer.observe(document.head, {subtree: true, childList: true, characterData: true})
+    const timeout = setTimeout(track, 2000)
+    // if the user navigates away before the title changes, track with the last known title
+    return track
+  }, [url, matomoDomain])
 
   useEffect(() => {
     if (embed) {
