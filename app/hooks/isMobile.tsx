@@ -1,20 +1,16 @@
-import {useState, useEffect} from 'react'
+import {useState, useLayoutEffect} from 'react'
 
-const isWindow = typeof window !== 'undefined'
 export default function useIsMobile(mobileWidth = 780) {
-  const getWidth = () => (isWindow ? window.innerWidth : 1280) // assume desktop until proven otherwise (for SSR)
-  const [windowWidth, setWindowWidth] = useState<number>(getWidth)
+  const [windowWidth, setWindowWidth] = useState<number>()
 
-  useEffect(() => {
-    if (isWindow) {
-      const resize = () => setWindowWidth(getWidth())
-      setWindowWidth(getWidth())
+  useLayoutEffect(() => {
+    const measureWidth = () => setWindowWidth(window.innerWidth)
+    measureWidth()
 
-      window.addEventListener('resize', resize)
+    window.addEventListener('resize', measureWidth)
 
-      return () => window.removeEventListener('resize', resize)
-    }
+    return () => window.removeEventListener('resize', measureWidth)
   }, [])
 
-  return windowWidth <= mobileWidth
+  return windowWidth ? windowWidth <= mobileWidth : null
 }

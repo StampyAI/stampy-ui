@@ -233,7 +233,9 @@ const useGlossaryInjection = ({
 
   useEffect(() => {
     const el = elementRef.current
-    if (!el || !enabled || !glossary || Object.keys(glossary).length === 0) return
+    if (!el || !enabled || mobile === null || !glossary || Object.keys(glossary).length === 0) {
+      return
+    }
 
     // Use provided ref if available, otherwise create a fresh Set for this processing run.
     // A fresh Set ensures each term in this content gets glossaried once,

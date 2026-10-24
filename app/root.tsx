@@ -155,8 +155,9 @@ const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
                             var u="https://${matomoDomain}.matomo.cloud/";
                             _paq.push(['setTrackerUrl', u+'matomo.php']);
                             _paq.push(['setSiteId', '3']);
-                            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                            g.async=true; g.src='https://cdn.matomo.cloud/${matomoDomain}.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+                            /* append at the end of <head>: inserting before the first script breaks React hydration */
+                            var d=document, g=d.createElement('script');
+                            g.async=true; g.src='https://cdn.matomo.cloud/${matomoDomain}.matomo.cloud/matomo.js'; d.head.appendChild(g);
                         })();`,
       }}
     />
@@ -220,7 +221,12 @@ const BasePage = ({
   savedTheme?: string
 }) => (
   <CachedObjectsProvider>
-    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
+    {/* the theme script in <Head> adds a class before hydration */}
+    <html
+      lang="en"
+      className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}
+      suppressHydrationWarning
+    >
       <Head />
       <body>
         <GlobalBanners />
