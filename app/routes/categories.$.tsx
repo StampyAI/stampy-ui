@@ -20,7 +20,9 @@ export const meta: MetaFunction<typeof loader> = ({data}) => {
     ? `Explore our collection of AI safety questions and answers related to ${categoryName}. Find clear explanations and resources on ${categoryName} and related topics.`
     : 'Browse AI safety questions by category'
 
-  return createMetaTags({title, description})
+  // Category pages are near-duplicates of each other (shared nav, templated text) and get
+  // almost no search traffic, so keep them out of the index but let crawlers follow links
+  return [...createMetaTags({title, description}), {name: 'robots', content: 'noindex, follow'}]
 }
 
 export const sortFuncs = {
