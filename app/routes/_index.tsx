@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import type {LoaderFunction} from '@remix-run/cloudflare'
 import {ShouldRevalidateFunction, redirect} from '@remix-run/react'
-import {QuestionState} from '~/server-utils/stampy'
+import {QuestionState, loadQuestionDetail} from '~/server-utils/stampy'
 import {ContentBoxMain, ContentBoxSecond, ContentBoxThird} from '~/components/ContentBox'
 import useToC from '~/hooks/useToC'
 import Grid from '~/components/Grid'
@@ -14,14 +14,20 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   const url = new URL(request.url)
   const stateFromUrl = url.searchParams.get('state')
   if (stateFromUrl) {
+    // Old-style links: go straight to the titled question URL, or to the homepage
+    // for lists without an open question
     const firstOpenId = getStateEntries(stateFromUrl).filter(
       ([_, state]) => state === QuestionState.OPEN
     )[0]?.[0]
+    url.searchParams.delete('state')
+    url.pathname = '/'
     if (firstOpenId) {
-      url.searchParams.delete('state')
-      url.pathname = questionUrl({pageid: firstOpenId})
-      throw redirect(url.toString())
+      const title = await loadQuestionDetail(request, firstOpenId)
+        .then(({data}) => data.title)
+        .catch(() => undefined)
+      url.pathname = questionUrl({pageid: firstOpenId, title})
     }
+    throw redirect(url.toString(), {status: 301, headers: {'Cache-Control': 'max-age=3600'}})
   }
   return null
 }

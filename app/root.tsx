@@ -1,7 +1,7 @@
 // Using @sentry/remix for client-side error boundary (safe for both server and client)
 // Server-side instrumentation is handled by @sentry/cloudflare in entry.server.tsx
 import {captureRemixErrorBoundaryError} from '@sentry/remix'
-import {useEffect, ReactNode} from 'react'
+import {useEffect, useRef, ReactNode} from 'react'
 import {
   Links,
   LiveReload,
@@ -9,6 +9,7 @@ import {
   Outlet,
   ScrollRestoration,
   Scripts,
+  useLocation,
   useParams,
   useRouteError,
   useLoaderData,
@@ -154,8 +155,9 @@ const AnaliticsTag = ({matomoDomain}: {matomoDomain?: string}) => {
                             var u="https://${matomoDomain}.matomo.cloud/";
                             _paq.push(['setTrackerUrl', u+'matomo.php']);
                             _paq.push(['setSiteId', '3']);
-                            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                            g.async=true; g.src='https://cdn.matomo.cloud/${matomoDomain}.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+                            /* append at the end of <head>: inserting before the first script breaks React hydration */
+                            var d=document, g=d.createElement('script');
+                            g.async=true; g.src='https://cdn.matomo.cloud/${matomoDomain}.matomo.cloud/matomo.js'; d.head.appendChild(g);
                         })();`,
       }}
     />
@@ -219,7 +221,12 @@ const BasePage = ({
   savedTheme?: string
 }) => (
   <CachedObjectsProvider>
-    <html lang="en" className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}>
+    {/* the theme script in <Head> adds a class before hydration */}
+    <html
+      lang="en"
+      className={`${embed ? 'embed' : ''} ${savedTheme ?? ''}`}
+      suppressHydrationWarning
+    >
       <Head />
       <body>
         <GlobalBanners />
@@ -256,6 +263,45 @@ function App() {
   const {embed, showSearch, matomoDomain, sentryDsn} = useLoaderData<Loader>()
   const {savedTheme} = useTheme()
   const context: Context = {embed, showSearch}
+  const location = useLocation()
+  const url = location.pathname + location.search
+  const previousUrl = useRef<string | null>(null)
+
+  useEffect(() => {
+    const href = window.location.origin + url
+    const referrer = previousUrl.current
+    previousUrl.current = href
+    // the initial page view is tracked by the Matomo snippet, only track client-side navigations
+    if (!matomoDomain || !referrer || referrer === href) return
+
+    // some pages (e.g. questions) only set document.title after their data loads, so wait for it
+    let title = document.title
+    let tracked = false
+    const track = () => {
+      if (tracked) return
+      tracked = true
+      observer.disconnect()
+      clearTimeout(timeout)
+      const _paq = ((window as any)._paq = (window as any)._paq || [])
+      _paq.push(['setReferrerUrl', referrer])
+      _paq.push(['setCustomUrl', href])
+      _paq.push(['setDocumentTitle', title])
+      _paq.push(['trackPageView'])
+    }
+    const observer = new MutationObserver(() => {
+      // ignore title changes made by the next page if the user already navigated away
+      const {origin, pathname, search} = window.location
+      if (origin + pathname + search !== href) return track()
+      if (document.title !== title) {
+        title = document.title
+        track()
+      }
+    })
+    observer.observe(document.head, {subtree: true, childList: true, characterData: true})
+    const timeout = setTimeout(track, 2000)
+    // if the user navigates away before the title changes, track with the last known title
+    return track
+  }, [url, matomoDomain])
 
   useEffect(() => {
     if (embed) {

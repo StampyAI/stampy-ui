@@ -119,11 +119,23 @@
       log('config', 'Matomo Config', 'Cookies DISABLED')
     },
 
+    setCustomUrl: function (url) {
+      this.customUrl = url
+    },
+
+    setReferrerUrl: function (url) {
+      this.referrerUrl = url
+    },
+
+    setDocumentTitle: function (title) {
+      this.documentTitle = title
+    },
+
     trackPageView: function (customTitle) {
       log('track', 'Track PageView', {
-        url: window.location.href,
-        title: customTitle || document.title,
-        referrer: document.referrer || '(none)',
+        url: this.customUrl || window.location.href,
+        title: customTitle || this.documentTitle || document.title,
+        referrer: this.referrerUrl || document.referrer || '(none)',
         timestamp: new Date().toISOString(),
       })
       pageLoadTime = Date.now()

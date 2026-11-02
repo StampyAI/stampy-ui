@@ -49,7 +49,7 @@ const Contents = ({
 
   useEffect(() => {
     const el = elementRef.current
-    if (!el) return
+    if (!el || mobile === null) return
 
     // Replace carousel placeholders with actual carousel components
     carousels?.forEach((carousel) => {
