@@ -50,7 +50,9 @@ export const loader = async ({request, params, context}: LoaderFunctionArgs) => 
   const isDataRequest = !!context.isDataRequest
 
   if (!result?.data?.pageid) {
-    const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
+    // questionId comes from the URL and the message is rendered as HTML, so escape it
+    const safeId = questionId.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
+    const msg = `No question found with ID ${safeId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
     return defer({question: Promise.resolve({error: msg})}, {status: isDataRequest ? 200 : 404})
   }
 
