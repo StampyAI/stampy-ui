@@ -1,5 +1,6 @@
 import {LoaderFunction, redirect} from '@remix-run/cloudflare'
 import {loadAllQuestions, QuestionStatus} from '~/server-utils/stampy'
+import {questionUrl} from '~/routesMapper'
 
 function randomItem(arr: any[]) {
   return arr[Math.floor(Math.random() * arr.length)]
@@ -9,7 +10,7 @@ export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
   try {
     const {data} = await loadAllQuestions(request)
     const question = randomItem(data.filter((q) => q.status == QuestionStatus.LIVE_ON_SITE))
-    return redirect(`/?state=${question.pageid}`)
+    return redirect(questionUrl(question))
   } catch (e) {
     console.error(e)
   }
