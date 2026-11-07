@@ -20,10 +20,11 @@ import {useTags} from '~/hooks/useCachedObjects'
 import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {ArticlesNavManualList} from '~/components/ArticlesNav/ArticleNavManualList'
+import {questionUrl, permanentRedirect} from '~/routesMapper'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
-export const loader = async ({request, params}: LoaderFunctionArgs) => {
+export const loader = async ({request, params, context}: LoaderFunctionArgs) => {
   const {data: redirects} = await loadRedirects(request)
 
   // Check if we need to redirect to a new path
@@ -40,13 +41,30 @@ export const loader = async ({request, params}: LoaderFunctionArgs) => {
     throw new Response('Missing question title', {status: 400})
   }
 
-  const dataPromise = loadQuestionDetail(request, questionId).catch((error: Error) => {
+  const result = await loadQuestionDetail(request, questionId).catch((error: Error) => {
     console.error(error)
-    const msg = `No question found with ID ${questionId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
-    // inside deferred Promise on the client, not executed on server => don't create new Response
-    return {error: msg}
+    return null
   })
-  return defer({question: dataPromise})
+  // client-side navigations and fetchers (e.g. the chatbot) must not be redirected or 404'd
+  const url = new URL(request.url)
+  const isDataRequest = !!context.isDataRequest
+
+  if (!result?.data?.pageid) {
+    // questionId comes from the URL and the message is rendered as HTML, so escape it
+    const safeId = questionId.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
+    const msg = `No question found with ID ${safeId}. Please go to <a href="https://discord.com/invite/Bt8PaRTDQC">Discord</a> and report where you found this link.`
+    return defer({question: Promise.resolve({error: msg})}, {status: isDataRequest ? 200 : 404})
+  }
+
+  // One URL per question: fix the slug, trailing slash, and drop the chat's ?question= param.
+  // Other params (utm_*, ref, list) are kept
+  const canonicalPath = questionUrl(result.data)
+  if (!isDataRequest && (url.pathname !== canonicalPath || url.searchParams.has('question'))) {
+    url.pathname = canonicalPath
+    url.searchParams.delete('question')
+    throw permanentRedirect(url)
+  }
+  return defer({question: Promise.resolve(result)})
 }
 
 const dummyQuestion = (title: string | undefined) =>

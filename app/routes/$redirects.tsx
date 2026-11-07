@@ -4,7 +4,7 @@ import {cleanRedirectPath, loadRedirects} from '~/server-utils/stampy'
 
 const defined_redirects: Record<string, string> = {
   about: '/questions/NLZQ/What-is-this-site-about',
-  tags: '/categories/',
+  tags: '/categories',
 }
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {

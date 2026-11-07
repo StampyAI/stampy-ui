@@ -53,6 +53,9 @@ export default {
     try {
       const loadContext: AppLoadContext = {
         env,
+        // Remix strips ?_data before calling loaders, so pass on whether this is a data request
+        // (client-side navigation or fetcher) rather than a page load
+        isDataRequest: new URL(request.url).searchParams.has('_data'),
       }
       return await handleRemixRequest(request, loadContext)
     } catch (error) {

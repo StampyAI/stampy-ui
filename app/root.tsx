@@ -21,7 +21,8 @@ import Error from '~/components/Error'
 import Page from '~/components/Page'
 import {CachedObjectsProvider} from '~/hooks/useCachedObjects'
 import {useTheme} from '~/hooks/theme'
-import {loadQuestionDetail} from '~/server-utils/stampy'
+import {isQuestionViewable, loadQuestionDetail} from '~/server-utils/stampy'
+import {CANONICAL_ORIGIN, permanentRedirect} from '~/routesMapper'
 import GlobalBanners from './components/GlobalBanners'
 import {createMetaTags} from '~/utils/meta'
 
@@ -63,18 +64,29 @@ const fetchQuestion = async (request: Request) => {
 
 const TITLE = 'AISafety.info'
 const DESCRIPTION = 'AI safety FAQ'
-export const meta: MetaFunction<typeof loader> = ({data = {} as any}) => {
+export const meta: MetaFunction<typeof loader> = ({data = {} as any, location}) => {
   const title = makeSocialPreviewText(data.question?.title, TITLE, 150)
   const description = makeSocialPreviewText(data.question?.text, DESCRIPTION)
   const url = data.url ? new URL(data.url) : null
   const logo = url ? `${url.origin}/aisafety-logo.png` : '/aisafety-logo.png'
 
-  return createMetaTags({
-    title,
-    description,
-    url: data.url,
-    image: logo,
-  })
+  // Keep out of search results: questions that aren't "Live on site" or "Unlisted"
+  // (drafts, subsections...), the embedded widget, and chats started from a question
+  const params = new URLSearchParams(location.search)
+  const noindex =
+    (data.question && !isQuestionViewable(data.question)) ||
+    params.has('embed') ||
+    (location.pathname === '/chat' && params.has('question'))
+
+  return [
+    ...createMetaTags({
+      title,
+      description,
+      url: data.url,
+      image: logo,
+    }),
+    ...(noindex ? [{name: 'robots', content: 'noindex, follow'}] : []),
+  ]
 }
 
 export const links: LinksFunction = () => {
@@ -96,6 +108,15 @@ export const links: LinksFunction = () => {
 }
 
 export const loader = async ({request}: Parameters<LoaderFunction>[0]) => {
+  // No trailing slashes, except the homepage. Question pages redirect in their own loader,
+  // straight to the titled URL
+  const {pathname} = new URL(request.url)
+  if (pathname !== '/' && pathname.endsWith('/') && !pathname.startsWith('/questions/')) {
+    const url = new URL(request.url)
+    url.pathname = pathname.replace(/\/+$/, '')
+    throw permanentRedirect(url)
+  }
+
   const embed = !!request.url.match(/embed/)
   const showSearch = !request.url.match(/onlyInitial/)
 
@@ -176,6 +197,7 @@ const SentryConfigScript = ({sentryDsn}: {sentryDsn?: string}) => {
 }
 
 function Head() {
+  const {pathname} = useLocation()
   return (
     <head>
       <meta charSet="utf-8" />
@@ -205,6 +227,7 @@ function Head() {
           <meta name="color-scheme" content="light dark" />
        */}
       <Meta />
+      <link rel="canonical" href={CANONICAL_ORIGIN + pathname} />
       <Links />
       <link id="favicon" rel="icon" href="/favicon.ico" />
     </head>

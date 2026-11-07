@@ -15,24 +15,36 @@ export const isAuthorized = (request: Request) => {
   return username === EDITOR_USERNAME && password === EDITOR_PASSWORD
 }
 
-export const canonicalizeQuestionSlug = (slug: string) => {
-  // Replace spaces with hyphens
-  let canonical = slug.replaceAll(' ', '-')
+// Spaces become hyphens, everything except ASCII letters, digits and hyphens is dropped
+// (incl. curly quotes, dots and slashes), so each question has exactly one URL
+export const canonicalizeQuestionSlug = (slug: string) =>
+  slug
+    .replaceAll(' ', '-')
+    .replace(/[^A-Za-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 
-  // Remove special characters that shouldn't be in URLs
-  // Keep alphanumeric, hyphens, and allow some safe characters
-  canonical = canonical.replace(/[?!,;:()[\]{}'"]/g, '')
-
-  return canonical
+export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) => {
+  const slug = title ? canonicalizeQuestionSlug(title) : ''
+  return slug ? `/questions/${pageid}/${slug}` : `/questions/${pageid}`
 }
 
-export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) =>
-  `/questions/${pageid}/${title ? canonicalizeQuestionSlug(title) : ''}`
+// The site's canonical URLs have no trailing slash (except the homepage)
+export const CANONICAL_ORIGIN = 'https://aisafety.info'
+
+// 301, but only cached by browsers for an hour, so a wrong rule can be fixed quickly
+export const permanentRedirect = (url: URL) => {
+  url.searchParams.delete('_data')
+  return new Response(null, {
+    status: 301,
+    headers: {Location: url.toString(), 'Cache-Control': 'max-age=3600'},
+  })
+}
 
 export const tagUrl = ({tagId, name}: {tagId?: number | string; name: string}) =>
   tagId ? `/categories/${tagId}/${name}` : `/categories/${name}`
 export const articlesUrl = () => `/articles`
-export const tagsUrl = () => `/categories/`
+export const tagsUrl = () => `/categories`
 export const allTagsUrl = () => `/categories/all`
 
 const helpPages = {
