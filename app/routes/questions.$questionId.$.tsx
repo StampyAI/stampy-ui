@@ -20,7 +20,7 @@ import {useTags} from '~/hooks/useCachedObjects'
 import type {Question, Tag} from '~/server-utils/stampy'
 import {reloadInBackgroundIfNeeded} from '~/server-utils/kv-cache'
 import {ArticlesNavManualList} from '~/components/ArticlesNav/ArticleNavManualList'
-import {questionUrl, permanentRedirect} from '~/routesMapper'
+import {questionUrl, permanentRedirect, withRequestQuery} from '~/routesMapper'
 
 export const LINK_WITHOUT_DETAILS_CLS = 'link-without-details'
 
@@ -32,7 +32,7 @@ export const loader = async ({request, params, context}: LoaderFunctionArgs) => 
   const cleanedPath = cleanRedirectPath(path)
   const to = redirects[cleanedPath]
   if (to) {
-    return redirect(to)
+    return redirect(withRequestQuery(request, to).toString())
   }
 
   // Otherwise, load the question

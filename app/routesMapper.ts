@@ -41,6 +41,13 @@ export const permanentRedirect = (url: URL) => {
   })
 }
 
+// The redirect target with the request's query string (e.g. utm_*) carried over
+export const withRequestQuery = (request: Request, to: string) => {
+  const url = new URL(to, request.url)
+  new URL(request.url).searchParams.forEach((value, key) => url.searchParams.append(key, value))
+  return url
+}
+
 export const tagUrl = ({tagId, name}: {tagId?: number | string; name: string}) =>
   tagId ? `/categories/${tagId}/${name}` : `/categories/${name}`
 export const articlesUrl = () => `/articles`
