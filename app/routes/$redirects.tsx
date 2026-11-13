@@ -1,6 +1,7 @@
 import type {LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {redirect} from '@remix-run/cloudflare'
 import {cleanRedirectPath, loadRedirects} from '~/server-utils/stampy'
+import {permanentRedirect, withRequestQuery} from '~/routesMapper'
 
 const defined_redirects: Record<string, string> = {
   about: '/questions/NLZQ/What-is-this-site-about',
@@ -9,12 +10,14 @@ const defined_redirects: Record<string, string> = {
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const path = params['*'] && cleanRedirectPath(params['*'])
-  if (path && defined_redirects[path]) return redirect(defined_redirects[path], 301)
+  if (path && defined_redirects[path])
+    return permanentRedirect(withRequestQuery(request.url, defined_redirects[path]))
 
   try {
     const {data: redirects} = await loadRedirects(request)
     const to = path && redirects[path]
-    if (to) return redirect(to)
+    // the Coda redirects table stays a 302, in case it gets used for links that change
+    if (to) return redirect(withRequestQuery(request.url, to))
   } catch (e) {
     console.error(e)
   }
