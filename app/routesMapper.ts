@@ -33,19 +33,30 @@ export const questionUrl = ({pageid, title}: {pageid: string; title?: string}) =
 export const CANONICAL_ORIGIN = 'https://aisafety.info'
 
 // 301, but only cached by browsers for an hour, so a wrong rule can be fixed quickly
-export const permanentRedirect = (url: URL) => {
-  url.searchParams.delete('_data')
+export const permanentRedirect = (url: URL | string) => {
+  if (url instanceof URL) url.searchParams.delete('_data')
   return new Response(null, {
     status: 301,
     headers: {Location: url.toString(), 'Cache-Control': 'max-age=3600'},
   })
 }
 
-// The redirect target with the request's query string (e.g. utm_*) carried over
-export const withRequestQuery = (request: Request, to: string) => {
-  const url = new URL(to, request.url)
-  new URL(request.url).searchParams.forEach((value, key) => url.searchParams.append(key, value))
-  return url
+// The redirect target with the request's query string (e.g. utm_*) carried over.
+// Keys already in the target win, relative targets stay relative, unparseable ones are returned as is
+export const withRequestQuery = (requestUrl: string, to: string) => {
+  const requestParams = new URL(requestUrl).searchParams
+  let url: URL
+  try {
+    url = new URL(to, requestUrl)
+  } catch {
+    return to
+  }
+  const targetKeys = new Set(url.searchParams.keys())
+  requestParams.forEach((value, key) => {
+    if (!targetKeys.has(key)) url.searchParams.append(key, value)
+  })
+  const isAbsolute = /^[a-z][a-z\d+.-]*:/i.test(to) || to.startsWith('//')
+  return isAbsolute ? url.toString() : url.pathname + url.search + url.hash
 }
 
 export const tagUrl = ({tagId, name}: {tagId?: number | string; name: string}) =>

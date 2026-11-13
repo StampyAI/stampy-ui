@@ -11,13 +11,13 @@ const defined_redirects: Record<string, string> = {
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const path = params['*'] && cleanRedirectPath(params['*'])
   if (path && defined_redirects[path])
-    return permanentRedirect(withRequestQuery(request, defined_redirects[path]))
+    return permanentRedirect(withRequestQuery(request.url, defined_redirects[path]))
 
   try {
     const {data: redirects} = await loadRedirects(request)
     const to = path && redirects[path]
     // the Coda redirects table stays a 302, in case it gets used for links that change
-    if (to) return redirect(withRequestQuery(request, to).toString())
+    if (to) return redirect(withRequestQuery(request.url, to))
   } catch (e) {
     console.error(e)
   }

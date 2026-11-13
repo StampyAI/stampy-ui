@@ -32,7 +32,7 @@ export const loader = async ({request, params, context}: LoaderFunctionArgs) => 
   const cleanedPath = cleanRedirectPath(path)
   const to = redirects[cleanedPath]
   if (to) {
-    return redirect(withRequestQuery(request, to).toString())
+    return redirect(withRequestQuery(request.url, to))
   }
 
   // Otherwise, load the question
