@@ -67,8 +67,13 @@ jobs:
           contains(fromJSON('["none","low"]'), fromJSON(steps.review.outputs.structured_output).max_severity)
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >
-          gh api repos/${{ github.repository }}/pulls/$PR/reviews
-          -f event=APPROVE
-          -f commit_id=${{ steps.sha.outputs.sha }}
-          -f body="Approved on request: Claude's review of this commit found nothing Medium or higher. See the review comment above."
+          SHA: ${{ steps.sha.outputs.sha }}
+        run: |
+          if [ "$(gh pr view "$PR" --json headRefOid --jq .headRefOid)" != "$SHA" ]; then
+            echo "PR head moved since the review; not approving."
+            exit 0
+          fi
+          gh api "repos/${{ github.repository }}/pulls/$PR/reviews" \
+            -f event=APPROVE \
+            -f commit_id="$SHA" \
+            -f body="Approved on request: Claude's review of this commit found nothing Medium or higher. See the review comment above."
