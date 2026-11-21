@@ -1,0 +1,74 @@
+# Claude reviews PRs following .claude/review-guide.md.
+# - Every non-draft PR gets a review comment when opened or marked ready.
+# - "/claude-review" in a PR comment re-runs the review.
+# - "/claude-approve" also approves the PR if the review finds nothing Medium or higher.
+#   The approval is made by this workflow (github-actions[bot]), not by Claude.
+# Keep this name: the Anthropic federation rule only accepts tokens from a workflow named "Claude review".
+name: Claude review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, reopened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number || github.event.issue.number }}
+
+jobs:
+  review:
+    if: >
+      (github.event_name == 'pull_request' && !github.event.pull_request.draft) ||
+      (github.event.issue.pull_request &&
+       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
+       (startsWith(github.event.comment.body, '/claude-review') ||
+        startsWith(github.event.comment.body, '/claude-approve')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    env:
+      PR: ${{ github.event.pull_request.number || github.event.issue.number }}
+      APPROVE: ${{ github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/claude-approve') }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: refs/pull/${{ env.PR }}/head
+          fetch-depth: 0
+
+      - id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - id: review
+        uses: anthropics/claude-code-action@v1
+        with:
+          # Workload identity federation: identifiers, not secrets. Billed to Murphant's
+          # Anthropic org (workspace stampy-review) until Stampy takes over.
+          anthropic_federation_rule_id: fdrl_01FYV7TBGLsiEF2r8dCNsvJd
+          anthropic_organization_id: 45fe0ae0-2721-4132-a627-875f33c288a7
+          anthropic_service_account_id: svac_01Rkt8HbfQoXrtARvFShLBAb
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ env.PR }}
+            COMMIT UNDER REVIEW: ${{ steps.sha.outputs.sha }} (checked out in the working directory)
+
+            Review this pull request. Read .claude/review-guide.md first and follow it.
+            Post the review as one PR comment with `gh pr comment ${{ env.PR }} --body-file <file>`.
+          claude_args: |
+            --model claude-opus-5-5
+            --json-schema '{"type":"object","properties":{"max_severity":{"type":"string","enum":["none","low","medium","high"],"description":"Severity of the worst finding in the posted review"}},"required":["max_severity"]}'
+
+      - name: Approve
+        if: >
+          env.APPROVE == 'true' &&
+          steps.review.outputs.structured_output != '' &&
+          contains(fromJSON('["none","low"]'), fromJSON(steps.review.outputs.structured_output).max_severity)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh api repos/${{ github.repository }}/pulls/$PR/reviews
+          -f event=APPROVE
+          -f commit_id=${{ steps.sha.outputs.sha }}
+          -f body="Approved on request: Claude's review of this commit found nothing Medium or higher. See the review comment above."
